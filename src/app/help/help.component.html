@@ -1,0 +1,102 @@
+<main>
+  <div class="container">
+
+    <div>
+      <div class="md-form input-group">
+        <input #term (keyup)="search(term.value)" type="text" class="form-control" placeholder="Search for Help">
+      </div>
+
+      <div class="md-form input-group">
+        <div class="suggestions" (window:keydown)="onKey($event)">
+          <ul (mouseover)="mouseover=true" (mouseout)="mouseover=false">
+            <li *ngFor="let item of items | async; let i = index; let lastOne = last" >
+              <div>
+                <a [routerLink]="['/help', item.link]" [class.selected]="(i == selected)" (window:keydown)="onEnterKey($event, '/help', item.link)">{{ item.name }}</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-lg-4">
+
+        <!--Panel-->
+        <div class="card text-xs-center">
+          <div class="card-header">
+            <a href="" style="color:white;">User Documentation</a>
+          </div>
+          <div class="card-block">
+            <ul *ngFor="let item of userDocumentationItems">
+              <li *ngIf="item.link != null">
+                <a [routerLink]="['/help', item.link]">
+                  {{ item.name }}
+                </a>
+              </li>
+            </ul>
+            <!--<a href="">and more...</a>-->
+          </div>
+          <div class="card-footer text-muted white-text">
+            <p></p>
+          </div>
+      </div>
+        <!--/.Panel-->
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <!--Panel-->
+        <div class="card text-xs-center">
+            <div class="card-header">
+              <a href="" style="color:white;">Developer Documentation</a>
+            </div>
+          <div class="card-block">
+            <ul *ngFor="let item of developerDocumentationItems">
+              <li *ngIf="item.link != null">
+                <a [routerLink]="['/help', item.link]">
+                  {{ item.name }}
+                </a>
+              </li>
+            </ul>
+            <!--<a href="">and more...</a>-->
+          </div>
+          <div class="card-footer text-muted white-text">
+            <p></p>
+          </div>
+        </div>
+        <!--/.Panel-->
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <!--Panel-->
+        <div class="card text-xs-center">
+          <div class="card-header">
+            <a href="" style="color:white;">Tutorials</a>
+          </div>
+          <div class="card-block">
+            <ul *ngFor="let item of tutorialsItems">
+              <li *ngIf="item.link != null">
+                <a [routerLink]="['/help', item.link]">
+                  {{ item.name }}
+                </a>
+              </li>
+            </ul>
+            <!--<a href="">and more...</a>-->
+          </div>
+          <div class="card-footer text-muted white-text">
+            <p></p>
+          </div>
+        </div>
+        <!--/.Panel-->
+
+      </div>
+    </div>
+
+  </div>
+</main>

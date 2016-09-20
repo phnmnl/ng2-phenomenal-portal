@@ -1,0 +1,51 @@
+.card-footer, .card-header {
+  background-color: #525991;
+}
+
+/*.card-block {*/
+  /*height: 200px;*/
+/*}*/
+
+.md-form{
+  margin-bottom: 0;
+}
+
+.selected {
+  background-color: #525991;
+  color: #D3B569;
+}
+
+.suggestions{
+  border-style: solid;
+  border-width: 0px 2px 2px 2px;
+  border-color: #525991;
+  position:absolute;
+  width:100%;
+  background: white;
+  z-index: 5;
+}
+
+.suggestions ul{
+  padding: 0px;
+  margin: 0px;
+}
+
+.suggestions ul li{
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.suggestions ul li a{
+  padding:5px;
+  display: block;
+  text-decoration: none;
+}
+
+.suggestions ul li a:hover{
+  background-color: #525991;
+}
+
+.white {
+  color: #ffffff;
+}

@@ -1,0 +1,22 @@
+.carousel-indicators {
+  bottom: -20px !important;
+}
+
+.carousel-indicators li {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin: 2px;
+  text-indent: -999px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #664f90;
+  border-radius: 10px;
+}
+
+.carousel-indicators .active {
+  width: 15px;
+  height: 15px;
+  margin: 2px;
+  background-color: #664f90;
+}

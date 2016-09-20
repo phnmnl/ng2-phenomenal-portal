@@ -1,0 +1,15 @@
+a {
+  color: #FFF !important;
+}
+
+a:focus, a:hover {
+  color: #D3B569;
+}
+
+.breadcrumb {
+  background-color: #525991;
+}
+
+.breadcrumb>.active {
+  color: #FFF;
+}

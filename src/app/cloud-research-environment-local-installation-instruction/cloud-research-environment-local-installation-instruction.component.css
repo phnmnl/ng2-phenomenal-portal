@@ -1,0 +1,14 @@
+.btn {
+  background-color: transparent;
+  box-shadow: none;
+  vertical-align:top;
+}
+
+.question-description {
+  width: 120px;
+  color: black;
+}
+
+.icon-background {
+  text-shadow: rgb(71, 55, 101) 0px 0px, rgb(72, 56, 102) 1px 1px, rgb(73, 57, 103) 2px 2px, rgb(74, 57, 105) 3px 3px, rgb(75, 58, 106) 4px 4px, rgb(76, 59, 107) 5px 5px, rgb(77, 59, 108) 6px 6px, rgb(78, 60, 109) 7px 7px, rgb(78, 61, 111) 8px 8px, rgb(79, 61, 112) 9px 9px, rgb(80, 62, 113) 10px 10px, rgb(81, 63, 114) 11px 11px, rgb(82, 63, 116) 12px 12px, rgb(83, 64, 117) 13px 13px, rgb(84, 65, 118) 14px 14px, rgb(85, 65, 119) 15px 15px, rgb(85, 66, 121) 16px 16px, rgb(86, 67, 122) 17px 17px, rgb(87, 67, 123) 18px 18px, rgb(88, 68, 124) 19px 19px, rgb(89, 69, 125) 20px 20px, rgb(90, 70, 127) 21px 21px, rgb(91, 70, 128) 22px 22px, rgb(92, 71, 129) 23px 23px, rgb(92, 72, 130) 24px 24px, rgb(93, 72, 132) 25px 25px, rgb(94, 73, 133) 26px 26px, rgb(95, 74, 134) 27px 27px, rgb(96, 74, 135) 28px 28px, rgb(97, 75, 137) 29px 29px, rgb(98, 76, 138) 30px 30px, rgb(99, 76, 139) 31px 31px, rgb(99, 77, 140) 32px 32px, rgb(100, 78, 142) 33px 33px, rgb(101, 78, 143) 34px 34px; font-size: 60px; color: rgb(211, 181, 105); height: 120px; width: 120px; line-height: 120px; border-radius: 10%; overflow: hidden; text-align: center; background-color: rgb(102, 79, 144);
+}

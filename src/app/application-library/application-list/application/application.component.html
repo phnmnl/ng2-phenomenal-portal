@@ -1,0 +1,41 @@
+<!--Card-->
+<div class="card card-cascade narrower app-card">
+
+  <!--Card image-->
+  <div class="view overlay hm-white-slight">
+    <img src="{{ application.logo_large }}" class="img-fluid m-x-auto d-block app-logo" alt="">
+    <a [routerLink]="['/app-library', application.id]">
+      <div class="mask"></div>
+    </a>
+  </div>
+  <!--/.Card image-->
+
+  <!--Card content-->
+  <div class="card-block text-xs-center">
+    <!--Category & Title-->
+    <h5 class="card-title"><strong><a href="">{{ application.name }}</a></strong></h5>
+
+    <!--Description-->
+    <p class="card-text">
+      <small>
+        {{ application.short_description }}
+      </small>
+    </p>
+
+    <!--Card footer-->
+    <!--<div class="card-footer">-->
+      <!--<a class="btn rating">-->
+      <!--<i class="fa fa-star"></i>-->
+      <!--<i class="fa fa-star"></i>-->
+      <!--<i class="fa fa-star"></i>-->
+      <!--<i class="fa fa-star"></i>-->
+      <!--<i class="fa fa-star-o"></i>-->
+      <!--</a>-->
+    <!--</div>-->
+
+  </div>
+  <!--/.Card content-->
+</div>
+<!--/.Card-->
+
+

@@ -1,0 +1,195 @@
+<div class="container">
+  <p class="text-xs-center">In order to direct you to the correct installation we need to ask you a few simple questions.</p>
+
+  <div id="q1">
+    <p class="text-xs-center">How many computer(s) do you want to run your analysis on?</p>
+
+    <div class="text-xs-center">
+
+      <button type="button" (click)="q1o1()" [disabled]="disableQ1O1" class="btn">
+        <i class="fa fa-desktop icon-background"></i>
+        <br>
+        <div class="question-description">
+          Just on my laptop or desktop
+        </div>
+      </button>
+
+      <button type="button" (click)="q1o2()" [disabled]="disableQ1O2" class="btn">
+        <i class="fa fa-server icon-background"></i>
+        <br>
+        <div class="question-description">
+          On a cluster of computers (more than one)
+        </div>
+      </button>
+
+    </div>
+
+    <br>
+  </div>
+
+
+
+  <div id="q2" [hidden]="!enableQ2">
+    <p class="text-xs-center">Is this the computer you want to run your installation on?</p>
+
+    <div class="text-xs-center">
+
+      <button type="button" (click)="q2o1()" [disabled]="disableQ2O1" class="btn">
+        <i class="fa fa-check icon-background"></i>
+      </button>
+
+      <button type="button" (click)="q2o2()" [disabled]="disableQ2O2" class="btn">
+        <i class="fa fa-close icon-background"></i>
+      </button>
+
+    </div>
+
+    <br>
+
+  </div>
+
+
+
+  <div id="q3" [hidden]="!enableQ3">
+    <p class="text-xs-center">What operating system are you running on your computer(s)?</p>
+
+
+    <div class="text-xs-center">
+
+      <button type="button" (click)="q3o1()" [disabled]="disableQ3O1" class="btn">
+        <i class="fa fa-windows icon-background"></i>
+        <br>
+        <div class="question-description">
+        Windows
+        </div>
+      </button>
+
+      <button type="button" (click)="q3o2()" [disabled]="disableQ3O2" class="btn">
+        <i class="fa fa-apple icon-background"></i>
+        <br>
+        <div class="question-description">
+          Apple - Minimum supported version 10.6+
+        </div>
+      </button>
+
+      <button type="button" (click)="q3o3()" [disabled]="disableQ3O3" class="btn">
+        <i class="fa fa-linux icon-background"></i>
+        <br>
+        <div class="question-description">
+          Linux
+        </div>
+      </button>
+
+      <button type="button" (click)="q3o4()" [disabled]="disableQ3O4" class="btn">
+        <i class="fa fa-question icon-background"></i>
+        <br>
+        <div class="question-description">
+          I don't know
+        </div>
+      </button>
+    </div>
+
+    <br>
+
+  </div>
+
+
+
+  <div id="q4" [hidden]="!enableQ4">
+    <p class="text-xs-center">What Linux operating system are you running on your computer(s)?</p>
+
+    <div class="text-xs-center">
+
+      <button type="button" (click)="q4o1()" [disabled]="disableQ4O1" class="btn">
+        <i class="fa fa-linux icon-background"></i>
+        <br>
+        <div class="question-description">
+          Ubuntu
+        </div>
+      </button>
+
+      <button type="button" (click)="q4o2()" [disabled]="disableQ4O2" class="btn">
+        <i class="fa fa-apple icon-background"></i>
+        <br>
+        <div class="question-description">
+          Apple - Minimum supported version 10.6+
+        </div>
+      </button>
+
+      <button type="button" (click)="q4o3()" [disabled]="disableQ4O3" class="btn">
+        <i class="fa fa-question icon-background"></i>
+        <br>
+        <div class="question-description">
+          I don't know
+        </div>
+      </button>
+
+    </div>
+
+    <br>
+  </div>
+
+
+
+  <div id="q5" [hidden]="!enableQ5">
+    <p class="text-xs-center">What sort of administration rights do you have over these computer(s)?</p>
+
+    <div class="text-xs-center">
+
+      <button type="button" (click)="q5o1()" [disabled]="disableQ5O1" class="btn">
+        <i class="fa fa-lock icon-background"></i>
+        <br>
+        <div class="question-description">
+          I do not have installation privilege on the computer(s).
+        </div>
+      </button>
+
+      <button type="button" (click)="q5o2()" [disabled]="disableQ5O2" class="btn">
+        <i class="fa fa-unlock icon-background"></i>
+        <br>
+        <div class="question-description">
+          I have full installation privileges on this computer(s).
+        </div>
+      </button>
+
+      <button type="button" (click)="q5o3()" [disabled]="disableQ5O3" class="btn">
+        <i class="fa fa-question icon-background"></i>
+        <br>
+        <div class="question-description">
+          I don't know
+        </div>
+      </button>
+
+    </div>
+
+
+    <br>
+  </div>
+
+
+
+  <div id="q6" [hidden]="!enableQ6">
+    <p *ngIf="isMac" class="text-xs-center">Our system detects that you are running on Mac.</p>
+    <p *ngIf="!isMac" class="text-xs-center">Our system detects that you are not running on Mac.</p>
+    <br>
+  </div>
+
+
+
+  <div id="instruction" [hidden]="!enableInstruction">
+    <p class="text-xs-center">Thank you!</p>
+    <p class="text-xs-center">Based on your answers we have a set of instructions which will guide you through the installation process.</p>
+
+    <p class="text-xs-center" >Click the button below to access your installation instructions.</p>
+
+    <div class="text-xs-center">
+      <button type="button" (click)="redirectURL()" class="btn">
+        <i class="fa fa-info icon-background"></i>
+      </button>
+    </div>
+
+
+  </div>
+
+
+</div>

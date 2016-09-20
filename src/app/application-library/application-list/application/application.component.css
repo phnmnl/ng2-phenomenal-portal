@@ -1,0 +1,19 @@
+.app-card{
+  width:100%;
+}
+
+@media (min-width: 768px) {
+  .app-card {
+    height: 230px;
+  }
+}
+
+@media (min-width: 992px) {
+  .app-card {
+    height: 200px;
+  }
+}
+
+.app-logo{
+  max-height: 80px;
+}

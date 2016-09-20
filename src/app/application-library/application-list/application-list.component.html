@@ -1,0 +1,113 @@
+<div class="row">
+  <div class="col-md-8">
+    <!--Panel-->
+    <div class="card card-block">
+      <p class="card-text">App Library showcases all applications that are available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
+    </div>
+    <!--/.Panel-->
+  </div>
+  <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">
+  </div>
+</div>
+
+<!--<input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">-->
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-block">
+
+        <form class="form-inline">
+
+          <h6 class="card-title">Metabolomic Technology <i class="fa fa-question-circle-o" aria-hidden="true"></i></h6>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox26">
+            <label for="checkbox26">DAD</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox23">
+            <label for="checkbox23">DIMS</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox25">
+            <label for="checkbox25">GC-MS</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox24">
+            <label for="checkbox24">LC-MS</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox22">
+            <label for="checkbox22">NMR</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox27">
+            <label for="checkbox27">RAMAN</label>
+          </fieldset>
+
+          <br>
+          <br>
+
+          <h6 class="card-title">Data analysis <i class="fa fa-question-circle-o" aria-hidden="true"></i></h6>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox30">
+            <label for="checkbox30">Annotation</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox21">
+            <label for="checkbox21">Normalisation</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox28">
+            <label for="checkbox28">Processing</label>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <input type="checkbox" class="filled-in" id="checkbox20">
+            <label for="checkbox20">Statistical Analysis</label>
+          </fieldset>
+
+
+
+
+          <!--<br>-->
+          <!--<br>-->
+
+          <!--<h6 class="card-title">User rating <i class="fa fa-question-circle-o" aria-hidden="true"></i></h6>-->
+
+          <!--<br>-->
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="app-list">
+      <div class="row">
+        <div *ngFor="let application of applications$ | async | filter:word.value">
+          <div class="col-md-4" >
+            <div *ngIf="application === undefined"> hello</div>
+            <fl-application [application]="application"></fl-application>
+          </div><!-- /.col-lg-4 -->
+
+        </div>
+        <div [hidden] = "!isLoading"><div class="loader">Loading...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
