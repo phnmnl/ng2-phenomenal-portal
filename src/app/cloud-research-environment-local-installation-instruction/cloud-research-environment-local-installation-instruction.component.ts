@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-cloud-research-environment-local-installation-instruction',
   templateUrl: 'cloud-research-environment-local-installation-instruction.component.html',
   styleUrls: ['cloud-research-environment-local-installation-instruction.component.css']
@@ -33,15 +33,17 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   isMac: boolean;
   isWindows: boolean;
 
-  constructor() {
+  constructor(
+      private router: Router
+  ) {
     this.resetAll();
   }
 
   redirectURL() {
     if (this.isWindows) {
-      window.location.href = '#/help/Windows-mini-kube';
+      this.router.navigateByUrl('help/Windows-mini-kube');
     } else {
-      window.location.href = '#/help/galaxy-with-k8s';
+      this.router.navigateByUrl('help/galaxy-with-k8s');
     }
   }
 

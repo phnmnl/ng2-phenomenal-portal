@@ -1,19 +1,17 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { Application } from '../application-library/application-list/application/application';
 import { ApplicationsDatabaseService } from '../shared/service/applications-database/applications-database.service';
 
-import { BreadcrumbService } from '../shared/breadcrumb/breadcrumb.service';
+import { BreadcrumbService } from '../shared/component/breadcrumb/breadcrumb.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-application-detail',
   templateUrl: 'application-detail.component.html',
   styleUrls: ['application-detail.component.css'],
   providers: [ApplicationsDatabaseService],
-  directives: [ROUTER_DIRECTIVES]
 })
 
 export class ApplicationDetailComponent implements OnInit {

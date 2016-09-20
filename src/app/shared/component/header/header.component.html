@@ -1,0 +1,39 @@
+<header>
+    <!--Navbar-->
+    <nav class="navbar navbar-fixed-top scrolling-navbar navbar-light primary-color-light bg-faded">
+
+        <div class="container">
+
+            <div class="navbar-header">
+                <!--Navbar Brand-->
+                <a class="navbar-brand" [routerLink]="['/home']">
+                    <img class="logo" src="asset/img/logo/phenomenal.png">
+                </a>
+            </div>
+            <!-- Collapse button-->
+            <button (click)="toggleMenu()" class="navbar-toggler hidden-lg-up" type="button">
+                <i class="fa fa-bars"></i>
+            </button>
+            <!--Collapse content-->
+            <div [collapse]="!isCollapsed" class="collapse navbar-toggleable-md">
+                <!--Links-->
+                <ul class="nav navbar-nav pull-xs-right">
+                    <li class="nav-item">
+                        <a (click)="closeMenu()" class="nav-link" [routerLink]="['/home']" routerLinkActive="active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="closeMenu()" class="nav-link" [routerLink]="['/cloud-research-environment']" routerLinkActive="active">Cloud Research Environment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="closeMenu()" class="nav-link" [routerLink]="['/app-library']" routerLinkActive="active">App Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="closeMenu()" class="nav-link" [routerLink]="['/help']" routerLinkActive="active">Help</a>
+                    </li>
+                </ul>
+            </div>
+            <!--/.Collapse content-->
+
+        </div>
+    </nav>
+</header>

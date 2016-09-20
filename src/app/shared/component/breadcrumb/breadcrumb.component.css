@@ -13,3 +13,14 @@ a:focus, a:hover {
 .breadcrumb>.active {
   color: #FFF;
 }
+
+.breadcrumb>li+li::before {
+  padding-right: .5rem;
+  padding-left: .5rem;
+  color: #818a91;
+  content: "/";
+}
+
+.breadcrumb>li {
+  display: inline;
+}

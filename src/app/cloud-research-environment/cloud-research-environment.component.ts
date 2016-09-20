@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { CarouselComponent } from '../shared/carousel/carousel/carousel.component';
-import { SlideComponent }  from '../shared/carousel/carousel/slide/slide.component';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-cloud-research-environment',
   templateUrl: 'cloud-research-environment.component.html',
   styleUrls: ['cloud-research-environment.component.css'],
-  directives: [ROUTER_DIRECTIVES, CarouselComponent, SlideComponent]
 })
 export class CloudResearchEnvironmentComponent {
 

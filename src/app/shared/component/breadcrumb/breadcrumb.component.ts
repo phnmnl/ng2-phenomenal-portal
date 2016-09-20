@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FORM_DIRECTIVES} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, NavigationEnd} from '@angular/router';
+import { Router, NavigationEnd} from '@angular/router';
 import {BreadcrumbService} from './breadcrumb.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-breadcrumb',
-  directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES],
   templateUrl: 'breadcrumb.component.html',
   styleUrls: ['breadcrumb.component.css']
 })

@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Application, ApplicationComponent } from './application';
+import { Application } from './application';
 
 import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-application-list',
   templateUrl: 'application-list.component.html',
   styleUrls: ['application-list.component.css'],
-  directives: [ApplicationComponent],
   providers: [ApplicationsDatabaseService]
 })
 

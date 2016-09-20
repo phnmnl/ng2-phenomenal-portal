@@ -2,17 +2,15 @@ import { Component, OnInit }    from '@angular/core';
 import { Observable }           from 'rxjs/Observable';
 import { Subject }              from 'rxjs/Subject';
 import { WikiService }          from '../shared/service/wiki/wiki.service';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import 'rxjs/Rx';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-help',
   templateUrl: 'help.component.html',
   styleUrls: ['help.component.css'],
-  providers: [ WikiService ],
-  directives: [ROUTER_DIRECTIVES],
+  providers: [ WikiService ]
 })
 export class HelpComponent implements OnInit {
 

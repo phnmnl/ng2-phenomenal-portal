@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.14",
+    "version": "1.0.0-beta.15",
     "name": "ng2-phenomenal-portal"
   },
   "apps": [
@@ -12,12 +12,17 @@
       "main": "main.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
-      "prefix": "app",
+      "prefix": "fl",
       "mobile": false,
       "styles": [
+        "asset/css/font-awesome.min.css",
+        "asset/css/bootstrap.min.css",
+        "asset/css/mdb.min.css",
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "asset/js/xml2json.min.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",

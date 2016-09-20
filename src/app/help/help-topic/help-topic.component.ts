@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
-import { BreadcrumbService } from '../../shared/breadcrumb/breadcrumb.service';
+import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
 import { WikiService } from '../../shared/service/wiki/wiki.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-help-topic',
   templateUrl: 'help-topic.component.html',
   styleUrls: ['help-topic.component.css'],
-  directives: [ROUTER_DIRECTIVES]
 })
 
 export class HelpTopicComponent implements OnInit {

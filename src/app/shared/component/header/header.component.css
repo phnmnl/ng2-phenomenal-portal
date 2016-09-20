@@ -1,0 +1,76 @@
+.fa-bars {
+    color: #664F90;
+}
+
+.logo {
+    margin-top: -9px;
+    width: 281px;
+    height: 44px;
+}
+
+@media (max-width: 991px) {
+
+    .logo {
+        margin-top: -5px;
+        width: 234px;
+        height: 36px;
+    }
+
+    .navbar-toggleable-md {
+        clear: both;
+    }
+    .navbar-toggleable-md .navbar-nav {
+        float: none !important;
+    }
+    .navbar-toggleable-md .navbar-nav .nav-item + .nav-item {
+        margin-left: 0; }
+    .navbar-toggleable-md .navbar-nav .nav-item {
+        float: none; }
+
+}
+
+@media (max-width: 347px) {
+
+    .logo {
+        margin-top: -5px;
+        /*width: 224px;*/
+        /*height: 35px;*/
+        width: 210px;
+        height: 33px;
+    }
+
+    .container {
+        padding: 0 0 0 5px !important;
+    }
+
+}
+
+.navbar-light .navbar-nav .active>.nav-link,
+.navbar-light .navbar-nav .active>.nav-link:focus,
+.navbar-light .navbar-nav .active>.nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .nav-link.active:focus,
+.navbar-light .navbar-nav .nav-link.active:hover,
+.navbar-light .navbar-nav .nav-link.open,
+.navbar-light .navbar-nav .nav-link.open:focus,
+.navbar-light .navbar-nav .nav-link.open:hover,
+.navbar-light .navbar-nav .open>.nav-link,
+.navbar-light .navbar-nav .open>.nav-link:focus,
+.navbar-light .navbar-nav .open>.nav-link:hover {
+    color: #664F90;
+    font-weight: bold;
+
+}
+
+.nav-link {
+    text-align: right;
+}
+
+.navbar.navbar-light .breadcrumb a:hover, .navbar.navbar-light .nav-item a:hover {
+    transition: .35s;
+    color: #D3B569;
+}
+
+.navbar.navbar-fixed-top.scrolling-navbar.navbar-light.primary-color-light.bg-faded {
+    min-width: 320px;
+}

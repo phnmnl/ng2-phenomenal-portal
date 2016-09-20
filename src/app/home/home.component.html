@@ -1,0 +1,168 @@
+<main>
+  <!--Main layout-->
+  <div class="container">
+    <!--First row-->
+    <div class="row">
+      <div class="col-md-6">
+        <!--Featured image -->
+        <img src="asset/img/home/img1.png" class="img-fluid " alt="">
+        <br>
+        <div class="text-xs-center">
+          Test drive our Cloud Research Environment
+          <br>
+          <a class="btn btn-primary" href="http://public.phenomenal-h2020.eu/" target="_blank">
+            Galaxy Workflow
+          </a>
+          or
+          <a class="btn btn-primary disabled" href="#" >
+            Jupyter IPython
+          </a>
+        </div>
+        <p class="text-xs-center"><small>Note that this is a public instance accessible by everyone</small></p>
+      </div>
+
+      <!--Main information-->
+      <div class="col-md-6">
+        <h2 class="h2-responsive text-xs-center">An easy to use, cloud based scalable software infrastructure for metabolomic research</h2>
+        <hr>
+        <br>
+
+        <p class="text-xs-center">Want to give it a go?</p>
+
+        <div class="text-xs-center">
+          <a href="" class="btn btn-primary disabled">Create <br> Cloud Research Environment</a>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="text-xs-center">
+          <a [routerLink]="['/cloud-research-environment']" class="btn btn-primary-outline waves-effect">Find out more</a>
+        </div>
+      </div>
+    </div>
+    <!--/.First row-->
+
+    <hr class="extra-margins">
+
+    <!--First row-->
+    <div class="row">
+      <!--Main information-->
+      <div class="col-md-6">
+        <h2 class="h2-responsive text-xs-center">The open-source App Library provides a catalogue of free Metabolomic data analysis libraries available within the Cloud Research Environment</h2>
+        <hr>
+        <p class="text-xs-center">With user feedback and ratings it is easier to choose the best software for your analysis</p>
+        <div class="text-xs-center">
+          <a [routerLink]="['/app-library']" class="btn btn-primary">Browse App Library</a>
+        </div>
+        <br>
+      </div>
+
+      <div class="col-md-6">
+        <!--Featured image -->
+        <img src="asset/img/home/img2.png" class="img-fluid hand-cursor" alt="" (click)="showChildModal()">
+      </div>
+
+
+    </div>
+    <!--/.First row-->
+
+    <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">App Library</h4>
+          </div>
+          <div class="modal-body">
+            <img src="asset/img/home/img2.png" class="img-fluid " alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="extra-margins">
+
+    <!--First row-->
+    <div class="row">
+      <div class="col-md-6" (click)="lgModal.show()">
+        <!--Featured image -->
+        <img src="asset/img/home/img3.png" class="img-fluid hand-cursor" alt="">
+      </div>
+
+      <br>
+      <br>
+      <!--Main information-->
+      <div class="col-md-6">
+        <h2 class="h2-responsive text-xs-center">Access your Cloud Research Enviroment through standard scientific open-source web environments, Galaxy Workflow tool and Jupyter coding environment</h2>
+      </div>
+    </div>
+    <!--/.First row-->
+
+    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" (click)="lgModal.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Galaxy Workflow</h4>
+          </div>
+          <div class="modal-body">
+            <img src="asset/img/home/img3.png" class="img-fluid " alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="extra-margins">
+
+    <!--First row-->
+    <div class="row">
+      <!--Main information-->
+      <div class="col-md-6">
+        <h2 class="h2-responsive text-xs-center">With world leading e-Infrastructure partners your Cloud Research Environment is in safe hands</h2>
+        <hr>
+        <p class="text-xs-center">Our focus on clinical metabolomics ensures we take the utmost care in securing your environment and data</p>
+        <p class="text-xs-center">The Cloud Research Environment adheres to the strictest security measures. At no point do we store any information related to your own cloud provider</p>
+      </div>
+      <div class="col-md-6">
+        <h2 class="h2-responsive text-xs-center">PhenoMeNal Cloud Hosts</h2>
+
+        <br>
+        <fl-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">
+          <fl-slide *ngFor="let slidez of slides; let index=index"
+                    [active]="slidez.active">
+            <div class="col-md-6">
+              <a href="{{ slidez.website1 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description1 }}" [src]="slidez.image1">
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ slidez.website2 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description2 }}" [src]="slidez.image2">
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ slidez.website3 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description3 }}" [src]="slidez.image3">
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ slidez.website4 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description4 }}" [src]="slidez.image4">
+              </a>
+            </div>
+          </fl-slide>
+        </fl-carousel>
+
+      </div>
+
+    </div>
+    <!--/.First row-->
+  </div>
+  <!--/.Main layout-->
+
+</main>

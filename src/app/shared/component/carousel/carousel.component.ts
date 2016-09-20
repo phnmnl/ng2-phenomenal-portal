@@ -4,7 +4,6 @@ import { SlideComponent } from './slide/slide.component';
 export enum Direction {UNKNOWN, NEXT, PREV}
 
 @Component({
-  moduleId: module.id,
   selector: 'fl-carousel',
   templateUrl: 'carousel.component.html',
   styleUrls: ['carousel.component.css']
