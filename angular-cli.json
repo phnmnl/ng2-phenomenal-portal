@@ -15,13 +15,13 @@
       "prefix": "fl",
       "mobile": false,
       "styles": [
-        "asset/css/font-awesome.min.css",
-        "asset/css/bootstrap.min.css",
-        "asset/css/mdb.min.css",
+        "assets/css/font-awesome.min.css",
+        "assets/css/bootstrap.min.css",
+        "assets/css/mdb.min.css",
         "styles.css"
       ],
       "scripts": [
-        "asset/js/xml2json.min.js"
+        "assets/js/xml2json.min.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
