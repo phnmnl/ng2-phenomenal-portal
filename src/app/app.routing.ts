@@ -11,6 +11,7 @@ import { HelpComponent } from './help/help.component';
 import { HelpTopicComponent } from './help/help-topic/help-topic.component';
 import { ApplicationLibraryComponent } from './application-library/application-library.component';
 import { ApplicationDetailComponent } from './application-detail/application-detail.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 /**
  * @auther Sijin He
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
   { path: 'cloud-research-environment/cloud-research-environment-local-installation-instruction', component: CloudResearchEnvironmentLocalInstallationInstructionComponent},
   { path: 'help', component: HelpComponent},
   { path: 'help/:id', component: HelpTopicComponent},
+  { path: 'statistics', component: StatisticsComponent},
   { path: 'home', component: HomeComponent},
   { path: '**', redirectTo: '/home'}
 ];

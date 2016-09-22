@@ -19,6 +19,7 @@ import { FooterComponent }        from './shared/component/footer/footer.compone
 
 import { CarouselComponent }      from './shared/component/carousel/carousel.component';
 import { SlideComponent }         from './shared/component/carousel/slide/slide.component';
+import { StatisticsComponent }    from './statistics/statistics.component';
 
 import { CollapseDirective,
          ModalModule }            from 'ng2-bootstrap';
@@ -50,10 +51,13 @@ import { FilterPipe } from './shared/pipe/filter.pipe';
       HomeComponent,
       FooterComponent,
       SlideComponent,
+      StatisticsComponent,
 
       CollapseDirective,
 
-      FilterPipe
+      FilterPipe,
+
+      StatisticsComponent
   ],
   imports: [
       BrowserModule,
