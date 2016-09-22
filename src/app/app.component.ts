@@ -18,7 +18,7 @@ export class AppComponent {
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/cloud-research-environment-local-installation', 'Local Installation');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/cloud-research-environment-local-installation-instruction', 'Local Installation Instruction');
     breadcrumbService.addFriendlyNameForRoute('/help', 'Help');
-    breadcrumbService.addFriendlyNameForRoute('/statistics', 'Site Statistics');
+    breadcrumbService.addFriendlyNameForRoute('/statistics', 'VRE Site Statistics');
     // You need this small hack in order to catch application root view container ref
     this.viewContainerRef = viewContainerRef;
   }
