@@ -19,6 +19,10 @@ export class HomeComponent {
   // Photos
   private slides: Array<any> = [];
 
+  private img1 = "assets/img/home/img1.png";
+  private img2 = "assets/img/home/img2.png";
+  private img3 = "assets/img/home/img3.png";
+
   constructor() {
     this.addNewSlide();
   }

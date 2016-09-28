@@ -2,8 +2,6 @@ import { BrowserModule }          from '@angular/platform-browser';
 import { NgModule }               from '@angular/core';
 import { FormsModule }            from '@angular/forms';
 import { HttpModule }             from '@angular/http';
-import { routing,
-         appRoutingProviders }    from './app.routing';
 
 import { AppComponent }           from './app.component';
 import { ApplicationComponent } from './application-library/application/application.component';
@@ -26,9 +24,7 @@ import { CollapseDirective,
 
 import { BreadcrumbService }      from './shared/component/breadcrumb/breadcrumb.service';
 import { WikiService }            from './shared/service/wiki/wiki.service';
-
-//import {ApplicationLibraryModule} from "./application-library/application-library.module";
-
+import {Ng2PhenomenalPortalRoutingModule} from "./app-routing.module";
 
 @NgModule({
   declarations: [
@@ -55,11 +51,9 @@ import { WikiService }            from './shared/service/wiki/wiki.service';
       FormsModule,
       HttpModule,
       ModalModule,
-      routing//,
-      // ApplicationLibraryModule
+      Ng2PhenomenalPortalRoutingModule
   ],
   providers: [
-      appRoutingProviders,
       BreadcrumbService,
       WikiService
   ],

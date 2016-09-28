@@ -9,7 +9,7 @@
           <div class="col-lg-4">
             <h5><a [routerLink]="['/home']">
               <span class="logo">
-                  <img height="30" width="30" src="assets/img/logo/phenomenal_white_30_30.png"> PhenoMeNal
+                  <img height="30" width="30" [src]="logo_white"> PhenoMeNal
               </span>
             </a></h5>
             <ul class="nav nav-pills nav-stacked">
@@ -36,7 +36,7 @@
 
           <div class="col-lg-4">
             <p> <span class="logo">PhenoMeNal</span> is funded by the European Commission's Horizon 2020 programme, grant agreement number 654241</p>
-            <a href="http://ec.europa.eu"><img class="flag-size" src="assets/img/logo/euro_flag.jpg"></a>
+            <a href="http://ec.europa.eu"><img class="flag-size" [src]="euro_flag"></a>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
     <div class="container-fluid">
       © 2016 Copyright:
       <a [routerLink]="['/home']">
-        <img height="30" width="30" src="assets/img/logo/phenomenal_white_30_30.png">
+        <img height="30" width="30" [src]="logo_white">
         <span class="logo"> PhenoMeNal</span>
       </a>
 

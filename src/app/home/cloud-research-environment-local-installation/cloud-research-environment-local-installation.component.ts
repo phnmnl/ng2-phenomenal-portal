@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CloudResearchEnvironmentLocalInstallationComponent implements OnInit {
 
+  private img1 = "assets/img/cloud-research-environment-installation/img1.png";
+  private img2 = "assets/img/cloud-research-environment-installation/img2.png";
+  private img3 = "assets/img/cloud-research-environment-installation/img3.png";
   constructor() { }
 
   ngOnInit() {

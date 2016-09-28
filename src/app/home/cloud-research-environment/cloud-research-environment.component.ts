@@ -19,6 +19,9 @@ export class CloudResearchEnvironmentComponent {
   // Photos
   private slides: Array<any> = [];
 
+  private img2 = "assets/img/cloud-research-environment/img2.png";
+  private img3 = "assets/img/cloud-research-environment/img3.png";
+
   constructor() {
     this.addNewSlide();
   }
