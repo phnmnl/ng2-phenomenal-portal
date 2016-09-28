@@ -13,7 +13,7 @@
   <!--Card content-->
   <div class="card-block text-xs-center">
     <!--Category & Title-->
-    <h5 class="card-title"><strong><a href="">{{ application.name }}</a></strong></h5>
+    <h5 class="card-title"><strong><a [routerLink]="['/app-library', application.id]">{{ application.name }}</a></strong></h5>
 
     <!--Description-->
     <p class="card-text">

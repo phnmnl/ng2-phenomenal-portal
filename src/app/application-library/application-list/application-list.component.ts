@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Application } from './application';
+import { Application } from '../application/application';
 
 import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
 

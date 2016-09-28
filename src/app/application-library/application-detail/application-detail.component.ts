@@ -2,10 +2,10 @@ import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
-import { Application } from '../application-library/application-list/application/application';
-import { ApplicationsDatabaseService } from '../shared/service/applications-database/applications-database.service';
+import { Application } from '../application/application';
+import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
 
-import { BreadcrumbService } from '../shared/component/breadcrumb/breadcrumb.service';
+import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
 
 @Component({
   selector: 'fl-application-detail',

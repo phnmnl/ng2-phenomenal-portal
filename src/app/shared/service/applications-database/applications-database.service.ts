@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import { Application } from '../../../application-library/application-list/application/application';
+import { Application } from '../../../application-library/application/application';
 
 declare var xml2json: any;
 

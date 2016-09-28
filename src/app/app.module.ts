@@ -6,11 +6,11 @@ import { routing,
          appRoutingProviders }    from './app.routing';
 
 import { AppComponent }           from './app.component';
-import { ApplicationComponent } from './application-library/application-list/application/application.component';
+import { ApplicationComponent } from './application-library/application/application.component';
 import { BreadcrumbComponent }    from "./shared/component/breadcrumb/breadcrumb.component";
-import { CloudResearchEnvironmentComponent } from './cloud-research-environment/cloud-research-environment.component';
-import { CloudResearchEnvironmentLocalInstallationComponent } from './cloud-research-environment-local-installation/cloud-research-environment-local-installation.component';
-import { CloudResearchEnvironmentLocalInstallationInstructionComponent } from './cloud-research-environment-local-installation-instruction/cloud-research-environment-local-installation-instruction.component';
+import { CloudResearchEnvironmentComponent } from './home/cloud-research-environment/cloud-research-environment.component';
+import { CloudResearchEnvironmentLocalInstallationComponent } from './home/cloud-research-environment-local-installation/cloud-research-environment-local-installation.component';
+import { CloudResearchEnvironmentLocalInstallationInstructionComponent } from './home/cloud-research-environment-local-installation-instruction/cloud-research-environment-local-installation-instruction.component';
 import { HeaderComponent }        from './shared/component/header/header.component';
 import { HelpComponent }          from './help/help.component';
 import { HelpTopicComponent }     from './help/help-topic/help-topic.component';
@@ -26,20 +26,13 @@ import { CollapseDirective,
 
 import { BreadcrumbService }      from './shared/component/breadcrumb/breadcrumb.service';
 import { WikiService }            from './shared/service/wiki/wiki.service';
-import { ApplicationLibraryComponent } from './application-library/application-library.component';
-import { ApplicationListComponent } from './application-library/application-list/application-list.component';
-import { ApplicationDetailComponent } from './application-detail/application-detail.component';
 
-import { FilterPipe } from './shared/pipe/filter.pipe';
+//import {ApplicationLibraryModule} from "./application-library/application-library.module";
 
 
 @NgModule({
   declarations: [
       AppComponent,
-      ApplicationComponent,
-      ApplicationLibraryComponent,
-      ApplicationListComponent,
-      ApplicationDetailComponent,
       BreadcrumbComponent,
       CarouselComponent,
       CloudResearchEnvironmentComponent,
@@ -55,8 +48,6 @@ import { FilterPipe } from './shared/pipe/filter.pipe';
 
       CollapseDirective,
 
-      FilterPipe,
-
       StatisticsComponent
   ],
   imports: [
@@ -64,7 +55,8 @@ import { FilterPipe } from './shared/pipe/filter.pipe';
       FormsModule,
       HttpModule,
       ModalModule,
-      routing
+      routing//,
+      // ApplicationLibraryModule
   ],
   providers: [
       appRoutingProviders,
