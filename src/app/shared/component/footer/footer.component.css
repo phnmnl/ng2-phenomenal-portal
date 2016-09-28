@@ -1,0 +1,12 @@
+.logo {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.logo-offset {
+  margin-top: 10px;
+}
+
+.item-offset {
+  padding-top: 10px;
+}
