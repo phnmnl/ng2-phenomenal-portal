@@ -3,40 +3,42 @@
 }
 
 .logo {
-    margin-top: -9px;
+    margin-top: 5px;
     width: 281px;
-    height: 44px;
+    height: 45px;
 }
 
 @media (max-width: 991px) {
 
-    .logo {
-        margin-top: -5px;
-        width: 234px;
-        height: 36px;
-    }
+  .logo {
+      width: 281px;
+      height: 45px;
+  }
 
-    .navbar-toggleable-md {
-        clear: both;
-    }
-    .navbar-toggleable-md .navbar-nav {
-        float: none !important;
-    }
-    .navbar-toggleable-md .navbar-nav .nav-item + .nav-item {
-        margin-left: 0; }
-    .navbar-toggleable-md .navbar-nav .nav-item {
-        float: none; }
+  .navbar-toggler{
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .navbar-toggleable-md {
+      clear: both;
+  }
+  .navbar-toggleable-md .navbar-nav {
+      float: none !important;
+  }
+  .navbar-toggleable-md .navbar-nav .nav-item + .nav-item {
+      margin-left: 0; }
+  .navbar-toggleable-md .navbar-nav .nav-item {
+      float: none; }
 
 }
 
-@media (max-width: 347px) {
+@media (max-width: 397px) {
 
     .logo {
-        margin-top: -5px;
-        /*width: 224px;*/
-        /*height: 35px;*/
-        width: 210px;
-        height: 33px;
+        margin-top: 10px;
+        width: 224px;
+        height: 35px;
     }
 
     .container {
@@ -57,13 +59,32 @@
 .navbar-light .navbar-nav .open>.nav-link,
 .navbar-light .navbar-nav .open>.nav-link:focus,
 .navbar-light .navbar-nav .open>.nav-link:hover {
-    color: #664F90;
-    font-weight: bold;
-
+  color: white;
+  font-weight: bold;
+  background-color: #525991;
 }
 
 .nav-link {
-    text-align: right;
+  text-align: right;
+  font-weight: bold;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  border-radius: 0px;
+}
+
+.nav-link:hover {
+  background-color: #525991;
+}
+
+.nav-link:active {
+  background-color: #525991;
+}
+
+.navbar {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .navbar.navbar-light .breadcrumb a:hover, .navbar.navbar-light .nav-item a:hover {
