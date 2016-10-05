@@ -25,6 +25,7 @@ import { CollapseDirective,
 import { BreadcrumbService }      from './shared/component/breadcrumb/breadcrumb.service';
 import { WikiService }            from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from "./app-routing.module";
+import {JenkinsReportService} from "./shared/service/jenkins-report/jenkins-report.service";
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {Ng2PhenomenalPortalRoutingModule} from "./app-routing.module";
   ],
   providers: [
       BreadcrumbService,
-      WikiService
+      WikiService,
+      JenkinsReportService
   ],
   bootstrap: [AppComponent]
 })

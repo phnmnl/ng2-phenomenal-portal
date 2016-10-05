@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core/src/metadata/directives';
+import {JenkinsReportService} from "../shared/service/jenkins-report/jenkins-report.service";
 
 declare var gapi: any;
 declare var jQuery: any;
@@ -11,14 +12,18 @@ declare var jQuery: any;
 })
 export class StatisticsComponent implements OnInit {
 
+  jenkinsReportData;
   private key: string;
 
   constructor(
+    public jenkinsReportService: JenkinsReportService
   ) {
 
   }
 
   ngOnInit() {
+
+    this.getJenkinsReportStatus();
 
     gapi.analytics.ready(function() {
 
@@ -143,5 +148,14 @@ export class StatisticsComponent implements OnInit {
       }
     });
     dataChart2.execute();
+  }
+
+  getJenkinsReportStatus(){
+    this.jenkinsReportService.loadStatus()
+      .subscribe(
+        data => {
+          this.jenkinsReportData = data;
+        }
+      )
   }
 }

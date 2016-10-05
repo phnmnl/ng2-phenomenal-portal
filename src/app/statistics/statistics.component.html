@@ -4,5 +4,26 @@
     <div class="chart" id="chart-1-container"></div>
     <h3 class="h3-responsive text-xs-left">Top Countries by Sessions  - Last 30 days</h3>
     <div class="chart" id="chart-2-container"></div>
+    <h3 class="h3-responsive text-xs-left">Jenkins Build Report</h3>
+    <br>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Last Build Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of jenkinsReportData; let i = index;">
+        <th scope="row">{{ data.name  }}</th>
+        <td *ngIf="data.last_build_status=='success'">
+          <button type="button" class="btn btn-success">Success</button>
+        </td>
+        <td *ngIf="data.last_build_status=='failure'">
+          <button type="button" class="btn btn-danger">Failure</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </main>
