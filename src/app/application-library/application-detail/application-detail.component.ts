@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
-import { Application } from '../application/application';
+import { Application } from '../../shared/model/application/application';
 import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
 
 import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
