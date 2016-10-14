@@ -1,3 +1,26 @@
-/*.card {*/
-  /*box-shadow: 0 0px 0px 0 rgba(0,0,0,.1), 0 0px 0px 0 rgba(0,0,0,.1);*/
-/*}*/
+.img-rounded {
+  max-height: 80px;
+  max-width:150px;
+}
+
+.list-group {
+  padding: 10px;
+  height:100px;
+  margin-bottom: 15px;
+}
+
+.media-left {
+  /*width:200px;*/
+  width: 20%;
+  min-width: 150px;
+  text-align: center;
+}
+
+@media (max-width: 539px) {
+  .description {
+    display: none;
+  }
+  .media-heading {
+    margin-top: 10px;
+  }
+}

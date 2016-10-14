@@ -8,7 +8,7 @@ export class WikiService {
   private baseUrl: string;
 
   constructor(private http: Http) {
-     this.baseUrl  = 'http://phenomenal-h2020.eu/vre-gateway';
+     this.baseUrl  = 'http://phenomenal-h2020.eu/wiki';
     // this.baseUrl  = 'http://localhost/FederatedGitWiki';
   }
 

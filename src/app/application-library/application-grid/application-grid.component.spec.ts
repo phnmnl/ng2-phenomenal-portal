@@ -2,12 +2,12 @@
 
 import { By }           from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { addProviders, async, inject } from '@angular/core/testing';
-import { ApplicationComponent } from './application.component';
+import { async, inject } from '@angular/core/testing';
+import { ApplicationGridComponent } from './application-grid.component';
 
 describe('Component: Application', () => {
   it('should create an instance', () => {
-    let component = new ApplicationComponent();
+    let component = new ApplicationGridComponent();
     expect(component).toBeTruthy();
   });
 });

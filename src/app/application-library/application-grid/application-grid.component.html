@@ -13,7 +13,7 @@
   <!--Card content-->
   <div class="card-block text-xs-center">
     <!--Category & Title-->
-    <h5 class="card-title"><strong><a href="">{{ application.name }}</a></strong></h5>
+    <h5 class="card-title"><strong><a [routerLink]="['/app-library', application.id]">{{ application.name }}</a></strong></h5>
 
     <!--Description-->
     <p class="card-text">
@@ -21,17 +21,6 @@
         {{ application.short_description }}
       </small>
     </p>
-
-    <!--Card footer-->
-    <!--<div class="card-footer">-->
-      <!--<a class="btn rating">-->
-      <!--<i class="fa fa-star"></i>-->
-      <!--<i class="fa fa-star"></i>-->
-      <!--<i class="fa fa-star"></i>-->
-      <!--<i class="fa fa-star"></i>-->
-      <!--<i class="fa fa-star-o"></i>-->
-      <!--</a>-->
-    <!--</div>-->
 
   </div>
   <!--/.Card content-->

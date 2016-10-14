@@ -1,38 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Application } from './application';
+import { Application } from '../../shared/model/application/application';
 
-import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
+import {Input} from "@angular/core/src/metadata/directives";
 
 @Component({
   selector: 'fl-application-list',
   templateUrl: 'application-list.component.html',
   styleUrls: ['application-list.component.css'],
-  providers: [ApplicationsDatabaseService]
 })
 
-export class ApplicationListComponent implements OnInit {
+export class ApplicationListComponent {
 
-  applications$: Observable<Application[]>;
-  public isLoading = false;
-  content: string;
+  @Input() application: Application;
 
   constructor(
-    private service: ApplicationsDatabaseService
   ) {
 
   }
 
-  ngOnInit() {
-    console.log('hello *AppDB* component');
-
-    this.applications$ = this.service.applications$;
-    this.isLoading = true;
-
-    this.service.loadAll( () => {
-      this.isLoading = false;
-    });
-  }
 }

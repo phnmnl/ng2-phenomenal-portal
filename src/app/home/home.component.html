@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-6">
         <!--Featured image -->
-        <img src="assets/img/home/img1.png" class="img-fluid " alt="">
+        <img [src]="img1" class="img-fluid" alt="">
         <br>
         <div class="text-xs-center">
           Test drive our Cloud Research Environment
@@ -23,7 +23,7 @@
 
       <!--Main information-->
       <div class="col-md-6">
-        <h2 class="h2-responsive text-xs-center">An easy to use, cloud based scalable software infrastructure for metabolomic research</h2>
+        <h3 class="h3-responsive text-xs-left">An easy to use, cloud based scalable software infrastructure for metabolomic research</h3>
         <hr>
         <br>
 
@@ -49,7 +49,7 @@
     <div class="row">
       <!--Main information-->
       <div class="col-md-6">
-        <h2 class="h2-responsive text-xs-center">The open-source App Library provides a catalogue of free Metabolomic data analysis libraries available within the Cloud Research Environment</h2>
+        <h3 class="h3-responsive text-justify">The open-source App Library provides a service catalogue of free Metabolomic data analysis libraries available within the Cloud Research Environment</h3>
         <hr>
         <p class="text-xs-center">With user feedback and ratings it is easier to choose the best software for your analysis</p>
         <div class="text-xs-center">
@@ -60,7 +60,7 @@
 
       <div class="col-md-6">
         <!--Featured image -->
-        <img src="assets/img/home/img2.png" class="img-fluid hand-cursor" alt="" (click)="showChildModal()">
+        <img [src]="img2" class="img-fluid hand-cursor" alt="" (click)="showChildModal()">
       </div>
 
 
@@ -77,7 +77,7 @@
             <h4 class="modal-title">App Library</h4>
           </div>
           <div class="modal-body">
-            <img src="assets/img/home/img2.png" class="img-fluid " alt="">
+            <img [src]="img2" class="img-fluid " alt="">
           </div>
         </div>
       </div>
@@ -89,14 +89,14 @@
     <div class="row">
       <div class="col-md-6" (click)="lgModal.show()">
         <!--Featured image -->
-        <img src="assets/img/home/img3.png" class="img-fluid hand-cursor" alt="">
+        <img [src]="img3" class="img-fluid hand-cursor" alt="">
       </div>
 
       <br>
       <br>
       <!--Main information-->
       <div class="col-md-6">
-        <h2 class="h2-responsive text-xs-center">Access your Cloud Research Enviroment through standard scientific open-source web environments, Galaxy Workflow tool and Jupyter coding environment</h2>
+        <h3 class="h3-responsive text-xs-left">Access your Cloud Research Environment through standard scientific open-source web environments, Galaxy Workflow tool and Jupyter coding environment</h3>
       </div>
     </div>
     <!--/.First row-->
@@ -111,7 +111,7 @@
             <h4 class="modal-title">Galaxy Workflow</h4>
           </div>
           <div class="modal-body">
-            <img src="assets/img/home/img3.png" class="img-fluid " alt="">
+            <img [src]="img3" class="img-fluid " alt="">
           </div>
         </div>
       </div>
@@ -123,13 +123,13 @@
     <div class="row">
       <!--Main information-->
       <div class="col-md-6">
-        <h2 class="h2-responsive text-xs-center">With world leading e-Infrastructure partners your Cloud Research Environment is in safe hands</h2>
+        <h3 class="h3-responsive text-xs-left">With world leading e-Infrastructure partners your Cloud Research Environment is in safe hands</h3>
         <hr>
         <p class="text-xs-center">Our focus on clinical metabolomics ensures we take the utmost care in securing your environment and data</p>
         <p class="text-xs-center">The Cloud Research Environment adheres to the strictest security measures. At no point do we store any information related to your own cloud provider</p>
       </div>
       <div class="col-md-6">
-        <h2 class="h2-responsive text-xs-center">PhenoMeNal Cloud Hosts</h2>
+        <h3 class="h3-responsive text-xs-center">PhenoMeNal Cloud Hosts</h3>
 
         <br>
         <fl-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">

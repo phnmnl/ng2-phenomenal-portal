@@ -1,4 +1,4 @@
-import { Url } from './url/url';
+import { Url } from '../../../application-library/application-grid/url/url';
 
 export class Application {
 

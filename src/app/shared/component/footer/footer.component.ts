@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
+  private logo_white = "assets/img/logo/phenomenal_white_4x.png";
+  private euro_flag = "assets/img/logo/euro_flag.jpg";
+
   constructor() { }
 
   ngOnInit() {

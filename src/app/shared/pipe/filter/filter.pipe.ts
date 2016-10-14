@@ -22,12 +22,25 @@ export class FilterPipe implements PipeTransform {
         for (let i of args) {
           text += i;
         }
-        if (item.name.toLowerCase().match('^.*' + text.toLowerCase() + '.*$')) {
+
+        if (item.name.toLowerCase().match('^.*' + text.toLowerCase() + '.*$')
+          || item.short_description.toLowerCase().match('^.*' + text.toLowerCase() + '.*$')
+        ) {
           resultArray.push(item);
         }
       }
     }
     return resultArray;
+  }
+
+
+  array2String(list) {
+    let text = "";
+    for(let i of list){
+      text += i;
+      text += " ";
+    }
+    return text;
   }
 
 }
