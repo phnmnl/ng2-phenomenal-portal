@@ -25,6 +25,7 @@ import { BreadcrumbService }      from './shared/component/breadcrumb/breadcrumb
 import { WikiService }            from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from "./app-routing.module";
 import {JenkinsReportService} from "./shared/service/jenkins-report/jenkins-report.service";
+import {ApplicationLibraryService} from "./shared/service/application-library/application-library.service";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {JenkinsReportService} from "./shared/service/jenkins-report/jenkins-repo
   providers: [
       BreadcrumbService,
       WikiService,
-      JenkinsReportService
+      JenkinsReportService,
+      ApplicationLibraryService
   ],
   bootstrap: [AppComponent]
 })

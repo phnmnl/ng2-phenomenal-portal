@@ -6,14 +6,23 @@
   .app-card {
     height: 230px;
   }
+
+  .card-title {
+    margin-bottom: 5px !important;
+  }
+
+  .card-block {
+    padding-top: 10px !important;
+  }
 }
 
 @media (min-width: 992px) {
   .app-card {
     height: 200px;
   }
+
 }
 
 .app-logo{
-  max-height: 80px;
+  height: 80px;
 }

@@ -1,5 +1,6 @@
 .img-rounded {
   max-height: 80px;
+  max-width:150px;
 }
 
 .list-group {
@@ -22,8 +23,4 @@
   .media-heading {
     margin-top: 10px;
   }
-}
-
-@media (min-width: 992px) {
-
 }

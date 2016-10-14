@@ -4,7 +4,7 @@ import {ApplicationListComponent} from "./application-list/application-list.comp
 import {ApplicationDetailComponent} from "./application-detail/application-detail.component";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
-import {FilterPipe} from "../shared/pipe/filter.pipe";
+import {FilterPipe} from "../shared/pipe/filter/filter.pipe";
 import {applicationLibraryRouting} from "./application-library.routing";
 import {ApplicationsDatabaseService} from "../shared/service/applications-database/applications-database.service";
 import {ApplicationGridComponent} from "./application-grid/application-grid.component";

@@ -1,93 +1,79 @@
 <main>
   <div class="container">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-lg-12">
         <!--Panel-->
         <div class="card card-block">
-          <p class="card-text">App Library showcases all applications that are available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
+          <p class="card-text">App Library showcases our service catalogue listing applications that are available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
         </div>
         <!--/.Panel-->
       </div>
-      <div class="col-md-4">
-        <input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">
-      </div>
     </div>
 
-    <!--<input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">-->
 
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-lg-3">
         <div class="card">
           <div class="card-block">
 
             <form class="form-inline">
 
-              <h6 class="card-title">Metabolomic Technology <i class="fa fa-question-circle-o" aria-hidden="true"></i></h6>
+              <h6 class="card-title">Metabolomic Technology</h6>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox26">
+                <input #DAD (change)="filterTechnologyByDAD(DAD.checked)" type="checkbox" class="filled-in" id="checkbox26">
                 <label for="checkbox26">DAD</label>
               </fieldset>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox23">
+                <input #DIMS (change)="filterTechnologyByDIMS(DIMS.checked)" type="checkbox" class="filled-in" id="checkbox23">
                 <label for="checkbox23">DIMS</label>
               </fieldset>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox25">
+                <input #GC_MS (change)="filterTechnologyByGCMS(GC_MS.checked)" type="checkbox" class="filled-in" id="checkbox25">
                 <label for="checkbox25">GC-MS</label>
               </fieldset>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox24">
+                <input #LC_MS (change)="filterTechnologyByLCMS(LC_MS.checked)" type="checkbox" class="filled-in" id="checkbox24">
                 <label for="checkbox24">LC-MS</label>
               </fieldset>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox22">
+                <input #NMR (change)="filterTechnologyByNMR(NMR.checked)" type="checkbox" class="filled-in" id="checkbox22">
                 <label for="checkbox22">NMR</label>
               </fieldset>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox27">
+                <input #RAMAN (change)="filterTechnologyByRAMAN(RAMAN.checked)" type="checkbox" class="filled-in" id="checkbox27">
                 <label for="checkbox27">RAMAN</label>
               </fieldset>
 
               <br>
               <br>
 
-              <h6 class="card-title">Data analysis <i class="fa fa-question-circle-o" aria-hidden="true"></i></h6>
+              <h6 class="card-title">Data analysis</h6>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox30">
+                <input #anno (change)="filterAnalysisByAnnotation(anno.checked)" type="checkbox" class="filled-in" id="checkbox30">
                 <label for="checkbox30">Annotation</label>
               </fieldset>
 
-              <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox21">
-                <label for="checkbox21">Normalisation</label>
-              </fieldset>
+              <!--<fieldset class="form-group">-->
+                <!--<input #normal (change)="filterAnalysisByNormalisation(normal.checked)" type="checkbox" class="filled-in" id="checkbox21">-->
+                <!--<label for="checkbox21">Normalisation</label>-->
+              <!--</fieldset>-->
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox28">
+                <input #process (change)="filterAnalysisByProcessing(process.checked)" type="checkbox" class="filled-in" id="checkbox28">
                 <label for="checkbox28">Processing</label>
               </fieldset>
 
               <fieldset class="form-group">
-                <input type="checkbox" class="filled-in" id="checkbox20">
+                <input #stat (change)="filterAnalysisByStatistics(stat.checked)" type="checkbox" class="filled-in" id="checkbox20">
                 <label for="checkbox20">Statistical Analysis</label>
               </fieldset>
-
-
-
-
-              <!--<br>-->
-              <!--<br>-->
-
-              <!--<h6 class="card-title">User rating <i class="fa fa-question-circle-o" aria-hidden="true"></i></h6>-->
-
-              <!--<br>-->
 
 
             </form>
@@ -95,37 +81,60 @@
         </div>
       </div>
 
-      <div class="col-md-9">
-        <div class="btn-group pull-right">
-          <a (click)="triigerList()" id="grid" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': !isList}">
-            <span class="fa fa-th"></span> Grid
-          </a>
-          <a (click)="triigerList()" id="list" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': isList}">
-            <span class="fa fa-list"></span> List
-          </a>
+      <div class="col-lg-9">
+        <div class="col-lg-4">
+          <input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">
         </div>
+          <div class="btn-group pull-right view">
+            <a (click)="triigerList()" id="grid" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': !isList}">
+              <span class="fa fa-th"></span> Grid
+            </a>
+            <a (click)="triigerList()" id="list" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': isList}">
+              <span class="fa fa-list"></span> List
+            </a>
+          </div>
       </div>
 
       <br>
       <br>
 
-      <div class="col-md-9">
+      <!--<div class="col-md-9">-->
+        <!--<div class="app-list">-->
+          <!--<div class="row">-->
+            <!--<div *ngFor="let application of applications$ | async | filter:word.value">-->
+              <!--<div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}" >-->
+                <!--<div *ngIf="isList">-->
+                  <!--<fl-application-list [application]="application"></fl-application-list>-->
+                <!--</div>-->
+                <!--<div *ngIf="!isList">-->
+                  <!--<fl-application-grid [application]="application"></fl-application-grid>-->
+                <!--</div>-->
+              <!--</div>&lt;!&ndash; /.col-lg-4 &ndash;&gt;-->
+            <!--</div>-->
+            <!--<div [hidden] = "!isLoading"><div class="loader">Loading...</div></div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+
+      <div class="col-lg-9">
         <div class="app-list">
           <div class="row">
-            <div *ngFor="let application of applications$ | async | filter:word.value">
+            <div *ngFor="let app of apps | filter:word.value">
               <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}" >
                 <div *ngIf="isList">
-                  <fl-application-list [application]="application"></fl-application-list>
+                  <fl-application-list [application]="app"></fl-application-list>
                 </div>
                 <div *ngIf="!isList">
-                  <fl-application-grid [application]="application"></fl-application-grid>
+                  <fl-application-grid [application]="app"></fl-application-grid>
                 </div>
               </div><!-- /.col-lg-4 -->
             </div>
-            <div [hidden] = "!isLoading"><div class="loader">Loading...</div></div>
+            <!--<div [hidden] = "!isLoading"><div class="loader">Loading...</div></div>-->
           </div>
         </div>
       </div>
+
     </div>
 
     <router-outlet></router-outlet>

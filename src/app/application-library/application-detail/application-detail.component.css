@@ -1,0 +1,22 @@
+.table-flow {
+  overflow-x:auto;
+}
+
+:host >>> pre {
+  padding: 16px;
+  overflow: auto;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+  margin-bottom: 6px;
+  word-break: normal;
+  word-wrap: normal;
+  margin-top: 0;
+  box-sizing: border-box;
+}
+
+.logo {
+  /*width: 400px;*/
+  max-height: 200px;
+  display: block;
+  margin: 0 auto;
+}

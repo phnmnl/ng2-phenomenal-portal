@@ -8,7 +8,7 @@ import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   public isCollapsed: boolean = false;
-  private logo = "assets/img/logo/phenomenal.png";
+  private logo = "assets/img/logo/phenomenal_4x.png";
 
   constructor(
       private _eref: ElementRef
