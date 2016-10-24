@@ -1,0 +1,15 @@
+.size {
+  height:320px;
+}
+
+.offset {
+  margin-bottom: 10px;
+}
+
+.color {
+  background-color: #525991;
+}
+
+.card-footer, .card-header {
+  background-color: #525991;
+}

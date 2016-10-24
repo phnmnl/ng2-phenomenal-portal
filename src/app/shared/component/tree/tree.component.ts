@@ -1,0 +1,166 @@
+import {Component, OnInit, EventEmitter, Output} from '@angular/core';
+import {Input} from "@angular/core/src/metadata/directives";
+
+@Component({
+  selector: 'fl-tree',
+  templateUrl: './tree.component.html',
+  styleUrls: ['./tree.component.css']
+})
+export class TreeComponent implements OnInit {
+
+  @Input() childrenNodes;
+
+  isRotate = false;
+
+
+  constructor() {
+  }
+
+  ngOnInit() {
+    this.constructParentTrace();
+  }
+
+  rotate(node){
+    node.isRotate = !node.isRotate;
+  }
+
+  check(currentNode, check, parentNode) {
+
+    currentNode.isCheck = check;
+
+
+    if(check == true){ // select
+
+      if(currentNode.children.length > 0){
+        for(let n of currentNode.children){
+          this.check(n, check, parentNode);
+        }
+      }
+
+      if(currentNode.children.length == 0){
+
+       // console.log(currentNode.parentTrace);
+
+        for(let node of currentNode.parentTrace){
+
+          if(this.isEmptyTree(node)){
+            // console.log(node);
+            break;
+          }
+          node.isCheck = true;
+        }
+      }
+
+
+    } else { //deselect
+
+      if(currentNode.children.length == 0){
+
+        // console.log(currentNode.parentTrace);
+
+        for(let node of currentNode.parentTrace){
+
+          if(!this.isEmptyTree(node)){
+            break;
+          }
+          node.isCheck = false;
+
+        }
+      }
+
+      if(currentNode.children.length > 0){
+        for(let n of currentNode.children){
+          this.check(n, check, parentNode);
+        }
+      }
+
+
+    }
+
+  }
+
+  private getNodeById(targetId: string, parentNode) {
+    let node: Node;
+
+    for(let n of parentNode){
+      if(n.id == targetId){
+        node = n;
+        break;
+      }
+    }
+
+    return node;
+  }
+
+  private isEmptyTree(parentNode) {
+    let isEmpty: boolean = true;
+
+    for(let n of parentNode.children){
+      // console.log(n.isCheck);
+      if(n.isCheck == true){
+        isEmpty = false;
+        break;
+      }
+    }
+    return isEmpty;
+  }
+
+  private isFullTree(parentNode) {
+    let isFull: boolean = true;
+
+    for(let n of parentNode.children){
+      //console.log(n.isCheck);
+      if(n.isCheck == false){
+        isFull = false;
+        break;
+      }
+    }
+    return isFull;
+  }
+
+
+  private constructParentTrace() {
+    for(let i = 0; i < this.childrenNodes.length; i++){
+      if(this.childrenNodes[i].parent === '#'){
+        this.childrenNodes[i].parentTrace = [];
+        this.childrenNodes[i].isRotate = false;
+        if(this.childrenNodes[i].children.length > 0){
+
+          for(let j = 0; j < this.childrenNodes[i].children.length; j++){
+            this.childrenNodes[i].children[j].parentTrace = [];
+            let node = this.childrenNodes[i];
+            // node.parentTrace = undefined;
+            this.childrenNodes[i].children[j].parentTrace.unshift(node);
+            this.childrenNodes[i].children[j].isRotate = false;
+          }
+        }
+
+        // console.log(this.childrenNodes[i]);
+      } else {
+
+        if(this.childrenNodes[i].children.length > 0){
+
+          for(let j = 0; j < this.childrenNodes[i].children.length; j++){
+            // console.log(this.childrenNodes[i]);
+            // console.log(this.childrenNodes[i].children[j]);
+            // console.log(this.childrenNodes[i].parentTrace);
+
+            this.childrenNodes[i].children[j].parentTrace = [];
+
+            for(let n of this.childrenNodes[i].parentTrace){
+              this.childrenNodes[i].children[j].parentTrace.push(n);
+            }
+
+            let node = this.childrenNodes[i];
+            // node.parentTrace = undefined;
+            this.childrenNodes[i].children[j].parentTrace.unshift(node);
+            this.childrenNodes[i].children[j].isRotate = false;
+          }
+        }
+
+        // console.log(this.childrenNodes[i]);
+      }
+    }
+  }
+
+}

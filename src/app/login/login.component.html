@@ -1,0 +1,71 @@
+<main>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-6 form">
+
+
+
+        <!--Form without header-->
+        <div class="card">
+          <div class="card-block">
+
+            <!--Header-->
+            <div class="text-xs-center form">
+              <h1 class="h1-responsive">Login</h1>
+              <hr class="m-t-2 m-b-2">
+            </div>
+
+            <!--Body-->
+            <div class="md-form">
+              <i class="fa fa-envelope prefix"></i>
+              <input type="text" id="form2" placeholder="Your Email" class="form-control">
+            </div>
+
+            <div class="md-form">
+              <i class="fa fa-lock prefix"></i>
+              <input type="password" id="form4" placeholder="Your Password" class="form-control">
+            </div>
+
+            <div class="text-xs-center">
+              <button class="btn btn-primary" [routerLink]="['/dashboard']">Login</button>
+            </div>
+
+          </div>
+
+          <!--&lt;!&ndash;Footer&ndash;&gt;-->
+          <!--<div class="modal-footer">-->
+            <!--<div class="options">-->
+              <!--<p>Not a member? <a href="#">Sign Up</a></p>-->
+              <!--<p>Forgot <a href="#">Password?</a></p>-->
+            <!--</div>-->
+          <!--</div>-->
+
+        </div>
+        <!--/Form without header-->
+
+
+
+      </div>
+
+      <div class="col-lg-6 form">
+
+        <!--Jumbotron-->
+        <div class="jumbotron">
+          <h1 class="h1-responsive">Welocome!</h1>
+          <p class="lead">An easy to use, cloud based scalable software infrastructure for metabolomic research. Access your Cloud Research Environment through standard scientific open-source web environments, Galaxy Workflow tool and Jupyter coding environment.</p>
+          <hr class="m-y-2">
+          <p>Want to give it a go?</p>
+          <p class="lead">
+            <a class="btn btn-primary btn-lg" role="button" [routerLink]="['/register']">Sign Up</a>
+          </p>
+        </div>
+        <!--/.Jumbotron-->
+
+      </div>
+
+    </div>
+  </div>
+</main>
+
+

@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'fl-header',
@@ -11,8 +12,10 @@ export class HeaderComponent implements OnInit {
   private logo = "assets/img/logo/phenomenal_4x.png";
 
   constructor(
-      private _eref: ElementRef
-  ) { }
+      private _eref: ElementRef,
+      private _router: Router
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -31,4 +34,5 @@ export class HeaderComponent implements OnInit {
       this.closeMenu();
     }
   }
+
 }
