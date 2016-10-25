@@ -49,3 +49,7 @@
 .white {
   color: #ffffff;
 }
+
+.align-left {
+  text-align: left;
+}

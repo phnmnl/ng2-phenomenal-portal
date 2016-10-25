@@ -43,7 +43,7 @@
           </div>
           <div class="card-block">
             <ul *ngFor="let item of userDocumentationItems">
-              <li *ngIf="item.link != null">
+              <li *ngIf="item.link != null" class="align-left">
                 <a [routerLink]="['/help', item.link]">
                   {{ item.name }}
                 </a>
@@ -68,7 +68,7 @@
             </div>
           <div class="card-block">
             <ul *ngFor="let item of developerDocumentationItems">
-              <li *ngIf="item.link != null">
+              <li *ngIf="item.link != null" class="align-left">
                 <a [routerLink]="['/help', item.link]">
                   {{ item.name }}
                 </a>
@@ -93,7 +93,7 @@
           </div>
           <div class="card-block">
             <ul *ngFor="let item of tutorialsItems">
-              <li *ngIf="item.link != null">
+              <li *ngIf="item.link != null" class="align-left">
                 <a [routerLink]="['/help', item.link]">
                   {{ item.name }}
                 </a>
