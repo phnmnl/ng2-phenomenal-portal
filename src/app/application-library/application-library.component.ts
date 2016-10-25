@@ -131,7 +131,7 @@ export class ApplicationLibraryComponent implements OnInit {
           this.apps = data;
         }
       );
-    this.previousQuery = "";
+    this.previousQuery = "functionality=&approaches=&instrument=";
   }
 
   getAppsByFilter(){
