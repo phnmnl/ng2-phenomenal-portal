@@ -23,6 +23,8 @@ export class FilterPipe implements PipeTransform {
           text += i;
         }
 
+        text = text.replace(/[^\w\s]/gi, '');
+
         if (item.name.toLowerCase().match('^.*' + text.toLowerCase() + '.*$')
           || item.short_description.toLowerCase().match('^.*' + text.toLowerCase() + '.*$')
         ) {

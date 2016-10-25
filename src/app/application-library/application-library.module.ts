@@ -8,6 +8,8 @@ import {FilterPipe} from "../shared/pipe/filter/filter.pipe";
 import {applicationLibraryRouting} from "./application-library.routing";
 import {ApplicationsDatabaseService} from "../shared/service/applications-database/applications-database.service";
 import {ApplicationGridComponent} from "./application-grid/application-grid.component";
+import {TreeComponent} from "../shared/component/tree/tree.component";
+
 
 /**
  * @auther Dr. Sijin He
@@ -21,7 +23,8 @@ import {ApplicationGridComponent} from "./application-grid/application-grid.comp
     ApplicationLibraryComponent,
     ApplicationListComponent,
     ApplicationDetailComponent,
-    FilterPipe
+    FilterPipe,
+    TreeComponent
   ],
   imports: [
     CommonModule,

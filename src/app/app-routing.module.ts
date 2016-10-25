@@ -7,14 +7,20 @@ import {HelpComponent} from "./help/help.component";
 import {HelpTopicComponent} from "./help/help-topic/help-topic.component";
 import {StatisticsComponent} from "./statistics/statistics.component";
 import {HomeComponent} from "./home/home.component";
+import {LoginComponent} from "./login/login.component";
+import {RegisterComponent} from "./register/register.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const routes: Routes = [
-  {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
+  { path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
+  { path: 'dashboard', component: DashboardComponent},
   { path: 'cloud-research-environment', component: CloudResearchEnvironmentComponent},
   { path: 'cloud-research-environment/cloud-research-environment-local-installation', component: CloudResearchEnvironmentLocalInstallationComponent},
   { path: 'cloud-research-environment/cloud-research-environment-local-installation-instruction', component: CloudResearchEnvironmentLocalInstallationInstructionComponent},
   { path: 'help', component: HelpComponent},
   { path: 'help/:id', component: HelpTopicComponent},
+  { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent},
   { path: 'statistics', component: StatisticsComponent},
   { path: 'home', component: HomeComponent},
   { path: '**', redirectTo: '/home'}

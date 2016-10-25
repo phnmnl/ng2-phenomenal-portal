@@ -2,13 +2,13 @@
   margin-top: 15px;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1199px) {
   .view {
     margin-top: 0px;
   }
 }
 
-.filled-in:checked+label:after {
-  border-color: #525991 !important;;
-  background-color: #525991 !important;
+h6 {
+  margin-bottom: 5px;
+  margin-top: 10px;
 }

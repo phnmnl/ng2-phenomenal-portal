@@ -39,11 +39,11 @@
         <!--Panel-->
         <div class="card text-xs-center">
           <div class="card-header">
-            <a href="" style="color:white;">User Documentation</a>
+            <a style="color:white;">User Documentation</a>
           </div>
           <div class="card-block">
             <ul *ngFor="let item of userDocumentationItems">
-              <li *ngIf="item.link != null">
+              <li *ngIf="item.link != null" class="align-left">
                 <a [routerLink]="['/help', item.link]">
                   {{ item.name }}
                 </a>
@@ -54,7 +54,7 @@
           <div class="card-footer text-muted white-text">
             <p></p>
           </div>
-      </div>
+        </div>
         <!--/.Panel-->
 
       </div>
@@ -64,11 +64,11 @@
         <!--Panel-->
         <div class="card text-xs-center">
             <div class="card-header">
-              <a href="" style="color:white;">Developer Documentation</a>
+              <a style="color:white;">Developer Documentation</a>
             </div>
           <div class="card-block">
             <ul *ngFor="let item of developerDocumentationItems">
-              <li *ngIf="item.link != null">
+              <li *ngIf="item.link != null" class="align-left">
                 <a [routerLink]="['/help', item.link]">
                   {{ item.name }}
                 </a>
@@ -89,11 +89,11 @@
         <!--Panel-->
         <div class="card text-xs-center">
           <div class="card-header">
-            <a href="" style="color:white;">Tutorials</a>
+            <a style="color:white;">Tutorials</a>
           </div>
           <div class="card-block">
             <ul *ngFor="let item of tutorialsItems">
-              <li *ngIf="item.link != null">
+              <li *ngIf="item.link != null" class="align-left">
                 <a [routerLink]="['/help', item.link]">
                   {{ item.name }}
                 </a>

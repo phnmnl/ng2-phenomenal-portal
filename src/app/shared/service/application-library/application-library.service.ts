@@ -9,6 +9,7 @@ export class ApplicationLibraryService {
 
   constructor(private http: Http) {
     this.baseUrl  = 'http://phenomenal-h2020.eu/wiki/wiki';
+    // this.baseUrl  = 'http://localhost';
   }
 
   loadAllApp(): Observable<string[]> {
@@ -27,7 +28,8 @@ export class ApplicationLibraryService {
   }
 
   loadSomeApp(technologies: string) {
-    return this.http.get(this.baseUrl + '/app-library-backend/api/apps.php' + '?technology=' + technologies)
+
+    return this.http.get(this.baseUrl + '/app-library-backend/api/apps.php?' +  technologies)
       .map(this.extractData);
   }
 }
