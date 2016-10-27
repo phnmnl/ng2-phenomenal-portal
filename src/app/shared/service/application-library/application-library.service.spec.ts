@@ -2,11 +2,13 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { ApplicationLibraryService } from './application-library.service';
+import {HttpModule} from "@angular/http";
 
 describe('Service: ApplicationLibrary', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ApplicationLibraryService]
+      providers: [ApplicationLibraryService],
+      imports: [HttpModule]
     });
   });
 

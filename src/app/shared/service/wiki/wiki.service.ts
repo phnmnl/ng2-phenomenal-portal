@@ -49,13 +49,6 @@ export class WikiService {
       .map(this.extractData);
   }
 
-
-  // search(terms: Observable<string>, debounceDuration = 400) {
-  //   return terms.debounceTime(debounceDuration)
-  //     .distinctUntilChanged()
-  //     .switchMap(term => this.rawSearch(term));
-  // }
-
   private extractData(res: Response) {
     let body = res.json();
     return body.data || { };

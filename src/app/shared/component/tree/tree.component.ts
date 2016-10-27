@@ -10,9 +10,6 @@ export class TreeComponent implements OnInit {
 
   @Input() childrenNodes;
 
-  isRotate = false;
-
-
   constructor() {
   }
 
@@ -39,12 +36,10 @@ export class TreeComponent implements OnInit {
 
       if(currentNode.children.length == 0){
 
-       // console.log(currentNode.parentTrace);
 
         for(let node of currentNode.parentTrace){
 
           if(this.isEmptyTree(node)){
-            // console.log(node);
             break;
           }
           node.isCheck = true;
@@ -56,7 +51,6 @@ export class TreeComponent implements OnInit {
 
       if(currentNode.children.length == 0){
 
-        // console.log(currentNode.parentTrace);
 
         for(let node of currentNode.parentTrace){
 
@@ -96,7 +90,6 @@ export class TreeComponent implements OnInit {
     let isEmpty: boolean = true;
 
     for(let n of parentNode.children){
-      // console.log(n.isCheck);
       if(n.isCheck == true){
         isEmpty = false;
         break;
@@ -104,20 +97,6 @@ export class TreeComponent implements OnInit {
     }
     return isEmpty;
   }
-
-  private isFullTree(parentNode) {
-    let isFull: boolean = true;
-
-    for(let n of parentNode.children){
-      //console.log(n.isCheck);
-      if(n.isCheck == false){
-        isFull = false;
-        break;
-      }
-    }
-    return isFull;
-  }
-
 
   private constructParentTrace() {
     for(let i = 0; i < this.childrenNodes.length; i++){
@@ -129,21 +108,16 @@ export class TreeComponent implements OnInit {
           for(let j = 0; j < this.childrenNodes[i].children.length; j++){
             this.childrenNodes[i].children[j].parentTrace = [];
             let node = this.childrenNodes[i];
-            // node.parentTrace = undefined;
             this.childrenNodes[i].children[j].parentTrace.unshift(node);
             this.childrenNodes[i].children[j].isRotate = false;
           }
         }
 
-        // console.log(this.childrenNodes[i]);
       } else {
 
         if(this.childrenNodes[i].children.length > 0){
 
           for(let j = 0; j < this.childrenNodes[i].children.length; j++){
-            // console.log(this.childrenNodes[i]);
-            // console.log(this.childrenNodes[i].children[j]);
-            // console.log(this.childrenNodes[i].parentTrace);
 
             this.childrenNodes[i].children[j].parentTrace = [];
 
@@ -152,13 +126,10 @@ export class TreeComponent implements OnInit {
             }
 
             let node = this.childrenNodes[i];
-            // node.parentTrace = undefined;
             this.childrenNodes[i].children[j].parentTrace.unshift(node);
             this.childrenNodes[i].children[j].isRotate = false;
           }
         }
-
-        // console.log(this.childrenNodes[i]);
       }
     }
   }

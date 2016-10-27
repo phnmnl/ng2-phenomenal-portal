@@ -31,12 +31,6 @@
                   <a href="{{application.website[0]}}" target="_blank">{{application.website[0]}}</a>
                 </td>
               </tr>
-              <!--<tr *ngIf="application.technologies.length > 0">-->
-                <!--<th scope="row" >Metabolomics Technology</th>-->
-                <!--<td>-->
-                  <!--{{concatenate(application.technologies)}}-->
-                <!--</td>-->
-              <!--</tr>-->
               <tr *ngIf="application.version!=''">
                 <th scope="row" >Version</th>
                 <td>
@@ -96,10 +90,11 @@
           </div>
 
           <!--Infor-->
-          <div class="col-md-10" *ngFor="let screenshot of application.screenshots">
-
-            <img src="{{ screenshot }}" class="img-fluid img-rounded z-depth-2">
-
+          <div class="col-md-10">
+            <div *ngFor="let screenshot of application.screenshots">
+              <img src="{{ screenshot }}" class="img-fluid img-rounded z-depth-2">
+              <br>
+            </div>
           </div>
         </div>
         <br>

@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable, Subject} from "rxjs";
-import {Application} from "../shared/model/application/application";
 import {ApplicationsDatabaseService} from "../shared/service/applications-database/applications-database.service";
 import {ApplicationLibraryService} from "../shared/service/application-library/application-library.service";
 import {Node} from "../shared/component/tree/node/node";
-import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'fl-application-library',
@@ -14,8 +11,6 @@ import {forEach} from "@angular/router/src/utils/collection";
 })
 export class ApplicationLibraryComponent implements OnInit {
 
-  // applications$: Observable<Application[]>;
-  // public isLoading = false;
   content: string;
   public isList = false;
   apps;
@@ -108,13 +103,6 @@ export class ApplicationLibraryComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // this.applications$ = this.service.applications$;
-    // this.isLoading = true;
-    //
-    // this.service.loadAll( () => {
-    //   this.isLoading = false;
-    // });
 
     this.getAllApp();
 

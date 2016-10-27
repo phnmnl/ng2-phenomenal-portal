@@ -72,7 +72,7 @@ export class ApplicationDetailComponent implements OnInit {
     if(array.length == 1){
       text = array[0];
     } else {
-      for(var i = 0; i < array.length; i++) {
+      for(let i = 0; i < array.length; i++) {
 
         if(array.length - 1 == i){
           text += "and " + array[i];
