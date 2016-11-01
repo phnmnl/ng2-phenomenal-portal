@@ -14,6 +14,7 @@ export class ApplicationLibraryComponent implements OnInit {
   content: string;
   public isList = false;
   apps;
+  appSize;
   previousQuery: string;
 
   functionality: Node[] = [
@@ -117,6 +118,7 @@ export class ApplicationLibraryComponent implements OnInit {
       .subscribe(
         data => {
           this.apps = data;
+          this.appSize = data.length;
         }
       );
     this.previousQuery = "functionality=&approaches=&instrument=";

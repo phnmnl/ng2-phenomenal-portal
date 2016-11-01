@@ -13,7 +13,6 @@ export class HelpTopicComponent implements OnInit {
 
   id: string;
   helpContent = ``;
-  // @ViewChild('app') app;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,7 +32,6 @@ export class HelpTopicComponent implements OnInit {
       .subscribe(
         data => {
           this.helpContent = this.process(data);
-          // console.log(this.helpContent);
         }
       );
   }
@@ -44,13 +42,9 @@ export class HelpTopicComponent implements OnInit {
    * @returns {string|void}
    */
   process(data) {
-    return data.replace(/(href=")([^http])/g, 'href="help/$2');
+    data = data.replace(/(href=")([^http])/g, 'href="help/$2');
+    data = data.replace(/(src=")([^http])/g, 'src="http://phenomenal-h2020.eu/wiki/wiki-markdown/phenomenal-h2020.wiki/$2');
+    return data;
   }
 
-  // ngAfterViewChecked() {
-  //   if (this.app !== undefined) {
-  //     let app_name = this.app.nativeElement.innerText;
-  //     this.breadcrumbService.addFriendlyNameForRoute('/help/' + this.id, app_name);
-  //   }
-  // }
 }

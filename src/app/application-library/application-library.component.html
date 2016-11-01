@@ -4,7 +4,7 @@
       <div class="col-lg-12">
         <!--Panel-->
         <div class="card card-block">
-          <p class="card-text">App Library showcases our service catalogue listing applications that are available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
+          <p class="card-text">App Library showcases our service catalogue listing {{appSize}} applications that are available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
         </div>
         <!--/.Panel-->
       </div>
@@ -66,6 +66,9 @@
                   <fl-application-grid [application]="app"></fl-application-grid>
                 </div>
               </div><!-- /.col-lg-4 -->
+            </div>
+            <div *ngIf="(apps | filter:word.value)?.length==0">
+              <div class="text-xs-center extra-margins"><h3>Opps, no app found.</h3></div>
             </div>
           </div>
         </div>
