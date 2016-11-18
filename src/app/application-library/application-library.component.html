@@ -4,7 +4,8 @@
       <div class="col-lg-12">
         <!--Panel-->
         <div class="card card-block">
-          <p class="card-text">App Library showcases our service catalogue listing {{appSize}} applications that are available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
+          <p class="card-text">App Library showcases our service catalogue listing {{appSize}} applications that are
+            available via Galaxy workflows and Juputer libraries through the Cloud Research Environment.</p>
         </div>
         <!--/.Panel-->
       </div>
@@ -17,17 +18,23 @@
           <div class="card-block">
 
             <form class="form-inline">
-              <h6 class="card-title"><small>Functionality</small></h6>
+              <h6 class="card-title">
+                <small>Functionality</small>
+              </h6>
               <fl-tree (click)="getAppsByFilter()" [childrenNodes]='functionality'></fl-tree>
             </form>
 
             <form class="form-inline">
-              <h6 class="card-title"><small>Approaches</small></h6>
+              <h6 class="card-title">
+                <small>Approaches</small>
+              </h6>
               <fl-tree (click)="getAppsByFilter()" [childrenNodes]='approaches'></fl-tree>
             </form>
 
             <form class="form-inline">
-              <h6 class="card-title"><small>Instrument Data Types</small></h6>
+              <h6 class="card-title">
+                <small>Instrument Data Types</small>
+              </h6>
               <fl-tree (click)="getAppsByFilter()" [childrenNodes]='instrument'></fl-tree>
             </form>
 
@@ -40,14 +47,14 @@
         <div class="col-xl-4">
           <input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">
         </div>
-          <div class="btn-group pull-right view">
-            <a (click)="triigerList()" id="grid" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': !isList}">
-              <span class="fa fa-th"></span> Grid
-            </a>
-            <a (click)="triigerList()" id="list" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': isList}">
-              <span class="fa fa-list"></span> List
-            </a>
-          </div>
+        <div class="btn-group pull-right view">
+          <a (click)="triigerList()" id="grid" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': !isList}">
+            <span class="fa fa-th"></span> Grid
+          </a>
+          <a (click)="triigerList()" id="list" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': isList}">
+            <span class="fa fa-list"></span> List
+          </a>
+        </div>
       </div>
 
       <br>
@@ -58,7 +65,7 @@
         <div class="app-list">
           <div class="row">
             <div *ngFor="let app of apps | filter:word.value">
-              <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}" >
+              <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}">
                 <div *ngIf="isList">
                   <fl-application-list [application]="app"></fl-application-list>
                 </div>

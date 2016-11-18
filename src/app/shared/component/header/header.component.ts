@@ -1,5 +1,5 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'fl-header',
@@ -7,14 +7,15 @@ import {Router} from "@angular/router";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  get logo(): string {
+    return this._logo;
+  }
 
   public isCollapsed: boolean = false;
-  private logo = "assets/img/logo/phenomenal_4x.png";
+  private _logo = 'assets/img/logo/phenomenal_4x.png';
 
-  constructor(
-      private _eref: ElementRef,
-      private _router: Router
-  ) {
+  constructor(private _eref: ElementRef,
+              private _router: Router) {
   }
 
   ngOnInit() {

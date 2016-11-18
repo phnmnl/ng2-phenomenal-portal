@@ -8,11 +8,15 @@
 
         <div class="row">
           <!--Name-->
-          <div hidden #app>{{ application.name}} </div>
-          <h1 class="h1-responsive text-xs-center"><strong>{{ application.name }} </strong> </h1>
+          <div hidden #app>{{ application.name}}</div>
+          <h1 class="h1-responsive text-xs-center"><strong>{{ application.name }} </strong></h1>
           <h3 class="h5-responsive text-xs-center"><em>{{ application.short_description }}</em></h3>
-          <div *ngIf="application.authors.length > 0" class="text-xs-center small">created by {{concatenate(application.authors)}}</div>
-          <div *ngIf="application.contributors.length > 0" class="text-xs-center small">containerised by {{concatenate(application.contributors)}}</div>
+          <div *ngIf="application.authors.length > 0" class="text-xs-center small">created by
+            {{concatenate(application.authors)}}
+          </div>
+          <div *ngIf="application.contributors.length > 0" class="text-xs-center small">containerised by
+            {{concatenate(application.contributors)}}
+          </div>
           <hr>
 
           <!--Avatar-->
@@ -32,13 +36,13 @@
                 </td>
               </tr>
               <tr *ngIf="application.version!=''">
-                <th scope="row" >Version</th>
+                <th scope="row">Version</th>
                 <td>
                   {{application.version}}
                 </td>
               </tr>
               <tr *ngIf="application.git_repo.length > 0">
-                <th scope="row" >Git Repository</th>
+                <th scope="row">Git Repository</th>
                 <td>
                   <a href="{{application.git_repo[0]}}" target="_blank">{{application.git_repo}}</a>
                 </td>
@@ -137,13 +141,13 @@
 
           <!--Infor-->
 
-            <div class="col-md-10">
-              <div *ngFor="let pub of application.publications">
-                <cite>{{pub}}</cite>
-                <br>
-                <br>
-              </div>
+          <div class="col-md-10">
+            <div *ngFor="let pub of application.publications">
+              <cite>{{pub}}</cite>
+              <br>
+              <br>
             </div>
+          </div>
 
         </div>
 

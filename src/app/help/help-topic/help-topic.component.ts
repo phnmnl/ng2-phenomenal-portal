@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
-import { WikiService } from '../../shared/service/wiki/wiki.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.service';
+import {WikiService} from '../../shared/service/wiki/wiki.service';
 
 @Component({
   selector: 'fl-help-topic',
@@ -14,11 +14,9 @@ export class HelpTopicComponent implements OnInit {
   id: string;
   helpContent = ``;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private breadcrumbService: BreadcrumbService,
-    private wikiService: WikiService
-  ) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService,
+              private wikiService: WikiService) {
     this.id = activatedRoute.snapshot.params['id'];
     breadcrumbService.addFriendlyNameForRoute('/help/' + this.id, ' '); // Initialise as empty string
     this.getPage();

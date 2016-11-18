@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Application } from '../../shared/model/application/application';
+import {Component, OnInit, Input} from '@angular/core';
+import {Application} from '../../shared/model/application/application';
 
 @Component({
   selector: 'fl-application-grid',
@@ -9,7 +9,9 @@ import { Application } from '../../shared/model/application/application';
 export class ApplicationGridComponent implements OnInit {
   @Input() application: Application;
   applicationId: number;
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

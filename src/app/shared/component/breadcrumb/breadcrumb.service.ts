@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class BreadcrumbService {
 
   private routeFriendlyNames: any = {};
-  constructor() { }
+
+  constructor() {
+  }
 
   /**
    * Specify a friendly name for the corresponding route. Please note this should be the full url of the route,

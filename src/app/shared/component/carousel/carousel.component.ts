@@ -1,5 +1,5 @@
-import { Component, OnDestroy, Input } from '@angular/core';
-import { SlideComponent } from './slide/slide.component';
+import {Component, OnDestroy, Input} from '@angular/core';
+import {SlideComponent} from './slide/slide.component';
 
 export enum Direction {UNKNOWN, NEXT, PREV}
 
@@ -16,7 +16,8 @@ export class CarouselComponent implements OnDestroy {
   @Input() public noControl: boolean;
   @Input() public noIndicator: boolean;
 
-  @Input() public get interval(): number {
+  @Input()
+  public get interval(): number {
     return this._interval;
   }
 
@@ -91,16 +92,16 @@ export class CarouselComponent implements OnDestroy {
     return this.select(this.getSlideByIndex(newIndex), Direction.NEXT);
   }
 
-  private prev() {
-    let newIndex = this.getCurrentIndex() - 1 < 0 ? this.slides.length - 1 : this.getCurrentIndex() - 1;
-
-    if (this.noWrap && newIndex === this.slides.length - 1) {
-      this.pause();
-      return;
-    }
-
-    return this.select(this.getSlideByIndex(newIndex), Direction.PREV);
-  }
+  // private prev() {
+  //   let newIndex = this.getCurrentIndex() - 1 < 0 ? this.slides.length - 1 : this.getCurrentIndex() - 1;
+  //
+  //   if (this.noWrap && newIndex === this.slides.length - 1) {
+  //     this.pause();
+  //     return;
+  //   }
+  //
+  //   return this.select(this.getSlideByIndex(newIndex), Direction.PREV);
+  // }
 
   private restartTimer() {
     this.resetTimer();

@@ -21,9 +21,10 @@
       <div class="md-form input-group">
         <div class="suggestions" (window:keydown)="onKey($event)">
           <ul (mouseover)="mouseover=true" (mouseout)="mouseover=false">
-            <li *ngFor="let item of items | async; let i = index; let lastOne = last" >
+            <li *ngFor="let item of items | async; let i = index; let lastOne = last">
               <div>
-                <a [routerLink]="['/help', item.link]" [class.selected]="(i == selected)" (window:keydown)="onEnterKey($event, '/help', item.link)">{{ item.name }}</a>
+                <a [routerLink]="['/help', item.link]" [class.selected]="(i == selected)"
+                   (window:keydown)="onEnterKey($event, '/help', item.link)">{{ item.name }}</a>
               </div>
             </li>
           </ul>
@@ -39,7 +40,8 @@
         <!--Panel-->
         <div class="card text-xs-center">
           <div class="card-header">
-            <a href="https://github.com/phnmnl/phenomenal-h2020/wiki#phenomenal-users" class="block-title">User Documentation</a>
+            <a href="https://github.com/phnmnl/phenomenal-h2020/wiki#phenomenal-users" class="block-title">User
+              Documentation</a>
           </div>
           <div class="card-block">
             <ul *ngFor="let item of userDocumentationItems">
@@ -63,9 +65,10 @@
 
         <!--Panel-->
         <div class="card text-xs-center">
-            <div class="card-header">
-              <a href="https://github.com/phnmnl/phenomenal-h2020/wiki#phenomenal-developers" class="block-title">Developer Documentation</a>
-            </div>
+          <div class="card-header">
+            <a href="https://github.com/phnmnl/phenomenal-h2020/wiki#phenomenal-developers" class="block-title">Developer
+              Documentation</a>
+          </div>
           <div class="card-block">
             <ul *ngFor="let item of developerDocumentationItems">
               <li *ngIf="item.link != null" class="align-left">

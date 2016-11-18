@@ -1,0 +1,20 @@
+<main>
+  <div class="container text-xs-center">
+    <br>
+    <p>Let us setup your Cloud Research Environment. We just need to ask you a couble of questions
+      and we will get you all hooked up.</p>
+    <br>
+    <h5>Who are you?</h5>
+    <p>In order to ensure we can identify you and your cloud research environment it's important you sign in or register.</p>
+    <br>
+    <p>Sign In using...</p>
+
+    <a class="btn btn-primary button-width"><img [src]="elixir_logo"> SSO</a> or
+    <a class="btn btn-primary button-width" [routerLink]="['/login']">
+      <img [src]="logo_white" height="30" width="30"> Sign In</a>
+    <br>
+    <br>
+    <p>Don't have an account? <a [routerLink]="['/register']">Create an account</a></p>
+  </div>
+</main>
+

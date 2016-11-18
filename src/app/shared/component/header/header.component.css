@@ -1,64 +1,69 @@
 .fa-bars {
-    color: #664F90;
+  color: #664F90;
 }
 
 .logo {
-    margin-top: 5px;
-    width: 281px;
-    height: 45px;
+  margin-top: 5px;
+  width: 281px;
+  height: 45px;
 }
 
 @media (max-width: 991px) {
 
   .logo {
-      width: 281px;
-      height: 45px;
+    width: 281px;
+    height: 45px;
   }
 
-  .navbar-toggler{
+  .navbar-toggler {
     margin-top: 15px;
     margin-bottom: 15px;
   }
 
   .navbar-toggleable-md {
-      clear: both;
+    clear: both;
   }
+
   .navbar-toggleable-md .navbar-nav {
-      float: none !important;
+    float: none !important;
   }
+
   .navbar-toggleable-md .navbar-nav .nav-item + .nav-item {
-      margin-left: 0; }
+    margin-left: 0;
+  }
+
   .navbar-toggleable-md .navbar-nav .nav-item {
-      float: none; }
+    float: none;
+  }
 
 }
 
 @media (max-width: 397px) {
 
-    .logo {
-        margin-top: 10px;
-        width: 224px;
-        height: 35px;
-    }
+  .logo {
+    margin-top: 10px;
+    width: 224px;
+    height: 35px;
+  }
 
-    .container {
-        padding: 0 0 0 5px !important;
-    }
+  .container {
+    padding: 0 0 0 5px !important;
+  }
 
 }
 
-.navbar-light .navbar-nav .active>.nav-link,
-.navbar-light .navbar-nav .active>.nav-link:focus,
-.navbar-light .navbar-nav .active>.nav-link:hover,
+.navbar-light .navbar-nav .active > .nav-link,
+.navbar-light .navbar-nav .active > .nav-link:focus,
+.navbar-light .navbar-nav .active > .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active,
 .navbar-light .navbar-nav .nav-link.active:focus,
 .navbar-light .navbar-nav .nav-link.active:hover,
 .navbar-light .navbar-nav .nav-link.open,
 .navbar-light .navbar-nav .nav-link.open:focus,
 .navbar-light .navbar-nav .nav-link.open:hover,
-.navbar-light .navbar-nav .open>.nav-link,
-.navbar-light .navbar-nav .open>.nav-link:focus,
-.navbar-light .navbar-nav .open>.nav-link:hover {
+.navbar-light .navbar-nav .open > .nav-link,
+.navbar-light .navbar-nav .open > .nav-link:focus,
+.navbar-light .navbar-nav .open > .nav-link:hover {
   color: white;
   font-weight: bold;
   background-color: #525991;
@@ -71,7 +76,7 @@
   padding-bottom: 20px;
   padding-left: 20px !important;
   padding-right: 20px !important;
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 .nav-link:hover {
@@ -83,15 +88,15 @@
 }
 
 .navbar {
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .navbar.navbar-light .breadcrumb a:hover, .navbar.navbar-light .nav-item a:hover {
-    transition: .35s;
-    color: #D3B569;
+  transition: .35s;
+  color: #D3B569;
 }
 
 .navbar.navbar-fixed-top.scrolling-navbar.navbar-light.primary-color-light.bg-faded {
-    min-width: 320px;
+  min-width: 320px;
 }

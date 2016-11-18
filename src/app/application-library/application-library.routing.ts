@@ -1,6 +1,6 @@
-import { Routes, RouterModule } from '@angular/router';
-import {ApplicationLibraryComponent} from "./application-library.component";
-import {ApplicationDetailComponent} from "./application-detail/application-detail.component";
+import {Routes, RouterModule} from '@angular/router';
+import {ApplicationLibraryComponent} from './application-library.component';
+import {ApplicationDetailComponent} from './application-detail/application-detail.component';
 
 
 /**
@@ -11,10 +11,8 @@ import {ApplicationDetailComponent} from "./application-detail/application-detai
 
 // TODO: make child routes
 const ApplicationLibrary_ROUTES: Routes = [
-  { path: '', component: ApplicationLibraryComponent},//, children:[
-  { path: ':id', component: ApplicationDetailComponent}
-    // ]
-  //}
+  {path: '', component: ApplicationLibraryComponent},
+  {path: ':id', component: ApplicationDetailComponent}
 ];
 
 export const applicationLibraryRouting = RouterModule.forChild(ApplicationLibrary_ROUTES);

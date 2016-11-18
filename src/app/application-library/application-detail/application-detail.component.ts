@@ -1,12 +1,10 @@
-import {Component, OnInit, Renderer, ViewChild} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-
-import { Application } from '../../shared/model/application/application';
-import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
-
-import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
-import {ApplicationLibraryService} from "../../shared/service/application-library/application-library.service";
+import {Component, OnInit, ViewChild, AfterViewChecked} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+// import {Observable} from 'rxjs/Observable';
+// import {Application} from '../../shared/model/application/application';
+import {ApplicationsDatabaseService} from '../../shared/service/applications-database/applications-database.service';
+import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.service';
+import {ApplicationLibraryService} from '../../shared/service/application-library/application-library.service';
 
 @Component({
   selector: 'fl-application-detail',
@@ -15,20 +13,20 @@ import {ApplicationLibraryService} from "../../shared/service/application-librar
   providers: [ApplicationsDatabaseService]
 })
 
-export class ApplicationDetailComponent implements OnInit {
+export class ApplicationDetailComponent implements OnInit, AfterViewChecked {
 
   id: string;
-  applications$: Observable<Application[]>;
+  // applications$: Observable<Application[]>;
   @ViewChild('app') app;
-  public isLoading = false;
+  // public isLoading = false;
   dockerApp;
 
   constructor(
-    private service: ApplicationsDatabaseService,
-    private appLibraryService: ApplicationLibraryService,
-    private activatedRoute: ActivatedRoute,
-    private breadcrumbService: BreadcrumbService,
-    private renderer: Renderer
+    // private service: ApplicationsDatabaseService,
+              private appLibraryService: ApplicationLibraryService,
+              private activatedRoute: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService,
+              // private renderer: Renderer
   ) {
     this.id = activatedRoute.snapshot.params['id'];
 
@@ -56,7 +54,7 @@ export class ApplicationDetailComponent implements OnInit {
     }
   }
 
-  getApp(appName:string){
+  getApp(appName: string) {
     this.appLibraryService.loadApp(this.id)
       .subscribe(
         data => {
@@ -65,21 +63,21 @@ export class ApplicationDetailComponent implements OnInit {
       );
   }
 
-  concatenate(array){
+  concatenate(array) {
 
-    let text = "";
+    let text = '';
 
-    if(array.length == 1){
+    if (array.length === 1) {
       text = array[0];
     } else {
-      for(let i = 0; i < array.length; i++) {
+      for (let i = 0; i < array.length; i++) {
 
-        if(array.length - 1 == i){
-          text += "and " + array[i];
+        if (array.length - 1 === i) {
+          text += 'and ' + array[i];
           break;
         }
         text += array[i];
-        text += ", "
+        text += ', ';
       }
     }
 

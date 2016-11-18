@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, NavigationEnd} from '@angular/router';
 import {BreadcrumbService} from './breadcrumb.service';
 
 @Component({
@@ -14,8 +14,9 @@ export class BreadcrumbComponent implements OnInit {
 
   ngOnInit() {
   }
+
   constructor(private router: Router, private breadcrumbService: BreadcrumbService) {
-    this._urls = new Array();
+    this._urls = [];
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this._urls.length = 0; // Fastest way to clear out array
       this.generateBreadcrumbTrail(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);

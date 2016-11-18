@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'filter',
@@ -37,10 +37,10 @@ export class FilterPipe implements PipeTransform {
 
 
   array2String(list) {
-    let text = "";
-    for(let i of list){
+    let text = '';
+    for (let i of list) {
       text += i;
-      text += " ";
+      text += ' ';
     }
     return text;
   }

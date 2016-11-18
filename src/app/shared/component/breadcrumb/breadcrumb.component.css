@@ -10,17 +10,17 @@ a:focus, a:hover {
   background-color: #525991;
 }
 
-.breadcrumb>.active {
+.breadcrumb > .active {
   color: #FFF;
 }
 
-.breadcrumb>li+li::before {
+.breadcrumb > li + li::before {
   padding-right: .5rem;
   padding-left: .5rem;
   color: #818a91;
   content: "/";
 }
 
-.breadcrumb>li {
+.breadcrumb > li {
   display: inline;
 }

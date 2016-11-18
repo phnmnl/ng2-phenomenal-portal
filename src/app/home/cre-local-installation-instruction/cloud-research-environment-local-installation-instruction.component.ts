@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'fl-cloud-research-environment-local-installation-instruction',
@@ -33,9 +33,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   isMac: boolean;
   isWindows: boolean;
 
-  constructor(
-      private router: Router
-  ) {
+  constructor(private router: Router) {
     this.resetAll();
   }
 
@@ -48,7 +46,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q1o1() {
-    console.log('q1o1');
+    // console.log('q1o1');
     this.resetAll();
 
     this.enableQ2 = true;
@@ -58,7 +56,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q1o2() {
-    console.log('q1o2');
+    // console.log('q1o2');
     this.resetAll();
 
     this.enableQ4 = true;
@@ -68,7 +66,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q2o1() {
-    console.log('q2o1');
+    // console.log('q2o1');
 
     this.resetExcludeQ1();
 
@@ -83,7 +81,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q2o2() {
-    console.log('q2o2');
+    // console.log('q2o2');
 
     this.resetExcludeQ1();
 
@@ -94,7 +92,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q3o1() {
-    console.log('q3o1');
+    // console.log('q3o1');
 
     this.resetExcludeQ2();
 
@@ -106,7 +104,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q3o2() {
-    console.log('q3o2');
+    // console.log('q3o2');
     this.resetExcludeQ2();
 
     this.disableQ3O2 = true;
@@ -118,7 +116,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q3o3() {
-    console.log('q3o3');
+    // console.log('q3o3');
 
     this.resetExcludeQ2();
 
@@ -130,7 +128,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q3o4() {
-    console.log('q3o4');
+    // console.log('q3o4');
 
     this.resetExcludeQ2();
 
@@ -142,7 +140,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q4o1() {
-    console.log('q4o1');
+    // console.log('q4o1');
 
     this.resetExcludeQ4();
 
@@ -152,7 +150,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q4o2() {
-    console.log('q4o2');
+    // console.log('q4o2');
     this.resetExcludeQ4();
 
     this.enableQ5 = true;
@@ -161,7 +159,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q4o3() {
-    console.log('q4o3');
+    // console.log('q4o3');
     this.resetExcludeQ4();
 
     this.enableQ5 = true;
@@ -170,7 +168,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q5o1() {
-    console.log('q5o1');
+    // console.log('q5o1');
 
     this.resetExcludeQ5();
 
@@ -180,7 +178,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q5o2() {
-    console.log('q5o2');
+    // console.log('q5o2');
     this.resetExcludeQ5();
 
     this.disableQ5O2 = true;
@@ -189,7 +187,7 @@ export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   }
 
   q5o3() {
-    console.log('q5o3');
+    // console.log('q5o3');
     this.resetExcludeQ5();
 
     this.disableQ5O3 = true;

@@ -1,11 +1,11 @@
 .img-rounded {
   max-height: 80px;
-  max-width:150px;
+  max-width: 150px;
 }
 
 .list-group {
   padding: 10px;
-  height:100px;
+  height: 100px;
   margin-bottom: 15px;
 }
 
@@ -20,6 +20,7 @@
   .description {
     display: none;
   }
+
   .media-heading {
     margin-top: 10px;
   }

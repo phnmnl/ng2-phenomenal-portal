@@ -1,5 +1,5 @@
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {Input} from "@angular/core/src/metadata/directives";
+import {Component, OnInit} from '@angular/core';
+import {Input} from '@angular/core/src/metadata/directives';
 
 @Component({
   selector: 'fl-tree',
@@ -17,7 +17,7 @@ export class TreeComponent implements OnInit {
     this.constructParentTrace();
   }
 
-  rotate(node){
+  rotate(node) {
     node.isRotate = !node.isRotate;
   }
 
@@ -26,20 +26,20 @@ export class TreeComponent implements OnInit {
     currentNode.isCheck = check;
 
 
-    if(check == true){ // select
+    if (check === true) { // select
 
-      if(currentNode.children.length > 0){
-        for(let n of currentNode.children){
+      if (currentNode.children.length > 0) {
+        for (let n of currentNode.children) {
           this.check(n, check, parentNode);
         }
       }
 
-      if(currentNode.children.length == 0){
+      if (currentNode.children.length === 0) {
 
 
-        for(let node of currentNode.parentTrace){
+        for (let node of currentNode.parentTrace) {
 
-          if(this.isEmptyTree(node)){
+          if (this.isEmptyTree(node)) {
             break;
           }
           node.isCheck = true;
@@ -47,14 +47,14 @@ export class TreeComponent implements OnInit {
       }
 
 
-    } else { //deselect
+    } else { // deselect
 
-      if(currentNode.children.length == 0){
+      if (currentNode.children.length === 0) {
 
 
-        for(let node of currentNode.parentTrace){
+        for (let node of currentNode.parentTrace) {
 
-          if(!this.isEmptyTree(node)){
+          if (!this.isEmptyTree(node)) {
             break;
           }
           node.isCheck = false;
@@ -62,8 +62,8 @@ export class TreeComponent implements OnInit {
         }
       }
 
-      if(currentNode.children.length > 0){
-        for(let n of currentNode.children){
+      if (currentNode.children.length > 0) {
+        for (let n of currentNode.children) {
           this.check(n, check, parentNode);
         }
       }
@@ -73,24 +73,24 @@ export class TreeComponent implements OnInit {
 
   }
 
-  private getNodeById(targetId: string, parentNode) {
-    let node: Node;
-
-    for(let n of parentNode){
-      if(n.id == targetId){
-        node = n;
-        break;
-      }
-    }
-
-    return node;
-  }
+  // private getNodeById(targetId: string, parentNode) {
+  //   let node: Node;
+  //
+  //   for (let n of parentNode) {
+  //     if (n.id === targetId) {
+  //       node = n;
+  //       break;
+  //     }
+  //   }
+  //
+  //   return node;
+  // }
 
   private isEmptyTree(parentNode) {
-    let isEmpty: boolean = true;
+    let isEmpty = true;
 
-    for(let n of parentNode.children){
-      if(n.isCheck == true){
+    for (let n of parentNode.children) {
+      if (n.isCheck === true) {
         isEmpty = false;
         break;
       }
@@ -99,13 +99,13 @@ export class TreeComponent implements OnInit {
   }
 
   private constructParentTrace() {
-    for(let i = 0; i < this.childrenNodes.length; i++){
-      if(this.childrenNodes[i].parent === '#'){
+    for (let i = 0; i < this.childrenNodes.length; i++) {
+      if (this.childrenNodes[i].parent === '#') {
         this.childrenNodes[i].parentTrace = [];
         this.childrenNodes[i].isRotate = false;
-        if(this.childrenNodes[i].children.length > 0){
+        if (this.childrenNodes[i].children.length > 0) {
 
-          for(let j = 0; j < this.childrenNodes[i].children.length; j++){
+          for (let j = 0; j < this.childrenNodes[i].children.length; j++) {
             this.childrenNodes[i].children[j].parentTrace = [];
             let node = this.childrenNodes[i];
             this.childrenNodes[i].children[j].parentTrace.unshift(node);
@@ -115,13 +115,13 @@ export class TreeComponent implements OnInit {
 
       } else {
 
-        if(this.childrenNodes[i].children.length > 0){
+        if (this.childrenNodes[i].children.length > 0) {
 
-          for(let j = 0; j < this.childrenNodes[i].children.length; j++){
+          for (let j = 0; j < this.childrenNodes[i].children.length; j++) {
 
             this.childrenNodes[i].children[j].parentTrace = [];
 
-            for(let n of this.childrenNodes[i].parentTrace){
+            for (let n of this.childrenNodes[i].parentTrace) {
               this.childrenNodes[i].children[j].parentTrace.push(n);
             }
 

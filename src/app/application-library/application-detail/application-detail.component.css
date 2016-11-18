@@ -1,5 +1,5 @@
 .table-flow {
-  overflow-x:auto;
+  overflow-x: auto;
 }
 
 :host >>> pre {

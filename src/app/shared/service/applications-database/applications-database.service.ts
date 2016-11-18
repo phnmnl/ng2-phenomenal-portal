@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-
-import { Application } from '../../model/application/application';
+import {Application} from '../../model/application/application';
 
 declare var xml2json: any;
 
@@ -17,8 +16,8 @@ export class ApplicationsDatabaseService {
   };
 
   constructor(private http: Http) {
-    this.baseUrl  = 'https://appdb-pi.egi.eu/rest/1.0/applications';
-    this.dataStore = { applications: [] };
+    this.baseUrl = 'https://appdb-pi.egi.eu/rest/1.0/applications';
+    this.dataStore = {applications: []};
     this._applications$ = <Subject<Application[]>>new Subject();
   }
 
@@ -59,11 +58,11 @@ export class ApplicationsDatabaseService {
   private json2Object(_data) {
     let _applications: Application[] = [];
 
-    if ( _data != null) {
+    if (_data != null) {
       // mapping json to model
       if (_data instanceof Array) {
         // more than 1 object
-        for ( let _item of _data) {
+        for (let _item of _data) {
           _applications.push(new Application(_item));
         }
       } else { // only 1 object

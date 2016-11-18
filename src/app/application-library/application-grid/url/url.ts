@@ -3,7 +3,7 @@ export class Url {
   title: string;
   type: string;
 
-  constructor (_item) {
+  constructor(_item) {
     this.loadParameterAsRequired(_item);
   }
 
