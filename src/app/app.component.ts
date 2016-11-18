@@ -17,7 +17,7 @@ export class AppComponent {
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/instruction', 'Local Installation Instruction');
     breadcrumbService.addFriendlyNameForRoute('/dashboard', 'Dashboard');
     breadcrumbService.addFriendlyNameForRoute('/help', 'Help');
-    breadcrumbService.addFriendlyNameForRoute('/workflow', 'Create your Cloud Research Environment (CRE)');
+    breadcrumbService.addFriendlyNameForRoute('/workflow', 'Create Your Own Cloud Research Environment (CRE)');
     breadcrumbService.addFriendlyNameForRoute('/login', 'Login / Sign Up');
     breadcrumbService.addFriendlyNameForRoute('/register', 'Sign Up');
     breadcrumbService.addFriendlyNameForRoute('/statistics', 'Dashboard - VRE Site Statistics');
