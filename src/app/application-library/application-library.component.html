@@ -21,21 +21,21 @@
               <h6 class="card-title">
                 <small>Functionality</small>
               </h6>
-              <fl-tree (click)="getAppsByFilter()" [childrenNodes]='functionality'></fl-tree>
+              <ph-tree (click)="getAppsByFilter()" [childrenNodes]='functionality'></ph-tree>
             </form>
 
             <form class="form-inline">
               <h6 class="card-title">
                 <small>Approaches</small>
               </h6>
-              <fl-tree (click)="getAppsByFilter()" [childrenNodes]='approaches'></fl-tree>
+              <ph-tree (click)="getAppsByFilter()" [childrenNodes]='approaches'></ph-tree>
             </form>
 
             <form class="form-inline">
               <h6 class="card-title">
                 <small>Instrument Data Types</small>
               </h6>
-              <fl-tree (click)="getAppsByFilter()" [childrenNodes]='instrument'></fl-tree>
+              <ph-tree (click)="getAppsByFilter()" [childrenNodes]='instrument'></ph-tree>
             </form>
 
 
@@ -67,10 +67,10 @@
             <div *ngFor="let app of apps | filter:word.value">
               <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}">
                 <div *ngIf="isList">
-                  <fl-application-list [application]="app"></fl-application-list>
+                  <ph-application-list [application]="app"></ph-application-list>
                 </div>
                 <div *ngIf="!isList">
-                  <fl-application-grid [application]="app"></fl-application-grid>
+                  <ph-application-grid [application]="app"></ph-application-grid>
                 </div>
               </div><!-- /.col-lg-4 -->
             </div>

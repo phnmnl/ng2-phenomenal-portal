@@ -6,7 +6,7 @@ declare var gapi: any;
 declare var jQuery: any;
 
 @Component({
-  selector: 'fl-statistics',
+  selector: 'ph-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })

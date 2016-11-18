@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'fl-register',
+  selector: 'ph-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })

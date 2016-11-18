@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 import 'rxjs/Rx';
 
 @Component({
-  selector: 'fl-help',
+  selector: 'ph-help',
   templateUrl: 'help.component.html',
   styleUrls: ['help.component.css'],
   providers: [WikiService]

@@ -15,7 +15,7 @@
       "main": "main.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
-      "prefix": "fl",
+      "prefix": "ph",
       "mobile": false,
       "styles": [
         "assets/css/font-awesome.min.css",

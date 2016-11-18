@@ -4,7 +4,7 @@ import {ApplicationLibraryService} from '../shared/service/application-library/a
 import {Node} from '../shared/component/tree/node/node';
 
 @Component({
-  selector: 'fl-application-library',
+  selector: 'ph-application-library',
   templateUrl: 'application-library.component.html',
   styleUrls: ['application-library.component.css'],
 

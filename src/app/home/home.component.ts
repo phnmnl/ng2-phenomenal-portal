@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
-  selector: 'fl-home',
+  selector: 'ph-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

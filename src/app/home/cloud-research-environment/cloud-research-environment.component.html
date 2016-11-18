@@ -9,12 +9,12 @@
           How does it work?
         </p>
 
-        <fl-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noIndicator]="noLoopIndicator">
-          <fl-slide *ngFor="let slidez of slides; let index=index"
+        <ph-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noIndicator]="noLoopIndicator">
+          <ph-slide *ngFor="let slidez of slides; let index=index"
                     [active]="slidez.active">
             <img [src]="slidez.image" class="img-fluid">
-          </fl-slide>
-        </fl-carousel>
+          </ph-slide>
+        </ph-carousel>
 
         <br>
       </div>

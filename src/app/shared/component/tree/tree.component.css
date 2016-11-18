@@ -41,10 +41,10 @@ li {
   margin-left: 0;
 }
 
-li > fl-tree > ul > li {
+li > ph-tree > ul > li {
   margin-left: 15px;
 }
 
-li > fl-tree > ul > li > fl-tree > ul > li > label {
+li > ph-tree > ul > li > ph-tree > ul > li > label {
   font-size: 59%;
 }

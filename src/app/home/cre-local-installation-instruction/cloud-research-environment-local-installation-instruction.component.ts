@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'fl-cloud-research-environment-local-installation-instruction',
+  selector: 'ph-cloud-research-environment-local-installation-instruction',
   templateUrl: 'cloud-research-environment-local-installation-instruction.component.html',
   styleUrls: ['cloud-research-environment-local-installation-instruction.component.css']
 })

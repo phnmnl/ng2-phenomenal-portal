@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, HostBinding} from '@angular/core';
 import {CarouselComponent, Direction} from '../carousel.component';
 @Component({
-  selector: 'fl-slide',
+  selector: 'ph-slide',
   templateUrl: 'slide.component.html',
   styleUrls: ['slide.component.css']
 })

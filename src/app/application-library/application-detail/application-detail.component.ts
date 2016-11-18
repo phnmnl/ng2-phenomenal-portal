@@ -7,7 +7,7 @@ import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.se
 import {ApplicationLibraryService} from '../../shared/service/application-library/application-library.service';
 
 @Component({
-  selector: 'fl-application-detail',
+  selector: 'ph-application-detail',
   templateUrl: 'application-detail.component.html',
   styleUrls: ['application-detail.component.css'],
   providers: [ApplicationsDatabaseService]

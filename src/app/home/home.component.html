@@ -144,8 +144,8 @@
         <h3 class="h3-responsive text-xs-center">PhenoMeNal Cloud Hosts</h3>
 
         <br>
-        <fl-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">
-          <fl-slide *ngFor="let slidez of slides; let index=index"
+        <ph-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">
+          <ph-slide *ngFor="let slidez of slides; let index=index"
                     [active]="slidez.active">
             <div class="col-md-6">
               <a href="{{ slidez.website1 }}">
@@ -167,8 +167,8 @@
                 <img class="img-fluid host-logo" alt="{{ slidez.description4 }}" [src]="slidez.image4">
               </a>
             </div>
-          </fl-slide>
-        </fl-carousel>
+          </ph-slide>
+        </ph-carousel>
 
       </div>
 

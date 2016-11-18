@@ -9,6 +9,6 @@
     <label class="labelsize" attr.for="{{node.id}}">
       {{node.name}}
     </label>
-    <fl-tree *ngIf="node.children!=undefined" [childrenNodes]="node.children" [hidden]="!node.isRotate"></fl-tree>
+    <ph-tree *ngIf="node.children!=undefined" [childrenNodes]="node.children" [hidden]="!node.isRotate"></ph-tree>
   </li>
 </ul>

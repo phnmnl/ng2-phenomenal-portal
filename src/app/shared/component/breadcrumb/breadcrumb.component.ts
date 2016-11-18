@@ -3,7 +3,7 @@ import {Router, NavigationEnd} from '@angular/router';
 import {BreadcrumbService} from './breadcrumb.service';
 
 @Component({
-  selector: 'fl-breadcrumb',
+  selector: 'ph-breadcrumb',
   templateUrl: 'breadcrumb.component.html',
   styleUrls: ['breadcrumb.component.css']
 })

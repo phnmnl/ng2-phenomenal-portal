@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'fl-workflow',
+  selector: 'ph-workflow',
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })

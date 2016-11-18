@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'fl-cloud-research-environment',
+  selector: 'ph-cloud-research-environment',
   templateUrl: 'cloud-research-environment.component.html',
   styleUrls: ['cloud-research-environment.component.css'],
 })

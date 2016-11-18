@@ -2,7 +2,7 @@ import {Component, ViewContainerRef} from '@angular/core';
 import {BreadcrumbService} from './shared/component/breadcrumb/breadcrumb.service';
 
 @Component({
-  selector: 'fl-root',
+  selector: 'ph-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

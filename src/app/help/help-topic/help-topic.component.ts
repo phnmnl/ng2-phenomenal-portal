@@ -4,7 +4,7 @@ import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.se
 import {WikiService} from '../../shared/service/wiki/wiki.service';
 
 @Component({
-  selector: 'fl-help-topic',
+  selector: 'ph-help-topic',
   templateUrl: 'help-topic.component.html',
   styleUrls: ['help-topic.component.css'],
 })

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Input} from '@angular/core/src/metadata/directives';
 
 @Component({
-  selector: 'fl-tree',
+  selector: 'ph-tree',
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.css']
 })
