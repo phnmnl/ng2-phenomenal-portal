@@ -43,9 +43,6 @@ li {
 
 li > fl-tree > ul > li {
   margin-left: 15px;
-  /*padding: 5px;*/
-  /*border: 1px solid #ABC;*/
-  /*border-radius: 5px;*/
 }
 
 li > fl-tree > ul > li > fl-tree > ul > li > label {
