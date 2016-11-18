@@ -1,5 +1,6 @@
 <div class="container">
-  <p class="text-xs-center">In order to direct you to the correct installation we need to ask you a few simple questions.</p>
+  <p class="text-xs-center">In order to direct you to the correct installation we need to ask you a few simple
+    questions.</p>
 
   <div id="q1">
     <p class="text-xs-center">How many computer(s) do you want to run your analysis on?</p>
@@ -28,7 +29,6 @@
   </div>
 
 
-
   <div id="q2" [hidden]="!enableQ2">
     <p class="text-xs-center">Is this the computer you want to run your installation on?</p>
 
@@ -49,7 +49,6 @@
   </div>
 
 
-
   <div id="q3" [hidden]="!enableQ3">
     <p class="text-xs-center">What operating system are you running on your computer(s)?</p>
 
@@ -60,7 +59,7 @@
         <i class="fa fa-windows icon-background"></i>
         <br>
         <div class="question-description">
-        Windows
+          Windows
         </div>
       </button>
 
@@ -92,7 +91,6 @@
     <br>
 
   </div>
-
 
 
   <div id="q4" [hidden]="!enableQ4">
@@ -128,7 +126,6 @@
 
     <br>
   </div>
-
 
 
   <div id="q5" [hidden]="!enableQ5">
@@ -167,7 +164,6 @@
   </div>
 
 
-
   <div id="q6" [hidden]="!enableQ6">
     <p *ngIf="isMac" class="text-xs-center">Our system detects that you are running on Mac.</p>
     <p *ngIf="!isMac" class="text-xs-center">Our system detects that you are not running on Mac.</p>
@@ -175,12 +171,12 @@
   </div>
 
 
-
   <div id="instruction" [hidden]="!enableInstruction">
     <p class="text-xs-center">Thank you!</p>
-    <p class="text-xs-center">Based on your answers we have a set of instructions which will guide you through the installation process.</p>
+    <p class="text-xs-center">Based on your answers we have a set of instructions which will guide you through the
+      installation process.</p>
 
-    <p class="text-xs-center" >Click the button below to access your installation instructions.</p>
+    <p class="text-xs-center">Click the button below to access your installation instructions.</p>
 
     <div class="text-xs-center">
       <button type="button" (click)="redirectURL()" class="btn">

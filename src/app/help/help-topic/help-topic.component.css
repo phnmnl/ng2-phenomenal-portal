@@ -18,8 +18,8 @@
   /*list-style-type: circle;*/
   -webkit-margin-before: 1em;
   -webkit-margin-after: 1em;
-  -webkit-margin-start: 0px;
-  -webkit-margin-end: 0px;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
   -webkit-padding-start: 40px;
   margin-top: 0;
   margin-bottom: 16px;
@@ -40,4 +40,9 @@
   /*list-style-position: inside;*/
   list-style-type: circle;
   margin-bottom: 5px;
+}
+
+:host >>> img {
+  max-width: 100%;
+  max-height: 100%;
 }

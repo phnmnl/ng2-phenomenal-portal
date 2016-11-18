@@ -1,13 +1,13 @@
 <div class="list-group">
-    <a class="media-left waves-light" [routerLink]="['/app-library', application.id]">
-        <img class="img-rounded" src="{{ application.logo_large }}" alt="{{ application.short_description }}"/>
-    </a>
-    <div class="media-body">
-      <h4 class="media-heading">
-        <strong>
-          <a [routerLink]="['/app-library', application.id]">{{ application.name }}</a>
-        </strong>
-      </h4>
-      <p class="description">{{ application.short_description }}</p>
-    </div>
+  <a class="media-left waves-light" [routerLink]="['/app-library', application.id]">
+    <img class="img-rounded" src="{{ application.logo_large }}" alt="{{ application.short_description }}"/>
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading">
+      <strong>
+        <a [routerLink]="['/app-library', application.id]">{{ application.name }}</a>
+      </strong>
+    </h4>
+    <p class="description">{{ application.short_description }}</p>
+  </div>
 </div>

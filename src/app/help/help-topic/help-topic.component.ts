@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
-import { WikiService } from '../../shared/service/wiki/wiki.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.service';
+import {WikiService} from '../../shared/service/wiki/wiki.service';
 
 @Component({
-  selector: 'fl-help-topic',
+  selector: 'ph-help-topic',
   templateUrl: 'help-topic.component.html',
   styleUrls: ['help-topic.component.css'],
 })
@@ -13,13 +13,10 @@ export class HelpTopicComponent implements OnInit {
 
   id: string;
   helpContent = ``;
-  // @ViewChild('app') app;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private breadcrumbService: BreadcrumbService,
-    private wikiService: WikiService
-  ) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService,
+              private wikiService: WikiService) {
     this.id = activatedRoute.snapshot.params['id'];
     breadcrumbService.addFriendlyNameForRoute('/help/' + this.id, ' '); // Initialise as empty string
     this.getPage();
@@ -33,7 +30,6 @@ export class HelpTopicComponent implements OnInit {
       .subscribe(
         data => {
           this.helpContent = this.process(data);
-          // console.log(this.helpContent);
         }
       );
   }
@@ -44,13 +40,9 @@ export class HelpTopicComponent implements OnInit {
    * @returns {string|void}
    */
   process(data) {
-    return data.replace(/(href=")([^http])/g, 'href="help/$2');
+    data = data.replace(/(href=")([^http])/g, 'href="help/$2');
+    data = data.replace(/(src=")([^http])/g, 'src="http://phenomenal-h2020.eu/wiki/wiki-markdown/phenomenal-h2020.wiki/$2');
+    return data;
   }
 
-  // ngAfterViewChecked() {
-  //   if (this.app !== undefined) {
-  //     let app_name = this.app.nativeElement.innerText;
-  //     this.breadcrumbService.addFriendlyNameForRoute('/help/' + this.id, app_name);
-  //   }
-  // }
 }

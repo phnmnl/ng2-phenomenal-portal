@@ -1,16 +1,15 @@
-import { Component, OnInit }    from '@angular/core';
-import { Observable }           from 'rxjs/Observable';
-import { Subject }              from 'rxjs/Subject';
-import { WikiService }          from '../shared/service/wiki/wiki.service';
-import { Router } from '@angular/router';
-
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {WikiService} from '../shared/service/wiki/wiki.service';
+import {Router} from '@angular/router';
 import 'rxjs/Rx';
 
 @Component({
-  selector: 'fl-help',
+  selector: 'ph-help',
   templateUrl: 'help.component.html',
   styleUrls: ['help.component.css'],
-  providers: [ WikiService ]
+  providers: [WikiService]
 })
 export class HelpComponent implements OnInit {
 
@@ -29,10 +28,8 @@ export class HelpComponent implements OnInit {
     .switchMap((term: string) => this.wikiService.search(term));
 
 
-  constructor(
-    private router: Router,
-    private wikiService: WikiService
-  ) {
+  constructor(private router: Router,
+              private wikiService: WikiService) {
   }
 
   ngOnInit() {
@@ -42,7 +39,7 @@ export class HelpComponent implements OnInit {
   }
 
   getUserDocumentationMenu() {
-    this.wikiService.loadUserDocumnetatonMenu()
+    this.wikiService.loadUserDocumentationMenu()
       .subscribe(
         data => {
           this.userDocumentationItems = data;
@@ -67,6 +64,7 @@ export class HelpComponent implements OnInit {
         }
       );
   }
+
   search(term: string) {
     this.searchTermStream.next(term);
     this.items.subscribe(res => {

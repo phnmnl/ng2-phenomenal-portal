@@ -1,7 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { addProviders, async, inject } from '@angular/core/testing';
-import { FilterPipe } from './filter.pipe';
+import {FilterPipe} from './filter.pipe';
 
 describe('Pipe: Filter', () => {
   it('create an instance', () => {

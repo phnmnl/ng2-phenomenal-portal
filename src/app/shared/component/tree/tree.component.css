@@ -1,106 +1,50 @@
-.filled-in:checked+label:after {
+.filled-in:checked + label:after {
   border-color: #525991 !important;;
   background-color: #525991 !important;
 }
 
-[type=checkbox]+label {
+[type=checkbox] + label {
   padding-left: 20px;
 }
 
-[type=checkbox].filled-in:checked+label:after, [type=checkbox].filled-in:not(:checked)+label:after {
+[type=checkbox].filled-in:checked + label:after, [type=checkbox].filled-in:not(:checked) + label:after {
   height: 16px;
   width: 16px;
   top: 4px;
 }
 
-[type=checkbox].filled-in:checked+label:before {
+[type=checkbox].filled-in:checked + label:before {
   top: 2px;
-  left: 0px;
+  left: 0;
   width: 7px;
 }
 
 label {
-  font-size:80%;
+  font-size: 80%;
   font-weight: 400;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
-
-.logo-transparent{
+.logo-transparent {
   opacity: 0;
 }
 
 ul {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .fa-fw {
   width: 0.5em;
 }
 
-
-/*ul { list-style-type: none; }*/
-
-/*label{*/
-  /*background-color: #AAAFAB;*/
-  /*border-radius: 5px;*/
-  /*padding: 3px;*/
-  /*padding-left: 25px;*/
-  /*color: white;*/
-/*}*/
 li {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
-li > fl-tree > ul > li{
+li > ph-tree > ul > li {
   margin-left: 15px;
-  /*padding: 5px;*/
-  /*border: 1px solid #ABC;*/
-  /*border-radius: 5px;*/
 }
 
-li > fl-tree > ul > li > fl-tree > ul > li > label {
-  font-size: 60%;
+li > ph-tree > ul > li > ph-tree > ul > li > label {
+  font-size: 59%;
 }
-/*input[type=checkbox] { display: none; }*/
-/*input[type=checkbox] ~ ul, input[type=checkbox] ~ fl-tree > ul {*/
-  /*max-height: 0;*/
-  /*max-width: 0;*/
-  /*opacity: 0;*/
-  /*overflow: hidden;*/
-  /*white-space:nowrap;*/
-  /*-webkit-transition:all 1s ease;*/
-  /*-moz-transition:all 1s ease;*/
-  /*-o-transition:all 1s ease;*/
-  /*transition:all 1s ease;*/
-/*}*/
-
-/*input[type=checkbox]:checked ~ ul, input[type=checkbox]:checked ~ fl-tree > ul {*/
-  /*max-height: 100%;*/
-  /*max-width: 100%;*/
-  /*opacity: 1;*/
-/*}*/
-/*input[type=checkbox] + label:before{*/
-  /*transform-origin:25% 50%;*/
-  /*border: 8px solid transparent;*/
-  /*border-width: 8px 12px;*/
-  /*border-left-color: blue;*/
-  /*margin-left: -20px;*/
-  /*width: 0;*/
-  /*height: 0;*/
-  /*display: inline-block;*/
-  /*text-align: center;*/
-  /*content: '';*/
-  /*color: #AAAFAB;*/
-  /*-webkit-transition:all .5s ease;*/
-  /*-moz-transition:all .5s ease;*/
-  /*-o-transition:all .5s ease;*/
-  /*transition:all .5s ease;*/
-  /*position: absolute;*/
-  /*margin-top: 1px;*/
-/*}*/
-/*input[type=checkbox]:checked + label:before {*/
-  /*transform: rotate(90deg);*/
-  /*!*margin-top: 6px;*/
-  /*margin-left: -25px;*!*/
-/*}*/

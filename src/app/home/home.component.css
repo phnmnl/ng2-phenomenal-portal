@@ -1,11 +1,11 @@
 .host-logo {
-    height:70px !important;
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 25px;
+  height: 70px !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 25px;
 }
 
 .hand-cursor {
-    cursor:pointer;
+  cursor: pointer;
 }
