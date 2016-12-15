@@ -73,31 +73,35 @@
     </div>
     <!--/.First row-->
 
-    <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="mySmallModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">App Library</h4>
-          </div>
-          <div class="modal-body">
-            <img [src]="img2" class="img-fluid " alt="">
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"-->
+         <!--aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+      <!--<div class="modal-dialog modal-lg">-->
+        <!--<div class="modal-content">-->
+          <!--<div class="modal-header">-->
+            <!--<button type="button" class="close" aria-label="Close" (click)="hideChildModal()">-->
+              <!--<span aria-hidden="true">&times;</span>-->
+            <!--</button>-->
+            <!--<h4 class="modal-title">App Library</h4>-->
+          <!--</div>-->
+          <!--<div class="modal-body">-->
+            <!--<img [src]="img2" class="img-fluid " alt="">-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
     <hr class="extra-margins">
 
     <!--First row-->
     <div class="row">
-      <div class="col-md-6" (click)="lgModal.show()">
+
+      <div class="col-md-6">
         <!--Featured image -->
-        <img [src]="img3" class="img-fluid hand-cursor" alt="">
+        <ph-modal [img]="img3" [title]="img3_title"></ph-modal>
       </div>
+
+      <template ngbModalContainer></template>
+
 
       <br>
       <br>
@@ -109,22 +113,6 @@
     </div>
     <!--/.First row-->
 
-    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" (click)="lgModal.hide()" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Galaxy Workflow</h4>
-          </div>
-          <div class="modal-body">
-            <img [src]="img3" class="img-fluid " alt="">
-          </div>
-        </div>
-      </div>
-    </div>
 
     <hr class="extra-margins">
 

@@ -11,6 +11,8 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WorkflowComponent} from './workflow/workflow.component';
+import {SetupCloudEnvironmentComponent} from './setup-cloud-environment/setup-cloud-environment.component';
+import {CreDashboardComponent} from './cre-dashboard/cre-dashboard.component';
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
@@ -26,10 +28,12 @@ const routes: Routes = [
   },
   {path: 'help', component: HelpComponent},
   {path: 'help/:id', component: HelpTopicComponent},
-  {path: 'workflow', component: WorkflowComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'login', component: WorkflowComponent},
+  // {path: 'login', component: LoginComponent},
+  // {path: 'register', component: RegisterComponent},
+  {path: 'setup', component: SetupCloudEnvironmentComponent},
   {path: 'statistics', component: StatisticsComponent},
+  {path: 'cre-dashboard', component: CreDashboardComponent},
   {path: 'home', component: HomeComponent},
   {path: '**', redirectTo: '/home'}
 ];

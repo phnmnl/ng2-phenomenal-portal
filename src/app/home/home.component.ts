@@ -1,12 +1,17 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ph-home',
   templateUrl: './home.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  get img3_title(): string {
+    return this._img3_title;
+  }
 
   @ViewChild('childModal') public childModal: ModalDirective;
 
@@ -46,8 +51,8 @@ export class HomeComponent {
   private _img1 = 'assets/img/home/img1.png';
   private _img2 = 'assets/img/home/img2.png';
   private _img3 = 'assets/img/home/img3.png';
-
-  constructor() {
+  private _img3_title: string = 'Galaxy Workflow';
+  constructor(private modalService: NgbModal) {
     this.addNewSlide();
   }
 
@@ -97,4 +102,7 @@ export class HomeComponent {
     this.childModal.hide();
   }
 
+  open(content) {
+    this.modalService.open(content, { windowClass: 'dark-modal' });
+  }
 }

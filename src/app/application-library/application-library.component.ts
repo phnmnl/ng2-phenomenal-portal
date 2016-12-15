@@ -5,8 +5,8 @@ import {Node} from '../shared/component/tree/node/node';
 
 @Component({
   selector: 'ph-application-library',
-  templateUrl: 'application-library.component.html',
-  styleUrls: ['application-library.component.css'],
+  templateUrl: './application-library.component.html',
+  styleUrls: ['./application-library.component.css'],
 
 })
 export class ApplicationLibraryComponent implements OnInit {

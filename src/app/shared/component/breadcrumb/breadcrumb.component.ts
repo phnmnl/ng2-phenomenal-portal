@@ -4,8 +4,8 @@ import {BreadcrumbService} from './breadcrumb.service';
 
 @Component({
   selector: 'ph-breadcrumb',
-  templateUrl: 'breadcrumb.component.html',
-  styleUrls: ['breadcrumb.component.css']
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.css']
 })
 export class BreadcrumbComponent implements OnInit {
 

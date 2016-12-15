@@ -4,8 +4,8 @@ import {Input} from '@angular/core/src/metadata/directives';
 
 @Component({
   selector: 'ph-application-list',
-  templateUrl: 'application-list.component.html',
-  styleUrls: ['application-list.component.css'],
+  templateUrl: './application-list.component.html',
+  styleUrls: ['./application-list.component.css'],
 })
 
 export class ApplicationListComponent {

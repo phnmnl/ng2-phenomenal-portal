@@ -1,21 +1,39 @@
 <main>
   <div class="container text-xs-center">
     <br>
-    <p>Let us setup your Cloud Research Environment.</p>
 
-    <p>We just need to ask you a couple of questions
-      and we will get you all hooked up.</p>
-    <br>
-    <h5>Who are you?</h5>
+    <div *ngIf="!tokenService.getToken()">
 
-    <br>
+      <p>Let us setup your Cloud Research Environment.</p>
 
-    <p>In order to ensure we can identify you and your cloud research environment.</p>
-    <p>It's important to sign in or register through Elixir SSO.</p>
+      <p>We just need to ask you a couple of questions
+        and we will get you all hooked up.</p>
+      <br>
+      <h5>Who are you?</h5>
 
-    <a class="btn btn-primary button-width"><img [src]="elixir_logo"> SSO</a>
+      <br>
 
-    <p></p>
+      <p>In order to ensure we can identify you and your cloud research environment.</p>
+      <p>It's important to sign in or register through Elixir SSO.</p>
+
+      <a class="btn btn-primary button-width" href="{{ssoLink()}}" target="_blank"><img [src]="elixir_logo"> SSO</a>
+
+      <p></p>
+
+    </div>
+
+    <div *ngIf="tokenService.getToken()">
+
+
+      <h2>You are logged in as {{ credentialService.getUsername() }}</h2>
+
+      <br>
+
+      <a class="btn btn-primary button-width" [routerLink]="['/setup']">
+        Continue
+      </a>
+
+    </div>
   </div>
 </main>
 

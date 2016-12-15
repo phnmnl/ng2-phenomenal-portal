@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 import {Application} from '../../model/application/application';
 
 declare var xml2json: any;

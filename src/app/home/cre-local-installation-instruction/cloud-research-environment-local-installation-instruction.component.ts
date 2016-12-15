@@ -3,8 +3,8 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'ph-cloud-research-environment-local-installation-instruction',
-  templateUrl: 'cloud-research-environment-local-installation-instruction.component.html',
-  styleUrls: ['cloud-research-environment-local-installation-instruction.component.css']
+  templateUrl: './cloud-research-environment-local-installation-instruction.component.html',
+  styleUrls: ['./cloud-research-environment-local-installation-instruction.component.css']
 })
 export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
   enableQ2: boolean;

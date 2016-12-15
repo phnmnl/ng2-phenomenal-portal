@@ -8,8 +8,8 @@ import {ApplicationLibraryService} from '../../shared/service/application-librar
 
 @Component({
   selector: 'ph-application-detail',
-  templateUrl: 'application-detail.component.html',
-  styleUrls: ['application-detail.component.css'],
+  templateUrl: './application-detail.component.html',
+  styleUrls: ['./application-detail.component.css'],
   providers: [ApplicationsDatabaseService]
 })
 

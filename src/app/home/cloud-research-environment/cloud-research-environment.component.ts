@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'ph-cloud-research-environment',
-  templateUrl: 'cloud-research-environment.component.html',
-  styleUrls: ['cloud-research-environment.component.css'],
+  templateUrl: './cloud-research-environment.component.html',
+  styleUrls: ['./cloud-research-environment.component.css'],
 })
 export class CloudResearchEnvironmentComponent {
   get img2(): string {

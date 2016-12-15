@@ -7,8 +7,10 @@ import {BreadcrumbService} from './shared/component/breadcrumb/breadcrumb.servic
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  private viewContainerRef: ViewContainerRef;
+
   constructor(private breadcrumbService: BreadcrumbService,
-              private viewContainerRef: ViewContainerRef) {
+              viewContainerRef: ViewContainerRef) {
     breadcrumbService.addFriendlyNameForRoute('/', 'Home');
     breadcrumbService.addFriendlyNameForRoute('/home', 'Home');
     breadcrumbService.addFriendlyNameForRoute('/app-library', 'App Library - Service Catalogue');
@@ -17,10 +19,12 @@ export class AppComponent {
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/instruction', 'Local Installation Instruction');
     breadcrumbService.addFriendlyNameForRoute('/dashboard', 'Dashboard');
     breadcrumbService.addFriendlyNameForRoute('/help', 'Help');
-    breadcrumbService.addFriendlyNameForRoute('/workflow', 'Create Your Own Cloud Research Environment (CRE)');
-    breadcrumbService.addFriendlyNameForRoute('/login', 'Login / Sign Up');
+    breadcrumbService.addFriendlyNameForRoute('/login', 'Welcome to Cloud Research Environment');
+    // breadcrumbService.addFriendlyNameForRoute('/login', 'Login / Sign Up');
     breadcrumbService.addFriendlyNameForRoute('/register', 'Sign Up');
+    breadcrumbService.addFriendlyNameForRoute('/setup', 'Setup My Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/statistics', 'Dashboard - VRE Site Statistics');
+    breadcrumbService.addFriendlyNameForRoute('/cre-dashboard', 'Cloud Research Environment Dashboard');
     // You need this small hack in order to catch application root view container ref
     this.viewContainerRef = viewContainerRef;
   }
