@@ -35,7 +35,7 @@ import {
 } from './shared/component/progress-bar-modal/progress-bar-modal.component';
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
-import {ClipboardModule} from 'angular2-clipboard';
+import {ClipboardModule} from 'ngx-clipboard';
 
 export function SSOConfigService () {
   return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
