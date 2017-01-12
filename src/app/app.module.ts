@@ -45,6 +45,7 @@ import { ProgressBarComponent } from './shared/component/progress-bar/progress-b
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import { MaterialModule } from '@angular/material';
+import 'hammerjs';
 
 export function SSOConfigService () {
   return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
