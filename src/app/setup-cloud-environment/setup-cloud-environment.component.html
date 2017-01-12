@@ -2,82 +2,91 @@
 
   <div class="container text-xs-center">
 
-    <p>In order to deploy your CRE you need a cloud provider.</p>
-    <p>Please select a cloud provider for setting up your Cloud Research Environment.</p>
-    <small>
-      <p>
-        <i class="fa fa-lock" aria-hidden="true"></i>
-        No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
-      </p>
-    </small>
+    <div *ngIf="tokenService.getToken()">
+      <p>In order to deploy your CRE you need a cloud provider.</p>
+      <p>Please select a cloud provider for setting up your Cloud Research Environment.</p>
+      <small>
+        <p>
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
+        </p>
+      </small>
 
-    <div class="col-lg-4">
-      <md-card class="card-height">
-        <img md-card-image src="{{phenomenal_logo}}" class="card-image-height">
-        <md-card-content *ngIf="!_isChosen">
-          <h5 class="card-title"><strong>PhenoMenal Cloud Hosting</strong></h5>
-          <br>
-          <p>Your data will be stored on the <strong><i>PhenoMeNal</i></strong> Cloud with computing power provided by the <strong><i>PhenoMeNal</i></strong> consortium partners</p>
-          <p><strong>Free</strong></p>
-          <p>Providers: <strong>EMBL-EBI, Uppsala Uni</strong></p>
-          <p>Cloud location: <strong>Europe</strong></p>
-          <button md-raised-button (click)="_isChosen=true;">Select</button>
-        </md-card-content>
+      <div class="col-lg-4">
+        <md-card class="card-height">
+          <img md-card-image src="{{phenomenal_logo}}" class="card-image-height">
+          <md-card-content *ngIf="!_isChosen">
+            <h5 class="card-title"><strong>PhenoMenal Cloud Hosting</strong></h5>
+            <br>
+            <p>Your data will be stored on the <strong><i>PhenoMeNal</i></strong> Cloud with computing power provided by the <strong><i>PhenoMeNal</i></strong> consortium partners</p>
+            <p><strong>Free</strong></p>
+            <p>Providers: <strong>EMBL-EBI, Uppsala Uni</strong></p>
+            <p>Cloud location: <strong>Europe</strong></p>
+            <button md-raised-button (click)="_isChosen=true;">Select</button>
+          </md-card-content>
 
-        <md-card-content *ngIf="_isChosen">
-          <md-input-container class="full-width">
-            <input #username md-input placeholder="Username">
-          </md-input-container>
-          <md-input-container class="full-width">
-            <input #password md-input placeholder="Password" type="password">
-          </md-input-container>
-          <md-input-container class="full-width">
-            <input #tenant_name md-input placeholder="Tenant Name" value="PhenoMeNal">
-          </md-input-container>
-          <md-input-container class="full-width">
-            <input #url md-input placeholder="Auth URL" value="https://extcloud03-keystone.ebi.ac.uk:5000/v2.0">
-          </md-input-container>
-          <button md-raised-button (click)="_isChosen=false;">Back</button>
-          <template ngbModalContainer></template>
-          <ph-progress-bar-modal [username]="username.value" [password]="password.value" [tenant_name]="tenant_name.value" [url]="url.value"></ph-progress-bar-modal>
-        </md-card-content>
-      </md-card>
+          <md-card-content *ngIf="_isChosen">
+            <md-input-container class="full-width">
+              <input #username md-input placeholder="Username">
+            </md-input-container>
+            <md-input-container class="full-width">
+              <input #password md-input placeholder="Password" type="password">
+            </md-input-container>
+            <md-input-container class="full-width">
+              <input #tenant_name md-input placeholder="Tenant Name" value="PhenoMeNal">
+            </md-input-container>
+            <md-input-container class="full-width">
+              <input #url md-input placeholder="Auth URL" value="https://extcloud03-keystone.ebi.ac.uk:5000/v2.0">
+            </md-input-container>
+            <button md-raised-button (click)="_isChosen=false;">Back</button>
+            <template ngbModalContainer></template>
+            <ph-progress-bar-modal [username]="username.value" [password]="password.value" [tenant_name]="tenant_name.value" [url]="url.value"></ph-progress-bar-modal>
+          </md-card-content>
+        </md-card>
+      </div>
+
+      <div class="col-lg-4">
+        <md-card class="card-height">
+          <img md-card-image src="{{openstack_logo}}" class="card-image-height">
+          <md-card-content>
+            <h5 class="card-title"><strong>OpenStack</strong></h5>
+            <br>
+            <p>Your Cloud Research Environment can be deployed at any OpenStack cloud you have an account for.
+            </p>
+            <p><strong>Commercial or Free</strong></p>
+            <p>Providers: <strong>N/A</strong></p>
+            <p>Cloud location: <strong>N/A</strong></p>
+
+            <button md-raised-button disabled>Select</button>
+          </md-card-content>
+        </md-card>
+      </div>
+
+      <div class="col-lg-4">
+        <md-card class="card-height">
+          <img md-card-image src="{{aws_logo}}" class="card-image-height">
+          <md-card-content>
+            <h5 class="card-title"><strong>Amazon AWS</strong></h5>
+            <br>
+            <p>Amazon AWS is a commercial cloud provider. Use this if you already have an Amazon Web Services account.
+            </p>
+            <p><strong>Commercial</strong></p>
+            <p>Providers: <strong>Amazon AWS</strong></p>
+            <p>Cloud location: <strong>Worldwide</strong></p>
+
+            <button md-raised-button disabled>Select</button>
+          </md-card-content>
+        </md-card>
+      </div>
     </div>
 
-    <div class="col-lg-4">
-      <md-card class="card-height">
-        <img md-card-image src="{{openstack_logo}}" class="card-image-height">
-        <md-card-content>
-          <h5 class="card-title"><strong>OpenStack</strong></h5>
-          <br>
-          <p>Your Cloud Research Environment can be deployed at any OpenStack cloud you have an account for.
-          </p>
-          <p><strong>Commercial or Free</strong></p>
-          <p>Providers: <strong>N/A</strong></p>
-          <p>Cloud location: <strong>N/A</strong></p>
-
-          <button md-raised-button disabled>Select</button>
-        </md-card-content>
-      </md-card>
-    </div>
-
-    <div class="col-lg-4">
-      <md-card class="card-height">
-        <img md-card-image src="{{aws_logo}}" class="card-image-height">
-        <md-card-content>
-          <h5 class="card-title"><strong>Amazon AWS</strong></h5>
-          <br>
-          <p>Amazon AWS is a commercial cloud provider. Use this if you already have an Amazon Web Services account.
-          </p>
-          <p><strong>Commercial</strong></p>
-          <p>Providers: <strong>Amazon AWS</strong></p>
-          <p>Cloud location: <strong>Worldwide</strong></p>
-
-          <button md-raised-button disabled>Select</button>
-        </md-card-content>
-      </md-card>
+    <div *ngIf="!tokenService.getToken()">
+      <p>Your session has been expired, please login again.</p>
+      <button md-raised-button [routerLink]="['/login']">Login</button>
     </div>
 
   </div>
+
+
 
 </main>

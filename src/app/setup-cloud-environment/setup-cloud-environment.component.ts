@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ApplicationService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-setup-cloud-environment',
@@ -13,7 +14,17 @@ export class SetupCloudEnvironmentComponent implements OnInit {
 
   public _isChosen: boolean = false;
 
-  constructor() { }
+  constructor(
+    private _applicationService: ApplicationService,
+    public credentialService: CredentialService,
+    public tokenService: TokenService,
+    public errorService: ErrorService,
+  ) {
+
+    // if (tokenService.getToken()) {
+    //   this.getAllApplication();
+    // }
+  }
 
   ngOnInit() {
   }
@@ -28,6 +39,23 @@ export class SetupCloudEnvironmentComponent implements OnInit {
 
   get aws_logo(): string {
     return this._aws_logo;
+  }
+
+  getAllApplication() {
+    this._applicationService.getAll(
+      this.credentialService.getUsername(),
+      this.tokenService.getToken()
+    ).subscribe(
+      deployment  => {
+        console.log('[RepositoryComponent] getAll %O', deployment);
+      },
+      error => {
+        console.log('[RepositoryComponent] getAll error %O', error);
+        this.errorService.setCurrentError(error);
+        this.tokenService.clearToken();
+        this.credentialService.clearCredentials();
+      }
+    );
   }
 
 }
