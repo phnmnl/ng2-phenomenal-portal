@@ -25,7 +25,15 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WorkflowComponent} from './workflow/workflow.component';
-import {AuthService, CredentialService, ConfigService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
+import {
+  ApplicationService,
+  AuthService,
+  CloudCredentialsService,
+  CredentialService,
+  ConfigService,
+  DeploymentService,
+  ErrorService,
+  TokenService} from 'ng2-cloud-portal-service-lib';
 import {SetupCloudEnvironmentComponent} from './setup-cloud-environment/setup-cloud-environment.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent, NgbdModalContentComponent} from './shared/component/modal/modal.component';
@@ -36,9 +44,11 @@ import {
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import {ClipboardModule} from 'ngx-clipboard';
+import { MaterialModule } from '@angular/material';
 
 export function SSOConfigService () {
   return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
 }
 
 @NgModule({
@@ -86,6 +96,7 @@ export function SSOConfigService () {
     HttpModule,
     ModalModule,
     NgbModule.forRoot(),
+    MaterialModule.forRoot(),
     Ng2PhenomenalPortalRoutingModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
@@ -100,7 +111,10 @@ export function SSOConfigService () {
     JenkinsReportService,
     ApplicationLibraryService,
 
+    ApplicationService,
     AuthService,
+    CloudCredentialsService,
+    DeploymentService,
     ErrorService,
     CredentialService,
     TokenService

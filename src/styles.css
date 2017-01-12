@@ -1,3 +1,4 @@
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
 /* TEMPLATE STYLES */
 body {
     padding-top: 80px;

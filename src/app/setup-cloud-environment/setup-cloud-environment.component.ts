@@ -11,6 +11,8 @@ export class SetupCloudEnvironmentComponent implements OnInit {
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
 
+  public _isChosen: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
@@ -27,4 +29,5 @@ export class SetupCloudEnvironmentComponent implements OnInit {
   get aws_logo(): string {
     return this._aws_logo;
   }
+
 }

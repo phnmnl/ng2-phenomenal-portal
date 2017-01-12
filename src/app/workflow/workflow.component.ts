@@ -1,5 +1,5 @@
 import {Component, OnInit, Renderer, OnDestroy} from '@angular/core';
-import {AuthService, CredentialService, JwtToken, TokenService} from 'ng2-cloud-portal-service-lib';
+import {ApplicationService, AuthService, CredentialService, ErrorService, JwtToken, TokenService} from 'ng2-cloud-portal-service-lib';
 
 
 @Component({
@@ -20,9 +20,11 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   removeMessageListener: Function;
 
   constructor(
+    private _applicationService: ApplicationService,
     private _authService: AuthService,
     public credentialService: CredentialService,
     public tokenService: TokenService,
+    public errorService: ErrorService,
     renderer: Renderer
   ) {
     // We cache the function "listenGlobal" returns, as it's one that allows to cleanly unregister the event listener
@@ -35,6 +37,10 @@ export class WorkflowComponent implements OnInit, OnDestroy {
         // return;
       }
     });
+
+    if (tokenService.getToken()) {
+      this.getAllApplication();
+    }
   }
 
   private saveToken(jwt: string) {
@@ -51,6 +57,25 @@ export class WorkflowComponent implements OnInit, OnDestroy {
 
   ssoLink() {
     return this._authService.ssoLink();
+  }
+
+
+
+  getAllApplication() {
+    this._applicationService.getAll(
+      this.credentialService.getUsername(),
+      this.tokenService.getToken()
+    ).subscribe(
+      deployment  => {
+        console.log('[RepositoryComponent] getAll %O', deployment);
+      },
+      error => {
+        console.log('[RepositoryComponent] getAll error %O', error);
+        this.errorService.setCurrentError(error);
+        this.tokenService.clearToken();
+        this.credentialService.clearCredentials();
+      }
+    );
   }
 
   ngOnDestroy() {

@@ -1,19 +1,48 @@
 <main>
+
   <div class="container text-xs-center">
-    <br>
-
-    <!--<h5>What Cloud provider would you like to use?</h5>-->
-
-    <!--<br>-->
 
     <p>In order to deploy your CRE you need a cloud provider.</p>
     <p>Please select a cloud provider for setting up your Cloud Research Environment.</p>
-    <small><p><i class="fa fa-lock" aria-hidden="true"></i> No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong></p></small>
+    <small>
+      <p>
+        <i class="fa fa-lock" aria-hidden="true"></i>
+        No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
+      </p>
+    </small>
+
+    <div class="col-lg-4">
+      <md-card>
+        <img md-card-image src="{{phenomenal_logo}}">
+        <md-card-content>
+          <h5 class="card-title"><strong>PhenoMenal Cloud Hosting</strong></h5>
+          <br>
+          <p>Your data will be stored on the <strong><i>PhenoMeNal</i></strong> Cloud with computing power provided by the <strong><i>PhenoMeNal</i></strong> consortium partners</p>
+          <p><strong>Free</strong></p>
+          <p>Providers: <strong>EMBL-EBI, Uppsala Uni</strong></p>
+          <p>Cloud location: <strong>Europe</strong></p>
+          <button md-raised-button>Select</button>
+        </md-card-content>
+      </md-card>
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <div class="container text-xs-center">
+    <br>
+
 
 
     <div class="col-lg-4">
+
       <!--Card-->
-      <div class="card card-cascade narrower app-card">
+      <div *ngIf="!_isChosen" class="card card-cascade narrower app-card">
 
         <!--Card image-->
         <div class="view overlay hm-white-slight">
@@ -34,12 +63,59 @@
           <p>Providers: <strong>EMBL-EBI, Uppsala Uni</strong></p>
           <p>Cloud location: <strong>Europe</strong></p>
 
-          <template ngbModalContainer></template>
-          <ph-progress-bar-modal></ph-progress-bar-modal>
+          <div class="btn btn-primary button-width rotate-btn" (click)="_isChosen=true;">
+            Select
+          </div>
         </div>
         <!--/.Card content-->
       </div>
       <!--/.Card-->
+
+
+      <!--Card-->
+      <div  *ngIf="_isChosen" class="card card-cascade narrower app-card">
+
+        <!--Card image-->
+        <div class="view overlay hm-white-slight">
+          <img src="{{phenomenal_logo}}" class="img-fluid m-x-auto d-block app-logo" alt="">
+          <a>
+            <div class="mask"></div>
+          </a>
+        </div>
+        <!--/.Card image-->
+
+        <!--Card content-->
+        <div class="card-block text-xs-center">
+
+          <div class="md-form">
+            <input #username type="text" id="form1" class="form-control" placeholder="Username" value="">
+          </div>
+
+          <div class="md-form">
+            <input #password type="password" id="form2" class="form-control" placeholder="Password" value="">
+          </div>
+
+          <div class="md-form">
+            <input #tenant_name type="text" id="form3" class="form-control" placeholder="Tenant Name" value="PhenoMeNal">
+          </div>
+
+          <div class="md-form">
+            <input #url type="text" id="form4" class="form-control" placeholder="Auth URL" value="https://extcloud03-keystone.ebi.ac.uk:5000/v2.0">
+          </div>
+
+          <div class="btn btn-primary button-width" (click)="_isChosen=false;">
+            Back
+          </div>
+
+          <template ngbModalContainer></template>
+          <ph-progress-bar-modal [username]="username.value" [password]="password.value" [tenant_name]="tenant_name.value" [url]="url.value"></ph-progress-bar-modal>
+        </div>
+        <!--/.Card content-->
+      </div>
+      <!--/.Card-->
+
+
+
     </div>
     <!--Card-->
 
@@ -120,6 +196,8 @@
 
     <!--<p>Do you have an account with another cloud provider that you would like to use?</p>-->
     <!--<p>You can login and use your own cloud provider here</p>-->
+
+
 
 
   </div>
