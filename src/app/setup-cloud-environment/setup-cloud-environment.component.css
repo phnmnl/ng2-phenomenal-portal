@@ -1,57 +1,32 @@
-.app-card {
-  /*width: 100%;*/
-  max-width: 500px;
-
+.input-width {
+  width: 90%;
 }
 
-@media (min-width: 768px) {
-  .app-card {
-    height: 500px;
-    /*max-width: 500px;*/
-  }
-
-  .card-title {
-    margin-bottom: 5px !important;
-  }
-
-  .card-block {
-    padding-top: 10px !important;
-  }
-}
-
-@media (min-width: 992px) {
-  .app-card {
-    height: 520px;
-    /*max-width: 500px;*/
-  }
-
-}
-
-.app-logo {
-  height: 200px;
-}
-
-.overflow {
-  text-overflow: ellipsis;
-}
-
-.card-cascade .view {
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0), 0 1px 20px 0 rgba(0, 0, 0, 0.2);
-}
-
-.card {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-.full-width {
-  width: 100%;
-}
-
-.card-height {
+.card-property {
   height: 530px;
 }
 
-.card-image-height {
+.card-image {
   height: 210px;
 }
 
+@media (max-width: 991px) and (min-width: 404px) {
+  .card-image {
+    width: 300px;
+  }
+
+  .card-property {
+    height: 500px;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 403px) {
+  .card-image {
+    width: 260px;
+  }
+
+  .card-property {
+    margin-bottom: 30px;
+  }
+}

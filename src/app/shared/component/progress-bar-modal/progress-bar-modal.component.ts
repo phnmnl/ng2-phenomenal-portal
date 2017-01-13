@@ -1,12 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationDeployer } from 'ng2-cloud-portal-presentation-lib';
-import {DeploymentService, CloudCredentialsField, CloudCredentials} from 'ng2-cloud-portal-service-lib';
+import {DeploymentService} from 'ng2-cloud-portal-service-lib';
 import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
-import { Application, ApplicationService, CloudCredentialsService} from 'ng2-cloud-portal-service-lib';
+import { ApplicationService, CloudCredentialsService} from 'ng2-cloud-portal-service-lib';
 import {isError} from 'util';
+import {Credential } from '../../../setup-cloud-environment/credential';
 
 @Component({
   selector: 'ph-progress-bar-modal-content',
@@ -35,10 +36,7 @@ import {isError} from 'util';
 })
 
 export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
-  @Input() username: string;
-  @Input() password: string;
-  @Input() tenant_name: string;
-  @Input() url: string;
+  @Input() credential: Credential;
 
   progress: number = 0;
   status: string[] = [
@@ -53,9 +51,6 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     'Almost done ...',
     'Be patient ...',
     'Get ready ...',
-    '3...',
-    '2...',
-    '1...'
   ];
   id;
   applicationDeployer: ApplicationDeployer;
@@ -80,16 +75,15 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     this.applicationDeployer.assignedInputs = {};
 
     let value = {
-      'name': 'test2',
-      'cloudProvider': 'OSTACK',
+      'name': this.credential.username + '-' + this.credential.provider,
+      'cloudProvider': this.credential.provider,
       'fields': [
-        {'key': 'OS_USERNAME', 'value': this.username},
-        {'key': 'OS_TENANT_NAME', 'value': this.tenant_name},
-        {'key': 'OS_AUTH_URL', 'value': this.url},
-        {'key': 'OS_PASSWORD', 'value': this.password}
+        {'key': 'OS_USERNAME', 'value': this.credential.username},
+        {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
+        {'key': 'OS_AUTH_URL', 'value': this.credential.url},
+        {'key': 'OS_PASSWORD', 'value': this.credential.password}
       ]
     };
-
     setTimeout((callback) => {
       this.increment(
         setTimeout(() => {
@@ -333,18 +327,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   styleUrls: ['./progress-bar-modal.component.css']
 })
 export class ProgressBarModalComponent {
-  @Input() username: string;
-  @Input() password: string;
-  @Input() tenant_name: string;
-  @Input() url: string;
+  @Input() credential: Credential;
 
   constructor(private modalService: NgbModal) {}
 
   open() {
     const modalRef = this.modalService.open(ProgressBarModalContentComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.username = this.username;
-    modalRef.componentInstance.password = this.password;
-    modalRef.componentInstance.tenant_name = this.tenant_name;
-    modalRef.componentInstance.url = this.url;
+    modalRef.componentInstance.credential = this.credential;
   }
 }
