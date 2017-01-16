@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationDeployer } from 'ng2-cloud-portal-presentation-lib';
-import {DeploymentService} from 'ng2-cloud-portal-service-lib';
+import {DeploymentService, Deployment} from 'ng2-cloud-portal-service-lib';
 import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
@@ -42,19 +42,20 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   status: string[] = [
     'Initialising ...',
     'Applying Cloud Credentials ...',
-    'Checking the Existence of the Application Settings ...',
-    'Applying Application Settings...',
+    'Checking the Application ...',
+    'Setting up the Application ...',
     'Adding Deployment Server ...',
-    'Setting up ...',
-    'Configurating ...',
-    'Nearly done ...',
-    'Almost done ...',
-    'Be patient ...',
-    'Get ready ...',
+    'Setting up Deployment Server ...',
+    'Starting Deployment Server ...',
+    'Running Deployment Server ...',
+    'Setting up Cloud Research Environment ...',
+    'Running Cloud Research Environment ...',
+    'Cloud Research Environment is Ready for Use!',
   ];
   id;
   applicationDeployer: ApplicationDeployer;
   isError = false;
+  isRunning = 0;
 
   constructor(public activeModal: NgbActiveModal,
               private _applicationService: ApplicationService,
@@ -69,7 +70,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.applicationDeployer = <ApplicationDeployer> {
       name: 'BioExcel Portal test application',
-      repoUri: 'https://github.com/jadianes/be-application-test',
+      repoUri: 'https://github.com/sh107/be-application-test',
       selectedCloudProvider: 'OSTACK' };
     this.applicationDeployer.attachedVolumes = {};
     this.applicationDeployer.assignedInputs = {};
@@ -88,10 +89,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       this.increment(
         setTimeout(() => {
           this.getAllCloudCredential((back) => {
-            console.log(back);
             let isExist = false;
             for (let v = 0; v < back.length; v++) {
-              console.log(back[v]);
               if (back[v].name === value.name) {
                 isExist = true;
                 break;
@@ -178,8 +177,34 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                 this.status[this.progress / 10 ] = 'ERROR: ' + deployStatus.message;
                 this.isError = true;
               } else {
+                let isStarted: boolean;
+                isStarted = true;
+
                 setTimeout(() => {
-                  this.increment(callback);
+                  this.increment(setTimeout(
+                    () => {
+                      console.log(deployStatus);
+                      this.getDeploymentStatusFeed(deployStatus, 3000, (result) => {
+                        console.log(result);
+
+                        if (result.status === 'STARTING_FAILED') {
+                          this.status[this.progress / 10 ] = 'ERROR: ' + result.status;
+                          this.isError = true;
+                        }
+                        if (result.status === 'STARTING' && isStarted) {
+                          isStarted = false;
+                          this.increment(() => {
+                          });
+                        }
+
+                        if (result.status === 'RUNNING') {
+                          this.increment(() => {
+
+                          });
+                        }
+                      });
+                    }, 2000)
+                  );
                 }, 2000);
               }
             }
@@ -189,7 +214,26 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-
+  getDeploymentStatusFeed(deploymentInstance: Deployment, interval: number, callback) {
+    let statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
+      this.credentialService.getUsername(),
+      this._tokenService.getToken(),
+      deploymentInstance, interval).subscribe(
+      res => {
+        if (res.status === 'RUNNING') {
+          this.isRunning++;
+          if (this.isRunning >= 5) {
+            statusFeedSubscription.unsubscribe();
+          }
+        }
+        callback(res);
+      },
+      error => {
+        statusFeedSubscription.unsubscribe();
+        callback(error);
+      }
+    );
+  }
 
   addCloudCredential(value: any, callback) {
     console.log('[Profile] adding ' + value.name);

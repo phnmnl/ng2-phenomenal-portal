@@ -1,37 +1,46 @@
 <main>
   <!--Main layout-->
   <div class="container text-xs-center">
-
-
     <h5>Cloud Research Environment </h5>
-
-    <br>
 
     <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
 
-    <a class="btn btn-primary button-width" href="{{ text }}" target="_blank">
-      <img [src]="galaxy_icon"> My Galaxy Workflow
-    </a>
-
-
-    <br>
-    <br>
-
-    <p>Want to share the CRE with your research collaborators?</p>
-
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6">
-      <div class="input-group">
-        <input type="text" class="form-control" [(ngModel)]="text" readonly style="text-align: center">
-        <span class="input-group-btn">
-        <a class="btn btn-primary button-width" >
-          <i class="fa fa-clipboard"  ngxClipboard [cbContent]="text"></i>
-        </a>
-      </span>
-      </div>
+    <div *ngIf="isEmptyDeployment">
+      You do not have any Cloud Research Environment yet.
+      <br>
+      <br>
+      <button md-raised-button [routerLink]="['/setup']">Create it Now!</button>
     </div>
-    <div class="col-sm-3"></div>
 
+    <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
+      <md-card class="card-property">
+        <md-card-content>
+          <!--<a class="btn btn-primary button-width" href="{{ text }}" target="_blank">-->
+            <!--<img [src]="galaxy_icon"> My Galaxy Workflow-->
+          <!--</a>-->
+          <!--<div class="input-group">-->
+            <!--<input type="text" class="form-control" [(ngModel)]="text" readonly style="text-align: center">-->
+            <!--<span class="input-group-btn">-->
+              <!--<a class="btn btn-primary button-width" >-->
+                <!--<i class="fa fa-clipboard"  ngxClipboard [cbContent]="text"></i>-->
+              <!--</a>-->
+            <!--</span>-->
+          <!--</div>-->
+          <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
+          <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
+          <p>Cloud Provider: {{deployment.cloudProvider}}</p>
+          <div *ngIf="!isConfirmationDialogue">
+            <button md-raised-button (click)="confirmRemoval(true)">Remove</button>
+          </div>
+          <div *ngIf="isConfirmationDialogue">
+            <p>Please confirm</p>
+            <button md-raised-button (click)="confirmRemoval(false)">No</button>
+            <button md-raised-button (click)="remove(deployment)">Yes</button>
+          </div>
+        </md-card-content>
+      </md-card>
+    </div>
 
   </div>
+
 </main>
