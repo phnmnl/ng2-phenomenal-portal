@@ -27,14 +27,16 @@
             <!--</span>-->
           <!--</div>-->
           <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
+          <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
           <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
           <p>Cloud Provider: {{deployment.cloudProvider}}</p>
-          <div *ngIf="!isConfirmationDialogue">
-            <button md-raised-button (click)="confirmRemoval(true)">Remove</button>
+
+          <div *ngIf="!deployment['isDelete']">
+            <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']">Remove</button>
           </div>
-          <div *ngIf="isConfirmationDialogue">
+          <div *ngIf="deployment['isDelete']">
             <p>Please confirm</p>
-            <button md-raised-button (click)="confirmRemoval(false)">No</button>
+            <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']">No</button>
             <button md-raised-button (click)="remove(deployment)">Yes</button>
           </div>
         </md-card-content>

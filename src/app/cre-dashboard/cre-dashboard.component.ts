@@ -32,6 +32,12 @@ export class CreDashboardComponent implements OnInit {
           this.isEmptyDeployment = true;
         }
         this.deploymentServerList = result;
+        for (let deployment of this.deploymentServerList) {
+          this.getStatus(deployment, (res) => {
+            deployment['status'] = res.status;
+            deployment['isDelete'] = false;
+          });
+        }
       }
     );
   }
@@ -64,8 +70,26 @@ export class CreDashboardComponent implements OnInit {
     );
   }
 
-  confirmRemoval(isRemoved: boolean) {
-    this.isConfirmationDialogue = isRemoved;
+  // confirmRemoval(isRemoved: boolean) {
+  //   deployment['isDelete'] = isRemoved;
+  // }
+
+  getStatus(deployment: Deployment, callback) {
+
+    this._deploymentService.getDeploymentStatus(
+      this.credentialService.getUsername(),
+      this._tokenService.getToken(),
+      deployment).subscribe(
+      res => {
+        console.log('[Deployments] got status response %O', res);
+        callback(res);
+      },
+      error => {
+        console.log('[Deployments] status error %O', error);
+        this.errorService.setCurrentError(error);
+        callback(error);
+      }
+    );
   }
 
   remove(deployment: Deployment) {
