@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {ApplicationService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-cloud-research-environment',
@@ -41,7 +42,12 @@ export class CloudResearchEnvironmentComponent {
   private _img2 = 'assets/img/cloud-research-environment/img2.png';
   private _img3 = 'assets/img/cloud-research-environment/img3.png';
 
-  constructor() {
+  constructor(
+    private _applicationService: ApplicationService,
+    public credentialService: CredentialService,
+    public tokenService: TokenService,
+    public errorService: ErrorService
+  ) {
     this.addNewSlide();
   }
 
@@ -70,8 +76,21 @@ export class CloudResearchEnvironmentComponent {
     );
   }
 
-  // private removeLastSlide() {
-  //   this.slides.pop();
-  // }
+  getAllApplication() {
+    this._applicationService.getAll(
+      this.credentialService.getUsername(),
+      this.tokenService.getToken()
+    ).subscribe(
+      deployment  => {
+        console.log('[RepositoryComponent] getAll %O', deployment);
+      },
+      error => {
+        console.log('[RepositoryComponent] getAll error %O', error);
+        this.errorService.setCurrentError(error);
+        this.tokenService.clearToken();
+        this.credentialService.clearCredentials();
+      }
+    );
+  }
 
 }

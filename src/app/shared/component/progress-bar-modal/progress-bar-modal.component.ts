@@ -27,7 +27,7 @@ import {Credential } from '../../../setup-cloud-environment/credential';
       </div>
     </div>
     <div *ngIf="progress > 100">
-      <a type="button" class="btn btn-primary" [routerLink]="['/cre-dashboard']">Installation Complete</a>
+      <a type="button" class="btn btn-primary" [routerLink]="['/cloud-research-environment']">Installation Complete</a>
     </div>
     <div *ngIf="isError">
       <a type="button" class="btn btn-primary" (click)="activeModal.close('Close click')">Cancel</a>
@@ -269,7 +269,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       );
   }
 
-   removeCloudCredentials(value: any, callback) {
+  removeCloudCredentials(value: any, callback) {
     console.log('[Profile] removing cloud credentials ' + value.name);
     this._cloudCredentialsService.delete(
       this._tokenService.getToken(), value).subscribe(

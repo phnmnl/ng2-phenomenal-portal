@@ -1,14 +1,16 @@
 <main>
   <!--Main layout-->
   <div class="container text-xs-center">
-    <h5>Cloud Research Environment </h5>
 
-    <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
 
     <div *ngIf="isEmptyDeployment">
-      You do not have any Cloud Research Environment yet.
-      <br>
-      <br>
+      <p>You do not have any Cloud Research Environment yet.</p>
+    </div>
+    <div *ngIf="!isEmptyDeployment">
+      <h5>Cloud Research Environment </h5>
+      <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
+    </div>
+    <div>
       <button md-raised-button [routerLink]="['/setup']">Create it Now!</button>
     </div>
 

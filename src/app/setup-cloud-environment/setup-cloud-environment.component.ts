@@ -22,7 +22,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     private _applicationService: ApplicationService,
     public credentialService: CredentialService,
     public tokenService: TokenService,
-    public errorService: ErrorService,
+    public errorService: ErrorService
   ) {
 
     this._cloudProviderCollection = [

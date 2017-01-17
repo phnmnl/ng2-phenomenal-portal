@@ -24,7 +24,7 @@
           </li>
           <li class="nav-item">
             <a (click)="closeMenu()" class="nav-link" [routerLink]="['/cloud-research-environment']"
-               routerLinkActive="active">Cloud Research Environment</a>
+               routerLinkActive="active">CRE</a>
           </li>
           <li class="nav-item">
             <a (click)="closeMenu()" class="nav-link" [routerLink]="['/app-library']" routerLinkActive="active">App
@@ -34,13 +34,13 @@
             <a (click)="closeMenu()" class="nav-link" [routerLink]="['/help']" routerLinkActive="active">Help</a>
           </li>
 
-          <!--<li *ngIf="_router.url!='/dashboard'" class="nav-item" routerLinkActive="active">-->
-          <!--<a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']" >Login / Sign Up</a>-->
-          <!--</li>-->
+          <li *ngIf="!tokenService.getToken()" class="nav-item" routerLinkActive="active">
+            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']" >Login</a>
+          </li>
 
-          <!--<li *ngIf="_router.url=='/dashboard'" class="nav-item" routerLinkActive="active">-->
-          <!--<a (click)="closeMenu()" class="nav-link" [routerLink]="['/dashboard']" >Dashboard</a>-->
-          <!--</li>-->
+          <li *ngIf="tokenService.getToken()" class="nav-item" routerLinkActive="active">
+            <a (click)="logout()" class="nav-link">Logout</a>
+          </li>
 
         </ul>
       </div>
