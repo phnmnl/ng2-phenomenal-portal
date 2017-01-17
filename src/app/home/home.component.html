@@ -73,22 +73,6 @@
     </div>
     <!--/.First row-->
 
-    <!--<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"-->
-         <!--aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
-      <!--<div class="modal-dialog modal-lg">-->
-        <!--<div class="modal-content">-->
-          <!--<div class="modal-header">-->
-            <!--<button type="button" class="close" aria-label="Close" (click)="hideChildModal()">-->
-              <!--<span aria-hidden="true">&times;</span>-->
-            <!--</button>-->
-            <!--<h4 class="modal-title">App Library</h4>-->
-          <!--</div>-->
-          <!--<div class="modal-body">-->
-            <!--<img [src]="img2" class="img-fluid " alt="">-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
 
     <hr class="extra-margins">
 
@@ -98,10 +82,8 @@
       <div class="col-md-6">
         <!--Featured image -->
         <ph-modal [img]="img3" [title]="img3_title"></ph-modal>
+        <template ngbModalContainer></template>
       </div>
-
-      <template ngbModalContainer></template>
-
 
       <br>
       <br>

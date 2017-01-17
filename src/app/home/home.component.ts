@@ -1,6 +1,4 @@
-import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'ph-home',
@@ -13,7 +11,6 @@ export class HomeComponent {
     return this._img3_title;
   }
 
-  @ViewChild('childModal') public childModal: ModalDirective;
 
   // The time to show the next photo
   private _NextPhotoInterval: number = 5000;
@@ -52,7 +49,7 @@ export class HomeComponent {
   private _img2 = 'assets/img/home/img2.png';
   private _img3 = 'assets/img/home/img3.png';
   private _img3_title: string = 'Galaxy Workflow';
-  constructor(private modalService: NgbModal) {
+  constructor() {
     this.addNewSlide();
   }
 
@@ -89,20 +86,4 @@ export class HomeComponent {
     );
   }
 
-  // private removeLastSlide() {
-  //   this.slides.pop();
-  // }
-
-
-  public showChildModal(): void {
-    this.childModal.show();
-  }
-
-  public hideChildModal(): void {
-    this.childModal.hide();
-  }
-
-  open(content) {
-    this.modalService.open(content, { windowClass: 'dark-modal' });
-  }
 }

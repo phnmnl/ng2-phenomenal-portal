@@ -17,7 +17,6 @@ export class CreDashboardComponent implements OnInit {
   deploymentServerList: Deployment[];
   isEmptyDeployment: boolean = false;
   isClickedOnce: boolean = false;
-  isConfirmationDialogue = false;
 
   constructor(
     private _deploymentService: DeploymentService,
@@ -32,7 +31,7 @@ export class CreDashboardComponent implements OnInit {
           this.isEmptyDeployment = true;
         }
         this.deploymentServerList = result;
-        for (let deployment of this.deploymentServerList) {
+        for (const deployment of this.deploymentServerList) {
           this.getStatus(deployment, (res) => {
             deployment['status'] = res.status;
             deployment['isDelete'] = false;
@@ -70,9 +69,6 @@ export class CreDashboardComponent implements OnInit {
     );
   }
 
-  // confirmRemoval(isRemoved: boolean) {
-  //   deployment['isDelete'] = isRemoved;
-  // }
 
   getStatus(deployment: Deployment, callback) {
 

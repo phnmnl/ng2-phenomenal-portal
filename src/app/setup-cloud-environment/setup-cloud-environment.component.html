@@ -50,7 +50,7 @@
     </div>
 
     <div *ngIf="!tokenService.getToken()">
-      <p>Your session has been expired, please login again.</p>
+      <p>Please login ...</p>
       <button md-raised-button [routerLink]="['/login']">Login</button>
     </div>
 

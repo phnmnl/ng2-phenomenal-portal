@@ -7,8 +7,6 @@ import {HelpComponent} from './help/help.component';
 import {HelpTopicComponent} from './help/help-topic/help-topic.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {HomeComponent} from './home/home.component';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WorkflowComponent} from './workflow/workflow.component';
 import {SetupCloudEnvironmentComponent} from './setup-cloud-environment/setup-cloud-environment.component';
@@ -29,8 +27,6 @@ const routes: Routes = [
   {path: 'help', component: HelpComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: WorkflowComponent},
-  // {path: 'login', component: LoginComponent},
-  // {path: 'register', component: RegisterComponent},
   {path: 'setup', component: SetupCloudEnvironmentComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'cre-dashboard', component: CreDashboardComponent},
