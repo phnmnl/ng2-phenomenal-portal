@@ -21,8 +21,6 @@ import {WikiService} from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from './app-routing.module';
 import {JenkinsReportService} from './shared/service/jenkins-report/jenkins-report.service';
 import {ApplicationLibraryService} from './shared/service/application-library/application-library.service';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WorkflowComponent} from './workflow/workflow.component';
 import {
@@ -71,10 +69,6 @@ export function SSOConfigService () {
     CollapseDirective,
 
     StatisticsComponent,
-
-    LoginComponent,
-
-    RegisterComponent,
 
     DashboardComponent,
 
