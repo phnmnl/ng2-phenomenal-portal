@@ -43,6 +43,7 @@ import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import { MaterialModule } from '@angular/material';
 import 'hammerjs';
+import {RouterModule} from '@angular/router';
 
 export function SSOConfigService () {
   return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -89,7 +90,8 @@ export function SSOConfigService () {
     ModalModule,
     NgbModule.forRoot(),
     MaterialModule.forRoot(),
-    Ng2PhenomenalPortalRoutingModule
+    Ng2PhenomenalPortalRoutingModule,
+    RouterModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
