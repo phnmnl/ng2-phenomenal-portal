@@ -32,8 +32,12 @@
 
         <p class="text-xs-center">Want to give it a go?</p>
 
-        <div class="text-xs-center">
+        <div *ngIf="tokenService.getToken()" class="text-xs-center">
           <a [routerLink]="['/setup']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
+        </div>
+
+        <div *ngIf="!tokenService.getToken()" class="text-xs-center">
+          <a [routerLink]="['/login']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
         </div>
 
         <br>

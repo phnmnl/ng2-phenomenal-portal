@@ -7,7 +7,7 @@ import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { ApplicationService, CloudCredentialsService} from 'ng2-cloud-portal-service-lib';
 import {isError} from 'util';
-import {Credential } from '../../../setup-cloud-environment/credential';
+import {Credential } from '../../../setup/credential';
 
 @Component({
   selector: 'ph-progress-bar-modal-content',
@@ -215,11 +215,14 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   }
 
   getDeploymentStatusFeed(deploymentInstance: Deployment, interval: number, callback) {
-    let statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
+    const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
       this.credentialService.getUsername(),
       this._tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
+        if (res.status === 'STARTING_FAILED') {
+            statusFeedSubscription.unsubscribe();
+        }
         if (res.status === 'RUNNING') {
           this.isRunning++;
           if (this.isRunning >= 5) {
@@ -303,7 +306,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
 
   addApplication(value: any, callback) {
     console.log('[RepositoryComponent] adding ' + value.repoUri);
-    let repoUri = value.repoUri;
+    const repoUri = value.repoUri;
     this._applicationService.add(this.credentialService.getUsername(),
       this._tokenService.getToken(), repoUri)
       .subscribe(

@@ -4,13 +4,13 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {BreadcrumbComponent} from './shared/component/breadcrumb/breadcrumb.component';
-import {CloudResearchEnvironmentComponent} from './home/cloud-research-environment/cloud-research-environment.component';
-import {CloudResearchEnvironmentLocalInstallationComponent} from './home/cre-local-installation/';
-import {CloudResearchEnvironmentLocalInstallationInstructionComponent} from './home/cre-local-installation-instruction/';
+import {CloudResearchEnvironmentComponent} from './static-page/cloud-research-environment/cloud-research-environment.component';
+import {CRELocalInstallationComponent} from './static-page/cre-local-installation/cre-local-installation.component';
+import {CRELocalInstallationInstructionComponent} from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
 import {HeaderComponent} from './shared/component/header/header.component';
 import {HelpComponent} from './help/help.component';
 import {HelpTopicComponent} from './help/help-topic/help-topic.component';
-import {HomeComponent} from './home/home.component';
+import {HomeComponent} from './static-page/home/home.component';
 import {FooterComponent} from './shared/component/footer/footer.component';
 import {CarouselComponent} from './shared/component/carousel/carousel.component';
 import {SlideComponent} from './shared/component/carousel/slide/slide.component';
@@ -21,8 +21,7 @@ import {WikiService} from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from './app-routing.module';
 import {JenkinsReportService} from './shared/service/jenkins-report/jenkins-report.service';
 import {ApplicationLibraryService} from './shared/service/application-library/application-library.service';
-import {DashboardComponent} from './dashboard/dashboard.component';
-import {WorkflowComponent} from './workflow/workflow.component';
+import {LoginComponent} from './login/login.component';
 import {
   ApplicationService,
   AuthService,
@@ -32,7 +31,7 @@ import {
   DeploymentService,
   ErrorService,
   TokenService} from 'ng2-cloud-portal-service-lib';
-import {SetupCloudEnvironmentComponent} from './setup-cloud-environment/setup-cloud-environment.component';
+import {SetupCloudEnvironmentComponent} from './setup/setup-cloud-environment.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent, NgbdModalContentComponent} from './shared/component/modal/modal.component';
 import {
@@ -56,8 +55,8 @@ export function SSOConfigService () {
     BreadcrumbComponent,
     CarouselComponent,
     CloudResearchEnvironmentComponent,
-    CloudResearchEnvironmentLocalInstallationComponent,
-    CloudResearchEnvironmentLocalInstallationInstructionComponent,
+    CRELocalInstallationComponent,
+    CRELocalInstallationInstructionComponent,
     HeaderComponent,
     HelpComponent,
     HelpTopicComponent,
@@ -70,9 +69,7 @@ export function SSOConfigService () {
 
     StatisticsComponent,
 
-    DashboardComponent,
-
-    WorkflowComponent,
+    LoginComponent,
 
     SetupCloudEnvironmentComponent,
 

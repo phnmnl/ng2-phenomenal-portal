@@ -1,20 +1,20 @@
 /* tslint:disable:no-unused-variable */
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {WorkflowComponent} from './workflow.component';
+import {LoginComponent} from './login.component';
 
-describe('WorkflowComponent', () => {
-  let component: WorkflowComponent;
-  let fixture: ComponentFixture<WorkflowComponent>;
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [WorkflowComponent]
+      declarations: [LoginComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WorkflowComponent);
+    fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

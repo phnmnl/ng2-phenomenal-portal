@@ -50,8 +50,7 @@
     </div>
 
     <div *ngIf="!tokenService.getToken()">
-      <p>Please login ...</p>
-      <button md-raised-button [routerLink]="['/login']">Login</button>
+      <meta HTTP-EQUIV="REFRESH" content="0; url=/login">
     </div>
 
   </div>

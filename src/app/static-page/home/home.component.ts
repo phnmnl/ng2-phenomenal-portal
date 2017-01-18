@@ -1,10 +1,11 @@
 import {Component, ViewEncapsulation} from '@angular/core';
+import {ApplicationService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-home',
-  templateUrl: './home.component.html',
+  templateUrl: 'home.component.html',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./home.component.css']
+  styleUrls: ['home.component.css']
 })
 export class HomeComponent {
   get img3_title(): string {
@@ -49,7 +50,12 @@ export class HomeComponent {
   private _img2 = 'assets/img/home/img2.png';
   private _img3 = 'assets/img/home/img3.png';
   private _img3_title: string = 'Galaxy Workflow';
-  constructor() {
+  constructor(
+    private _applicationService: ApplicationService,
+    public credentialService: CredentialService,
+    public tokenService: TokenService,
+    public errorService: ErrorService
+  ) {
     this.addNewSlide();
   }
 
@@ -85,5 +91,20 @@ export class HomeComponent {
       }
     );
   }
-
+  getAllApplication() {
+    this._applicationService.getAll(
+      this.credentialService.getUsername(),
+      this.tokenService.getToken()
+    ).subscribe(
+      deployment  => {
+        console.log('[RepositoryComponent] getAll %O', deployment);
+      },
+      error => {
+        console.log('[RepositoryComponent] getAll error %O', error);
+        this.errorService.setCurrentError(error);
+        this.tokenService.clearToken();
+        this.credentialService.clearCredentials();
+      }
+    );
+  }
 }

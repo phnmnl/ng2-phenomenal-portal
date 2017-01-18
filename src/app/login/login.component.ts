@@ -3,11 +3,11 @@ import {ApplicationService, AuthService, CredentialService, ErrorService, JwtTok
 
 
 @Component({
-  selector: 'ph-workflow',
-  templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css']
+  selector: 'ph-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class WorkflowComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
   get logo_white(): string {
     return this._logo_white;
   }

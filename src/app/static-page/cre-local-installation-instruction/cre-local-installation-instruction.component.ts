@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'ph-cloud-research-environment-local-installation-instruction',
-  templateUrl: './cloud-research-environment-local-installation-instruction.component.html',
-  styleUrls: ['./cloud-research-environment-local-installation-instruction.component.css']
+  selector: 'ph-cre-local-installation-instruction',
+  templateUrl: './cre-local-installation-instruction.component.html',
+  styleUrls: ['./cre-local-installation-instruction.component.css']
 })
-export class CloudResearchEnvironmentLocalInstallationInstructionComponent {
+export class CRELocalInstallationInstructionComponent {
   enableQ2: boolean;
   enableQ3: boolean;
   enableQ4: boolean;
