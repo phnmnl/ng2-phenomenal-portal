@@ -1,0 +1,21 @@
+// Import all the tools needed to customize the theme and extract parts of it
+@import '~@angular/material/core/theming/all-theme';
+
+// Define a mixin that accepts a theme and outputs the color styles for the component.
+@mixin phenomenal-theme($theme) {
+
+  // Extract whichever individual palettes you need from the theme.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  button {
+    background-color: md-color($primary) !important;
+    color: white !important;
+    box-shadow: none !important;
+  }
+
+  md-card {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1), 0 2px 10px 0 rgba(0, 0, 0, 0.1) !important;
+  }
+}

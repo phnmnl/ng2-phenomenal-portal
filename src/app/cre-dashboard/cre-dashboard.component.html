@@ -3,47 +3,48 @@
   <div class="container text-xs-center">
 
 
-    <div *ngIf="isEmptyDeployment">
-      <p>You do not have any Cloud Research Environment yet.</p>
-    </div>
-    <div *ngIf="!isEmptyDeployment">
-      <h5>Cloud Research Environment </h5>
-      <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
-    </div>
-    <div>
-      <button md-raised-button [routerLink]="['/setup']">Create it Now!</button>
-    </div>
+      <!--<div *ngIf="isEmptyDeployment">-->
+        <!--<p>You do not have any Cloud Research Environment yet.</p>-->
+      <!--</div>-->
+      <div *ngIf="!isEmptyDeployment">
+        <h5>Cloud Research Environment </h5>
+        <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
+      </div>
+      <div>
+        <button md-raised-button [routerLink]="['/cloud-research-environment/setup']">Create it Now!</button>
+      </div>
 
-    <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
-      <md-card class="card-property">
-        <md-card-content>
-          <!--<a class="btn btn-primary button-width" href="{{ text }}" target="_blank">-->
+      <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
+        <md-card class="card-property">
+          <md-card-content>
+            <!--<a class="btn btn-primary button-width" href="{{ text }}" target="_blank">-->
             <!--<img [src]="galaxy_icon"> My Galaxy Workflow-->
-          <!--</a>-->
-          <!--<div class="input-group">-->
+            <!--</a>-->
+            <!--<div class="input-group">-->
             <!--<input type="text" class="form-control" [(ngModel)]="text" readonly style="text-align: center">-->
             <!--<span class="input-group-btn">-->
-              <!--<a class="btn btn-primary button-width" >-->
-                <!--<i class="fa fa-clipboard"  ngxClipboard [cbContent]="text"></i>-->
-              <!--</a>-->
+            <!--<a class="btn btn-primary button-width" >-->
+            <!--<i class="fa fa-clipboard"  ngxClipboard [cbContent]="text"></i>-->
+            <!--</a>-->
             <!--</span>-->
-          <!--</div>-->
-          <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
-          <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
-          <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
-          <p>Cloud Provider: {{deployment.cloudProvider}}</p>
+            <!--</div>-->
+            <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
+            <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
+            <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
+            <p>Cloud Provider: {{deployment.cloudProvider}}</p>
 
-          <div *ngIf="!deployment['isDelete']">
-            <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']">Remove</button>
-          </div>
-          <div *ngIf="deployment['isDelete']">
-            <p>Please confirm</p>
-            <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']">No</button>
-            <button md-raised-button (click)="remove(deployment)">Yes</button>
-          </div>
-        </md-card-content>
-      </md-card>
-    </div>
+            <div *ngIf="!deployment['isDelete']">
+              <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']">Remove</button>
+            </div>
+            <div *ngIf="deployment['isDelete']">
+              <p>Please confirm</p>
+              <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']">No</button>
+              <button md-raised-button (click)="remove(deployment)">Yes</button>
+            </div>
+          </md-card-content>
+        </md-card>
+      </div>
+
 
   </div>
 

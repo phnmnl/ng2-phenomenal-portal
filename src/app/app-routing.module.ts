@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: 'help', component: HelpComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'setup', component: SetupCloudEnvironmentComponent},
+  {path: 'cloud-research-environment/setup', component: SetupCloudEnvironmentComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'cre-dashboard', component: CreDashboardComponent},
   {path: 'home', component: HomeComponent},
