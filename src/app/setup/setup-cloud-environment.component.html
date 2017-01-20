@@ -23,7 +23,7 @@
               <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
               <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
               <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
-              <button md-raised-button (click)="cloudProvider.isSelected=true;">Select</button>
+              <button md-raised-button (click)="cloudProvider.isSelected=true;" color="primary">Select</button>
             </md-card-content>
 
             <md-card-content *ngIf="cloudProvider.isSelected">
@@ -39,7 +39,7 @@
               <md-input-container class="input-width">
                 <input md-input placeholder="Auth URL" [(ngModel)]="cloudProvider.credential.url"required>
               </md-input-container>
-              <button md-raised-button (click)="cloudProvider.isSelected=false;">Back</button>
+              <button md-raised-button (click)="cloudProvider.isSelected=false;" color="accent">Back</button>
               <template ngbModalContainer></template>
               <ph-progress-bar-modal [credential]="cloudProvider.credential"></ph-progress-bar-modal>
             </md-card-content>
@@ -47,10 +47,6 @@
         </div>
       </div>
 
-    </div>
-
-    <div *ngIf="!tokenService.getToken()">
-      <meta HTTP-EQUIV="REFRESH" content="0; url=/login">
     </div>
 
   </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApplicationService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
 import {CloudProvider} from './cloud-provider';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ph-setup-cloud-environment',
@@ -22,7 +23,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     private _applicationService: ApplicationService,
     public credentialService: CredentialService,
     public tokenService: TokenService,
-    public errorService: ErrorService
+    private router: Router
   ) {
 
     this._cloudProviderCollection = [
@@ -76,27 +77,38 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       }
     ];
 
-    if (tokenService.getToken()) {
-      this.getAllApplication();
+    if (this.tokenService.getToken()) {
+      this.getAllApplication((result) => {
+        if (result.status === 401) {
+          this.logout();
+        }
+      });
+    } else {
+      this.logout();
     }
+  }
+
+  logout() {
+    this.tokenService.clearToken();
+    this.credentialService.clearCredentials();
+    this.router.navigateByUrl('/login');
   }
 
   ngOnInit() {
   }
 
-  getAllApplication() {
+  getAllApplication(callback) {
     this._applicationService.getAll(
       this.credentialService.getUsername(),
       this.tokenService.getToken()
     ).subscribe(
-      deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
+      app  => {
+        console.log('[RepositoryComponent] getAll %O', app);
+        callback(app);
       },
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);
-        this.errorService.setCurrentError(error);
-        this.tokenService.clearToken();
-        this.credentialService.clearCredentials();
+        callback(error);
       }
     );
   }

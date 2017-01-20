@@ -68,14 +68,20 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // this.applicationDeployer = <ApplicationDeployer> {
+    //   name: 'BioExcel Portal test application',
+    //   repoUri: 'https://github.com/sh107/be-application-test',
+    //   selectedCloudProvider: 'OSTACK' };
+    // this.applicationDeployer.attachedVolumes = {};
+    // this.applicationDeployer.assignedInputs = {};
     this.applicationDeployer = <ApplicationDeployer> {
-      name: 'BioExcel Portal test application',
-      repoUri: 'https://github.com/sh107/be-application-test',
+      name: 'KubeNow application',
+      repoUri: 'https://github.com/phnmnl/kubenow-image-application.git',
       selectedCloudProvider: 'OSTACK' };
     this.applicationDeployer.attachedVolumes = {};
     this.applicationDeployer.assignedInputs = {};
 
-    let value = {
+    const value = {
       'name': this.credential.username + '-' + this.credential.provider,
       'cloudProvider': this.credential.provider,
       'fields': [
@@ -134,6 +140,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       this.increment(setTimeout(() => {
         this.getAllApplication(
           (appStatus) => {
+            console.log(appStatus);
             if (appStatus.status === 401 || appStatus.status === 404 ) {
               console.log(appStatus.message);
               this.status[this.progress / 10 ] = 'ERROR: ' + appStatus.message;
@@ -157,6 +164,10 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                   }, 2000));
               }, 2000);
             } else {
+              // console.log('remove app');
+              // this.removeApplication(this.applicationDeployer, (res) => {
+              //
+              // });
               this.addDeployment(callback);
             }
           }
@@ -199,7 +210,6 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
 
                         if (result.status === 'RUNNING') {
                           this.increment(() => {
-
                           });
                         }
                       });
@@ -365,7 +375,20 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     );
   }
 
-
+  removeApplication(applicationDeployer: ApplicationDeployer, callback) {
+    this._applicationService.delete(this.credentialService.getUsername(),
+      this._tokenService.getToken(), applicationDeployer).subscribe(
+      res => {
+        console.log('[RepositoryComponent] got response %O', res);
+        callback(res);
+      },
+      error => {
+        console.log('[RepositoryComponent] error %O', error);
+        this.errorService.setCurrentError(error);
+        callback(error);
+      }
+    );
+  }
 }
 
 @Component({

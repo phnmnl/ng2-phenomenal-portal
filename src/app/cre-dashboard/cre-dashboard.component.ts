@@ -16,7 +16,7 @@ export class CreDashboardComponent implements OnInit {
   private _text = 'http://public.phenomenal-h2020.eu/';
 
   deploymentServerList: Deployment[];
-  isEmptyDeployment: boolean = false;
+  isDeployment: boolean = false;
   isClickedOnce: boolean = false;
 
   constructor(
@@ -27,17 +27,7 @@ export class CreDashboardComponent implements OnInit {
     public errorService: ErrorService,
     private router: Router
   ) {
-    if (this._tokenService.getToken()) {
-      this.getAllApplication((result) => {
-        if (result.status === '401') {
-          this.logout();
-        } else {
-          this.getAllDeploymentServerWrapper();
-        }
-      });
-    } else {
-      this.logout();
-    }
+
   }
 
   get galaxy_icon(): string {
@@ -49,6 +39,17 @@ export class CreDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this._tokenService.getToken()) {
+      this.getAllApplication((result) => {
+        if (result.status === 401) {
+          this.logout();
+        } else {
+          this.getAllDeploymentServerWrapper();
+        }
+      });
+    } else {
+      this.logout();
+    }
   }
 
   logout() {
@@ -62,9 +63,9 @@ export class CreDashboardComponent implements OnInit {
       (result) => {
         console.log(result);
         if (result.length === 0) {
-          this.isEmptyDeployment = true;
           this.router.navigateByUrl('/cloud-research-environment/setup');
         }
+        this.isDeployment = true;
         this.deploymentServerList = result;
         for (const deployment of this.deploymentServerList) {
           this.getStatus(deployment, (res) => {
