@@ -13,7 +13,40 @@
       </small>
 
       <div *ngFor="let cloudProvider of cloudProviderCollection">
-        <div class="col-lg-4">
+        <div *ngIf="cloudProvider.title === 'PhenoMenal Cloud'" class="col-lg-12">
+          <md-card class="phenomenal-card-property">
+            <img md-card-image src="{{cloudProvider.logo}}" class="phenomenal-image">
+            <md-card-content *ngIf="!cloudProvider.isSelected">
+              <h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>
+              <br>
+              <p>{{cloudProvider.description}}</p>
+              <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
+              <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
+              <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
+              <button md-raised-button (click)="cloudProvider.isSelected=true;" color="primary">Select</button>
+            </md-card-content>
+
+            <md-card-content *ngIf="cloudProvider.isSelected">
+              <md-input-container class="input-width">
+                <input md-input placeholder="Username" [(ngModel)]="cloudProvider.credential.username" required>
+              </md-input-container>
+              <md-input-container class="input-width">
+                <input md-input placeholder="Password" type="password" [(ngModel)]="cloudProvider.credential.password" required>
+              </md-input-container>
+              <md-input-container class="input-width">
+                <input md-input placeholder="Tenant Name" [(ngModel)]="cloudProvider.credential.tenant_name" required>
+              </md-input-container>
+              <md-input-container class="input-width">
+                <input md-input placeholder="Auth URL" [(ngModel)]="cloudProvider.credential.url"required>
+              </md-input-container>
+              <button md-raised-button (click)="cloudProvider.isSelected=false;" color="warn">Back</button>
+              <template ngbModalContainer></template>
+              <ph-progress-bar-modal [credential]="cloudProvider.credential"></ph-progress-bar-modal>
+            </md-card-content>
+          </md-card>
+        </div>
+
+        <div *ngIf="cloudProvider.title !== 'PhenoMenal Cloud'" class="col-lg-4">
           <md-card class="card-property">
             <img md-card-image src="{{cloudProvider.logo}}" class="card-image">
             <md-card-content *ngIf="!cloudProvider.isSelected">

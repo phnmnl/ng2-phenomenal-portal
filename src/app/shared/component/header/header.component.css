@@ -8,6 +8,10 @@
   height: 45px;
 }
 
+.container {
+  width: 100%;
+}
+
 @media (max-width: 991px) {
 
   .logo {

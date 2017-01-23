@@ -3,11 +3,23 @@
 }
 
 .card-property {
-  height: 530px;
+  height: 480px;
+  padding-top: 30px;
+  margin-bottom: 30px;
+}
+
+.phenomenal-card-property {
+  height: 450px;
+  margin-bottom: 30px;
 }
 
 .card-image {
-  height: 210px;
+  height: 150px;
+}
+
+.phenomenal-image {
+  height: 150px;
+  width: 300px;
 }
 
 @media (max-width: 991px) and (min-width: 404px) {
@@ -17,7 +29,6 @@
 
   .card-property {
     height: 500px;
-    margin-bottom: 30px;
   }
 }
 

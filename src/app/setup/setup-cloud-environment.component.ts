@@ -16,6 +16,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
+  private _gce_logo = 'assets/img/logo/gce_logo.png';
 
   private _cloudProviderCollection: CloudProvider[];
 
@@ -60,8 +61,8 @@ export class SetupCloudEnvironmentComponent implements OnInit {
         }
       },
       {
-        title: 'Amazon AWS',
-        description: 'Amazon AWS is a commercial cloud provider. Use this if you already have an Amazon AWS account.',
+        title: 'AWS',
+        description: 'Amazon WS is a commercial cloud provider. Use this if you already have an Amazon AWS account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Amazon AWS',
         locationDescription: 'Worldwide',
@@ -73,6 +74,22 @@ export class SetupCloudEnvironmentComponent implements OnInit {
           tenant_name: '',
           url: '',
           provider: 'AWS'
+        }
+      },
+      {
+        title: 'Google Cloud Platform',
+        description: 'Google Cloud Platform is a commercial cloud provider. Use this if you already have an GCP account.',
+        paymentDescription: 'Commercial',
+        providerDescription: 'Google Cloud',
+        locationDescription: 'Worldwide',
+        logo: this._gce_logo,
+        isSelected: false,
+        credential: {
+          username: '',
+          password: '',
+          tenant_name: '',
+          url: '',
+          provider: 'GCE'
         }
       }
     ];
