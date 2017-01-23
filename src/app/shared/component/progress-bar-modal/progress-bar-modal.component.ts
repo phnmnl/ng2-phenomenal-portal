@@ -74,13 +74,19 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     //   selectedCloudProvider: 'OSTACK' };
     // this.applicationDeployer.attachedVolumes = {};
     // this.applicationDeployer.assignedInputs = {};
+    // this.applicationDeployer = <ApplicationDeployer> {
+    //   name: 'KubeNow application',
+    //   repoUri: 'https://github.com/phnmnl/kubenow-image-application.git',
+    //   selectedCloudProvider: 'OSTACK' };
+    // this.applicationDeployer.attachedVolumes = {};
+    // this.applicationDeployer.assignedInputs = {};
+
     this.applicationDeployer = <ApplicationDeployer> {
-      name: 'KubeNow application',
-      repoUri: 'https://github.com/phnmnl/kubenow-image-application.git',
+      name: 'Phenomenal VRE',
+      repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
       selectedCloudProvider: 'OSTACK' };
     this.applicationDeployer.attachedVolumes = {};
     this.applicationDeployer.assignedInputs = {};
-
     const value = {
       'name': this.credential.username + '-' + this.credential.provider,
       'cloudProvider': this.credential.provider,
