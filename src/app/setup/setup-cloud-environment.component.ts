@@ -96,7 +96,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
 
     if (this.tokenService.getToken()) {
       this.getAllApplication((result) => {
-        if (result.status === 401) {
+        if (result.status === 401 || result.type === 'error') {
           this.logout();
         }
       });

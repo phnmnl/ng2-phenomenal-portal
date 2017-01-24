@@ -41,7 +41,7 @@ export class CreDashboardComponent implements OnInit {
   ngOnInit() {
     if (this._tokenService.getToken()) {
       this.getAllApplication((result) => {
-        if (result.status === 401) {
+        if (result.status === 401 || result.type === 'error') {
           this.logout();
         } else {
           this.getAllDeploymentServerWrapper();

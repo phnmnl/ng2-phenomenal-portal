@@ -4,26 +4,30 @@
     <section class="m-b-4">
 
       <!--Author box-->
-      <div class="author-box">
+      <!--<div class="author-box">-->
 
-        <div class="row">
+        <div class="col-md-12">
           <!--Name-->
           <div hidden #app>{{ application.name}}</div>
           <h1 class="h1-responsive text-xs-center"><strong>{{ application.name }} </strong></h1>
+        </div>
+        <div class="col-md-12">
           <h3 class="h5-responsive text-xs-center"><em>{{ application.short_description }}</em></h3>
+        </div>
+        <div class="col-md-12">
           <div *ngIf="application.authors.length > 0" class="text-xs-center small">created by
             {{concatenate(application.authors)}}
           </div>
           <div *ngIf="application.contributors.length > 0" class="text-xs-center small">containerised by
             {{concatenate(application.contributors)}}
           </div>
-          <hr>
-
+          <!--<hr>-->
+          <br>
           <!--Avatar-->
           <div class="col-lg-6">
             <img src="{{ application.logo_large }}" class="img-fluid img-rounded z-depth-2 logo">
           </div>
-
+          <br>
           <!--Author Data-->
           <div class="col-lg-6 text-sm-center small table-flow">
 
@@ -53,38 +57,44 @@
           </div>
         </div>
 
-        <br>
-        <div class="row" *ngIf="application.key_features.length > 0">
-          <!--Header-->
-          <div class="col-md-2">
-            <p><strong>Features</strong></p>
-          </div>
+        <div class="col-md-12">
+          <br>
+          <div class="row" *ngIf="application.key_features.length > 0">
+            <!--Header-->
+            <div class="col-md-2">
+              <p><strong>Features</strong></p>
+            </div>
 
-          <!--Infor-->
-          <div class="col-md-10">
+            <!--Infor-->
+            <div class="col-md-10">
 
-            <ul class="list-group" *ngFor="let feature of application.key_features">
-              <li class="list-group-item">{{ feature }}</li>
-            </ul>
-          </div>
-        </div>
-
-        <br>
-
-        <div class="row" *ngIf="application.abstract!=''">
-          <!--Header-->
-          <div class="col-md-2">
-            <p><strong>Description</strong></p>
-          </div>
-
-          <!--Infor-->
-          <div class="col-md-10">
-
-            <p>{{ application.abstract }}</p>
-
+              <ul class="list-group" *ngFor="let feature of application.key_features">
+                <li class="list-group-item">{{ feature }}</li>
+              </ul>
+            </div>
           </div>
         </div>
 
+
+        <div class="col-md-12">
+          <br>
+
+          <div class="row" *ngIf="application.abstract!=''">
+            <!--Header-->
+            <div class="col-md-2">
+              <p><strong>Description</strong></p>
+            </div>
+
+            <!--Infor-->
+            <div class="col-md-10">
+
+              <p>{{ application.abstract }}</p>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
         <br>
 
         <div class="row" *ngIf="application.screenshots.length > 0">
@@ -101,8 +111,11 @@
             </div>
           </div>
         </div>
+        </div>
+
         <br>
 
+        <div class="col-md-12">
         <div class="row" *ngIf="application.installation!=''">
           <!--Header-->
           <div class="col-md-2">
@@ -115,7 +128,9 @@
 
         </div>
 
+        </div>
 
+        <div class="col-md-12">
         <br>
 
         <div class="row" *ngIf="application.instruction!=''">
@@ -129,7 +144,9 @@
           </div>
 
         </div>
+        </div>
 
+        <div class="col-md-12">
         <br>
 
 
@@ -150,10 +167,11 @@
           </div>
 
         </div>
+        </div>
 
 
-      </div>
-      <!--/.Author box-->
+      <!--</div>-->
+      <!--&lt;!&ndash;/.Author box&ndash;&gt;-->
 
 
     </section>
