@@ -46,7 +46,7 @@ import 'hammerjs';
 import {RouterModule} from '@angular/router';
 
 export function SSOConfigService () {
-  return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
 }
 

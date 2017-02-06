@@ -29,19 +29,57 @@
               <!--</a>-->
               <!--</span>-->
               <!--</div>-->
+              <img md-card-image src="{{phenomenal_logo}}" class="phenomenal-image">
               <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
-              <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
-              <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
-              <p>Cloud Provider: {{deployment.cloudProvider}}</p>
 
-              <div *ngIf="!deployment['isDelete']">
-                <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="primary">Remove</button>
+              <div *ngIf="!deployment['isMore']">
+                <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
+                <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
+                <p>Cloud Provider: {{deployment.cloudProvider}}</p>
+
+                <div *ngIf="deployment['status']==='RUNNING'">
+
+                  <a *ngIf="deployment['isGalaxy']" href="{{deployment['galaxyUrlName']}}" target="_blank">
+                    <button md-raised-button color="primary">Galaxy Workflow</button>
+                  </a>
+                  <a *ngIf="!deployment['isGalaxy']">
+                    <button md-raised-button color="primary" disabled>Loading Galaxy</button>
+                  </a>
+                  <a *ngIf="deployment['isJupyter']" href="{{deployment['jupyterUrlName']}}" target="_blank">
+                    <button md-raised-button color="primary">Jupyter IPython</button>
+                  </a>
+                  <a *ngIf="!deployment['isJupyter']">
+                    <button md-raised-button color="primary" disabled>Loading Jupyter</button>
+                  </a>
+
+                  <br>
+                  <br>
+
+                </div>
               </div>
-              <div *ngIf="deployment['isDelete']">
-                <p>Please confirm</p>
-                <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="accent">No</button>
-                <button md-raised-button (click)="remove(deployment)" color="warn">Yes</button>
+
+              <div *ngIf="!deployment['isMore']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
+                <button md-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">More</button>
               </div>
+
+
+              <div *ngIf="deployment['isMore']">
+                <p>Galaxy Admin Email: {{deployment['galaxyAdminEmail']}}</p>
+                <p>Galaxy Admin Password: <a class="btn btn-primary button-width" ><i class="fa fa-clipboard"  ngxClipboard [cbContent]="deployment['galaxyAdminPassword']"></i></a></p>
+                <p>Jupyter Password: <a class="btn btn-primary button-width" ><i class="fa fa-clipboard"  ngxClipboard [cbContent]="deployment['jupyterPassword']"></i></a></p>
+
+                <div *ngIf="!deployment['isDelete']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
+                  <button md-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">Back</button>
+                  <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="warn">Remove</button>
+                </div>
+
+                <div *ngIf="deployment['isDelete']">
+                  <p>Please confirm</p>
+                  <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="accent">No</button>
+                  <button md-raised-button (click)="remove(deployment)" color="warn">Yes</button>
+                </div>
+              </div>
+
             </md-card-content>
           </md-card>
         </div>

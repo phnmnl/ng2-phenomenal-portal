@@ -29,7 +29,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
 
     this._cloudProviderCollection = [
       {
-        title: 'PhenoMenal Cloud',
+        title: 'PhenoMeNal Cloud',
         description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners',
         paymentDescription: 'Free',
         providerDescription: 'EMBL-EBI, Uppsala Uni',
@@ -37,11 +37,14 @@ export class SetupCloudEnvironmentComponent implements OnInit {
         logo: this._phenomenal_logo,
         isSelected: false,
         credential: {
-          username: '',
+          username: 'sijin',
           password: '',
-          tenant_name: 'PhenoMeNal',
-          url: 'https://extcloud03-keystone.ebi.ac.uk:5000/v2.0',
-          provider: 'OSTACK'
+          tenant_name: 'PhenoMeNal-Mesos',
+          url: 'https://extcloud05.ebi.ac.uk:13000/v2.0',
+          provider: 'OSTACK',
+          galaxy_admin_email: 'admin@ebi.ac.uk',
+          galaxy_admin_password: 'abcdefgh',
+          jupyter_password: 'abcdefgh'
         }
       },
       {
@@ -57,7 +60,10 @@ export class SetupCloudEnvironmentComponent implements OnInit {
           password: '',
           tenant_name: '',
           url: '',
-          provider: 'OSTACK'
+          provider: 'OSTACK',
+          galaxy_admin_email: '',
+          galaxy_admin_password: '',
+          jupyter_password: ''
         }
       },
       {
@@ -73,7 +79,10 @@ export class SetupCloudEnvironmentComponent implements OnInit {
           password: '',
           tenant_name: '',
           url: '',
-          provider: 'AWS'
+          provider: 'AWS',
+          galaxy_admin_email: '',
+          galaxy_admin_password: '',
+          jupyter_password: ''
         }
       },
       {
@@ -89,7 +98,10 @@ export class SetupCloudEnvironmentComponent implements OnInit {
           password: '',
           tenant_name: '',
           url: '',
-          provider: 'GCE'
+          provider: 'GCE',
+          galaxy_admin_email: '',
+          galaxy_admin_password: '',
+          jupyter_password: ''
         }
       }
     ];

@@ -5,7 +5,7 @@ import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'ph-ngbd-modal-content',
   template: `
-    <div class="modal-header" style="bottom">
+    <div class="modal-header">
       <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -38,7 +38,7 @@ export class ModalComponent {
   constructor(private modalService: NgbModal) {}
 
   open() {
-    const modalRef = this.modalService.open(NgbdModalContentComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(NgbdModalContentComponent, { windowClass: 'adapt-modal', size: 'lg' });
     modalRef.componentInstance.img = this.img;
     modalRef.componentInstance.title = this.title;
   }

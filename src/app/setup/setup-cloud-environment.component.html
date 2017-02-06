@@ -13,7 +13,7 @@
       </small>
 
       <div *ngFor="let cloudProvider of cloudProviderCollection">
-        <div *ngIf="cloudProvider.title === 'PhenoMenal Cloud'" class="col-lg-12">
+        <div *ngIf="cloudProvider.title === 'PhenoMeNal Cloud'" class="col-lg-12">
           <md-card class="phenomenal-card-property">
             <img md-card-image src="{{cloudProvider.logo}}" class="phenomenal-image">
             <md-card-content *ngIf="!cloudProvider.isSelected">
@@ -27,13 +27,16 @@
             </md-card-content>
 
             <md-card-content *ngIf="cloudProvider.isSelected">
+              <md-input-container class="input-width">
+                <input md-input placeholder="Galaxy Admin Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
+              </md-input-container>
+              <md-input-container class="input-width">
+                <input md-input placeholder="Galaxy Admin Password" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
+              </md-input-container>
+              <md-input-container class="input-width">
+                <input md-input placeholder="Jupyter Password" type="password" [(ngModel)]="cloudProvider.credential.jupyter_password" required>
+              </md-input-container>
               <p>Deploy it now!</p>
-              <!--<md-input-container class="input-width">-->
-                <!--<input md-input placeholder="Username" [(ngModel)]="cloudProvider.credential.username" required>-->
-              <!--</md-input-container>-->
-              <!--<md-input-container class="input-width">-->
-                <!--<input md-input placeholder="Password" type="password" [(ngModel)]="cloudProvider.credential.password" required>-->
-              <!--</md-input-container>-->
               <!--<md-input-container class="input-width">-->
                 <!--<input md-input placeholder="Tenant Name" [(ngModel)]="cloudProvider.credential.tenant_name" required>-->
               <!--</md-input-container>-->
@@ -47,7 +50,7 @@
           </md-card>
         </div>
 
-        <div *ngIf="cloudProvider.title !== 'PhenoMenal Cloud'" class="col-lg-4">
+        <div *ngIf="cloudProvider.title !== 'PhenoMeNal Cloud'" class="col-lg-4">
           <md-card class="card-property">
             <img md-card-image src="{{cloudProvider.logo}}" class="card-image">
             <md-card-content *ngIf="!cloudProvider.isSelected">

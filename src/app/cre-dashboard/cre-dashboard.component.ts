@@ -4,6 +4,9 @@ import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
 import {Router} from '@angular/router';
+import {Http} from '@angular/http';
+import 'rxjs/Rx';
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -14,6 +17,12 @@ export class CreDashboardComponent implements OnInit {
 
   private _galaxy_icon = 'assets/img/logo/galaxy.png';
   private _text = 'http://public.phenomenal-h2020.eu/';
+  private _phenomenal_logo = 'assets/img/logo/default_app.png';
+
+
+  get phenomenal_logo(): string {
+    return this._phenomenal_logo;
+  }
 
   deploymentServerList: Deployment[];
   isDeployment: boolean = false;
@@ -25,7 +34,8 @@ export class CreDashboardComponent implements OnInit {
     private _tokenService: TokenService,
     public credentialService: CredentialService,
     public errorService: ErrorService,
-    private router: Router
+    private router: Router,
+    private http: Http
   ) {
 
   }
@@ -71,10 +81,49 @@ export class CreDashboardComponent implements OnInit {
           this.getStatus(deployment, (res) => {
             deployment['status'] = res.status;
             deployment['isDelete'] = false;
+            deployment['isMore'] = false;
+            deployment['isGalaxy'] = false;
+            deployment['isJupyter'] = false;
+            for (let i = 0; i < deployment.assignedInputs.length; i++) {
+              if (deployment.assignedInputs[i]['inputName'] === 'cluster_prefix') {
+                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment.assignedInputs[i]['assignedValue'] + '.phenomenal.cloud';
+                deployment['jupyterUrlName'] = 'http://notebook.' + deployment.assignedInputs[i]['assignedValue'] + '.phenomenal.cloud';
+              }
+              if (deployment.assignedInputs[i]['inputName'] === 'galaxy_admin_email') {
+                deployment['galaxyAdminEmail'] = deployment.assignedInputs[i]['assignedValue'];
+              }
+              if (deployment.assignedInputs[i]['inputName'] === 'galaxy_admin_password') {
+                deployment['galaxyAdminPassword'] = deployment.assignedInputs[i]['assignedValue'];
+              }
+              if (deployment.assignedInputs[i]['inputName'] === 'jupyter_password') {
+                deployment['jupyterPassword'] = deployment.assignedInputs[i]['assignedValue'];
+              }
+            }
+            this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
+              deployment['isGalaxy'] = true;
+            });
+            this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
+              deployment['isJupyter'] = true;
+            });
           });
         }
       }
     );
+  }
+
+  pingDomain(url, time, callback) {
+    const jupyterStatus = Observable.interval(time)
+      .switchMap(() => this.http.get('https://cors-anywhere.herokuapp.com/' + url)).map((data) => data)
+      .subscribe((data) => {
+          if (data.status === 200) {
+
+            jupyterStatus.unsubscribe();
+            return callback();
+          }
+        },
+        (error) => {
+          return this.pingDomain(url, 10000, callback);
+        });
   }
 
   getAllDeploymentServer(callback) {

@@ -13,7 +13,7 @@ import {Credential } from '../../../setup/credential';
   selector: 'ph-progress-bar-modal-content',
   template: `
     <div class="modal-header">
-      <h4 class="modal-title">Cloud Research Environment Installation</h4>
+      <h4 class="modal-title text-center">Cloud Research Environment Installation</h4>
     </div>
     <div class="modal-body">
       <ph-progress-bar [progress]="progress"></ph-progress-bar>
@@ -30,7 +30,7 @@ import {Credential } from '../../../setup/credential';
       <a type="button" class="btn btn-primary" [routerLink]="['/cloud-research-environment']">Installation Complete</a>
     </div>
     <div *ngIf="isError">
-      <a type="button" class="btn btn-primary" (click)="activeModal.close('Close click')">Cancel</a>
+      <a type="button" class="btn btn-primary" [routerLink]="['/cloud-research-environment']">Cancel</a>
     </div>
   `
 })
@@ -46,8 +46,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     'Setting up the Application ...',
     'Adding Deployment Server ...',
     'Setting up Deployment Server ...',
-    'Starting Deployment Server ...',
-    'Running Deployment Server ...',
+    'Starting Deployment Server (This may take more than 10 minutes, please be patient)...',
+    'Running Deployment Server (This may take more than 10 minutes, please be patient) ...',
     'Setting up Cloud Research Environment ...',
     'Running Cloud Research Environment ...',
     'Cloud Research Environment is Ready for Use!',
@@ -56,6 +56,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   applicationDeployer: ApplicationDeployer;
   isError = false;
   isRunning = 0;
+  name;
 
   constructor(public activeModal: NgbActiveModal,
               private _applicationService: ApplicationService,
@@ -68,33 +69,36 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.applicationDeployer = <ApplicationDeployer> {
-    //   name: 'BioExcel Portal test application',
-    //   repoUri: 'https://github.com/sh107/be-application-test',
-    //   selectedCloudProvider: 'OSTACK' };
-    // this.applicationDeployer.attachedVolumes = {};
-    // this.applicationDeployer.assignedInputs = {};
-    // this.applicationDeployer = <ApplicationDeployer> {
-    //   name: 'KubeNow application',
-    //   repoUri: 'https://github.com/phnmnl/kubenow-image-application.git',
-    //   selectedCloudProvider: 'OSTACK' };
-    // this.applicationDeployer.attachedVolumes = {};
-    // this.applicationDeployer.assignedInputs = {};
+
+    this.name = this.generateUIDNotMoreThan1million();
 
     this.applicationDeployer = <ApplicationDeployer> {
       name: 'Phenomenal VRE',
       repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
       selectedCloudProvider: 'OSTACK' };
     this.applicationDeployer.attachedVolumes = {};
-    this.applicationDeployer.assignedInputs = {};
+    this.applicationDeployer.assignedInputs = {
+       floating_ip_pool: 'ext-net',
+       external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
+       master_flavor: 's1.large',
+       node_flavor: 's1.large',
+       edge_flavor: 's1.large',
+       cluster_prefix: this.name,
+       node_count: '2',
+       edge_count: '2',
+       galaxy_admin_email: this.credential.galaxy_admin_email,
+       galaxy_admin_password: this.credential.galaxy_admin_password,
+       jupyter_password: this.credential.jupyter_password
+    };
     const value = {
-      'name': this.credential.username + '-' + this.credential.provider,
+      'name': this.credential.username,
       'cloudProvider': this.credential.provider,
       'fields': [
         {'key': 'OS_USERNAME', 'value': this.credential.username},
         {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
         {'key': 'OS_AUTH_URL', 'value': this.credential.url},
-        {'key': 'OS_PASSWORD', 'value': this.credential.password}
+        {'key': 'OS_PASSWORD', 'value': this.credential.password},
+        {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
       ]
     };
     setTimeout((callback) => {
@@ -174,7 +178,10 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               // this.removeApplication(this.applicationDeployer, (res) => {
               //
               // });
-              this.addDeployment(callback);
+              this.increment(
+                setTimeout(() => {
+                  this.addDeployment(callback);
+                }, 2000));
             }
           }
         );
@@ -395,6 +402,10 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  generateUIDNotMoreThan1million() {
+    return ('000000' + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6);
+  }
 }
 
 @Component({
@@ -408,7 +419,7 @@ export class ProgressBarModalComponent {
   constructor(private modalService: NgbModal) {}
 
   open() {
-    const modalRef = this.modalService.open(ProgressBarModalContentComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(ProgressBarModalContentComponent, { size: 'lg', backdrop: 'static'});
     modalRef.componentInstance.credential = this.credential;
   }
 }

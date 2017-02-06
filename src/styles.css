@@ -90,6 +90,15 @@ input:focus {
     width: 10em;
     height: 10em;
 }
+
+.modal-backdrop.fade {
+  opacity: 0.5 !important;
+}
+
+.modal-dialog {
+  margin-top: 200px;
+}
+
 @-webkit-keyframes load8 {
     0% {
         -webkit-transform: rotate(0deg);

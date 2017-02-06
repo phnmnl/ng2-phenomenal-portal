@@ -1,3 +1,10 @@
-.modal-content {
-  margin-top: 100px;
+.progress-modal .modal-content {
+  margin-top: 200px;
+  min-width: 320px;
+}
+.progress-modal .close {
+}
+
+.modal-backdrop.fade {
+  opacity: 0.5 !important;
 }
