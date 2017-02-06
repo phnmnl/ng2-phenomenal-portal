@@ -40,16 +40,16 @@
                 <div *ngIf="deployment['status']==='RUNNING'">
 
                   <a *ngIf="deployment['isGalaxy']" href="{{deployment['galaxyUrlName']}}" target="_blank">
-                    <button md-raised-button color="primary">Galaxy Workflow</button>
+                    <button md-raised-button color="primary">Galaxy</button>
                   </a>
                   <a *ngIf="!deployment['isGalaxy']">
-                    <button md-raised-button color="primary" disabled>Loading Galaxy</button>
+                    <button md-raised-button color="primary" disabled>Loading ...</button>
                   </a>
                   <a *ngIf="deployment['isJupyter']" href="{{deployment['jupyterUrlName']}}" target="_blank">
-                    <button md-raised-button color="primary">Jupyter IPython</button>
+                    <button md-raised-button color="primary">Jupyter</button>
                   </a>
                   <a *ngIf="!deployment['isJupyter']">
-                    <button md-raised-button color="primary" disabled>Loading Jupyter</button>
+                    <button md-raised-button color="primary" disabled>Loading ...</button>
                   </a>
 
                   <br>
