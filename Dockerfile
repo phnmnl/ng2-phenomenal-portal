@@ -41,7 +41,8 @@ RUN apt-get -y update
 RUN apt-get install --no-install-recommends -y nginx git
 #RUN npm install npm@latest -g
 RUN npm uninstall @angular/cli -g
-RUN npm install rxjs -g
+#RUN npm install rxjs -g
+RUN npm install typings -g
 RUN npm cache clean
 RUN npm install -g @angular/cli@latest
 
@@ -49,6 +50,7 @@ RUN npm install -g @angular/cli@latest
 RUN git clone https://github.com/phnmnl/ng2-phenomenal-portal.git
 
 WORKDIR /ng2-phenomenal-portal
+RUN npm install --save-dev @angular/cli@latest
 RUN npm install
 RUN ng build --prod
 RUN cp dist /usr/share/nginx/html
@@ -58,7 +60,7 @@ RUN cp dist /usr/share/nginx/html
 #Go to the gui directory
 #WORKDIR /RecordManager2/cz.mzk.recordmanager.webapp.gui/gui
 
-EXPOSE 8001
+EXPOSE 3000
 
 #RUN npm install
 CMD ["ng", "serve"]
