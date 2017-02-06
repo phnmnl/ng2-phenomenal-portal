@@ -6,7 +6,9 @@ import {AppComponent} from './app.component';
 import {BreadcrumbComponent} from './shared/component/breadcrumb/breadcrumb.component';
 import {CloudResearchEnvironmentComponent} from './static-page/cloud-research-environment/cloud-research-environment.component';
 import {CRELocalInstallationComponent} from './static-page/cre-local-installation/cre-local-installation.component';
-import {CRELocalInstallationInstructionComponent} from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
+import {
+  CRELocalInstallationInstructionComponent
+} from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
 import {HeaderComponent} from './shared/component/header/header.component';
 import {HelpComponent} from './help/help.component';
 import {HelpTopicComponent} from './help/help-topic/help-topic.component';
@@ -15,7 +17,7 @@ import {FooterComponent} from './shared/component/footer/footer.component';
 import {CarouselComponent} from './shared/component/carousel/carousel.component';
 import {SlideComponent} from './shared/component/carousel/slide/slide.component';
 import {StatisticsComponent} from './statistics/statistics.component';
-import {CollapseDirective, ModalModule} from 'ng2-bootstrap';
+import {CollapseModule, ModalModule} from 'ng2-bootstrap';
 import {BreadcrumbService} from './shared/component/breadcrumb/breadcrumb.service';
 import {WikiService} from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from './app-routing.module';
@@ -65,18 +67,10 @@ export function SSOConfigService () {
     FooterComponent,
     SlideComponent,
     StatisticsComponent,
-
-    CollapseDirective,
-
-    StatisticsComponent,
-
     LoginComponent,
-
     SetupCloudEnvironmentComponent,
-
     ModalComponent,
     NgbdModalContentComponent,
-
     ProgressBarModalComponent,
     ProgressBarModalContentComponent,
     ProgressBarComponent,
@@ -88,6 +82,7 @@ export function SSOConfigService () {
     FormsModule,
     HttpModule,
     ModalModule,
+    CollapseModule.forRoot(),
     NgbModule.forRoot(),
     MaterialModule.forRoot(),
     Ng2PhenomenalPortalRoutingModule,
