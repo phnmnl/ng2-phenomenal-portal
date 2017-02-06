@@ -1,35 +1,35 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {CloudResearchEnvironmentComponent} from './home/cloud-research-environment/cloud-research-environment.component';
-import {CloudResearchEnvironmentLocalInstallationComponent} from './home/cre-local-installation';
-import {CloudResearchEnvironmentLocalInstallationInstructionComponent} from './home/cre-local-installation-instruction';
+import {CloudResearchEnvironmentComponent} from './static-page/cloud-research-environment/cloud-research-environment.component';
+import {CRELocalInstallationComponent} from './static-page/cre-local-installation/cre-local-installation.component';
+import {
+  CRELocalInstallationInstructionComponent
+} from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
 import {HelpComponent} from './help/help.component';
 import {HelpTopicComponent} from './help/help-topic/help-topic.component';
 import {StatisticsComponent} from './statistics/statistics.component';
-import {HomeComponent} from './home/home.component';
+import {HomeComponent} from './static-page/home/home.component';
 import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
-import {WorkflowComponent} from './workflow/workflow.component';
+import {SetupCloudEnvironmentComponent} from './setup/setup-cloud-environment.component';
+import {CreDashboardComponent} from './cre-dashboard/cre-dashboard.component';
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
-  {path: 'dashboard', component: DashboardComponent},
   {path: 'cloud-research-environment', component: CloudResearchEnvironmentComponent},
   {
     path: 'cloud-research-environment/local-installation',
-    component: CloudResearchEnvironmentLocalInstallationComponent
+    component: CRELocalInstallationComponent
   },
   {
     path: 'cloud-research-environment/instruction',
-    component: CloudResearchEnvironmentLocalInstallationInstructionComponent
+    component: CRELocalInstallationInstructionComponent
   },
   {path: 'help', component: HelpComponent},
   {path: 'help/:id', component: HelpTopicComponent},
-  {path: 'workflow', component: WorkflowComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'cloud-research-environment/setup', component: SetupCloudEnvironmentComponent},
   {path: 'statistics', component: StatisticsComponent},
+  {path: 'cre-dashboard', component: CreDashboardComponent},
   {path: 'home', component: HomeComponent},
   {path: '**', redirectTo: '/home'}
 ];

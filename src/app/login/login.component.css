@@ -1,7 +1,3 @@
-.form {
-  margin-top: 12px;
-}
-
-.card .form-header {
-  background-color: #525991;
+.button-width {
+  width: 120px;
 }

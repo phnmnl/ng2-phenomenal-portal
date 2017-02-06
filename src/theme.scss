@@ -1,0 +1,10 @@
+@import './phenomenal-theme';
+
+@include md-core();
+
+$primary: md-palette($md-phenomenal-primary, 500);
+$accent:  md-palette($md-phenomenal-secondary, 500, A100, A400);
+$warn:    md-palette($md-phenomenal-complementary, 500);
+$theme: md-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);

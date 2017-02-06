@@ -1,71 +1,39 @@
 <main>
-  <div class="container">
-    <div class="row">
+  <div class="container text-xs-center">
+    <br>
 
-      <div class="col-lg-6 form">
+    <div *ngIf="!tokenService.getToken()">
 
+      <p>Let us setup your Cloud Research Environment.</p>
 
-        <!--Form without header-->
-        <div class="card">
-          <div class="card-block">
+      <p>We just need to ask you a couple of questions
+        and we will get you all hooked up.</p>
+      <br>
+      <h5>Who are you?</h5>
 
-            <!--Header-->
-            <div class="text-xs-center form">
-              <h1 class="h1-responsive">Login</h1>
-              <hr class="m-t-2 m-b-2">
-            </div>
+      <br>
 
-            <!--Body-->
-            <div class="md-form">
-              <i class="fa fa-envelope prefix"></i>
-              <input type="text" id="form2" placeholder="Your Email" class="form-control">
-            </div>
+      <p>In order to ensure we can identify you and your cloud research environment.</p>
+      <p>It's important to sign in or register through Elixir SSO.</p>
 
-            <div class="md-form">
-              <i class="fa fa-lock prefix"></i>
-              <input type="password" id="form4" placeholder="Your Password" class="form-control">
-            </div>
+      <a class="btn btn-primary button-width" href="{{ssoLink()}}" target="_blank"><img [src]="elixir_logo"> SSO</a>
 
-            <div class="text-xs-center">
-              <button class="btn btn-primary" [routerLink]="['/dashboard']">Login</button>
-            </div>
+      <p></p>
 
-          </div>
+    </div>
 
-          <!--&lt;!&ndash;Footer&ndash;&gt;-->
-          <!--<div class="modal-footer">-->
-          <!--<div class="options">-->
-          <!--<p>Not a member? <a href="#">Sign Up</a></p>-->
-          <!--<p>Forgot <a href="#">Password?</a></p>-->
-          <!--</div>-->
-          <!--</div>-->
-
-        </div>
-        <!--/Form without header-->
+    <div *ngIf="tokenService.getToken()">
 
 
-      </div>
+      <h2>You are logged in as {{ credentialService.getUsername() }}</h2>
 
-      <div class="col-lg-6 form">
+      <br>
 
-        <!--Jumbotron-->
-        <div class="jumbotron">
-          <h1 class="h1-responsive">Welcome!</h1>
-          <p class="lead">An easy to use, cloud based scalable software infrastructure for metabolomics research. Access
-            your Cloud Research Environment through standard scientific open-source web environments, Galaxy Workflow
-            tool and Jupyter coding environment.</p>
-          <hr class="m-y-2">
-          <p>Want to give it a go?</p>
-          <p class="lead">
-            <a class="btn btn-primary btn-lg" role="button" [routerLink]="['/register']">Sign Up</a>
-          </p>
-        </div>
-        <!--/.Jumbotron-->
-
-      </div>
+      <a class="btn btn-primary button-width" [routerLink]="['/cloud-research-environment']">
+        Continue
+      </a>
 
     </div>
   </div>
 </main>
-
 

@@ -3,7 +3,6 @@
 
   <!--Footer Links-->
   <div class="container">
-    <div class="text-center">
       <div class="row">
         <div class="col-lg-12">
           <div class="col-lg-4">
@@ -12,25 +11,25 @@
                   <img height="30" width="30" [src]="logo_white"> PhenoMeNal
               </span>
             </a></h5>
-            <ul class="nav nav-pills nav-stacked">
-              <li><a [routerLink]="['/app-library']">App Library</a></li>
-              <li><a [routerLink]="['/cloud-research-environment']">Cloud Research Environment</a></li>
-              <li><a [routerLink]="['/help']">Help</a></li>
-              <li><a
-                href="http://phenomenal-h2020.eu/home/wp-content/uploads/2016/09/Phenomenal-Terms-of-Use-version-11.pdf">Terms
-                and Conditions</a></li>
+            <ul class="nav flex-column">
+              <li class="nav-item"><a [routerLink]="['/app-library']">App Library</a></li>
+              <li class="nav-item"><a [routerLink]="['/cloud-research-environment']">Cloud Research Environment</a></li>
+              <li class="nav-item"><a [routerLink]="['/help']">Help</a></li>
+              <li class="nav-item">
+                <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2016/09/Phenomenal-Terms-of-Use-version-11.pdf">Terms and Conditions</a>
+              </li>
             </ul>
           </div>
 
           <hr class="hidden-lg-up">
 
           <div class="col-lg-4">
-            <h5><span class="logo logo-offset"> Information</span></h5>
-            <ul class="nav nav-pills nav-stacked item-offset">
-              <li><a href="http://phenomenal-h2020.eu/home/about/">About Us</a></li>
-              <li><a href="http://phenomenal-h2020.eu/home/management-structure/">Project Structure</a></li>
-              <li><a href="http://phenomenal-h2020.eu/home/outreach/">Outreach</a></li>
-              <li><a [routerLink]="['/statistics']">Dashboard</a></li>
+            <h5><span class="logo"> Information</span></h5>
+            <ul class="nav flex-column">
+              <li class="nav-item item-offset"><a href="http://phenomenal-h2020.eu/home/about/">About Us</a></li>
+              <li class="nav-item"><a href="http://phenomenal-h2020.eu/home/management-structure/">Project Structure</a></li>
+              <li class="nav-item"><a href="http://phenomenal-h2020.eu/home/outreach/">Outreach</a></li>
+              <li class="nav-item"><a [routerLink]="['/statistics']">Site Statistics</a></li>
             </ul>
           </div>
 
@@ -43,7 +42,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
   <!--/.Footer Links-->
 

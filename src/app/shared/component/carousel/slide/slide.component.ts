@@ -2,8 +2,8 @@ import {Component, OnInit, OnDestroy, Input, HostBinding} from '@angular/core';
 import {CarouselComponent, Direction} from '../carousel.component';
 @Component({
   selector: 'ph-slide',
-  templateUrl: 'slide.component.html',
-  styleUrls: ['slide.component.css']
+  templateUrl: './slide.component.html',
+  styleUrls: ['./slide.component.css']
 })
 export class SlideComponent implements OnInit, OnDestroy {
   get addClass(): boolean {

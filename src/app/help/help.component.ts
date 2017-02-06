@@ -7,8 +7,8 @@ import 'rxjs/Rx';
 
 @Component({
   selector: 'ph-help',
-  templateUrl: 'help.component.html',
-  styleUrls: ['help.component.css'],
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.css'],
   providers: [WikiService]
 })
 export class HelpComponent implements OnInit {

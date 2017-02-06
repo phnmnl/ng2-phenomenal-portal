@@ -5,8 +5,8 @@ export enum Direction {UNKNOWN, NEXT, PREV}
 
 @Component({
   selector: 'ph-carousel',
-  templateUrl: 'carousel.component.html',
-  styleUrls: ['carousel.component.css']
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.css']
 })
 
 export class CarouselComponent implements OnDestroy {

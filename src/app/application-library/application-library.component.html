@@ -17,26 +17,26 @@
         <div class="card">
           <div class="card-block">
 
-            <form class="form-inline">
+            <!--<form class="form-inline">-->
               <h6 class="card-title">
                 <small>Functionality</small>
               </h6>
               <ph-tree (click)="getAppsByFilter()" [childrenNodes]='functionality'></ph-tree>
-            </form>
+            <!--</form>-->
 
-            <form class="form-inline">
+            <!--<form class="form-inline">-->
               <h6 class="card-title">
                 <small>Approaches</small>
               </h6>
               <ph-tree (click)="getAppsByFilter()" [childrenNodes]='approaches'></ph-tree>
-            </form>
+            <!--</form>-->
 
-            <form class="form-inline">
+            <!--<form class="form-inline">-->
               <h6 class="card-title">
                 <small>Instrument Data Types</small>
               </h6>
               <ph-tree (click)="getAppsByFilter()" [childrenNodes]='instrument'></ph-tree>
-            </form>
+            <!--</form>-->
 
 
           </div>
@@ -44,41 +44,54 @@
       </div>
 
       <div class="col-xl-9">
-        <div class="col-xl-4">
-          <input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">
-        </div>
-        <div class="btn-group pull-right view">
-          <a (click)="triigerList()" id="grid" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': !isList}">
-            <span class="fa fa-th"></span> Grid
-          </a>
-          <a (click)="triigerList()" id="list" [ngClass]="{'btn': true, 'btn-primary': true, 'disabled': isList}">
-            <span class="fa fa-list"></span> List
-          </a>
-        </div>
-      </div>
-
-      <br>
-      <br>
-
-
-      <div class="col-xl-9">
-        <div class="app-list">
-          <div class="row">
-            <div *ngFor="let app of apps | filter:word.value">
-              <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}">
-                <div *ngIf="isList">
-                  <ph-application-list [application]="app"></ph-application-list>
-                </div>
-                <div *ngIf="!isList">
-                  <ph-application-grid [application]="app"></ph-application-grid>
-                </div>
-              </div><!-- /.col-lg-4 -->
-            </div>
-            <div *ngIf="(apps | filter:word.value)?.length==0">
-              <div class="text-xs-center extra-margins"><h3>Opps, no app found.</h3></div>
+        <div class="row">
+          <div class="col-xl-6">
+            <input type="text" class="form-control" placeholder="Search for Apps" #word (keyup)="0">
+          </div>
+          <div class="col-xl-6">
+            <div class="btn-group pull-right view">
+              <div *ngIf="isList">
+                <button md-raised-button (click)="triigerList()" color='primary'>
+                  <span class="fa fa-th"></span> Grid
+                </button>
+                <button md-raised-button disabled (click)="triigerList()" color='primary'>
+                  <span class="fa fa-list"></span> List
+                </button>
+              </div>
+              <div *ngIf="!isList">
+                <button md-raised-button disabled (click)="triigerList()" color='primary'>
+                  <span class="fa fa-th"></span> Grid
+                </button>
+                <button md-raised-button (click)="triigerList()" color='primary'>
+                  <span class="fa fa-list"></span> List
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        <br>
+        <div class="row">
+          <div class="app-list">
+            <!--<div class="row">-->
+              <div *ngFor="let app of apps | filter:word.value">
+                <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}">
+                  <div *ngIf="isList">
+                    <ph-application-list [application]="app"></ph-application-list>
+                  </div>
+                  <div *ngIf="!isList">
+                    <ph-application-grid [application]="app"></ph-application-grid>
+                  </div>
+                </div><!-- /.col-lg-4 -->
+              </div>
+
+            <!--</div>-->
+          </div>
+
+          <div *ngIf="(apps | filter:word.value)?.length==0" class="col-md-12">
+              <h3 class="no-app-found">Opps, no app found.</h3>
+          </div>
+        </div>
+
       </div>
 
     </div>

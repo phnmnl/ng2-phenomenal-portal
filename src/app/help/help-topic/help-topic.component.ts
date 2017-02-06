@@ -5,8 +5,8 @@ import {WikiService} from '../../shared/service/wiki/wiki.service';
 
 @Component({
   selector: 'ph-help-topic',
-  templateUrl: 'help-topic.component.html',
-  styleUrls: ['help-topic.component.css'],
+  templateUrl: './help-topic.component.html',
+  styleUrls: ['./help-topic.component.css'],
 })
 
 export class HelpTopicComponent implements OnInit {

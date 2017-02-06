@@ -1,0 +1,120 @@
+<main>
+
+  <div *ngIf="tokenService.getToken()">
+    <ph-cre-dashboard></ph-cre-dashboard>
+  </div>
+
+  <div *ngIf="!tokenService.getToken()">
+    <!--Main layout-->
+    <div class="container">
+      <!--First row-->
+      <div class="row">
+        <div class="col-md-6">
+          <p class="text-xs-center">
+            How does it work?
+          </p>
+
+          <ph-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noIndicator]="noLoopIndicator">
+            <ph-slide *ngFor="let slidez of slides; let index=index"
+                      [active]="slidez.active">
+              <img [src]="slidez.image" class="img-fluid">
+            </ph-slide>
+          </ph-carousel>
+
+          <br>
+        </div>
+
+
+        <!--Main information-->
+        <div class="col-md-6">
+          <h3 class="h3-responsive text-justify">All your favourite metabolomics analysis applications under one hood
+            accessible through Open Source scientific web environments, Galaxy Workflow and Jupyter IPython coding
+            environment</h3>
+          <hr>
+
+          <div class="text-xs-center">
+            Test drive our Cloud Research Environment
+            <br>
+            <a href="http://public.phenomenal-h2020.eu/" target="_blank">
+              <button md-raised-button color="primary">Galaxy Workflow</button>
+            </a>
+            or
+            <a>
+              <button md-raised-button disabled>Jupyter IPython</button>
+            </a>
+          </div>
+          <p class="text-xs-center">
+            <small>Note that this is a public instance accessible by everyone</small>
+          </p>
+          <div class="text-xs-center">
+            Want to give it a go?
+            <br>
+            <a [routerLink]="['/cloud-research-environment/setup']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
+          </div>
+
+          <br>
+
+        </div>
+      </div>
+      <!--/.First row-->
+
+      <hr class="extra-margins">
+
+      <!--First row-->
+      <div class="row">
+        <!--Main information-->
+        <div class="col-md-6">
+          <h3 class="h3-responsive text-xs-left">Do you like the idea but need a local installation of the CRE?</h3>
+          <hr>
+          <p class="text-xs-center">Don't worry, we have a solution for you too. We can provide you with all the kit for a
+            local installation of our Cloud Research Environment. This approach is more work for you but you will have the
+            benefit of having jall the apps on our App Library available locally.</p>
+          <div class="text-xs-center">
+            <a [routerLink]="['/cloud-research-environment/local-installation']"
+               class="btn btn-primary">Find out more about <br> local installation</a>
+          </div>
+          <br>
+        </div>
+
+
+        <div class="col-md-6">
+          <!--Featured image -->
+          <img [src]="img2" class="img-fluid" alt="">
+          <br>
+        </div>
+
+
+      </div>
+      <!--/.First row-->
+
+      <hr class="extra-margins">
+
+      <!--First row-->
+      <div class="row">
+        <div class="col-md-6">
+          <!--Featured image -->
+          <img [src]="img3" class="img-fluid" alt="">
+        </div>
+
+        <br>
+        <!--Main information-->
+        <div class="col-md-6">
+          <h3 class="h3-responsive text-xs-left">Access to all the standard Cloud providers or own free PhenoMeNal
+            cloud</h3>
+          <hr>
+          <p class="text-xs-center">Don't know much about Cloud providers but want to use our CRE? Don't worry. Our
+            default setup process is easy to use and will get you started in no time</p>
+
+        </div>
+
+      </div>
+      <!--/.First row-->
+
+
+    </div>
+    <!--/.Main layout-->
+  </div>
+
+
+
+</main>

@@ -1,0 +1,18 @@
+.card-property {
+  height: 500px;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.running {
+  color: green;
+}
+
+.stop {
+  color: red;
+}
+
+.phenomenal-image {
+  height: 150px;
+  width: 300px;
+}

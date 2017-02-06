@@ -12,3 +12,12 @@ h6 {
   margin-bottom: 5px;
   margin-top: 10px;
 }
+
+.app-list {
+  width: 100%;
+}
+
+.no-app-found {
+  text-align: center;
+  margin-top: 50px;
+}

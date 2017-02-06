@@ -1,0 +1,10 @@
+.adapt-modal .modal-content {
+  margin-top: 200px;
+  min-width: 320px;
+}
+.adapt-modal .close {
+}
+
+.modal-backdrop.fade {
+  opacity: 0.5 !important;
+}

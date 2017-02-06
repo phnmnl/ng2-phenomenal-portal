@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.20-4",
+    "version": "1.0.0-beta.30",
     "name": "ng2-phenomenal-portal"
   },
   "apps": [
@@ -13,6 +13,7 @@
       ],
       "index": "index.html",
       "main": "main.ts",
+      "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "ph",
@@ -21,10 +22,12 @@
         "assets/css/font-awesome.min.css",
         "assets/css/bootstrap.min.css",
         "assets/css/mdb.min.css",
-        "styles.css"
+        "styles.css",
+        "theme.scss"
       ],
       "scripts": [
-        "assets/js/xml2json.min.js"
+        "assets/js/xml2json.min.js",
+        "assets/js/jsrsasign-5-0-14-all-min.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
@@ -40,13 +43,23 @@
       "config": "./protractor.conf.js"
     }
   },
+  "lint": [
+    {
+      "files": "src/**/*.ts",
+      "project": "src/tsconfig.json"
+    },
+    {
+      "files": "e2e/**/*.ts",
+      "project": "e2e/tsconfig.json"
+    }
+  ],
   "test": {
     "karma": {
       "config": "./karma.conf.js"
     }
   },
   "defaults": {
-    "styleExt": "css",
+    "styleExt": "scss",
     "prefixInterfaces": false,
     "inline": {
       "style": false,

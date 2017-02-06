@@ -1,0 +1,8 @@
+:host /deep/ .progress {
+  height:15px;
+}
+
+.dark-modal .modal-content {
+  background-color: black;
+  color: white;
+}

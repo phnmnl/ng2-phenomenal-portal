@@ -1,0 +1,154 @@
+<main>
+  <!--Main layout-->
+  <div class="container">
+    <!--First row-->
+    <div class="row">
+      <div class="col-md-6">
+        <!--Featured image -->
+        <img [src]="img1" class="img-fluid" alt="">
+        <br>
+        <div class="text-xs-center">
+          Test drive our Cloud Research Environment
+          <br>
+          <a href="http://public.phenomenal-h2020.eu/" target="_blank">
+            <button md-raised-button color="primary">Galaxy Workflow</button>
+          </a>
+          or
+          <a>
+            <button md-raised-button disabled>Jupyter IPython</button>
+          </a>
+        </div>
+        <p class="text-xs-center">
+          <small>Note that this is a public instance accessible by everyone</small>
+        </p>
+      </div>
+
+      <!--Main information-->
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-xs-left">An easy to use, cloud based scalable software infrastructure for
+          metabolomic research</h3>
+        <hr>
+        <br>
+
+        <p class="text-xs-center">Want to give it a go?</p>
+
+        <div *ngIf="tokenService.getToken()" class="text-xs-center">
+          <a [routerLink]="['/cloud-research-environment/setup']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
+        </div>
+
+        <div *ngIf="!tokenService.getToken()" class="text-xs-center">
+          <a [routerLink]="['/login']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="text-xs-center">
+          <a [routerLink]="['/cloud-research-environment']" class="btn btn-primary-outline waves-effect">Find out
+            more</a>
+        </div>
+      </div>
+    </div>
+    <!--/.First row-->
+
+    <hr class="extra-margins">
+
+    <!--First row-->
+    <div class="row">
+      <!--Main information-->
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-justify">The open-source App Library provides a service catalogue of free
+          Metabolomic data analysis libraries available within the Cloud Research Environment</h3>
+        <hr>
+        <p class="text-xs-center">With user feedback and ratings it is easier to choose the best software for your
+          analysis</p>
+        <div class="text-xs-center">
+          <a [routerLink]="['/app-library']" class="btn btn-primary">Browse <br> App Library</a>
+        </div>
+        <br>
+      </div>
+
+      <div class="col-md-6">
+        <!--Featured image -->
+        <a [routerLink]="['/app-library']"><img [src]="img2" class="img-fluid hand-cursor" alt="App Library"></a>
+      </div>
+
+
+    </div>
+    <!--/.First row-->
+
+
+    <hr class="extra-margins">
+
+    <!--First row-->
+    <div class="row">
+
+      <div class="col-md-6">
+        <!--Featured image -->
+        <ph-modal [img]="img3" [title]="img3_title"></ph-modal>
+        <template ngbModalContainer></template>
+      </div>
+
+      <br>
+      <br>
+      <!--Main information-->
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-xs-left">Access your Cloud Research Environment through standard scientific
+          open-source web environments, Galaxy Workflow tool and Jupyter coding environment</h3>
+      </div>
+    </div>
+    <!--/.First row-->
+
+
+    <hr class="extra-margins">
+
+    <!--First row-->
+    <div class="row">
+      <!--Main information-->
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-xs-left">With world leading e-Infrastructure partners your Cloud Research
+          Environment is in safe hands</h3>
+        <hr>
+        <p class="text-xs-center">Our focus on clinical metabolomics ensures we take the utmost care in securing your
+          environment and data</p>
+        <p class="text-xs-center">The Cloud Research Environment adheres to the strictest security measures. At no point
+          do we store any information related to your own cloud provider</p>
+      </div>
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-xs-center">PhenoMeNal Cloud Hosts</h3>
+
+        <br>
+        <ph-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">
+          <ph-slide *ngFor="let slidez of slides; let index=index"
+                    [active]="slidez.active">
+            <div class="col-md-6">
+              <a href="{{ slidez.website1 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description1 }}" [src]="slidez.image1">
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ slidez.website2 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description2 }}" [src]="slidez.image2">
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ slidez.website3 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description3 }}" [src]="slidez.image3">
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ slidez.website4 }}">
+                <img class="img-fluid host-logo" alt="{{ slidez.description4 }}" [src]="slidez.image4">
+              </a>
+            </div>
+          </ph-slide>
+        </ph-carousel>
+
+      </div>
+
+    </div>
+    <!--/.First row-->
+  </div>
+  <!--/.Main layout-->
+
+</main>
