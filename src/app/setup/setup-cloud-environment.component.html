@@ -38,9 +38,9 @@
               <md-input-container class="input-width">
                 <input md-input placeholder="Galaxy Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
               </md-input-container>
-              <md-input-container class="input-width">
-                <input md-input placeholder="Confirm Password" type="password" required>
-              </md-input-container>
+              <!--<md-input-container class="input-width">-->
+                <!--<input md-input placeholder="Confirm Password" type="password" required>-->
+              <!--</md-input-container>-->
               <!--<md-input-container class="input-width">-->
               <!--<input md-input placeholder="Jupyter Password" type="password" [(ngModel)]="cloudProvider.credential.jupyter_password" required>-->
               <!--</md-input-container>-->
@@ -140,9 +140,9 @@
               <md-input-container class="input-width">
                 <input md-input placeholder="Galaxy Admin Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
               </md-input-container>
-              <md-input-container class="input-width">
-                <input md-input placeholder="Confirm Password" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
-              </md-input-container>
+              <!--<md-input-container class="input-width">-->
+                <!--<input md-input placeholder="Confirm Password" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>-->
+              <!--</md-input-container>-->
               <button md-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
               <template ngbModalContainer></template>
               <ph-progress-bar-modal [credential]="cloudProvider.credential"></ph-progress-bar-modal>
