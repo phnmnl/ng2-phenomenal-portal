@@ -96,7 +96,7 @@ export class CreDashboardComponent implements OnInit {
             deployment['status'] = res.status;
             deployment['isDelete'] = false;
             deployment['isMore'] = false;
-            deployment['isGalaxy'] = false;
+            deployment['isGalaxy'] = true;
             deployment['isJupyter'] = false;
             for (let i = 0; i < deployment.assignedInputs.length; i++) {
               if (deployment.assignedInputs[i]['inputName'] === 'cluster_prefix') {
@@ -113,12 +113,12 @@ export class CreDashboardComponent implements OnInit {
                 deployment['jupyterPassword'] = deployment.assignedInputs[i]['assignedValue'];
               }
             }
-            this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
-              deployment['isGalaxy'] = true;
-            });
-            this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
-              deployment['isJupyter'] = true;
-            });
+            // this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
+            //   deployment['isGalaxy'] = true;
+            // });
+            // this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
+            //   deployment['isJupyter'] = true;
+            // });
           });
         }
       }
