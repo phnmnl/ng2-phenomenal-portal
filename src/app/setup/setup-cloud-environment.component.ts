@@ -179,7 +179,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       this.tokenService.getToken()
     ).subscribe(
       app  => {
-        console.log('[RepositoryComponent] getAll %O', app);
+        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {

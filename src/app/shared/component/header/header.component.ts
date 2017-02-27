@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
       this.tokenService.getToken()
     ).subscribe(
       deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
+        // console.log('[RepositoryComponent] getAll %O', deployment);
       },
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);

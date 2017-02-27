@@ -56,8 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           // );
         });
         event.source.close();
-        console.log('Got Token');
-
+        // console.log('Got Token');
       }
     });
 
@@ -114,7 +113,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private saveToken(jwt: string, callback) {
-    console.log('[LoginPage] Obtained token from saml %O', jwt);
+    // console.log('[LoginPage] Obtained token from saml %O', jwt);
     const theToken: JwtToken = <JwtToken>{ token: jwt };
     this.tokenService.setToken(theToken);
     const tokenClaims = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(jwt.split('.')[1]));
@@ -162,7 +161,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.tokenService.getToken()
     ).subscribe(
       deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
+        // console.log('[RepositoryComponent] getAll %O', deployment);
       },
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);

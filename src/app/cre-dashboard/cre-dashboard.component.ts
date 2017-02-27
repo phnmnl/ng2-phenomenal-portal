@@ -146,7 +146,7 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
+        // console.log('[RepositoryComponent] getAll %O', deployment);
         callback(deployment);
       },
       error => {
@@ -209,7 +209,7 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       app  => {
-        console.log('[RepositoryComponent] getAll %O', app);
+        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {
