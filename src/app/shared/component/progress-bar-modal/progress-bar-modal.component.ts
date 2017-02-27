@@ -213,7 +213,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       this.increment(setTimeout(() => {
         this.getAllApplication(
           (appStatus) => {
-            console.log(appStatus);
+            // console.log(appStatus);
             if (appStatus.status === 401 || appStatus.status === 404 ) {
               console.log(appStatus.message);
               this.status[this.progress / 10 ] = 'ERROR: ' + appStatus.message;
