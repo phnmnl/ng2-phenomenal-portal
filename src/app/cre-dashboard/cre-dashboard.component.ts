@@ -18,15 +18,29 @@ export class CreDashboardComponent implements OnInit {
   private _galaxy_icon = 'assets/img/logo/galaxy.png';
   private _text = 'http://public.phenomenal-h2020.eu/';
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
-
+  private _openstack_logo = 'assets/img/logo/openstack_logo.png';
+  private _aws_logo = 'assets/img/logo/aws_logo.png';
+  private _gce_logo = 'assets/img/logo/gce_logo.png';
 
   get phenomenal_logo(): string {
     return this._phenomenal_logo;
   }
 
+  get gce_logo(): string {
+    return this._gce_logo;
+  }
+
+  get openstack_logo(): string {
+    return this._openstack_logo;
+  }
+
+  get aws_logo(): string {
+    return this._aws_logo;
+  }
+
   deploymentServerList: Deployment[];
-  isDeployment: boolean = false;
-  isClickedOnce: boolean = false;
+  isDeployment = false;
+  isClickedOnce = false;
 
   constructor(
     private _applicationService: ApplicationService,
@@ -82,7 +96,7 @@ export class CreDashboardComponent implements OnInit {
             deployment['status'] = res.status;
             deployment['isDelete'] = false;
             deployment['isMore'] = false;
-            deployment['isGalaxy'] = false;
+            deployment['isGalaxy'] = true;
             deployment['isJupyter'] = false;
             for (let i = 0; i < deployment.assignedInputs.length; i++) {
               if (deployment.assignedInputs[i]['inputName'] === 'cluster_prefix') {
@@ -99,12 +113,12 @@ export class CreDashboardComponent implements OnInit {
                 deployment['jupyterPassword'] = deployment.assignedInputs[i]['assignedValue'];
               }
             }
-            this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
-              deployment['isGalaxy'] = true;
-            });
-            this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
-              deployment['isJupyter'] = true;
-            });
+            // this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
+            //   deployment['isGalaxy'] = true;
+            // });
+            // this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
+            //   deployment['isJupyter'] = true;
+            // });
           });
         }
       }
@@ -132,7 +146,7 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
+        // console.log('[RepositoryComponent] getAll %O', deployment);
         callback(deployment);
       },
       error => {
@@ -195,7 +209,7 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       app  => {
-        console.log('[RepositoryComponent] getAll %O', app);
+        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {

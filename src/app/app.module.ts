@@ -46,9 +46,14 @@ import {ClipboardModule} from 'ngx-clipboard';
 import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 import {RouterModule} from '@angular/router';
+import {GalaxyService} from './shared/service/galaxy/galaxy.service';
+import {UserService} from './shared/service/user/user.service';
+import {PhenomenalTokenService} from './shared/service/phenomenal-token/phenomenal-token.service';
 
 export function SSOConfigService () {
-  return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+
+  // return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
 }
 
@@ -84,7 +89,7 @@ export function SSOConfigService () {
     ModalModule,
     CollapseModule.forRoot(),
     NgbModule.forRoot(),
-    MaterialModule.forRoot(),
+    MaterialModule,
     Ng2PhenomenalPortalRoutingModule,
     RouterModule
   ],
@@ -99,6 +104,8 @@ export function SSOConfigService () {
     WikiService,
     JenkinsReportService,
     ApplicationLibraryService,
+    UserService,
+    PhenomenalTokenService,
 
     ApplicationService,
     AuthService,
@@ -106,7 +113,8 @@ export function SSOConfigService () {
     DeploymentService,
     ErrorService,
     CredentialService,
-    TokenService
+    TokenService,
+    GalaxyService
   ],
   bootstrap: [AppComponent]
 })

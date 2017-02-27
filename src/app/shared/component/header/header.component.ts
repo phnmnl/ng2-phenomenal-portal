@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
     return this._logo;
   }
 
-  public isCollapsed: boolean = false;
+  public isCollapsed = false;
   private _logo = 'assets/img/logo/phenomenal_4x.png';
 
   constructor(private _eref: ElementRef,
@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
     this.credentialService.clearCredentials();
     this.tokenService.clearToken();
     this.isCollapsed = false;
-    location.reload();
+    // location.reload();
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
       this.tokenService.getToken()
     ).subscribe(
       deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
+        // console.log('[RepositoryComponent] getAll %O', deployment);
       },
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);

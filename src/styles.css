@@ -3,7 +3,7 @@
 body {
     padding-top: 80px;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
-    min-width: 320px; /* suppose you want minimun width of 320px */
+    min-width: 324px; /* suppose you want minimun width of 324px */
 }
 
 footer.page-footer {

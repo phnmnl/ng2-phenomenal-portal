@@ -70,37 +70,100 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.name = this.generateUIDNotMoreThan1million();
+    this.name = 'ph' + this.generateUIDNotMoreThan1million();
 
-    this.applicationDeployer = <ApplicationDeployer> {
-      name: 'Phenomenal VRE',
-      repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
-      selectedCloudProvider: 'OSTACK' };
-    this.applicationDeployer.attachedVolumes = {};
-    this.applicationDeployer.assignedInputs = {
-       floating_ip_pool: 'ext-net',
-       external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
-       master_flavor: 's1.large',
-       node_flavor: 's1.large',
-       edge_flavor: 's1.large',
-       cluster_prefix: this.name,
-       node_count: '2',
-       edge_count: '2',
-       galaxy_admin_email: this.credential.galaxy_admin_email,
-       galaxy_admin_password: this.credential.galaxy_admin_password,
-       jupyter_password: this.credential.jupyter_password
-    };
-    const value = {
-      'name': this.credential.username,
-      'cloudProvider': this.credential.provider,
-      'fields': [
-        {'key': 'OS_USERNAME', 'value': this.credential.username},
-        {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
-        {'key': 'OS_AUTH_URL', 'value': this.credential.url},
-        {'key': 'OS_PASSWORD', 'value': this.credential.password},
-        {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
-      ]
-    };
+    let value;
+
+    if (this.credential.provider === 'AWS') {
+      this.applicationDeployer = <ApplicationDeployer> {
+        name: 'Phenomenal VRE',
+        repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+        selectedCloudProvider: 'AWS' };
+      this.applicationDeployer.attachedVolumes = {};
+      this.applicationDeployer.assignedInputs = {
+        aws_access_key_id: this.credential.access_key_id,
+        aws_secret_access_key: this.credential.secret_access_key,
+        aws_region: this.credential.default_region,
+        availability_zone: this.credential.default_region + 'a',
+        master_instance_type: 't2.xlarge',
+        node_instance_type: 't2.xlarge',
+        edge_instance_type: 't2.xlarge',
+        cluster_prefix: this.name,
+        node_count: '2',
+        edge_count: '1',
+        galaxy_admin_email: this.credential.galaxy_admin_email,
+        galaxy_admin_password: this.credential.galaxy_admin_password,
+        jupyter_password: this.credential.jupyter_password
+      };
+      value = {
+        'name': this.name + '-' + this.credential.provider,
+        'cloudProvider': this.credential.provider,
+        'fields': [
+          {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
+          {'key': 'AWS_SECRET_ACCESS_KEY', 'value': this.credential.secret_access_key},
+          {'key': 'AWS_DEFAULT_REGION', 'value': this.credential.default_region}
+        ]
+      };
+    } else if (this.credential.provider === 'GCP') {
+      this.applicationDeployer = <ApplicationDeployer> {
+        name: 'Phenomenal VRE',
+        repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+        selectedCloudProvider: 'GCP' };
+      this.applicationDeployer.attachedVolumes = {};
+      this.applicationDeployer.assignedInputs = {
+        gce_zone: this.credential.default_region,
+        gce_project: this.credential.tenant_name,
+        master_flavor: 'n1-standard-2',
+        node_flavor: 'n1-standard-2',
+        edge_flavor: 'n1-standard-2',
+        cluster_prefix: this.name,
+        node_count: '2',
+        edge_count: '1',
+        galaxy_admin_email: this.credential.galaxy_admin_email,
+        galaxy_admin_password: this.credential.galaxy_admin_password,
+        jupyter_password: this.credential.jupyter_password
+      };
+      value = {
+        'name': this.name + '-' + this.credential.provider,
+        'cloudProvider': this.credential.provider,
+        'fields': [
+          {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
+          {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
+          {'key': 'GCE_ZONE', 'value': this.credential.default_region}
+        ]
+      };
+    } else {
+      this.applicationDeployer = <ApplicationDeployer> {
+        name: 'Phenomenal VRE',
+        repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+        selectedCloudProvider: 'OSTACK' };
+      this.applicationDeployer.attachedVolumes = {};
+      this.applicationDeployer.assignedInputs = {
+        floating_ip_pool: 'ext-net',
+        external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
+        master_flavor: 's1.large',
+        node_flavor: 's1.large',
+        edge_flavor: 's1.large',
+        cluster_prefix: this.name,
+        node_count: '2',
+        edge_count: '2',
+        galaxy_admin_email: this.credential.galaxy_admin_email,
+        galaxy_admin_password: this.credential.galaxy_admin_password,
+        jupyter_password: this.credential.jupyter_password
+      };
+      value = {
+        'name': this.name + '-' + this.credential.provider,
+        'cloudProvider': this.credential.provider,
+        'fields': [
+          {'key': 'OS_USERNAME', 'value': this.credential.username},
+          {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
+          {'key': 'OS_AUTH_URL', 'value': this.credential.url},
+          {'key': 'OS_PASSWORD', 'value': this.credential.password},
+          {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
+        ]
+      };
+    }
+
     setTimeout((callback) => {
       this.increment(
         setTimeout(() => {
@@ -174,10 +237,6 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                   }, 2000));
               }, 2000);
             } else {
-              // console.log('remove app');
-              // this.removeApplication(this.applicationDeployer, (res) => {
-              //
-              // });
               this.increment(
                 setTimeout(() => {
                   this.addDeployment(callback);

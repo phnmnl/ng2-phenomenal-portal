@@ -1,39 +1,68 @@
 <main>
-  <div class="container text-xs-center">
-    <br>
-
-    <div *ngIf="!tokenService.getToken()">
-
-      <p>Let us setup your Cloud Research Environment.</p>
-
-      <p>We just need to ask you a couple of questions
-        and we will get you all hooked up.</p>
-      <br>
-      <h5>Who are you?</h5>
+  <!--<div *ngIf="this.credentialService.getUsername() === null">-->
+    <!--<div class="loader">Loading...</div>-->
+  <!--</div>-->
+  <!--<div *ngIf="this.credentialService.getUsername() !== null">-->
+    <div class="container text-xs-center">
 
       <br>
 
-      <p>In order to ensure we can identify you and your cloud research environment.</p>
-      <p>It's important to sign in or register through Elixir SSO.</p>
+      <div *ngIf="!tokenService.getToken()">
 
-      <a class="btn btn-primary button-width" href="{{ssoLink()}}" target="_blank"><img [src]="elixir_logo"> SSO</a>
+        <p>Let us setup your Cloud Research Environment.</p>
 
-      <p></p>
+        <p>We just need to ask you a couple of questions
+          and we will get you all hooked up.</p>
+        <br>
+        <h5>Who are you?</h5>
 
+        <br>
+
+        <p>In order to ensure we can identify you and your cloud research environment.</p>
+        <p>It's important to sign in or register through Elixir SSO.</p>
+
+        <a class="btn btn-primary button-width" href="{{ssoLink()}}" target="_blank"><img [src]="elixir_logo"> SSO</a>
+
+        <p></p>
+
+      </div>
+
+      <div *ngIf="tokenService.getToken()">
+
+        <!--<div *ngIf="!getActivate()">-->
+          <!--<div>{{this.credentialService.getUsername()}}</div>-->
+          <p>Please agree the following terms and conditions before continue</p>
+
+          <div class="text-xs-left" style="display:inline-block">
+            <!--<md-checkbox color="primary" [(ngModel)]="checked1">I am fully aware of the <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2016/09/Phenomenal-Terms-of-Use-version-11.pdf" target="_blank" style="font-weight: bold;">ELSI requirements</a>.</md-checkbox>-->
+            <!--<br>-->
+            <md-checkbox [(ngModel)]="checked3">I accept the PhenoMeNal <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2016/09/Phenomenal-Terms-of-Use-version-11.pdf" target="_blank" style="font-weight: bold;">Terms and Conditions</a>.</md-checkbox>
+            <br>
+          </div>
+
+          <br>
+          <br>
+
+          <button *ngIf="true && checked3" md-raised-button [routerLink]="['/cloud-research-environment']" color="primary">
+            Continue
+          </button>
+          <button *ngIf="!(true && checked3)"md-raised-button disabled color="primary">
+            Continue
+          </button>
+        <!--</div>-->
+
+        <!--<div *ngIf="getActivate()">-->
+          <!--<p>Welcome back! Please continue...</p>-->
+
+          <!--<button md-raised-button [routerLink]="['/cloud-research-environment']" color="primary">-->
+            <!--Continue-->
+          <!--</button>-->
+        <!--</div>-->
+
+
+      </div>
     </div>
+  <!--</div>-->
 
-    <div *ngIf="tokenService.getToken()">
-
-
-      <h2>You are logged in as {{ credentialService.getUsername() }}</h2>
-
-      <br>
-
-      <a class="btn btn-primary button-width" [routerLink]="['/cloud-research-environment']">
-        Continue
-      </a>
-
-    </div>
-  </div>
 </main>
 

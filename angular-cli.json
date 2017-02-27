@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.30",
+    "version": "1.0.0-rc.0",
     "name": "ng2-phenomenal-portal"
   },
   "apps": [
@@ -29,8 +29,8 @@
         "assets/js/xml2json.min.js",
         "assets/js/jsrsasign-5-0-14-all-min.js"
       ],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
