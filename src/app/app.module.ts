@@ -89,7 +89,7 @@ export function SSOConfigService () {
     ModalModule,
     CollapseModule.forRoot(),
     NgbModule.forRoot(),
-    MaterialModule.forRoot(),
+    MaterialModule,
     Ng2PhenomenalPortalRoutingModule,
     RouterModule
   ],

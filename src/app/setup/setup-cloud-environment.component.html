@@ -30,13 +30,13 @@
 
               <!--<p>Please register if you do not have a PhenoMeNal Galaxy account</p>-->
               <md-input-container class="input-width">
-                <input md-input placeholder="Galaxy Username" [(ngModel)]="cloudProvider.credential.galaxy_admin_username" required>
+                <input mdInput placeholder="Galaxy Username" [(ngModel)]="cloudProvider.credential.galaxy_admin_username" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Galaxy Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
+                <input mdInput placeholder="Galaxy Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Galaxy Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
+                <input mdInput placeholder="Galaxy Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
               </md-input-container>
               <!--<md-input-container class="input-width">-->
                 <!--<input md-input placeholder="Confirm Password" type="password" required>-->
@@ -77,16 +77,16 @@
 
             <md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title !== 'AWS'&& cloudProvider.title !== 'Google Cloud Platform'">
               <md-input-container class="input-width">
-                <input md-input placeholder="Username" [(ngModel)]="cloudProvider.credential.username" required>
+                <input mdInput placeholder="Username" [(ngModel)]="cloudProvider.credential.username" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Password" type="password" [(ngModel)]="cloudProvider.credential.password" required>
+                <input mdInput placeholder="Password" type="password" [(ngModel)]="cloudProvider.credential.password" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Tenant Name" [(ngModel)]="cloudProvider.credential.tenant_name" required>
+                <input mdInput placeholder="Tenant Name" [(ngModel)]="cloudProvider.credential.tenant_name" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Auth URL" [(ngModel)]="cloudProvider.credential.url"required>
+                <input mdInput placeholder="Auth URL" [(ngModel)]="cloudProvider.credential.url"required>
               </md-input-container>
               <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
               <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>
@@ -101,10 +101,10 @@
                 <br>
                 <br>
                 <md-input-container class="input-width">
-                  <input md-input placeholder="Access Key ID" [(ngModel)]="cloudProvider.credential.access_key_id" required>
+                  <input mdInput placeholder="Access Key ID" [(ngModel)]="cloudProvider.credential.access_key_id" required>
                 </md-input-container>
                 <md-input-container class="input-width">
-                  <input md-input placeholder="Secret Access Key" type="password" [(ngModel)]="cloudProvider.credential.secret_access_key" required>
+                  <input mdInput placeholder="Secret Access Key" type="password" [(ngModel)]="cloudProvider.credential.secret_access_key" required>
                 </md-input-container>
               <br>
               <br>
@@ -121,10 +121,10 @@
               <br>
               <br>
               <md-input-container class="input-width">
-                <input md-input placeholder="Google Compute Engine Service Credential" [(ngModel)]="cloudProvider.credential.access_key_id" required>
+                <input mdInput placeholder="Google Compute Engine Service Credential" [(ngModel)]="cloudProvider.credential.access_key_id" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Project ID" [(ngModel)]="cloudProvider.credential.tenant_name" required>
+                <input mdInput placeholder="Project ID" [(ngModel)]="cloudProvider.credential.tenant_name" required>
               </md-input-container>
               <br>
               <br>
@@ -135,10 +135,10 @@
             <md-card-content *ngIf="cloudProvider.isSelected === 2">
               <p>Please register your Galaxy account</p>
               <md-input-container class="input-width">
-                <input md-input placeholder="Galaxy Admin Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
+                <input mdInput placeholder="Galaxy Admin Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
               </md-input-container>
               <md-input-container class="input-width">
-                <input md-input placeholder="Galaxy Admin Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
+                <input mdInput placeholder="Galaxy Admin Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
               </md-input-container>
               <!--<md-input-container class="input-width">-->
                 <!--<input md-input placeholder="Confirm Password" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>-->

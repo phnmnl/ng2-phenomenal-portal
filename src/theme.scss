@@ -1,10 +1,10 @@
 @import './phenomenal-theme';
 
-@include md-core();
+@include mat-core();
 
-$primary: md-palette($md-phenomenal-primary, 500);
-$accent:  md-palette($md-phenomenal-secondary, 500, A100, A400);
-$warn:    md-palette($md-phenomenal-complementary, 500);
-$theme: md-light-theme($primary, $accent, $warn);
+$primary: mat-palette($md-phenomenal-primary, 500);
+$accent:  mat-palette($md-phenomenal-secondary, 500, A100, A400);
+$warn:    mat-palette($md-phenomenal-complementary, 500);
+$theme: mat-light-theme($primary, $accent, $warn);
 
 @include angular-material-theme($theme);
