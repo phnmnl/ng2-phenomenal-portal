@@ -7,7 +7,7 @@ export class CloudProvider {
   providerDescription: string;
   locationDescription: string;
   logo: string;
-  isSelected: boolean;
+  isSelected: number;
   credential: Credential;
 }
 

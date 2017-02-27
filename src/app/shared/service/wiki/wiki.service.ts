@@ -13,34 +13,34 @@ export class WikiService {
   }
 
   loadMenu(): Observable<string[]> {
-    let url = this.baseUrl + '/wiki/controller.php?filename=' + this.gitRepoName + '&format=array';
+    const url = this.baseUrl + '/wiki/controller.php?filename=' + this.gitRepoName + '&format=array';
     return this.http.get(url).map(this.extractData);
   }
 
   loadUserDocumentationMenu(): Observable<string[]> {
-    let url = this.baseUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation&format=array&limit=100';
+    const url = this.baseUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
   loadDeveloperDocumentationMenu(): Observable<string[]> {
-    let url = this.baseUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation&format=array&limit=100';
+    const url = this.baseUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
   loadTutorialsMenu(): Observable<string[]> {
-    let url = this.baseUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials&format=array&limit=100';
+    const url = this.baseUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
   loadPage(id) {
-    let url = this.baseUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '&format=array&limit=3';
+    const url = this.baseUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '&format=array&limit=3';
     return this.http.get(url).map(this.extractData);
   }
 
   search(term: string) {
-    let url = this.baseUrl + '/wiki/search.php?term=' + term;
+    const url = this.baseUrl + '/wiki/search.php?term=' + term;
 
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set('search', term); // the user's search value
 
     // TODO: Add error handling
@@ -50,7 +50,7 @@ export class WikiService {
   }
 
   private extractData(res: Response) {
-    let body = res.json();
+    const body = res.json();
     return body.data || {};
   }
 

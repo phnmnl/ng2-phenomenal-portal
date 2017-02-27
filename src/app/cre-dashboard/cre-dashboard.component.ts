@@ -18,15 +18,29 @@ export class CreDashboardComponent implements OnInit {
   private _galaxy_icon = 'assets/img/logo/galaxy.png';
   private _text = 'http://public.phenomenal-h2020.eu/';
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
-
+  private _openstack_logo = 'assets/img/logo/openstack_logo.png';
+  private _aws_logo = 'assets/img/logo/aws_logo.png';
+  private _gce_logo = 'assets/img/logo/gce_logo.png';
 
   get phenomenal_logo(): string {
     return this._phenomenal_logo;
   }
 
+  get gce_logo(): string {
+    return this._gce_logo;
+  }
+
+  get openstack_logo(): string {
+    return this._openstack_logo;
+  }
+
+  get aws_logo(): string {
+    return this._aws_logo;
+  }
+
   deploymentServerList: Deployment[];
-  isDeployment: boolean = false;
-  isClickedOnce: boolean = false;
+  isDeployment = false;
+  isClickedOnce = false;
 
   constructor(
     private _applicationService: ApplicationService,
