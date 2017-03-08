@@ -28,6 +28,16 @@ export class SetupCloudEnvironmentComponent implements OnInit {
   private _cloudProviderCollection: CloudProvider[];
   private _aws_region: AwsRegion[];
   private _gcp_region: AwsRegion[];
+  private _provider: CloudProvider;
+
+
+  get provider(): CloudProvider {
+    return this._provider;
+  }
+
+  set provider(value: CloudProvider) {
+    this._provider = value;
+  }
 
   get galaxy_api_key(): string {
     return this._galaxy_api_key;
@@ -44,6 +54,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     private router: Router,
     public galaxyService: GalaxyService
   ) {
+
 
     this._aws_region = [
       { value: 'eu-west-1', displayValue: 'EU (Ireland)'},
@@ -68,6 +79,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     this._cloudProviderCollection = [
       {
         title: 'PhenoMeNal Cloud',
+        name: 'phenomenal',
         description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
         paymentDescription: 'Free',
         providerDescription: 'EMBL-EBI, Uppsala Uni',
@@ -88,6 +100,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       },
       {
         title: 'OpenStack',
+        name: 'ostack',
         description: 'Your Cloud Research Environment can be deployed at any OpenStack cloud you have an account for.',
         paymentDescription: 'Commercial or Free',
         providerDescription: 'N/a',
@@ -108,6 +121,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       },
       {
         title: 'AWS',
+        name: 'aws',
         description: 'Amazon WS is a commercial cloud provider. Use this if you already have an Amazon AWS account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Amazon AWS',
@@ -131,6 +145,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       },
       {
         title: 'Google Cloud Platform',
+        name: 'gcp',
         description: 'Google Cloud Platform is a commercial cloud provider. Use this if you already have an GCP account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Google Cloud',

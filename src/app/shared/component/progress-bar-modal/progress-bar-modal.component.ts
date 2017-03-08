@@ -8,6 +8,7 @@ import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { ApplicationService, CloudCredentialsService} from 'ng2-cloud-portal-service-lib';
 import {isError} from 'util';
 import {Credential } from '../../../setup/credential';
+import {CloudProvider} from '../../../setup/cloud-provider';
 
 @Component({
   selector: 'ph-progress-bar-modal-content',
@@ -37,6 +38,7 @@ import {Credential } from '../../../setup/credential';
 
 export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   @Input() credential: Credential;
+  @Input() cloudProvider: CloudProvider;
 
   progress: number = 0;
   status: string[] = [
@@ -474,11 +476,13 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
 })
 export class ProgressBarModalComponent {
   @Input() credential: Credential;
+  @Input() cloudProvider: CloudProvider;
 
   constructor(private modalService: NgbModal) {}
 
   open() {
     const modalRef = this.modalService.open(ProgressBarModalContentComponent, { size: 'lg', backdrop: 'static'});
     modalRef.componentInstance.credential = this.credential;
+    modalRef.componentInstance.cloudProvider = this.cloudProvider;
   }
 }

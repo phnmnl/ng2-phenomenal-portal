@@ -1,0 +1,29 @@
+<div [ngClass]="{'col-lg-4': cloudProvider.name !== 'phenomenal', 'col-lg-12': cloudProvider.name === 'phenomenal', 'card-size': true}">
+  <md-card>
+    <img md-card-image src="{{cloudProvider.logo}}" class="card-image">
+    <md-card-content>
+      <h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>
+      <div *ngIf="cloudProvider.isSelected === 0">
+        <p>{{cloudProvider.description}}</p>
+        <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
+        <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
+        <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
+        <div *ngIf="cloudProvider.name === 'phenomenal'">
+          <a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
+          <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
+        </div>
+        <div *ngIf="cloudProvider.name !== 'phenomenal'">
+          <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
+        </div>
+      </div>
+      <div *ngIf="cloudProvider.isSelected === 1">
+        <ph-ostack-setup *ngIf="cloudProvider.name === 'ostack'" [(cloudProvider)]="cloudProvider"></ph-ostack-setup>
+        <ph-aws-setup *ngIf="cloudProvider.name === 'aws'" [cloudProvider]="cloudProvider"></ph-aws-setup>
+        <ph-gcp-setup *ngIf="cloudProvider.name === 'gcp'" [cloudProvider]="cloudProvider"></ph-gcp-setup>
+      </div>
+      <div *ngIf="cloudProvider.isSelected === 2">
+        <ph-cre-registration-form [cloudProvider]="cloudProvider"></ph-cre-registration-form>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>

@@ -1,0 +1,23 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>Please enter your OpenStack credentials.</p>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Username" formControlName="username" required>
+  </md-input-container>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Password" type="password" formControlName="password" required>
+  </md-input-container>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Confirm Password" type="password" formControlName="confirmPassword" required>
+  </md-input-container>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Tenant Name" formControlName="tenantName" required>
+  </md-input-container>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Auth URL" formControlName="authURL" required>
+  </md-input-container>
+  <div *ngIf="formErrors.username || formErrors.password || formErrors.confirmPassword || formErrors.tenantName || formErrors.authURL" class="alert alert-warning">
+    {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
+  </div>
+  <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+  <button md-raised-button [disabled]="!form.valid" color="primary">Next</button>
+</form>

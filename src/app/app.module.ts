@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {BreadcrumbComponent} from './shared/component/breadcrumb/breadcrumb.component';
@@ -49,6 +49,14 @@ import {RouterModule} from '@angular/router';
 import {GalaxyService} from './shared/service/galaxy/galaxy.service';
 import {UserService} from './shared/service/user/user.service';
 import {PhenomenalTokenService} from './shared/service/phenomenal-token/phenomenal-token.service';
+import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
+import { PhenomenalSetupComponent } from './setup/phenomenal-setup/phenomenal-setup.component';
+import { OstackSetupComponent } from './setup/ostack-setup/ostack-setup.component';
+import { AwsSetupComponent } from './setup/aws-setup/aws-setup.component';
+import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
+import { CloudDescriptionLayoutComponent } from './setup/cloud-description-layout/cloud-description-layout.component';
+import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
+import { ValidatorComponent } from './setup/validator/validator.component';
 
 export function SSOConfigService () {
   return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -79,7 +87,15 @@ export function SSOConfigService () {
     ProgressBarModalComponent,
     ProgressBarModalContentComponent,
     ProgressBarComponent,
-    CreDashboardComponent
+    CreDashboardComponent,
+    CreRegistrationFormComponent,
+    PhenomenalSetupComponent,
+    OstackSetupComponent,
+    AwsSetupComponent,
+    GcpSetupComponent,
+    CloudDescriptionLayoutComponent,
+    CloudSetupComponent,
+    ValidatorComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +107,7 @@ export function SSOConfigService () {
     NgbModule.forRoot(),
     MaterialModule,
     Ng2PhenomenalPortalRoutingModule,
+    ReactiveFormsModule,
     RouterModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
