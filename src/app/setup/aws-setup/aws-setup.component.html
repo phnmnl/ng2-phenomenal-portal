@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <br>
+  <md-select placeholder="Select Region" style="display: inline-block; text-align: left;" class="input-width" formControlName="region" required>
+    <md-option *ngFor="let region of _aws_region" [value]="region.value">
+      {{region.displayValue}}
+    </md-option>
+  </md-select>
+  <br>
+  <br>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Access Key ID" formControlName="accessKeyId" required>
+  </md-input-container>
+  <md-input-container class="input-width">
+    <input mdInput placeholder="Secret Access Key" formControlName="secretAccessKey" required>
+  </md-input-container>
+  <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.secretAccessKey" class="alert alert-warning">
+    {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.secretAccessKey }}
+  </div>
+  <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+  <button md-raised-button [disabled]="!form.valid" color="primary">Next</button>
+</form>

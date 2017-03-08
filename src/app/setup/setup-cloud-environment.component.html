@@ -13,143 +13,149 @@
       </small>
 
       <div *ngFor="let cloudProvider of cloudProviderCollection">
-        <div *ngIf="cloudProvider.title === 'PhenoMeNal Cloud'" class="col-lg-12">
-          <md-card class="phenomenal-card-property">
-            <img md-card-image src="{{cloudProvider.logo}}" class="phenomenal-image">
-            <md-card-content *ngIf="!cloudProvider.isSelected">
-              <h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>
-              <p>{{cloudProvider.description}}</p>
-              <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-              <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
-              <!--<p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>-->
-              <a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
-              <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Register</button>
-            </md-card-content>
-
-            <md-card-content *ngIf="cloudProvider.isSelected === 1 && !_isSuccess">
-
-              <!--<p>Please register if you do not have a PhenoMeNal Galaxy account</p>-->
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Galaxy Username" [(ngModel)]="cloudProvider.credential.galaxy_admin_username" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Galaxy Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Galaxy Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
-              </md-input-container>
-              <!--<md-input-container class="input-width">-->
-                <!--<input md-input placeholder="Confirm Password" type="password" required>-->
-              <!--</md-input-container>-->
-              <!--<md-input-container class="input-width">-->
-              <!--<input md-input placeholder="Jupyter Password" type="password" [(ngModel)]="cloudProvider.credential.jupyter_password" required>-->
-              <!--</md-input-container>-->
-              <div>
-                <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-                <button md-raised-button (click)="registerGalaxyAccount(cloudProvider.credential.galaxy_admin_username, cloudProvider.credential.galaxy_admin_email, cloudProvider.credential.galaxy_admin_password)" color="warn">Register</button>
-              </div>
-              <div *ngIf="_isFailed" style="color: red">{{_message}}</div>
-            </md-card-content>
-
-            <md-card-content *ngIf="_isSuccess">
-              <p>{{cloudProvider.description}}</p>
-              <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-              <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
-              <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
-              <p>Congratulations! Please login with your PhenoMeNal Galaxy account.</p>
-              <a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
-            </md-card-content>
-
-          </md-card>
-        </div>
-
-        <div *ngIf="cloudProvider.title !== 'PhenoMeNal Cloud'" class="col-lg-4">
-          <md-card class="card-property">
-            <img md-card-image src="{{cloudProvider.logo}}" class="card-image">
-            <md-card-content *ngIf="!cloudProvider.isSelected">
-              <h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>
-              <p>{{cloudProvider.description}}</p>
-              <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-              <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
-              <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
-              <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
-            </md-card-content>
-
-            <md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title !== 'AWS'&& cloudProvider.title !== 'Google Cloud Platform'">
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Username" [(ngModel)]="cloudProvider.credential.username" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Password" type="password" [(ngModel)]="cloudProvider.credential.password" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Tenant Name" [(ngModel)]="cloudProvider.credential.tenant_name" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Auth URL" [(ngModel)]="cloudProvider.credential.url"required>
-              </md-input-container>
-              <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-              <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>
-            </md-card-content>
-
-            <md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title === 'AWS'">
-                <md-select placeholder="Select Region" style="display: inline-block; text-align: left;" class="input-width" [(ngModel)]="cloudProvider.credential.default_region" required>
-                  <md-option *ngFor="let region of _aws_region" [value]="region.value">
-                    {{region.displayValue}}
-                  </md-option>
-                </md-select>
-                <br>
-                <br>
-                <md-input-container class="input-width">
-                  <input mdInput placeholder="Access Key ID" [(ngModel)]="cloudProvider.credential.access_key_id" required>
-                </md-input-container>
-                <md-input-container class="input-width">
-                  <input mdInput placeholder="Secret Access Key" type="password" [(ngModel)]="cloudProvider.credential.secret_access_key" required>
-                </md-input-container>
-              <br>
-              <br>
-              <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-              <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>
-            </md-card-content>
-
-            <md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title === 'Google Cloud Platform'">
-              <md-select placeholder="Select Region" style="display: inline-block; text-align: left;" class="input-width" [(ngModel)]="cloudProvider.credential.default_region" required>
-                <md-option *ngFor="let region of _gcp_region" [value]="region.value">
-                  {{region.displayValue}}
-                </md-option>
-              </md-select>
-              <br>
-              <br>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Google Compute Engine Service Credential" [(ngModel)]="cloudProvider.credential.access_key_id" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Project ID" [(ngModel)]="cloudProvider.credential.tenant_name" required>
-              </md-input-container>
-              <br>
-              <br>
-              <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-              <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>
-            </md-card-content>
-
-            <md-card-content *ngIf="cloudProvider.isSelected === 2">
-              <p>Please register your Galaxy account</p>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Galaxy Admin Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>
-              </md-input-container>
-              <md-input-container class="input-width">
-                <input mdInput placeholder="Galaxy Admin Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>
-              </md-input-container>
-              <!--<md-input-container class="input-width">-->
-                <!--<input md-input placeholder="Confirm Password" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>-->
-              <!--</md-input-container>-->
-              <button md-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
-              <template ngbModalContainer></template>
-              <ph-progress-bar-modal [credential]="cloudProvider.credential"></ph-progress-bar-modal>
-            </md-card-content>
-          </md-card>
-        </div>
+        <ph-cloud-setup [cloudProvider]="cloudProvider"></ph-cloud-setup>
       </div>
+
+
+      <!--<div *ngFor="let cloudProvider of cloudProviderCollection">-->
+        <!--<div *ngIf="cloudProvider.title === 'PhenoMeNal Cloud'" class="col-lg-12">-->
+          <!--<md-card class="phenomenal-card-property">-->
+            <!--<img md-card-image src="{{cloudProvider.logo}}" class="phenomenal-image">-->
+            <!--<md-card-content *ngIf="!cloudProvider.isSelected">-->
+              <!--<h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>-->
+              <!--<p>{{cloudProvider.description}}</p>-->
+              <!--<p><strong>{{cloudProvider.paymentDescription}}</strong></p>-->
+              <!--<p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>-->
+              <!--&lt;!&ndash;<p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>&ndash;&gt;-->
+              <!--<a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Register</button>-->
+            <!--</md-card-content>-->
+
+            <!--<md-card-content *ngIf="cloudProvider.isSelected === 1 && !_isSuccess">-->
+              <!--&lt;!&ndash;<p>Please register if you do not have a PhenoMeNal Galaxy account</p>&ndash;&gt;-->
+              <!--&lt;!&ndash;<form [formGroup]="form" (ngSubmit)="onSubmit()">&ndash;&gt;-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Galaxy Username" [(ngModel)]="cloudProvider.credential.galaxy_admin_username" required>-->
+                <!--&lt;!&ndash;<input mdInput formControlName="galaxyUsername" placeholder="Galaxy Username" required>&ndash;&gt;-->
+              <!--</md-input-container>-->
+              <!--&lt;!&ndash;</form>&ndash;&gt;-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Galaxy Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>-->
+              <!--</md-input-container>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Galaxy Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>-->
+              <!--</md-input-container>-->
+              <!--&lt;!&ndash;<md-input-container class="input-width">&ndash;&gt;-->
+                <!--&lt;!&ndash;<input md-input placeholder="Confirm Password" type="password" required>&ndash;&gt;-->
+              <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+              <!--&lt;!&ndash;<md-input-container class="input-width">&ndash;&gt;-->
+              <!--&lt;!&ndash;<input md-input placeholder="Jupyter Password" type="password" [(ngModel)]="cloudProvider.credential.jupyter_password" required>&ndash;&gt;-->
+              <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+              <!--<div>-->
+                <!--<button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>-->
+                <!--<button md-raised-button (click)="registerGalaxyAccount(cloudProvider.credential.galaxy_admin_username, cloudProvider.credential.galaxy_admin_email, cloudProvider.credential.galaxy_admin_password)" color="warn">Register</button>-->
+              <!--</div>-->
+              <!--<div *ngIf="_isFailed" style="color: red">{{_message}}</div>-->
+            <!--</md-card-content>-->
+
+
+            <!--<md-card-content *ngIf="_isSuccess">-->
+              <!--<p>{{cloudProvider.description}}</p>-->
+              <!--<p><strong>{{cloudProvider.paymentDescription}}</strong></p>-->
+              <!--<p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>-->
+              <!--<p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>-->
+              <!--<p>Congratulations! Please login with your PhenoMeNal Galaxy account.</p>-->
+              <!--<a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>-->
+            <!--</md-card-content>-->
+
+          <!--</md-card>-->
+        <!--</div>-->
+
+        <!--<div *ngIf="cloudProvider.title !== 'PhenoMeNal Cloud'" class="col-lg-4">-->
+          <!--<md-card class="card-property">-->
+            <!--<img md-card-image src="{{cloudProvider.logo}}" class="card-image">-->
+            <!--<md-card-content *ngIf="!cloudProvider.isSelected">-->
+              <!--<h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>-->
+              <!--<p>{{cloudProvider.description}}</p>-->
+              <!--<p><strong>{{cloudProvider.paymentDescription}}</strong></p>-->
+              <!--<p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>-->
+              <!--<p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>-->
+            <!--</md-card-content>-->
+
+            <!--<md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title !== 'AWS'&& cloudProvider.title !== 'Google Cloud Platform'">-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Username" [(ngModel)]="cloudProvider.credential.username" required>-->
+              <!--</md-input-container>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Password" type="password" [(ngModel)]="cloudProvider.credential.password" required>-->
+              <!--</md-input-container>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Tenant Name" [(ngModel)]="cloudProvider.credential.tenant_name" required>-->
+              <!--</md-input-container>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Auth URL" [(ngModel)]="cloudProvider.credential.url"required>-->
+              <!--</md-input-container>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>-->
+            <!--</md-card-content>-->
+
+            <!--<md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title === 'AWS'">-->
+                <!--<md-select placeholder="Select Region" style="display: inline-block; text-align: left;" class="input-width" [(ngModel)]="cloudProvider.credential.default_region" required>-->
+                  <!--<md-option *ngFor="let region of _aws_region" [value]="region.value">-->
+                    <!--{{region.displayValue}}-->
+                  <!--</md-option>-->
+                <!--</md-select>-->
+                <!--<br>-->
+                <!--<br>-->
+                <!--<md-input-container class="input-width">-->
+                  <!--<input mdInput placeholder="Access Key ID" [(ngModel)]="cloudProvider.credential.access_key_id" required>-->
+                <!--</md-input-container>-->
+                <!--<md-input-container class="input-width">-->
+                  <!--<input mdInput placeholder="Secret Access Key" type="password" [(ngModel)]="cloudProvider.credential.secret_access_key" required>-->
+                <!--</md-input-container>-->
+              <!--<br>-->
+              <!--<br>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>-->
+            <!--</md-card-content>-->
+
+            <!--<md-card-content *ngIf="cloudProvider.isSelected === 1 && cloudProvider.title === 'Google Cloud Platform'">-->
+              <!--<md-select placeholder="Select Region" style="display: inline-block; text-align: left;" class="input-width" [(ngModel)]="cloudProvider.credential.default_region" required>-->
+                <!--<md-option *ngFor="let region of _gcp_region" [value]="region.value">-->
+                  <!--{{region.displayValue}}-->
+                <!--</md-option>-->
+              <!--</md-select>-->
+              <!--<br>-->
+              <!--<br>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Google Compute Engine Service Credential" [(ngModel)]="cloudProvider.credential.access_key_id" required>-->
+              <!--</md-input-container>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Project ID" [(ngModel)]="cloudProvider.credential.tenant_name" required>-->
+              <!--</md-input-container>-->
+              <!--<br>-->
+              <!--<br>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Next</button>-->
+            <!--</md-card-content>-->
+
+            <!--<div *ngIf="cloudProvider.isSelected === 2">-->
+              <!--<p>Please register your Galaxy account</p>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Galaxy Admin Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>-->
+              <!--</md-input-container>-->
+              <!--<md-input-container class="input-width">-->
+                <!--<input mdInput placeholder="Galaxy Admin Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>-->
+              <!--</md-input-container>-->
+              <!--<button md-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>-->
+              <!--<template ngbModalContainer></template>-->
+              <!--<ph-progress-bar-modal [credential]="cloudProvider.credential"></ph-progress-bar-modal>-->
+            <!--</div>-->
+
+          <!--</md-card>-->
+        <!--</div>-->
+      <!--</div>-->
 
     </div>
 
