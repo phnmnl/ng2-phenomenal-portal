@@ -6,6 +6,7 @@ import {
   CRELocalInstallationInstructionComponent
 } from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
 import {HelpComponent} from './help/help.component';
+import {FaqComponent} from './help/faq/faq.component';
 import {HelpTopicComponent} from './help/help-topic/help-topic.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {HomeComponent} from './static-page/home/home.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
     component: CRELocalInstallationInstructionComponent
   },
   {path: 'help', component: HelpComponent},
+  {path: 'help/faq', component: FaqComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
   {path: 'cloud-research-environment/setup', component: SetupCloudEnvironmentComponent},
