@@ -95,7 +95,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
         edge_count: '1',
         galaxy_admin_email: this.credential.galaxy_admin_email,
         galaxy_admin_password: this.credential.galaxy_admin_password,
-        jupyter_password: this.credential.jupyter_password
+        jupyter_password: this.credential.galaxy_admin_password
       };
       value = {
         'name': this.name + '-' + this.credential.provider,
@@ -116,14 +116,14 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
         gce_zone: this.credential.default_region,
         gce_project: this.credential.tenant_name,
         master_flavor: 'n1-standard-2',
-        node_flavor: 'n1-standard-2',
+        node_flavor: 'n1-standard-4',
         edge_flavor: 'n1-standard-2',
         cluster_prefix: this.name,
-        node_count: '2',
+        node_count: '1',
         edge_count: '1',
         galaxy_admin_email: this.credential.galaxy_admin_email,
         galaxy_admin_password: this.credential.galaxy_admin_password,
-        jupyter_password: this.credential.jupyter_password
+        jupyter_password: this.credential.galaxy_admin_password
       };
       value = {
         'name': this.name + '-' + this.credential.provider,
@@ -151,7 +151,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
         edge_count: '2',
         galaxy_admin_email: this.credential.galaxy_admin_email,
         galaxy_admin_password: this.credential.galaxy_admin_password,
-        jupyter_password: this.credential.jupyter_password
+        jupyter_password: this.credential.galaxy_admin_password
       };
       value = {
         'name': this.name + '-' + this.credential.provider,

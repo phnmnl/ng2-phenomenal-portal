@@ -8,10 +8,10 @@
   <br>
   <br>
   <md-input-container class="input-width">
-    <input mdInput placeholder="Access Key ID" formControlName="accessKeyId" required>
+    <input mdInput placeholder="Access Key ID" type="password" formControlName="accessKeyId" required>
   </md-input-container>
   <md-input-container class="input-width">
-    <input mdInput placeholder="Secret Access Key" formControlName="secretAccessKey" required>
+    <input mdInput placeholder="Secret Access Key" type="password" formControlName="secretAccessKey" required>
   </md-input-container>
   <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.secretAccessKey" class="alert alert-warning">
     {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.secretAccessKey }}

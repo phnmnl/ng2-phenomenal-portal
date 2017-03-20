@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
     this.credentialService.clearCredentials();
     this.tokenService.clearToken();
     this.isCollapsed = false;
-    // location.reload();
+    this._router.navigateByUrl('/home');
   }
 
   @HostListener('document:click', ['$event.target'])

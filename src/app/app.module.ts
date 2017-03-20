@@ -57,6 +57,7 @@ import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
 import { CloudDescriptionLayoutComponent } from './setup/cloud-description-layout/cloud-description-layout.component';
 import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
 import { ValidatorComponent } from './setup/validator/validator.component';
+import { FaqComponent } from './help/faq/faq.component';
 
 export function SSOConfigService () {
   return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -95,7 +96,8 @@ export function SSOConfigService () {
     GcpSetupComponent,
     CloudDescriptionLayoutComponent,
     CloudSetupComponent,
-    ValidatorComponent
+    ValidatorComponent,
+    FaqComponent
   ],
   imports: [
     BrowserModule,

@@ -18,7 +18,7 @@ export class HelpComponent implements OnInit {
   tutorialsItems: string[];
   selected = 0;
   itemsSize = 0;
-  mouseover: boolean = false;
+  mouseover = false;
   itemArray = [];
 
   private searchTermStream = new Subject<string>();

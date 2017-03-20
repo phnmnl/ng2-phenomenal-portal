@@ -1,6 +1,6 @@
 {
   "name": "ng2-phenomenal-portal",
-  "version": "0.2.1",
+  "version": "1.0.0-beta.2",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -33,7 +33,7 @@
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
-    "@angular/cli": "^1.0.0-rc.0",
+    "@angular/cli": "^1.0.0-rc.2",
     "@angular/compiler-cli": "^2.3.1",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",

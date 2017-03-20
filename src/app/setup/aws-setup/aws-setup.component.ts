@@ -39,7 +39,7 @@ export class AwsSetupComponent implements OnInit {
     this._aws_region = [
       { value: 'eu-west-1', displayValue: 'EU (Ireland)'},
       { value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
-      { value: 'eu-west-2', displayValue: 'EU (London)'},
+      // { value: 'eu-west-2', displayValue: 'EU (London)'},
       { value: 'us-east-1', displayValue: 'US East (N. Virginia)'},
       { value: 'us-east-2', displayValue: 'US East (Ohio)'},
       { value: 'us-west-1', displayValue: 'US West (N. California)'},
