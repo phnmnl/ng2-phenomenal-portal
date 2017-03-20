@@ -73,7 +73,7 @@
 
                 <div *ngIf="!deployment['isDelete']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
                   <button md-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">Back</button>
-                  <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="warn">Remove</button>
+                  <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="warn">Destroy</button>
                 </div>
 
                 <div *ngIf="deployment['isDelete']">
