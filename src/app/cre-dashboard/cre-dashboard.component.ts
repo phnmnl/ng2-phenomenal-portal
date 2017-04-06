@@ -146,7 +146,7 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       deployment  => {
-        // console.log('[RepositoryComponent] getAll %O', deployment);
+        console.log('[RepositoryComponent] getAll %O', deployment);
         callback(deployment);
       },
       error => {
@@ -181,13 +181,21 @@ export class CreDashboardComponent implements OnInit {
     this._deploymentService.stop(this.credentialService.getUsername(), this._tokenService.getToken(),
       deployment).subscribe(
       res => {
-        console.log('[Deployments] got response %O', res);
         this._deploymentService.delete(this.credentialService.getUsername(), this._tokenService.getToken(),
           deployment).subscribe(
           res1 => {
-            console.log('[Deployments] got response %O', res1);
             if (res1 === 200) {
-              location.reload();
+              this.getAllDeploymentServer((deploymentStatus) => {
+                if (deploymentStatus.length === 0) {
+                  this.getAllApplication( (app) => {
+                    this.removeApplication(app, (done) => {
+                      location.reload();
+                    });
+                  });
+                } else {
+                  location.reload();
+                }
+              });
             }
           },
           error => {
@@ -199,6 +207,21 @@ export class CreDashboardComponent implements OnInit {
       error => {
         console.log('[Deployments] error %O', error);
         this.errorService.setCurrentError(error);
+      }
+    );
+  }
+
+  removeApplication(application, callback) {
+    this._applicationService.delete(this.credentialService.getUsername(),
+      this._tokenService.getToken(), application[0]).subscribe(
+      res => {
+        console.log('[RepositoryComponent] got response %O', res);
+        callback(res);
+      },
+      error => {
+        console.log('[RepositoryComponent] error %O', error);
+        this.errorService.setCurrentError(error);
+        callback(error);
       }
     );
   }

@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if (this.tokenService.getToken()) {
       this.getAllApplication();
+      console.log(this.credentialService.getGivenName());
       // this.checkUser();
     }
 
@@ -113,11 +114,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private saveToken(jwt: string, callback) {
-    // console.log('[LoginPage] Obtained token from saml %O', jwt);
     const theToken: JwtToken = <JwtToken>{ token: jwt };
     this.tokenService.setToken(theToken);
     const tokenClaims = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(jwt.split('.')[1]));
-    this.credentialService.setCredentials(tokenClaims.sub, null);
+    this.credentialService.setCredentials(tokenClaims.sub, null, tokenClaims.name);
   }
 
 

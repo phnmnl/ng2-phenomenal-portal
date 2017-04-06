@@ -29,6 +29,8 @@
 
       <div *ngIf="tokenService.getToken()">
 
+        <h1>Welcome, {{ this.credentialService.getGivenName() }}!</h1>
+        <br>
         <!--<div *ngIf="!getActivate()">-->
           <!--<div>{{this.credentialService.getUsername()}}</div>-->
           <p>Please agree the following terms and conditions before continue</p>

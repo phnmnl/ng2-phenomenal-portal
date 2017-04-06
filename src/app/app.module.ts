@@ -27,12 +27,12 @@ import {LoginComponent} from './login/login.component';
 import {
   ApplicationService,
   AuthService,
-  CloudCredentialsService,
+  CloudProviderParametersService,
   CredentialService,
   ConfigService,
   DeploymentService,
   ErrorService,
-  TokenService} from 'ng2-cloud-portal-service-lib';
+  TokenService, AccountService} from 'ng2-cloud-portal-service-lib';
 import {SetupCloudEnvironmentComponent} from './setup/setup-cloud-environment.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent, NgbdModalContentComponent} from './shared/component/modal/modal.component';
@@ -60,9 +60,9 @@ import { ValidatorComponent } from './setup/validator/validator.component';
 import { FaqComponent } from './help/faq/faq.component';
 
 export function SSOConfigService () {
-  return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
 
-  // return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
 }
 
@@ -128,12 +128,13 @@ export function SSOConfigService () {
 
     ApplicationService,
     AuthService,
-    CloudCredentialsService,
+    CloudProviderParametersService,
     DeploymentService,
     ErrorService,
     CredentialService,
     TokenService,
-    GalaxyService
+    GalaxyService,
+    AccountService
   ],
   bootstrap: [AppComponent]
 })

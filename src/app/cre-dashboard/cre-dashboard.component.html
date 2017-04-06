@@ -29,16 +29,16 @@
               <!--</a>-->
               <!--</span>-->
               <!--</div>-->
-              <img *ngIf="deployment.cloudProvider === 'AWS'" md-card-image src="{{aws_logo}}" class="phenomenal-image">
-              <img *ngIf="deployment.cloudProvider === 'GCP'" md-card-image src="{{gce_logo}}" class="phenomenal-image">
-              <img *ngIf="deployment.cloudProvider === 'OSTACK'" md-card-image src="{{openstack_logo}}" class="phenomenal-image">
+              <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'AWS'" md-card-image src="{{aws_logo}}" class="phenomenal-image">
+              <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'GCP'" md-card-image src="{{gce_logo}}" class="phenomenal-image">
+              <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'OSTACK'" md-card-image src="{{openstack_logo}}" class="phenomenal-image">
 
               <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
 
               <div *ngIf="!deployment['isMore']">
                 <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
                 <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
-                <p>Cloud Provider: {{deployment.cloudProvider}}</p>
+                <p>Cloud Provider: {{deployment.cloudProviderParameters.cloudProvider}}</p>
 
                 <div *ngIf="deployment['status']==='RUNNING'">
 

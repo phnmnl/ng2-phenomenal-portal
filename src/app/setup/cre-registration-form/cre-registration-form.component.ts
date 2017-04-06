@@ -59,9 +59,9 @@ export class CreRegistrationFormComponent implements OnInit {
   buildForm(): void {
 
     this.form = this.fb.group({
-      'email': ['', Validators.compose([Validators.required,  emailValidator])],
-      'password': ['', [Validators.required, Validators.minLength(8), passwordValidator]],
-      'confirmPassword': ['', [Validators.required]]
+      'email': ['abc@abc.com', Validators.compose([Validators.required,  emailValidator])],
+      'password': ['k12345678', [Validators.required, Validators.minLength(8), passwordValidator]],
+      'confirmPassword': ['k12345678', [Validators.required]]
         }, {validator: matchingPasswords('password', 'confirmPassword')});
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
@@ -73,14 +73,14 @@ export class CreRegistrationFormComponent implements OnInit {
     if (!this.form) { return; }
     const form = this.form;
 
-    for (const field in this.formErrors) {
+    for (const field of Object.keys(this.formErrors)) {
       // clear previous error message (if any)
       this.formErrors[field] = '';
       const control = form.get(field);
 
       if (control && control.dirty && !control.valid) {
         const messages = this.validationMessages[field];
-        for (const key in control.errors) {
+        for (const key of Object.keys(control.errors)) {
           this.formErrors[field] += messages[key] + ' ';
         }
       }
