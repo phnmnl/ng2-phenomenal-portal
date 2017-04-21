@@ -51,7 +51,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     'Adding Deployment Server ...',
     'Setting up Deployment Server ...',
     'Starting Deployment Server (This may take a while, please be patient)...',
-    'Running Deployment Server (This may take a wguke, please be patient) ...',
+    'Running Deployment Server (This may take a while, please be patient) ...',
     'Setting up Cloud Research Environment ...',
     'Running Cloud Research Environment ...',
     'Cloud Research Environment is Ready for Use!',

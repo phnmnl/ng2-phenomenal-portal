@@ -98,19 +98,19 @@ export class CreDashboardComponent implements OnInit {
             deployment['isMore'] = false;
             deployment['isGalaxy'] = true;
             deployment['isJupyter'] = false;
-            for (let i = 0; i < deployment.assignedInputs.length; i++) {
-              if (deployment.assignedInputs[i]['inputName'] === 'cluster_prefix') {
-                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment.assignedInputs[i]['assignedValue'] + '.phenomenal.cloud';
-                deployment['jupyterUrlName'] = 'http://notebook.' + deployment.assignedInputs[i]['assignedValue'] + '.phenomenal.cloud';
+            for (let i = 0; i < deployment.assignedParameters.length; i++) {
+              if (deployment.assignedParameters[i]['parameterName'] === 'cluster_prefix') {
+                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment.assignedParameters[i]['parameterValue'] + '.phenomenal.cloud';
+                deployment['jupyterUrlName'] = 'http://notebook.' + deployment.assignedParameters[i]['parameterValue'] + '.phenomenal.cloud';
               }
-              if (deployment.assignedInputs[i]['inputName'] === 'galaxy_admin_email') {
-                deployment['galaxyAdminEmail'] = deployment.assignedInputs[i]['assignedValue'];
+              if (deployment.assignedParameters[i]['parameterName'] === 'galaxy_admin_email') {
+                deployment['galaxyAdminEmail'] = deployment.assignedParameters[i]['parameterValue'];
               }
-              if (deployment.assignedInputs[i]['inputName'] === 'galaxy_admin_password') {
-                deployment['galaxyAdminPassword'] = deployment.assignedInputs[i]['assignedValue'];
+              if (deployment.assignedParameters[i]['parameterName'] === 'galaxy_admin_password') {
+                deployment['galaxyAdminPassword'] = deployment.assignedParameters[i]['parameterValue'];
               }
-              if (deployment.assignedInputs[i]['inputName'] === 'jupyter_password') {
-                deployment['jupyterPassword'] = deployment.assignedInputs[i]['assignedValue'];
+              if (deployment.assignedParameters[i]['parameterName'] === 'jupyter_password') {
+                deployment['jupyterPassword'] = deployment.assignedParameters[i]['parameterValue'];
               }
             }
             // this.pingDomain(deployment['galaxyUrlName'], 2000, () => {

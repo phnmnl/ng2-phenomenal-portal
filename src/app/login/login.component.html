@@ -1,8 +1,4 @@
 <main>
-  <!--<div *ngIf="this.credentialService.getUsername() === null">-->
-    <!--<div class="loader">Loading...</div>-->
-  <!--</div>-->
-  <!--<div *ngIf="this.credentialService.getUsername() !== null">-->
     <div class="container text-xs-center">
 
       <br>
@@ -31,40 +27,32 @@
 
         <h1>Welcome, {{ this.credentialService.getGivenName() }}!</h1>
         <br>
-        <!--<div *ngIf="!getActivate()">-->
-          <!--<div>{{this.credentialService.getUsername()}}</div>-->
-          <p>Please agree the following terms and conditions before continue</p>
+          <p>Please click Continue</p>
 
-          <div class="text-xs-left" style="display:inline-block">
-            <md-checkbox color="primary" [(ngModel)]="checked1">I am fully aware of the <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2017/03/PhenoMeNal-ELSI-Terms-of-Use-1.pdf" target="_blank" style="font-weight: bold;">ELSI requirements</a>.</md-checkbox>
-            <br>
-            <md-checkbox [(ngModel)]="checked3">I accept the PhenoMeNal <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2017/03/Phenomenal-Terms-of-Use-version-1.0.pdf" target="_blank" style="font-weight: bold;">Terms and Conditions</a>.</md-checkbox>
-            <br>
-          </div>
-
-          <br>
-          <br>
-
-          <button *ngIf="checked1 && checked3" md-raised-button [routerLink]="['/cloud-research-environment']" color="primary">
+          <button md-raised-button (click)="next()" color="primary">
             Continue
           </button>
-          <button *ngIf="!(checked1 && checked3)"md-raised-button disabled color="primary">
-            Continue
-          </button>
-        <!--</div>-->
+          <!--<p>Please agree the following terms and conditions before continue</p>-->
 
-        <!--<div *ngIf="getActivate()">-->
-          <!--<p>Welcome back! Please continue...</p>-->
+          <!--<div class="text-xs-left" style="display:inline-block">-->
+            <!--<md-checkbox color="primary" [(ngModel)]="checked1">I am fully aware of the <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2017/03/PhenoMeNal-ELSI-Terms-of-Use-1.pdf" target="_blank" style="font-weight: bold;">ELSI requirements</a>.</md-checkbox>-->
+            <!--<br>-->
+            <!--<md-checkbox [(ngModel)]="checked3">I accept the PhenoMeNal <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2017/03/Phenomenal-Terms-of-Use-version-1.0.pdf" target="_blank" style="font-weight: bold;">Terms and Conditions</a>.</md-checkbox>-->
+            <!--<br>-->
+          <!--</div>-->
 
-          <!--<button md-raised-button [routerLink]="['/cloud-research-environment']" color="primary">-->
+          <!--<br>-->
+          <!--<br>-->
+
+          <!--<button *ngIf="checked1 && checked3" md-raised-button (click)="acceptTermCondition()" color="primary">-->
             <!--Continue-->
           <!--</button>-->
-        <!--</div>-->
-
+          <!--<button *ngIf="!(checked1 && checked3)"md-raised-button disabled color="primary">-->
+            <!--Continue-->
+          <!--</button>-->
 
       </div>
     </div>
-  <!--</div>-->
 
 </main>
 
