@@ -18,17 +18,6 @@
         <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
           <md-card class="card-property">
             <md-card-content>
-              <!--<a class="btn btn-primary button-width" href="{{ text }}" target="_blank">-->
-              <!--<img [src]="galaxy_icon"> My Galaxy Workflow-->
-              <!--</a>-->
-              <!--<div class="input-group">-->
-              <!--<input type="text" class="form-control" [(ngModel)]="text" readonly style="text-align: center">-->
-              <!--<span class="input-group-btn">-->
-              <!--<a class="btn btn-primary button-width" >-->
-              <!--<i class="fa fa-clipboard"  ngxClipboard [cbContent]="text"></i>-->
-              <!--</a>-->
-              <!--</span>-->
-              <!--</div>-->
               <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'AWS'" md-card-image src="{{aws_logo}}" class="phenomenal-image">
               <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'GCP'" md-card-image src="{{gce_logo}}" class="phenomenal-image">
               <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'OSTACK'" md-card-image src="{{openstack_logo}}" class="phenomenal-image">

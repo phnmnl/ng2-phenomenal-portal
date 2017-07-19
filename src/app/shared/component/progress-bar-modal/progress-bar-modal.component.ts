@@ -85,7 +85,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
           this.applicationDeployer = <ApplicationDeployer> {
             name: 'Phenomenal VRE',
             accountEmail: account.email,
-            repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+            repoUri: 'https://github.com/pcm32/cloud-deploy-kubenow.git',
             selectedCloudProvider: 'AWS' };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
