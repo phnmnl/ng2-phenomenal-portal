@@ -20,6 +20,7 @@ export class HelpTopicComponent implements OnInit {
     this.id = activatedRoute.snapshot.params['id'];
     breadcrumbService.addFriendlyNameForRoute('/help/' + this.id, ' '); // Initialise as empty string
     this.getPage();
+    console.log(this.id);
   }
 
   ngOnInit() {

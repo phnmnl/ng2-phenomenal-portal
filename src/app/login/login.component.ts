@@ -77,60 +77,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
-  // authenticate() {
-  //   this.userService.authenticate().subscribe(
-  //     (data) => {
-  //       const theToken: JwtToken = <JwtToken>{ token: data['id_token'] };
-  //       this.phTokenService.setToken(theToken);
-  //       this.checkUser();
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
-  // getActivate() {
-  //
-  //   if (this.user === null) {
-  //     const temp = {id: this.credentialService.getUsername(), isActivate: false, isRegister: false};
-  //     this.userService.get(temp, this.phTokenService.getToken().token).subscribe(
-  //       (res) => {
-  //         console.log(res);
-  //         this._user.id = res['id'];
-  //         this._user.isActivate = res['isActivate'];
-  //         this._user.isRegister = res['isRegister'];
-  //       },
-  //       (err) => {
-  //         console.log(err);
-  //         if (err.status === 404) {
-  //           this.userService.add(this._user, this.phTokenService.getToken().token).subscribe(
-  //             (ret) => {
-  //               console.log(ret);
-  //             },
-  //             (error) => {
-  //               console.log(error);
-  //             }
-  //           );
-  //         }
-  //       }
-  //     );
-  //   }
-  //
-  //   return this.user.isActivate;
-  // }
-
-  // activate() {
-  //   this._user.isReadTC = true;
-  //   this.userService.edit(this._user, this.phTokenService.getToken().token).subscribe(
-  //     (data) => {
-  //       console.log(data);
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
-
   private saveToken(jwt: string, callback) {
     const theToken: JwtToken = <JwtToken>{ token: jwt };
     this.tokenService.setToken(theToken);
@@ -146,33 +92,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   ssoLink() {
     return this._authService.ssoLink();
   }
-
-  // private checkUser() {
-  //
-  //   const temp = {id: this.credentialService.getUsername(), isReadTC: false, isRegisterGalaxy: false};
-  //   this.userService.get(temp, this.phTokenService.getToken().token).subscribe(
-  //     (res) => {
-  //       console.log(res);
-  //       this._user.id = res['id'];
-  //       this._user.isReadTC = res['isReadTC'];
-  //       this._user.isRegisterGalaxy = res['isRegisterGalaxy'];
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //       if (err.status === 404) {
-  //         console.log('not found');
-  //         this.userService.add(this._user, this.phTokenService.getToken().token).subscribe(
-  //           (ret) => {
-  //             console.log(ret);
-  //           },
-  //           (error) => {
-  //             console.log(error);
-  //           }
-  //         );
-  //       }
-  //     }
-  //   );
-  // }
 
   getAllApplication() {
     this._applicationService.getAll(

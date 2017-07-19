@@ -59,9 +59,9 @@ export class CreRegistrationFormComponent implements OnInit {
   buildForm(): void {
 
     this.form = this.fb.group({
-      'email': ['abc@abc.com', Validators.compose([Validators.required,  emailValidator])],
-      'password': ['k12345678', [Validators.required, Validators.minLength(8), passwordValidator]],
-      'confirmPassword': ['k12345678', [Validators.required]]
+      'email': ['', Validators.compose([Validators.required,  emailValidator])],
+      'password': ['', [Validators.required, Validators.minLength(8), passwordValidator]],
+      'confirmPassword': ['', [Validators.required]]
         }, {validator: matchingPasswords('password', 'confirmPassword')});
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));

@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {Http} from '@angular/http';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Rx';
+import {UserService} from '../shared/service/user/user.service';
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -48,10 +49,11 @@ export class CreDashboardComponent implements OnInit {
     private _tokenService: TokenService,
     public credentialService: CredentialService,
     public errorService: ErrorService,
+    public userService: UserService,
     private router: Router,
     private http: Http
   ) {
-
+    this.isUserExist(this.credentialService.getUsername());
   }
 
   get galaxy_icon(): string {
@@ -113,12 +115,6 @@ export class CreDashboardComponent implements OnInit {
                 deployment['jupyterPassword'] = deployment.assignedParameters[i]['parameterValue'];
               }
             }
-            // this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
-            //   deployment['isGalaxy'] = true;
-            // });
-            // this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
-            //   deployment['isJupyter'] = true;
-            // });
           });
         }
       }
@@ -232,7 +228,6 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       app  => {
-        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {
@@ -241,4 +236,22 @@ export class CreDashboardComponent implements OnInit {
       }
     );
   }
+
+  private isUserExist(id: string) {
+
+    this.userService.get(id).subscribe(
+      (res) => {
+        // if (res['data']) {
+        //   this.router.navigateByUrl('cloud-research-environment');
+        // }
+        if (res['error']) {
+          this.router.navigateByUrl('term-and-condition');
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
 }

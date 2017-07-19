@@ -10,14 +10,50 @@
     <input mdInput placeholder="Confirm Password" type="password" formControlName="confirmPassword" required>
   </md-input-container>
   <md-input-container class="input-width">
-    <input mdInput placeholder="Tenant Name" formControlName="tenantName" required>
+    <input mdInput placeholder="Project Name" formControlName="tenantName" required>
   </md-input-container>
   <md-input-container class="input-width">
-    <input mdInput placeholder="Auth URL" formControlName="authURL" required>
+    <input mdInput placeholder="End Point" formControlName="authURL" required>
   </md-input-container>
+  <md-input-container *ngIf="isUserDomainName" class="input-width">
+    <input mdInput placeholder="User Domain Name" formControlName="userDomainName" required>
+  </md-input-container>
+  <div *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary" style="width: 88px; height: 36px; margin: 0">
+    Verify
+  </div>
+  <div *ngIf="isWaiting" class="btn btn-primary disabled" color="primary" style="width: 88px; height: 36px; margin: 0">
+    Waiting
+  </div>
+
+  <div *ngIf="isVerify">
+    <br>
+    <br>
+    <md-select formControlName="flavor" placeholder="Select flavours" style="display: inline-block; text-align: left;" class="input-width" required>
+      <md-option *ngFor="let flavor of flavors" [value]="flavor.name">
+        {{flavor.name}} ({{flavor.vcpus}}CPU, {{flavor.ram/1024}}GB RAM, {{flavor.disk}}GB Disk)
+      </md-option>
+    </md-select>
+    <br>
+    <br>
+    <md-select formControlName="network" placeholder="Select network" style="display: inline-block; text-align: left;" class="input-width" required>
+      <md-option *ngFor="let network of networks" [value]="network['id']">
+        {{network.name}}
+      </md-option>
+    </md-select>
+    <br>
+    <br>
+    <md-select formControlName="ipPool" placeholder="Select IP pool name" style="display: inline-block; text-align: left;" class="input-width" required>
+      <md-option *ngFor="let ipPool of ipPools" [value]="ipPool">
+        {{ipPool}}
+      </md-option>
+    </md-select>
+    <br>
+    <br>
+  </div>
+
   <div *ngIf="formErrors.username || formErrors.password || formErrors.confirmPassword || formErrors.tenantName || formErrors.authURL" class="alert alert-warning">
     {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
   </div>
   <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-  <button md-raised-button [disabled]="!form.valid" color="primary">Next</button>
+  <button md-raised-button [disabled]="!isVerify" color="primary">Next</button>
 </form>

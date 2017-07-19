@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 export class TermAndConditionComponent implements OnInit {
 
   private checked1 = false;
+  private checked2 = false;
   private checked3 = false;
 
   constructor(

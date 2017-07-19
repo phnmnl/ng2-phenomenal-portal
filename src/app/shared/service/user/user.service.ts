@@ -9,7 +9,7 @@ export class UserService {
   private headUrl: string;
 
   constructor(private http: Http) {
-    this.baseUrl = 'http://localhost:8080';
+    this.baseUrl = 'http://localhost:8888';
     this.metadataUrl = '/api/v1/metadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
@@ -99,7 +99,7 @@ export class UserService {
 
   private extractData(res: Response) {
     const body = res.json();
-    return body || {};
+    return body || {}
   }
 
 

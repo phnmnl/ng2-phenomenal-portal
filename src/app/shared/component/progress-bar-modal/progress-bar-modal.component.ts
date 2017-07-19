@@ -177,11 +177,16 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             selectedCloudProvider: 'OSTACK' };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
-            floating_ip_pool: 'ext-net',
-            external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
-            master_flavor: 's1.large',
-            node_flavor: 's1.large',
-            edge_flavor: 's1.large',
+            floating_ip_pool: this.credential.ip_pool,
+            external_network_uuid: this.credential.network,
+            master_flavor: this.credential.flavor,
+            node_flavor: this.credential.flavor,
+            edge_flavor: this.credential.flavor,
+            // floating_ip_pool: 'ext-net',
+            // external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
+            // master_flavor: 's1.large',
+            // node_flavor: 's1.large',
+            // edge_flavor: 's1.large',
             cluster_prefix: this.name,
             node_count: '2',
             edge_count: '2',
