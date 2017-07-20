@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {User} from './user';
+import {AppConfig} from '../../../app.config';
+
 @Injectable()
 export class UserService {
   private baseUrl: string;
   private metadataUrl: string;
   private headUrl: string;
 
-  constructor(private http: Http) {
-    this.baseUrl = 'http://localhost:8888';
+  constructor(
+    private http: Http,
+    private config: AppConfig
+  ) {
+    this.baseUrl = config.getConfig('host') + ':8888';
     this.metadataUrl = '/api/v1/metadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }

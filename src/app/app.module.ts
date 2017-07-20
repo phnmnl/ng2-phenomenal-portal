@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
@@ -61,11 +61,17 @@ import { FaqComponent } from './help/faq/faq.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import {CloudProviderMetadataService} from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
+import { AppConfig } from './app.config';
+
 export function SSOConfigService () {
   // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
 
   return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
+}
+
+export function initConfig(config: AppConfig) {
+  return () => config.load();
 }
 
 @NgModule({
@@ -138,7 +144,12 @@ export function SSOConfigService () {
     TokenService,
     GalaxyService,
     AccountService,
-    CloudProviderMetadataService
+    CloudProviderMetadataService,
+    AppConfig,
+    { provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [AppConfig],
+      multi: true }
   ],
   bootstrap: [AppComponent]
 })
