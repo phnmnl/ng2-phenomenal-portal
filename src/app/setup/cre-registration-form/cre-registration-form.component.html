@@ -12,8 +12,8 @@
       <input mdInput placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
     </md-input-container>
     <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword || _isFailed" class="alert alert-warning">
-      {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
-    </div>
+    {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
+  </div>
     <div>
       <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
       <button md-raised-button  *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">Register</button>

@@ -1,11 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationDeployer } from 'ng2-cloud-portal-presentation-lib';
-import {DeploymentService, Deployment} from 'ng2-cloud-portal-service-lib';
+import {DeploymentService, Deployment, CloudProviderParameters, AccountService} from 'ng2-cloud-portal-service-lib';
 import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
-import { ApplicationService, CloudCredentialsService} from 'ng2-cloud-portal-service-lib';
+import { ApplicationService, CloudProviderParametersService} from 'ng2-cloud-portal-service-lib';
 import {isError} from 'util';
 import {Credential } from '../../../setup/credential';
 import {CloudProvider} from '../../../setup/cloud-provider';
@@ -13,26 +13,28 @@ import {CloudProvider} from '../../../setup/cloud-provider';
 @Component({
   selector: 'ph-progress-bar-modal-content',
   template: `
-    <div class="modal-header">
-      <h4 class="modal-title text-center">Cloud Research Environment Installation</h4>
-    </div>
-    <div class="modal-body">
-      <ph-progress-bar [progress]="progress"></ph-progress-bar>
-    </div>
-    <div *ngIf="progress <= 100">
-      <div *ngIf="!isError">
-        <b><p>{{status[progress/10]}}</p></b>
-      </div>
-      <div *ngIf="isError">
-        <b><p style="color:red">{{status[progress/10]}}</p></b>
-      </div>
-    </div>
-    <div *ngIf="progress > 100">
-      <a type="button" class="btn btn-primary" [routerLink]="['/cloud-research-environment']">Installation Complete</a>
+<div style="text-align: center">
+  <div class="modal-header">
+    <h4 class="modal-title text-center">Cloud Research Environment Installation</h4>
+  </div>
+  <div class="modal-body">
+    <ph-progress-bar [progress]="progress"></ph-progress-bar>
+  </div>
+  <div *ngIf="progress <= 100">
+    <div *ngIf="!isError">
+      <b><p>{{status[progress/10]}}</p></b>
     </div>
     <div *ngIf="isError">
-      <a type="button" class="btn btn-primary" [routerLink]="['/cloud-research-environment']">Cancel</a>
+      <b><p style="color:red">{{status[progress/10]}}</p></b>
     </div>
+  </div>
+  <div *ngIf="progress > 100">
+    <a type="button" class="btn btn-primary" href="/cloud-research-environment">Installation Complete</a>
+  </div>
+  <div *ngIf="isError">
+    <a type="button" class="btn btn-primary" href="/cloud-research-environment">Cancel</a>
+  </div>
+</div>
   `
 })
 
@@ -40,7 +42,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   @Input() credential: Credential;
   @Input() cloudProvider: CloudProvider;
 
-  progress: number = 0;
+  progress = 0;
   status: string[] = [
     'Initialising ...',
     'Applying Cloud Credentials ...',
@@ -48,8 +50,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     'Setting up the Application ...',
     'Adding Deployment Server ...',
     'Setting up Deployment Server ...',
-    'Starting Deployment Server (This may take more than 10 minutes, please be patient)...',
-    'Running Deployment Server (This may take more than 10 minutes, please be patient) ...',
+    'Starting Deployment Server (This may take a while, please be patient)...',
+    'Running Deployment Server (This may take a while, please be patient) ...',
     'Setting up Cloud Research Environment ...',
     'Running Cloud Research Environment ...',
     'Cloud Research Environment is Ready for Use!',
@@ -59,145 +61,207 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   isError = false;
   isRunning = 0;
   name;
+  selectedCloudProvider: CloudProviderParameters;
 
   constructor(public activeModal: NgbActiveModal,
               private _applicationService: ApplicationService,
-              private _cloudCredentialsService: CloudCredentialsService,
+              private _cloudCredentialsService: CloudProviderParametersService,
               private _deploymentService: DeploymentService,
               private _tokenService: TokenService,
               public credentialService: CredentialService,
-              public errorService: ErrorService
+              public errorService: ErrorService,
+              public _accountService: AccountService
   ) {
   }
 
   ngOnInit() {
+    this._accountService.getAccount(this.credentialService.getUsername(), this._tokenService.getToken()).subscribe(
+      account => {
+        this.name = 'ph' + this.generateUIDNotMoreThan1million();
 
-    this.name = 'ph' + this.generateUIDNotMoreThan1million();
+        let value;
 
-    let value;
+        if (this.credential.provider === 'AWS') {
+          this.applicationDeployer = <ApplicationDeployer> {
+            name: 'Phenomenal VRE',
+            accountEmail: account.email,
+            repoUri: 'https://github.com/pcm32/cloud-deploy-kubenow.git',
+            selectedCloudProvider: 'AWS' };
+          this.applicationDeployer.attachedVolumes = {};
+          this.applicationDeployer.assignedInputs = {
+            aws_access_key_id: this.credential.access_key_id,
+            aws_secret_access_key: this.credential.secret_access_key,
+            aws_region: this.credential.default_region,
+            availability_zone: this.credential.default_region + 'a',
+            master_instance_type: 't2.xlarge',
+            node_instance_type: 't2.xlarge',
+            edge_instance_type: 't2.xlarge',
+            cluster_prefix: this.name,
+            node_count: '2',
+            edge_count: '1',
+            galaxy_admin_email: this.credential.galaxy_admin_email,
+            galaxy_admin_password: this.credential.galaxy_admin_password,
+            jupyter_password: this.credential.galaxy_admin_password
+          };
+          this.applicationDeployer.assignedParameters = {};
+          this.applicationDeployer.configurations = [];
+          this.selectedCloudProvider = {
+            name: this.name + '-' + this.credential.provider,
+            accountEmail: account.email,
+            cloudProvider: 'AWS',
+            fields: [
+              {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
+              {'key': 'AWS_SECRET_ACCESS_KEY', 'value': this.credential.secret_access_key},
+              {'key': 'AWS_DEFAULT_REGION', 'value': this.credential.default_region}
+            ],
+            sharedWithAccountEmails: [],
+            sharedWithTeamNames: []
+          }
+          value = {
+            'name': this.name + '-' + this.credential.provider,
+            'cloudProvider': this.credential.provider,
+            'fields': [
+              {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
+              {'key': 'AWS_SECRET_ACCESS_KEY', 'value': this.credential.secret_access_key},
+              {'key': 'AWS_DEFAULT_REGION', 'value': this.credential.default_region}
+            ]
+          };
+        } else if (this.credential.provider === 'GCP') {
+          this.applicationDeployer = <ApplicationDeployer> {
+            name: 'Phenomenal VRE',
+            accountEmail: account.email,
+            repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+            selectedCloudProvider: 'GCP' };
+          this.applicationDeployer.attachedVolumes = {};
+          this.applicationDeployer.assignedInputs = {
+            gce_zone: this.credential.default_region,
+            gce_project: this.credential.tenant_name,
+            master_flavor: 'n1-standard-2',
+            node_flavor: 'n1-standard-4',
+            edge_flavor: 'n1-standard-2',
+            cluster_prefix: this.name,
+            node_count: '1',
+            edge_count: '1',
+            galaxy_admin_email: this.credential.galaxy_admin_email,
+            galaxy_admin_password: this.credential.galaxy_admin_password,
+            jupyter_password: this.credential.galaxy_admin_password
+          };
+          this.applicationDeployer.assignedParameters = {};
+          this.applicationDeployer.configurations = [];
+          this.selectedCloudProvider = {
+            name: this.name + '-' + this.credential.provider,
+            accountEmail: account.email,
+            cloudProvider: 'GCP',
+            fields: [
+              {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
+              {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
+              {'key': 'GCE_ZONE', 'value': this.credential.default_region}
+            ],
+            sharedWithAccountEmails: [],
+            sharedWithTeamNames: []
+          }
+          value = {
+            'name': this.name + '-' + this.credential.provider,
+            'cloudProvider': this.credential.provider,
+            'fields': [
+              {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
+              {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
+              {'key': 'GCE_ZONE', 'value': this.credential.default_region}
+            ]
+          };
+        } else {
+          this.applicationDeployer = <ApplicationDeployer> {
+            name: 'Phenomenal VRE',
+            accountEmail: account.email,
+            repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+            selectedCloudProvider: 'OSTACK' };
+          this.applicationDeployer.attachedVolumes = {};
+          this.applicationDeployer.assignedInputs = {
+            floating_ip_pool: this.credential.ip_pool,
+            external_network_uuid: this.credential.network,
+            master_flavor: this.credential.flavor,
+            node_flavor: this.credential.flavor,
+            edge_flavor: this.credential.flavor,
+            // floating_ip_pool: 'ext-net',
+            // external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
+            // master_flavor: 's1.large',
+            // node_flavor: 's1.large',
+            // edge_flavor: 's1.large',
+            cluster_prefix: this.name,
+            node_count: '2',
+            edge_count: '2',
+            galaxy_admin_email: this.credential.galaxy_admin_email,
+            galaxy_admin_password: this.credential.galaxy_admin_password,
+            jupyter_password: this.credential.galaxy_admin_password
+          };
+          this.applicationDeployer.assignedParameters = {};
+          this.applicationDeployer.configurations = [];
+          this.selectedCloudProvider = {
+            name: this.name + '-' + this.credential.provider,
+            accountEmail: account.email,
+            cloudProvider: 'OSTACK',
+            fields: [
+              {'key': 'OS_USERNAME', 'value': this.credential.username},
+              {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
+              {'key': 'OS_AUTH_URL', 'value': this.credential.url},
+              {'key': 'OS_PASSWORD', 'value': this.credential.password},
+              {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
+            ],
+            sharedWithAccountEmails: [],
+            sharedWithTeamNames: []
+          }
+          value = {
+            'name': this.name + '-' + this.credential.provider,
+            'cloudProvider': this.credential.provider,
+            'fields': [
+              {'key': 'OS_USERNAME', 'value': this.credential.username},
+              {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
+              {'key': 'OS_AUTH_URL', 'value': this.credential.url},
+              {'key': 'OS_PASSWORD', 'value': this.credential.password},
+              {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
+            ]
+          };
+        }
 
-    if (this.credential.provider === 'AWS') {
-      this.applicationDeployer = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
-        repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
-        selectedCloudProvider: 'AWS' };
-      this.applicationDeployer.attachedVolumes = {};
-      this.applicationDeployer.assignedInputs = {
-        aws_access_key_id: this.credential.access_key_id,
-        aws_secret_access_key: this.credential.secret_access_key,
-        aws_region: this.credential.default_region,
-        availability_zone: this.credential.default_region + 'a',
-        master_instance_type: 't2.xlarge',
-        node_instance_type: 't2.xlarge',
-        edge_instance_type: 't2.xlarge',
-        cluster_prefix: this.name,
-        node_count: '2',
-        edge_count: '1',
-        galaxy_admin_email: this.credential.galaxy_admin_email,
-        galaxy_admin_password: this.credential.galaxy_admin_password,
-        jupyter_password: this.credential.galaxy_admin_password
-      };
-      value = {
-        'name': this.name + '-' + this.credential.provider,
-        'cloudProvider': this.credential.provider,
-        'fields': [
-          {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
-          {'key': 'AWS_SECRET_ACCESS_KEY', 'value': this.credential.secret_access_key},
-          {'key': 'AWS_DEFAULT_REGION', 'value': this.credential.default_region}
-        ]
-      };
-    } else if (this.credential.provider === 'GCP') {
-      this.applicationDeployer = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
-        repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
-        selectedCloudProvider: 'GCP' };
-      this.applicationDeployer.attachedVolumes = {};
-      this.applicationDeployer.assignedInputs = {
-        gce_zone: this.credential.default_region,
-        gce_project: this.credential.tenant_name,
-        master_flavor: 'n1-standard-2',
-        node_flavor: 'n1-standard-4',
-        edge_flavor: 'n1-standard-2',
-        cluster_prefix: this.name,
-        node_count: '1',
-        edge_count: '1',
-        galaxy_admin_email: this.credential.galaxy_admin_email,
-        galaxy_admin_password: this.credential.galaxy_admin_password,
-        jupyter_password: this.credential.galaxy_admin_password
-      };
-      value = {
-        'name': this.name + '-' + this.credential.provider,
-        'cloudProvider': this.credential.provider,
-        'fields': [
-          {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
-          {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
-          {'key': 'GCE_ZONE', 'value': this.credential.default_region}
-        ]
-      };
-    } else {
-      this.applicationDeployer = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
-        repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
-        selectedCloudProvider: 'OSTACK' };
-      this.applicationDeployer.attachedVolumes = {};
-      this.applicationDeployer.assignedInputs = {
-        floating_ip_pool: 'ext-net',
-        external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
-        master_flavor: 's1.large',
-        node_flavor: 's1.large',
-        edge_flavor: 's1.large',
-        cluster_prefix: this.name,
-        node_count: '2',
-        edge_count: '2',
-        galaxy_admin_email: this.credential.galaxy_admin_email,
-        galaxy_admin_password: this.credential.galaxy_admin_password,
-        jupyter_password: this.credential.galaxy_admin_password
-      };
-      value = {
-        'name': this.name + '-' + this.credential.provider,
-        'cloudProvider': this.credential.provider,
-        'fields': [
-          {'key': 'OS_USERNAME', 'value': this.credential.username},
-          {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
-          {'key': 'OS_AUTH_URL', 'value': this.credential.url},
-          {'key': 'OS_PASSWORD', 'value': this.credential.password},
-          {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
-        ]
-      };
-    }
-
-    setTimeout((callback) => {
-      this.increment(
-        setTimeout(() => {
-          this.getAllCloudCredential((back) => {
-            let isExist = false;
-            for (let v = 0; v < back.length; v++) {
-              if (back[v].name === value.name) {
-                isExist = true;
-                break;
-              }
-            }
-            if (isExist) {
-              this.addApp(callback);
-            } else {
-
-              this.addCloudCredential(value,
-                (status) => {
-                  if (status.status === 401 ) {
-                    console.log(status.message);
-                    this.status[this.progress / 10 ] = 'ERROR: ' + status.message;
-                    this.isError = true;
-                  } else {
-                    this.addApp(callback);
+        setTimeout((callback) => {
+          this.increment(
+            setTimeout(() => {
+              this.getAllCloudCredential((back) => {
+                let isExist = false;
+                for (let v = 0; v < back.length; v++) {
+                  if (back[v].name === value.name) {
+                    isExist = true;
+                    break;
                   }
                 }
-              );
-            }
+                if (isExist) {
+                  this.addApp(callback);
+                } else {
 
-          });
-        }, 2000)
-      );
-    }, 2000);
+                  this.addCloudCredential(value,
+                    (status) => {
+                      if (status.status === 401 ) {
+                        console.log(status.message);
+                        this.status[this.progress / 10 ] = 'ERROR: ' + status.message;
+                        this.isError = true;
+                      } else {
+                        this.addApp(callback);
+                      }
+                    }
+                  );
+                }
+
+              });
+            }, 2000)
+          );
+        }, 2000);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+
   }
 
   ngOnDestroy() {
@@ -409,16 +473,18 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   createDeploymentServer(applicationDeployer: ApplicationDeployer, callback) {
 
     applicationDeployer.deploying = true;
-    console.log('[RepositoryComponent] Adding deployment for application from '
+    console.log('[ProgressBar] Adding deployment for application from '
       + applicationDeployer.repoUri + ' into '
-      + applicationDeployer.selectedCloudProvider);
+      + applicationDeployer.selectedCloudProvider + ' surname ' + this.credentialService.getUsername());
     this._deploymentService.add(
       this.credentialService.getUsername(),
       this._tokenService.getToken(),
       applicationDeployer,
-      applicationDeployer.selectedCloudProvider,
+      this.selectedCloudProvider,
       applicationDeployer.attachedVolumes,
-      applicationDeployer.assignedInputs
+      applicationDeployer.assignedInputs,
+      applicationDeployer.assignedParameters,
+      applicationDeployer.configurations
     ).subscribe(
       deployment  => {
         console.log('[RepositoryComponent] deployed %O', deployment);

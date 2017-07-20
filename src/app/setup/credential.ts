@@ -11,4 +11,7 @@ export class Credential {
   access_key_id?: string;
   secret_access_key?: string;
   default_region?: string;
+  flavor?: string;
+  network?: string;
+  ip_pool?: string;
 }

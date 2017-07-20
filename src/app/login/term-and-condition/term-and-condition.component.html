@@ -1,0 +1,33 @@
+<main>
+  <div class="container text-xs-center">
+
+    <div *ngIf="tokenService.getToken()">
+
+      <h1>Welcome, {{ this.credentialService.getGivenName() }}!</h1>
+      <br>
+      <p>Please agree the following terms and conditions before continue</p>
+
+      <div class="text-xs-left" style="display:inline-block">
+        <md-checkbox color="primary" [(ngModel)]="checked1">I am fully aware of the <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2017/03/PhenoMeNal-ELSI-Terms-of-Use-1.pdf" target="_blank" style="font-weight: bold;">ELSI requirements</a>.</md-checkbox>
+        <br>
+        <md-checkbox color="primary" [(ngModel)]="checked2">I will only use fully <a href="http://phenomenal-h2020.eu/home/help/login/elsi-diagrams/" target="_blank" style="font-weight: bold;">anonymised</a> data in any public PhenoMeNal CRE.</md-checkbox>
+        <br>
+        <md-checkbox [(ngModel)]="checked3">I accept the PhenoMeNal <a href="http://phenomenal-h2020.eu/home/wp-content/uploads/2017/03/Phenomenal-Terms-of-Use-version-1.0.pdf" target="_blank" style="font-weight: bold;">Terms and Conditions</a>.</md-checkbox>
+        <br>
+      </div>
+
+      <br>
+      <br>
+
+      <button *ngIf="checked1 && checked2 && checked3" md-raised-button (click)="acceptTermCondition()" color="primary">
+        Continue
+      </button>
+      <button *ngIf="!(checked1 && checked2 && checked3)"md-raised-button disabled color="primary">
+        Continue
+      </button>
+
+    </div>
+  </div>
+
+</main>
+

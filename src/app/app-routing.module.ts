@@ -13,6 +13,7 @@ import {HomeComponent} from './static-page/home/home.component';
 import {LoginComponent} from './login/login.component';
 import {SetupCloudEnvironmentComponent} from './setup/setup-cloud-environment.component';
 import {CreDashboardComponent} from './cre-dashboard/cre-dashboard.component';
+import {TermAndConditionComponent} from './login/term-and-condition/term-and-condition.component';
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path: 'help/faq', component: FaqComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'term-and-condition', component: TermAndConditionComponent},
   {path: 'cloud-research-environment/setup', component: SetupCloudEnvironmentComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'cre-dashboard', component: CreDashboardComponent},

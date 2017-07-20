@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {GalaxyService} from '../shared/service/galaxy/galaxy.service';
 import {GalaxyUser} from '../shared/service/galaxy/galaxy-user';
 import {AwsRegion} from './aws-region';
+import {UserService} from '../shared/service/user/user.service';
 
 @Component({
   selector: 'ph-setup-cloud-environment',
@@ -52,9 +53,11 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     public credentialService: CredentialService,
     public tokenService: TokenService,
     private router: Router,
-    public galaxyService: GalaxyService
+    public galaxyService: GalaxyService,
+    public userService: UserService,
   ) {
 
+    this.isUserExist(this.credentialService.getUsername());
 
     this._aws_region = [
       { value: 'eu-west-1', displayValue: 'EU (Ireland)'},
@@ -221,4 +224,20 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     );
   }
 
+  private isUserExist(id: string) {
+
+    this.userService.get(id).subscribe(
+      (res) => {
+        // if (res['data']) {
+        //   this.router.navigateByUrl('cloud-research-environment');
+        // }
+        if (res['error']) {
+          this.router.navigateByUrl('term-and-condition');
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
 }

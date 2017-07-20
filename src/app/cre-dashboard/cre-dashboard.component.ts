@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {Http} from '@angular/http';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Rx';
+import {UserService} from '../shared/service/user/user.service';
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -48,10 +49,11 @@ export class CreDashboardComponent implements OnInit {
     private _tokenService: TokenService,
     public credentialService: CredentialService,
     public errorService: ErrorService,
+    public userService: UserService,
     private router: Router,
     private http: Http
   ) {
-
+    this.isUserExist(this.credentialService.getUsername());
   }
 
   get galaxy_icon(): string {
@@ -98,27 +100,19 @@ export class CreDashboardComponent implements OnInit {
             deployment['isMore'] = false;
             deployment['isGalaxy'] = true;
             deployment['isJupyter'] = false;
+
             for (let i = 0; i < deployment.assignedInputs.length; i++) {
-              if (deployment.assignedInputs[i]['inputName'] === 'cluster_prefix') {
-                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment.assignedInputs[i]['assignedValue'] + '.phenomenal.cloud';
-                deployment['jupyterUrlName'] = 'http://notebook.' + deployment.assignedInputs[i]['assignedValue'] + '.phenomenal.cloud';
+
+              if (deployment['assignedInputs'][i]['inputName'] === 'cluster_prefix') {
+                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
               }
-              if (deployment.assignedInputs[i]['inputName'] === 'galaxy_admin_email') {
-                deployment['galaxyAdminEmail'] = deployment.assignedInputs[i]['assignedValue'];
+              if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_email') {
+                deployment['galaxyAdminEmail'] = deployment['assignedInputs'][i]['assignedValue'];
               }
-              if (deployment.assignedInputs[i]['inputName'] === 'galaxy_admin_password') {
-                deployment['galaxyAdminPassword'] = deployment.assignedInputs[i]['assignedValue'];
-              }
-              if (deployment.assignedInputs[i]['inputName'] === 'jupyter_password') {
-                deployment['jupyterPassword'] = deployment.assignedInputs[i]['assignedValue'];
+              if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_password') {
+                deployment['galaxyAdminPassword'] = deployment['assignedInputs'][i]['assignedValue'];
               }
             }
-            // this.pingDomain(deployment['galaxyUrlName'], 2000, () => {
-            //   deployment['isGalaxy'] = true;
-            // });
-            // this.pingDomain(deployment['jupyterUrlName'], 2000, () => {
-            //   deployment['isJupyter'] = true;
-            // });
           });
         }
       }
@@ -146,7 +140,7 @@ export class CreDashboardComponent implements OnInit {
       this._tokenService.getToken()
     ).subscribe(
       deployment  => {
-        // console.log('[RepositoryComponent] getAll %O', deployment);
+        console.log('[RepositoryComponent] getAll %O', deployment);
         callback(deployment);
       },
       error => {
@@ -181,13 +175,21 @@ export class CreDashboardComponent implements OnInit {
     this._deploymentService.stop(this.credentialService.getUsername(), this._tokenService.getToken(),
       deployment).subscribe(
       res => {
-        console.log('[Deployments] got response %O', res);
         this._deploymentService.delete(this.credentialService.getUsername(), this._tokenService.getToken(),
           deployment).subscribe(
           res1 => {
-            console.log('[Deployments] got response %O', res1);
             if (res1 === 200) {
-              location.reload();
+              this.getAllDeploymentServer((deploymentStatus) => {
+                if (deploymentStatus.length === 0) {
+                  this.getAllApplication( (app) => {
+                    this.removeApplication(app, (done) => {
+                      location.reload();
+                    });
+                  });
+                } else {
+                  location.reload();
+                }
+              });
             }
           },
           error => {
@@ -203,13 +205,27 @@ export class CreDashboardComponent implements OnInit {
     );
   }
 
+  removeApplication(application, callback) {
+    this._applicationService.delete(this.credentialService.getUsername(),
+      this._tokenService.getToken(), application[0]).subscribe(
+      res => {
+        console.log('[RepositoryComponent] got response %O', res);
+        callback(res);
+      },
+      error => {
+        console.log('[RepositoryComponent] error %O', error);
+        this.errorService.setCurrentError(error);
+        callback(error);
+      }
+    );
+  }
+
   getAllApplication(callback) {
     this._applicationService.getAll(
       this.credentialService.getUsername(),
       this._tokenService.getToken()
     ).subscribe(
       app  => {
-        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {
@@ -218,4 +234,22 @@ export class CreDashboardComponent implements OnInit {
       }
     );
   }
+
+  private isUserExist(id: string) {
+
+    this.userService.get(id).subscribe(
+      (res) => {
+        // if (res['data']) {
+        //   this.router.navigateByUrl('cloud-research-environment');
+        // }
+        if (res['error']) {
+          this.router.navigateByUrl('term-and-condition');
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
 }

@@ -16,3 +16,10 @@
   height: 187.5px;
   width: 300px;
 }
+
+@media (max-width: 1199px) and (min-width: 992px) {
+  .phenomenal-image {
+    height: 156.25px;
+    width: 200px;
+  }
+}

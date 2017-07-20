@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ApplicationService, CloudCredentialsService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
+import {ApplicationService, CloudProviderParametersService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-header',
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private _eref: ElementRef,
               private _router: Router,
-              private cloudCredentialsService: CloudCredentialsService,
+              private cloudCredentialsService: CloudProviderParametersService,
               private _applicationService: ApplicationService,
               public credentialService: CredentialService,
               public tokenService: TokenService,

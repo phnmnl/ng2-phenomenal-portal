@@ -3,6 +3,7 @@ import {ApplicationService, AuthService, CredentialService, ErrorService, JwtTok
 import {UserService} from '../shared/service/user/user.service';
 import {User} from '../shared/service/user/user';
 import {PhenomenalTokenService} from '../shared/service/phenomenal-token/phenomenal-token.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ph-login',
@@ -37,87 +38,50 @@ export class LoginComponent implements OnInit, OnDestroy {
     public phTokenService: PhenomenalTokenService,
     public errorService: ErrorService,
     public userService: UserService,
-    public renderer: Renderer
+    public renderer: Renderer,
+    private router: Router
   ) {
     // We cache the function "listenGlobal" returns, as it's one that allows to cleanly unregister the event listener
     this.removeMessageListener = this.renderer.listenGlobal('window', 'message', (event: MessageEvent) => {
       if (this._authService.canAcceptMessage(event)) {
         this.saveToken(event.data, () => {
-          // this.userService.authenticate().subscribe(
-          //   (data) => {
-          //     const theToken: JwtToken = <JwtToken>{ token: data['id_token'] };
-          //     this.phTokenService.setToken(theToken);
-          //
-          //     this.checkUser();
-          //   },
-          //   (error) => {
-          //     console.log(error);
-          //   }
-          // );
         });
         event.source.close();
-        // console.log('Got Token');
       }
     });
 
     if (this.tokenService.getToken()) {
       this.getAllApplication();
-      // this.checkUser();
     }
 
-    // console.log('user ' + this.user.id);
-    // console.log('cred ' + this.credentialService.getUsername());
-    // console.log('token ' + this.tokenService.getToken());
   }
 
-  // getActivate() {
-  //
-  //   if (this.user === null) {
-  //     const temp = {id: this.credentialService.getUsername(), isActivate: false, isRegister: false};
-  //     this.userService.get(temp, this.phTokenService.getToken().token).subscribe(
-  //       (res) => {
-  //         console.log(res);
-  //         this._user.id = res['id'];
-  //         this._user.isActivate = res['isActivate'];
-  //         this._user.isRegister = res['isRegister'];
-  //       },
-  //       (err) => {
-  //         console.log(err);
-  //         if (err.status === 404) {
-  //           this.userService.add(this._user, this.phTokenService.getToken().token).subscribe(
-  //             (ret) => {
-  //               console.log(ret);
-  //             },
-  //             (error) => {
-  //               console.log(error);
-  //             }
-  //           );
-  //         }
-  //       }
-  //     );
-  //   }
-  //
-  //   return this.user.isActivate;
-  // }
+  next() {
+    this.isUserExist(this.credentialService.getUsername());
+  }
 
-  activate() {
-    this._user.isActivate = true;
-    this.userService.edit(this._user, this.phTokenService.getToken().token).subscribe(
-      (data) => {
-        console.log(data);
+  private isUserExist(id: string) {
+
+    this.userService.get(id).subscribe(
+      (res) => {
+        if (res['data']) {
+          this.router.navigateByUrl('cloud-research-environment');
+        }
+        if (res['error']) {
+          this.router.navigateByUrl('term-and-condition');
+        }
       },
-      (error) => {
-        console.log(error);
+      (err) => {
+        console.log(err);
       }
     );
   }
 
   private saveToken(jwt: string, callback) {
-    // console.log('[LoginPage] Obtained token from saml %O', jwt);
     const theToken: JwtToken = <JwtToken>{ token: jwt };
     this.tokenService.setToken(theToken);
     const tokenClaims = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(jwt.split('.')[1]));
-    this.credentialService.setCredentials(tokenClaims.sub, null);
+    this.credentialService.setCredentials(tokenClaims.sub, null, tokenClaims.name);
   }
 
 
@@ -127,32 +91,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ssoLink() {
     return this._authService.ssoLink();
-  }
-
-  private checkUser() {
-
-    const temp = {id: this.credentialService.getUsername(), isActivate: false, isRegister: false};
-    this.userService.get(temp, this.phTokenService.getToken().token).subscribe(
-      (res) => {
-        console.log(res);
-        this._user.id = res['id'];
-        this._user.isActivate = res['isActivate'];
-        this._user.isRegister = res['isRegister'];
-      },
-      (err) => {
-        console.log(err);
-        if (err.status === 404) {
-          this.userService.add(this._user, this.phTokenService.getToken().token).subscribe(
-            (ret) => {
-              console.log(ret);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        }
-      }
-    );
   }
 
   getAllApplication() {
@@ -171,6 +109,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+
 
   ngOnDestroy() {
     this.removeMessageListener();

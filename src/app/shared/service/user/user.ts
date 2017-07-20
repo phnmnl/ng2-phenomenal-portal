@@ -1,5 +1,5 @@
 export class User {
-  id: string;
-  isActivate: boolean;
-  isRegister: boolean;
+  Idmetadata: string;
+  Isaccepttermcondition: number;
+  Isregistergalaxy: number;
 }
