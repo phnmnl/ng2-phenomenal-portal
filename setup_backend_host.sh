@@ -1,3 +1,3 @@
 #!/bin/bash
-cp src/assets/config/config.development.json src/assets/config/config_backup
-sed "s@\"host\": \"http://localhost\"@\"host\": \"http://$BACKEND_HOST\"@g" src/assets/config/config_backup > src/assets/config/config.development.json
+cp dist/assets/config/config.development.json dist/assets/config/config_backup
+sed "s@\"host\": \"http://localhost\"@\"host\": \"http://$BACKEND_HOST\"@g" dist/assets/config/config_backup > dist/assets/config/config.development.json
