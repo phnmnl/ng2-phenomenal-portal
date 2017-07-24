@@ -5,35 +5,8 @@
     <p>{{cloudProvider.description}}</p>
     <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
     <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
-    <a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
+    <!--<a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>-->
     <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Register</button>
   </md-card-content>
-
-  <!--<md-card-content *ngIf="cloudProvider.isSelected === 1 && !_isSuccess">-->
-    <!--<md-input-container class="input-width">-->
-      <!--<input mdInput placeholder="Galaxy Username" [(ngModel)]="cloudProvider.credential.galaxy_admin_username" required>-->
-    <!--</md-input-container>-->
-    <!--<md-input-container class="input-width">-->
-      <!--<input mdInput placeholder="Galaxy Email" [(ngModel)]="cloudProvider.credential.galaxy_admin_email" required>-->
-    <!--</md-input-container>-->
-    <!--<md-input-container class="input-width">-->
-      <!--<input mdInput placeholder="Galaxy Password (at least 8 characters)" type="password" [(ngModel)]="cloudProvider.credential.galaxy_admin_password" required>-->
-    <!--</md-input-container>-->
-    <!--<div>-->
-      <!--<button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>-->
-      <!--<button md-raised-button (click)="registerGalaxyAccount(cloudProvider.credential.galaxy_admin_username, cloudProvider.credential.galaxy_admin_email, cloudProvider.credential.galaxy_admin_password)" color="warn">Register</button>-->
-    <!--</div>-->
-    <!--<div *ngIf="_isFailed" style="color: red">{{_message}}</div>-->
-  <!--</md-card-content>-->
-
-
-  <!--<md-card-content *ngIf="_isSuccess">-->
-    <!--<p>{{cloudProvider.description}}</p>-->
-    <!--<p><strong>{{cloudProvider.paymentDescription}}</strong></p>-->
-    <!--<p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>-->
-    <!--<p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>-->
-    <!--<p>Congratulations! Please login with your PhenoMeNal Galaxy account.</p>-->
-    <!--<a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>-->
-  <!--</md-card-content>-->
 
 </md-card>

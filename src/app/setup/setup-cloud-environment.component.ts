@@ -24,11 +24,11 @@ export class SetupCloudEnvironmentComponent implements OnInit {
   private _galaxy_instance_url = 'http://193.62.54.91:30700';
   private _galaxy_api_key = 'b5d33930050dad02d448271c5ab7f80e';
   private _isFailed = false;
-  private _isSuccess = false;
+  _isSuccess = false;
   private _message = '';
   private _cloudProviderCollection: CloudProvider[];
-  private _aws_region: AwsRegion[];
-  private _gcp_region: AwsRegion[];
+  _aws_region: AwsRegion[];
+  _gcp_region: AwsRegion[];
   private _provider: CloudProvider;
 
 

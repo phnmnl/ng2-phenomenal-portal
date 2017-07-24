@@ -8,7 +8,7 @@ import {Faq} from './faq';
 })
 export class FaqComponent implements OnInit {
 
-  private faqSet: Faq[];
+  faqSet: Faq[];
 
   constructor() { }
 
