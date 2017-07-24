@@ -25,8 +25,8 @@ export class BreadcrumbComponent implements OnInit {
 
   generateBreadcrumbTrail(url: string): void {
     this._urls.unshift(url); // Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
-    if (url.lastIndexOf('/') > 0) {
-      this.generateBreadcrumbTrail(url.substr(0, url.lastIndexOf('/'))); // Find last '/' and add everything before it as a parent route
+    if (url !== undefined && url.toString().lastIndexOf('/') > 0) {
+      this.generateBreadcrumbTrail(url.toString().substr(0, url.toString().lastIndexOf('/'))); // Find last '/' and add everything before it as a parent route
     }
   }
 

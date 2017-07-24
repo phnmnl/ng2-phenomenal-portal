@@ -17,7 +17,7 @@ import {FooterComponent} from './shared/component/footer/footer.component';
 import {CarouselComponent} from './shared/component/carousel/carousel.component';
 import {SlideComponent} from './shared/component/carousel/slide/slide.component';
 import {StatisticsComponent} from './statistics/statistics.component';
-import {CollapseModule, ModalModule} from 'ng2-bootstrap';
+import {CollapseModule, ModalModule} from 'ngx-bootstrap';
 import {BreadcrumbService} from './shared/component/breadcrumb/breadcrumb.service';
 import {WikiService} from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from './app-routing.module';

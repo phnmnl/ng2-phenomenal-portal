@@ -5,7 +5,7 @@ import {AppConfig} from '../../../app.config';
 
 @Injectable()
 export class UserService {
-  private baseUrl: string;
+  private baseUrl = '';
   private metadataUrl: string;
   private headUrl: string;
 
@@ -13,9 +13,13 @@ export class UserService {
     private http: Http,
     private config: AppConfig
   ) {
-    this.baseUrl = config.getConfig('host') + ':8888';
     this.metadataUrl = '/api/v1/metadata';
-    this.headUrl = this.baseUrl + this.metadataUrl;
+    if (config.getConfig('host') !== '') {
+      this.baseUrl = config.getConfig('host') + ':8888';
+      this.headUrl = this.baseUrl + this.metadataUrl;
+    } else {
+      this.headUrl = this.metadataUrl;
+    }
   }
 
   get(id: string): Observable<string[]>  {
