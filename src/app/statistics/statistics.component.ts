@@ -24,7 +24,7 @@ export class StatisticsComponent implements OnInit {
     gapi.analytics.ready(function () {
 
       jQuery.ajax({
-        url: 'http://phenomenal-h2020.eu/portal/api/getGoogleKey.php', success: function (result) {
+        url: '/api/v1/metadata/getGoogleKey', success: function (result) {
 
           /**
            * Authorize the user with an access token obtained server side.
