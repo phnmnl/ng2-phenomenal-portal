@@ -62,6 +62,7 @@ import { TermAndConditionComponent } from './login/term-and-condition/term-and-c
 import {CloudProviderMetadataService} from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
 import { AppConfig } from './app.config';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function SSOConfigService () {
   // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -119,7 +120,8 @@ export function initConfig(config: AppConfig) {
     MaterialModule,
     Ng2PhenomenalPortalRoutingModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
