@@ -1,3 +1,5 @@
 {
-  "host": ""
+  "host": "",
+  "galaxy_url": "",
+  "galaxy_api_key": ""
 }
