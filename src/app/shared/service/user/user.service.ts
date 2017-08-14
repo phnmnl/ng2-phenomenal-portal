@@ -37,7 +37,7 @@ export class UserService {
 
     const options       = new RequestOptions({ headers: headers }); // Create a request option
 
-    let urlSearchParams = new URLSearchParams();
+    const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('Metadata', JSON.stringify(data));
 
     return this.http.post(url, urlSearchParams.toString(), options).map(this.extractData);
@@ -53,57 +53,11 @@ export class UserService {
 
     const options       = new RequestOptions({ headers: headers }); // Create a request option
 
-    let urlSearchParams = new URLSearchParams();
+    const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('Metadata', JSON.stringify(data));
 
     return this.http.put(url, urlSearchParams.toString(), options).map(this.extractData);
   }
-
-  // add(user: User, jwtToken: string): Observable<string[]>  {
-  //   const url = this.headUrl;
-  //   const body = user;
-  //
-  //   const bodyString = JSON.stringify(body); // Stringify payload
-  //   const headers      = new Headers({
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer ' + jwtToken
-  //   }); // ... Set content type to JSON
-  //   const options       = new RequestOptions({ headers: headers }); // Create a request option
-  //   return this.http.post(url, bodyString, options).map(this.extractData);
-  // }
-  //
-  // edit(user: User, jwtToken: string): Observable<string[]>  {
-  //   const url = this.headUrl;
-  //   const body = user;
-  //
-  //   const bodyString = JSON.stringify(body); // Stringify payload
-  //   const headers      = new Headers({
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer ' + jwtToken
-  //   }); // ... Set content type to JSON
-  //   const options       = new RequestOptions({ headers: headers }); // Create a request option
-  //   return this.http.put(url, bodyString, options).map(this.extractData);
-  // }
-  //
-  // get(user: User, jwtToken: string): Observable<string[]>  {
-  //   const url = this.headUrl + '/' + user.id ;
-  //
-  //   const headers      = new Headers({
-  //     'Authorization': 'Bearer ' + jwtToken
-  //   }); // ... Set content type to JSON
-  //   const options  = new RequestOptions({ headers: headers }); // Create a request option
-  //   return this.http.get(url, options).map(this.extractData);
-  // }
-  //
-  // authenticate(): Observable<string[]>  {
-  //   const url = this.baseUrl + '/api/authenticate';
-  //   const body = {username: 'admin', password: 'admin'};
-  //
-  //   const bodyString = JSON.stringify(body); // Stringify payload
-  //   const headers      = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
-  //   const options       = new RequestOptions({ headers: headers }); // Create a request option
-  //   return this.http.post(url, bodyString, options).map(this.extractData);
-  // }
 
   private extractData(res: Response) {
     const body = res.json();
