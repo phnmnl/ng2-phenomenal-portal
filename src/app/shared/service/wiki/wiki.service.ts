@@ -16,7 +16,7 @@ export class WikiService {
   ) {
     // this.baseUrl = 'http://phenomenal-h2020.eu/wiki';
     // this.baseUrl  = 'http://localhost/FederatedGitWiki';
-    this.metadataUrl = '/php-phenomenal-portal-app-library';
+    this.metadataUrl = '/php-phenomenal-portal-wiki';
     if (config.getConfig('host') !== '') {
       this.baseUrl = config.getConfig('host') + ':80';
       this.headUrl = this.baseUrl + this.metadataUrl;
