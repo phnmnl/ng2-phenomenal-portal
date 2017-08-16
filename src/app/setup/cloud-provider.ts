@@ -1,4 +1,4 @@
-import {Credential} from './Credential';
+import {Credential} from './credential';
 
 export class CloudProvider {
   title: string;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {TokenService} from 'ng2-cloud-portal-service-lib';
+import { ConfigService, TokenService } from 'ng2-cloud-portal-service-lib';
 
 @Injectable()
 export class CloudProviderMetadataService {
@@ -12,10 +12,12 @@ export class CloudProviderMetadataService {
 
   constructor(
     private http: Http,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private _configService: ConfigService
 ) {
-    this.baseUrl = 'http://localhost:8080';
-    this.metadataUrl = '/cloudprovidermetadata/';
+    this.baseUrl = 'http://localhost:8080/';
+    // this.baseUrl = _configService.getApiAddress();
+    this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
 

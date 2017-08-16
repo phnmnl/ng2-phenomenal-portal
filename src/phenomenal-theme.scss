@@ -1,5 +1,5 @@
 // Import all the tools needed to customize the theme and extract parts of it
-@import '~@angular/material/core/theming/all-theme';
+@import '~@angular/material/_theming';
 @import 'phenomenal';
 
 // Creates a container object for a light theme to be given to individual component theme mixins.

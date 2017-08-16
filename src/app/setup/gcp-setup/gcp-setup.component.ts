@@ -13,7 +13,7 @@ export class GcpSetupComponent implements OnInit {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
   form: FormGroup;
-  private _gcp_region: AwsRegion[];
+  _gcp_region: AwsRegion[];
 
 
   formErrors = {

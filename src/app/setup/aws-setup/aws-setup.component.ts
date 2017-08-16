@@ -14,7 +14,7 @@ export class AwsSetupComponent implements OnInit {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
   form: FormGroup;
-  private _aws_region: AwsRegion[];
+  _aws_region: AwsRegion[];
 
 
   formErrors = {

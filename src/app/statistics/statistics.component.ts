@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {HostListener} from '@angular/core/src/metadata/directives';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {JenkinsReportService} from '../shared/service/jenkins-report/jenkins-report.service';
 
 declare var gapi: any;
@@ -13,7 +12,6 @@ declare var jQuery: any;
 export class StatisticsComponent implements OnInit {
 
   jenkinsReportData;
-  // private key: string;
 
   constructor(public jenkinsReportService: JenkinsReportService) {
 
@@ -26,7 +24,7 @@ export class StatisticsComponent implements OnInit {
     gapi.analytics.ready(function () {
 
       jQuery.ajax({
-        url: 'http://phenomenal-h2020.eu/portal/api/getGoogleKey.php', success: function (result) {
+        url: '/api/v1/metadata/getGoogleKey', success: function (result) {
 
           /**
            * Authorize the user with an access token obtained server side.

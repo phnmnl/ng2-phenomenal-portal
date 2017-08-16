@@ -15,7 +15,7 @@ export class CreRegistrationFormComponent implements OnInit {
 
   @Input() cloudProvider: CloudProvider;
   private _isFailed = false;
-  private _isSuccess = false;
+  _isSuccess = false;
   private _message = '';
   form: FormGroup;
 

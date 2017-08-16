@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApplicationService, DeploymentService, Deployment} from 'ng2-cloud-portal-service-lib';
+import {ApplicationService, DeploymentService, Deployment, DeploymentStatus} from 'ng2-cloud-portal-service-lib';
 import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
@@ -40,6 +40,7 @@ export class CreDashboardComponent implements OnInit {
   }
 
   deploymentServerList: Deployment[];
+  deploymentStatus: DeploymentStatus;
   isDeployment = false;
   isClickedOnce = false;
 
@@ -172,31 +173,33 @@ export class CreDashboardComponent implements OnInit {
 
   remove(deployment: Deployment) {
     this.isClickedOnce = true;
+    console.log('Remove deployment %O', deployment);
     this._deploymentService.stop(this.credentialService.getUsername(), this._tokenService.getToken(),
       deployment).subscribe(
       res => {
-        this._deploymentService.delete(this.credentialService.getUsername(), this._tokenService.getToken(),
-          deployment).subscribe(
-          res1 => {
-            if (res1 === 200) {
-              this.getAllDeploymentServer((deploymentStatus) => {
-                if (deploymentStatus.length === 0) {
-                  this.getAllApplication( (app) => {
-                    this.removeApplication(app, (done) => {
-                      location.reload();
-                    });
-                  });
-                } else {
-                  location.reload();
-                }
-              });
-            }
-          },
-          error => {
-            console.log('[Deployments] error %O', error);
-            this.errorService.setCurrentError(error);
+        console.log('[remove.stop] res %O', res);
+        this.getDeploymentStatusFeed(deployment, 3000, (result) => {
+          console.log('[remove.stop.feed] res %O', result);
+          this.deploymentStatus = result;
+          if (result.status === 'DESTROYED') {
+
+            this._deploymentService.delete(this.credentialService.getUsername(), this._tokenService.getToken(),
+              deployment).subscribe(
+              res1 => {
+                console.log('deleted');
+                this.removeApplication(deployment.applicationName,
+                  (done) => {
+                    location.reload();
+                  },
+                );
+              },
+              error => {
+                console.log('[Deployments] error %O', error);
+                this.errorService.setCurrentError(error);
+              }
+            );
           }
-        );
+        });
       },
       error => {
         console.log('[Deployments] error %O', error);
@@ -205,9 +208,27 @@ export class CreDashboardComponent implements OnInit {
     );
   }
 
-  removeApplication(application, callback) {
+  getDeploymentStatusFeed(deploymentInstance: Deployment, interval: number, callback) {
+    const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
+      this.credentialService.getUsername(),
+      this._tokenService.getToken(),
+      deploymentInstance, interval).subscribe(
+      res => {
+        if (res.status === 'DESTROYED') {
+          statusFeedSubscription.unsubscribe();
+        }
+        callback(res);
+      },
+      error => {
+        statusFeedSubscription.unsubscribe();
+        callback(error);
+      }
+    );
+  }
+
+  removeApplication(applicationName, callback) {
     this._applicationService.delete(this.credentialService.getUsername(),
-      this._tokenService.getToken(), application[0]).subscribe(
+      this._tokenService.getToken(), applicationName).subscribe(
       res => {
         console.log('[RepositoryComponent] got response %O', res);
         callback(res);

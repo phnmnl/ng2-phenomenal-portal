@@ -32,7 +32,7 @@ export class HomeComponent {
 
   private _noSlideControl: boolean = false;
   // Photos
-  private slides: Array<any> = [];
+  slides: Array<any> = [];
 
   get img1(): string {
     return this._img1;

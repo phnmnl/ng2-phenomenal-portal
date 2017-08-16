@@ -7,16 +7,15 @@ export class JenkinsReportService {
   private baseUrl: string;
 
   constructor(private http: Http) {
-    this.baseUrl = 'http://phenomenal-h2020.eu/wiki';
   }
 
   loadStatus(): Observable<string[]> {
-    return this.http.get(this.baseUrl + '/wiki/jenkinsReport.php')
+    return this.http.get('/api/v1/metadata/getJenkinsReport')
       .map(this.extractData);
   }
 
   private extractData(res: Response) {
-    let body = res.json();
+    const body = res.json();
     return body.tools || {};
   }
 }

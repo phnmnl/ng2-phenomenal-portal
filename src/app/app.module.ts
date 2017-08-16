@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
@@ -17,7 +17,7 @@ import {FooterComponent} from './shared/component/footer/footer.component';
 import {CarouselComponent} from './shared/component/carousel/carousel.component';
 import {SlideComponent} from './shared/component/carousel/slide/slide.component';
 import {StatisticsComponent} from './statistics/statistics.component';
-import {CollapseModule, ModalModule} from 'ng2-bootstrap';
+import {CollapseModule, ModalModule} from 'ngx-bootstrap';
 import {BreadcrumbService} from './shared/component/breadcrumb/breadcrumb.service';
 import {WikiService} from './shared/service/wiki/wiki.service';
 import {Ng2PhenomenalPortalRoutingModule} from './app-routing.module';
@@ -61,11 +61,20 @@ import { FaqComponent } from './help/faq/faq.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import {CloudProviderMetadataService} from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
+import { AppConfig } from './app.config';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtHelper } from 'angular2-jwt';
+
 export function SSOConfigService () {
   // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
 
-  return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  // return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
+}
+
+export function initConfig(config: AppConfig) {
+  return () => config.load();
 }
 
 @NgModule({
@@ -113,7 +122,8 @@ export function SSOConfigService () {
     MaterialModule,
     Ng2PhenomenalPortalRoutingModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
@@ -138,7 +148,13 @@ export function SSOConfigService () {
     TokenService,
     GalaxyService,
     AccountService,
-    CloudProviderMetadataService
+    CloudProviderMetadataService,
+    JwtHelper,
+    AppConfig,
+    { provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [AppConfig],
+      multi: true }
   ],
   bootstrap: [AppComponent]
 })

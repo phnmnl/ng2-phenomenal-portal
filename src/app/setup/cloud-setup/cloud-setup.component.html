@@ -12,8 +12,11 @@
           <a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
           <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
         </div>
-        <div *ngIf="cloudProvider.name !== 'phenomenal'">
+        <div *ngIf="cloudProvider.name === 'aws' || cloudProvider.name === 'gcp'">
           <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
+        </div>
+        <div *ngIf="cloudProvider.name === 'ostack'">
+          <button md-raised-button disabled color="primary">Coming Soon</button>
         </div>
       </div>
       <div *ngIf="cloudProvider.isSelected === 1">
