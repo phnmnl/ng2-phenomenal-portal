@@ -1,5 +1,6 @@
 {
   "host": "",
   "galaxy_url": "",
-  "galaxy_api_key": ""
+  "galaxy_api_key": "",
+  "deployment_repo_url": "https://github.com/andersla/cloud-deploy-kubenow.git"
 }

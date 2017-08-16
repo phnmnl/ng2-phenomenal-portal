@@ -15,7 +15,8 @@ export class CloudProviderMetadataService {
     private tokenService: TokenService,
     private _configService: ConfigService
 ) {
-    this.baseUrl = _configService.getApiAddress();
+    this.baseUrl = 'http://localhost:8080/';
+    // this.baseUrl = _configService.getApiAddress();
     this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }

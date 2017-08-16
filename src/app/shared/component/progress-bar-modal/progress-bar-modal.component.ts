@@ -9,6 +9,7 @@ import { ApplicationService, CloudProviderParametersService} from 'ng2-cloud-por
 import {isError} from 'util';
 import {Credential } from '../../../setup/credential';
 import {CloudProvider} from '../../../setup/cloud-provider';
+import { AppConfig } from '../../../app.config';
 
 @Component({
   selector: 'ph-progress-bar-modal-content',
@@ -62,6 +63,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   isRunning = 0;
   name;
   selectedCloudProvider: CloudProviderParameters;
+  repoUrl;
+  username;
+  isExist = false;
 
   constructor(public activeModal: NgbActiveModal,
               private _applicationService: ApplicationService,
@@ -70,44 +74,55 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               private _tokenService: TokenService,
               public credentialService: CredentialService,
               public errorService: ErrorService,
-              public _accountService: AccountService
+              public _accountService: AccountService,
+              private config: AppConfig
   ) {
+    this.repoUrl = config.getConfig('deployment_repo_url');
   }
 
-  ngOnInit() {
+  ngOnInit(
+
+  ) {
     this._accountService.getAccount(this.credentialService.getUsername(), this._tokenService.getToken()).subscribe(
       account => {
         this.name = 'ph' + this.generateUIDNotMoreThan1million();
+
+        this.username = account.userName;
 
         let value;
 
         if (this.credential.provider === 'AWS') {
           this.applicationDeployer = <ApplicationDeployer> {
             name: 'Phenomenal VRE',
-            accountEmail: account.email,
-            repoUri: 'https://github.com/pcm32/cloud-deploy-kubenow.git',
+            accountUsername: this.username,
+            repoUri: this.repoUrl,
             selectedCloudProvider: 'AWS' };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
+            cluster_prefix: this.name,
             aws_access_key_id: this.credential.access_key_id,
             aws_secret_access_key: this.credential.secret_access_key,
             aws_region: this.credential.default_region,
             availability_zone: this.credential.default_region + 'a',
+            master_as_edge: 'true',
             master_instance_type: 't2.xlarge',
-            node_instance_type: 't2.xlarge',
-            edge_instance_type: 't2.xlarge',
-            cluster_prefix: this.name,
             node_count: '2',
-            edge_count: '1',
+            node_instance_type: 't2.xlarge',
+            glusternode_count: '1',
+            glusternode_instance_type: 't2.xlarge',
+            glusternode_extra_disk_size: '100',
+            phenomenal_pvc_size: '95Gi',
             galaxy_admin_email: this.credential.galaxy_admin_email,
             galaxy_admin_password: this.credential.galaxy_admin_password,
-            jupyter_password: this.credential.galaxy_admin_password
+            jupyter_password: this.credential.galaxy_admin_password,
+            dashboard_username: this.credential.galaxy_admin_email,
+            dashboard_password: this.credential.galaxy_admin_password
           };
           this.applicationDeployer.assignedParameters = {};
           this.applicationDeployer.configurations = [];
           this.selectedCloudProvider = {
             name: this.name + '-' + this.credential.provider,
-            accountEmail: account.email,
+            accountUsername: this.username,
             cloudProvider: 'AWS',
             fields: [
               {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
@@ -129,28 +144,33 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
         } else if (this.credential.provider === 'GCP') {
           this.applicationDeployer = <ApplicationDeployer> {
             name: 'Phenomenal VRE',
-            accountEmail: account.email,
-            repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+            accountUsername: this.username,
+            repoUri: this.repoUrl,
             selectedCloudProvider: 'GCP' };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
-            gce_zone: this.credential.default_region,
-            gce_project: this.credential.tenant_name,
-            master_flavor: 'n1-standard-2',
-            node_flavor: 'n1-standard-4',
-            edge_flavor: 'n1-standard-2',
             cluster_prefix: this.name,
-            node_count: '1',
-            edge_count: '1',
+            gce_project: this.credential.tenant_name,
+            gce_zone: this.credential.default_region,
+            master_as_edge: 'true',
+            master_flavor: 'n1-standard-2',
+            node_count: '2',
+            node_flavor: 'n1-standard-2',
+            glusternode_count: '1',
+            glusternode_flavor: 'n1-standard-2',
+            glusternode_extra_disk_size: '100',
+            phenomenal_pvc_size: '95Gi',
             galaxy_admin_email: this.credential.galaxy_admin_email,
             galaxy_admin_password: this.credential.galaxy_admin_password,
-            jupyter_password: this.credential.galaxy_admin_password
+            jupyter_password: this.credential.galaxy_admin_password,
+            dashboard_username: this.credential.galaxy_admin_email,
+            dashboard_password: this.credential.galaxy_admin_password
           };
           this.applicationDeployer.assignedParameters = {};
           this.applicationDeployer.configurations = [];
           this.selectedCloudProvider = {
             name: this.name + '-' + this.credential.provider,
-            accountEmail: account.email,
+            accountUsername: this.username,
             cloudProvider: 'GCP',
             fields: [
               {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
@@ -172,33 +192,33 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
         } else {
           this.applicationDeployer = <ApplicationDeployer> {
             name: 'Phenomenal VRE',
-            accountEmail: account.email,
-            repoUri: 'https://github.com/phnmnl/cloud-deploy-kubenow.git',
+            accountUsername: this.username,
+            repoUri: this.repoUrl,
             selectedCloudProvider: 'OSTACK' };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
+            cluster_prefix: this.name,
             floating_ip_pool: this.credential.ip_pool,
             external_network_uuid: this.credential.network,
+            master_as_edge: 'true',
             master_flavor: this.credential.flavor,
-            node_flavor: this.credential.flavor,
-            edge_flavor: this.credential.flavor,
-            // floating_ip_pool: 'ext-net',
-            // external_network_uuid: '2d771d9c-f279-498f-8b8a-f5c6d83da6e8',
-            // master_flavor: 's1.large',
-            // node_flavor: 's1.large',
-            // edge_flavor: 's1.large',
-            cluster_prefix: this.name,
             node_count: '2',
-            edge_count: '2',
+            node_flavor: this.credential.flavor,
+            glusternode_count: '1',
+            glusternode_flavor: this.credential.flavor,
+            glusternode_extra_disk_size: '100',
+            phenomenal_pvc_size: '95Gi',
             galaxy_admin_email: this.credential.galaxy_admin_email,
             galaxy_admin_password: this.credential.galaxy_admin_password,
-            jupyter_password: this.credential.galaxy_admin_password
+            jupyter_password: this.credential.galaxy_admin_password,
+            dashboard_username: this.credential.galaxy_admin_email,
+            dashboard_password: this.credential.galaxy_admin_password
           };
           this.applicationDeployer.assignedParameters = {};
           this.applicationDeployer.configurations = [];
           this.selectedCloudProvider = {
             name: this.name + '-' + this.credential.provider,
-            accountEmail: account.email,
+            accountUsername: this.username,
             cloudProvider: 'OSTACK',
             fields: [
               {'key': 'OS_USERNAME', 'value': this.credential.username},
@@ -279,12 +299,21 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       this.increment(setTimeout(() => {
         this.getAllApplication(
           (appStatus) => {
-            // console.log(appStatus);
+
+            for (let i = 0; i < appStatus.length; i++) {
+              console.log('name ' + appStatus[i]['name']);
+              if (appStatus[i]['name'] === 'Phenomenal VRE') {
+                this.isExist = true;
+                console.log('exist');
+                break;
+              }
+            }
+
             if (appStatus.status === 401 || appStatus.status === 404 ) {
               console.log(appStatus.message);
               this.status[this.progress / 10 ] = 'ERROR: ' + appStatus.message;
               this.isError = true;
-            } else  if (appStatus.length === 0) {
+            } else  if (!this.isExist) {
               setTimeout(() => {
                 this.increment(
                   setTimeout(() => {

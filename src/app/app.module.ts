@@ -63,11 +63,13 @@ import {CloudProviderMetadataService} from './shared/service/cloud-provider-meta
 
 import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtHelper } from 'angular2-jwt';
 
 export function SSOConfigService () {
   // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
 
-  return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+  // return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
 }
 
@@ -147,6 +149,7 @@ export function initConfig(config: AppConfig) {
     GalaxyService,
     AccountService,
     CloudProviderMetadataService,
+    JwtHelper,
     AppConfig,
     { provide: APP_INITIALIZER,
       useFactory: initConfig,
