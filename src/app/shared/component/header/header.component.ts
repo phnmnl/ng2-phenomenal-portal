@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
+import { Component, ElementRef, HostListener, isDevMode, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {ApplicationService, CloudProviderParametersService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
 
@@ -23,6 +23,9 @@ export class HeaderComponent implements OnInit {
               public tokenService: TokenService,
               public errorService: ErrorService
   ) {
+    if (isDevMode()) {
+      this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
+    }
   }
 
   ngOnInit() {

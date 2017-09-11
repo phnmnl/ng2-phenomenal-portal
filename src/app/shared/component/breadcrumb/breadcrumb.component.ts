@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {BreadcrumbService} from './breadcrumb.service';
+import { AppConfig } from '../../../app.config';
 
 @Component({
   selector: 'ph-breadcrumb',
@@ -9,18 +10,29 @@ import {BreadcrumbService} from './breadcrumb.service';
 })
 export class BreadcrumbComponent implements OnInit {
 
-
+  announcement = '';
   _urls: string[];
+  isEmptyAnnouncement = false;
 
   ngOnInit() {
   }
 
-  constructor(private router: Router, private breadcrumbService: BreadcrumbService) {
+  constructor(
+    private router: Router,
+    private breadcrumbService: BreadcrumbService,
+    private config: AppConfig
+  ) {
     this._urls = [];
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this._urls.length = 0; // Fastest way to clear out array
       this.generateBreadcrumbTrail(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
     });
+
+    const text = config.getConfig('announcement');
+    if (text !== '') {
+      this.announcement = text;
+      this.isEmptyAnnouncement = true;
+    };
   }
 
   generateBreadcrumbTrail(url: string): void {

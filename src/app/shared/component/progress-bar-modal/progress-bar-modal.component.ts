@@ -10,13 +10,15 @@ import {isError} from 'util';
 import {Credential } from '../../../setup/credential';
 import {CloudProvider} from '../../../setup/cloud-provider';
 import { AppConfig } from '../../../app.config';
+import { DeploymentInstance } from 'ng2-cloud-portal-presentation-lib/dist';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'ph-progress-bar-modal-content',
   template: `
 <div style="text-align: center">
   <div class="modal-header">
-    <h4 class="modal-title text-center">Cloud Research Environment Installation</h4>
+    <h4 class="modal-title text-center">Cloud Research Environment Installation {{tsiID}}</h4>
   </div>
   <div class="modal-body">
     <ph-progress-bar [progress]="progress"></ph-progress-bar>
@@ -34,6 +36,16 @@ import { AppConfig } from '../../../app.config';
   </div>
   <div *ngIf="isError">
     <a type="button" class="btn btn-primary" href="/cloud-research-environment">Cancel</a>
+  </div>
+  <div (click)="toggleAdvancedButton()">
+    <i *ngIf='!isAdvanced' class="fa fa-chevron-down" aria-hidden="true"></i>
+    <i *ngIf='isAdvanced' class="fa fa-chevron-up" aria-hidden="true"></i>
+    <a style="font-weight: bold">Advanced Option</a>
+  </div>
+  <div *ngIf="isAdvanced">
+    <div class="container" style="text-align:left; font-size: smaller; margin-bottom: 20px; overflow: auto; height: 300px; width: 95%; color: white; background-color: black">
+        {{ this.deploymentInstance.logs }}
+    </div>
   </div>
 </div>
   `
@@ -65,7 +77,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   selectedCloudProvider: CloudProviderParameters;
   repoUrl;
   username;
-  isExist = false;
+  isAppExist = false;
+  isDeploymentExist = false;
+  tsiID = '';
+  isAdvanced = false;
+  logsFeedSubscription: Subscription;
+  deploymentInstance: DeploymentInstance;
 
   constructor(public activeModal: NgbActiveModal,
               private _applicationService: ApplicationService,
@@ -103,7 +120,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             aws_access_key_id: this.credential.access_key_id,
             aws_secret_access_key: this.credential.secret_access_key,
             aws_region: this.credential.default_region,
-            availability_zone: this.credential.default_region + 'a',
+            availability_zone: this.credential.default_region + 'b',
             master_as_edge: 'true',
             master_instance_type: 't2.xlarge',
             node_count: '2',
@@ -294,6 +311,10 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     this.progress += 10;
   }
 
+  toggleAdvancedButton() {
+    this.isAdvanced = !this.isAdvanced;
+  }
+
   addApp(callback) {
     setTimeout(() => {
       this.increment(setTimeout(() => {
@@ -303,39 +324,77 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             for (let i = 0; i < appStatus.length; i++) {
               console.log('name ' + appStatus[i]['name']);
               if (appStatus[i]['name'] === 'Phenomenal VRE') {
-                this.isExist = true;
+                this.isAppExist = true;
                 console.log('exist');
                 break;
               }
             }
 
-            if (appStatus.status === 401 || appStatus.status === 404 ) {
-              console.log(appStatus.message);
-              this.status[this.progress / 10 ] = 'ERROR: ' + appStatus.message;
-              this.isError = true;
-            } else  if (!this.isExist) {
-              setTimeout(() => {
-                this.increment(
+            if (this.isAppExist) {
+              this.getAllDeploymentServer((deployment) => {
+
+                for (let i = 0; i < deployment.length; i++) {
+                  if (deployment[i]['applicationName'] === 'Phenomenal VRE') {
+                    this.isDeploymentExist = true;
+                    console.log('deployment exist');
+                    break;
+                  }
+                }
+
+                if (!this.isDeploymentExist) {
+                  this.removeApplication(this.applicationDeployer, (result) => {
+                    setTimeout(() => {
+                      this.increment(
+                        setTimeout(() => {
+                          this.addApplication(
+                            this.applicationDeployer,
+                            (addAppStatus) => {
+                              if (addAppStatus.status === 401 || addAppStatus.status === 404 ) {
+                                console.log(addAppStatus.message);
+                                this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
+                                this.isError = true;
+                              } else {
+                                this.addDeployment(callback);
+                              }
+                            }
+                          );
+                        }, 2000));
+                    }, 2000);
+
+                  });
+                } else {
                   setTimeout(() => {
-                    this.addApplication(
-                      this.applicationDeployer,
-                      (addAppStatus) => {
-                        if (addAppStatus.status === 401 || addAppStatus.status === 404 ) {
-                          console.log(addAppStatus.message);
-                          this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
-                          this.isError = true;
-                        } else {
-                          this.addDeployment(callback);
-                        }
-                      }
-                    );
-                  }, 2000));
-              }, 2000);
+                    this.increment(
+                      setTimeout(() => {
+                              this.addDeployment(callback);
+                      }, 2000));
+                  }, 2000);
+                }
+              });
             } else {
-              this.increment(
+              if (appStatus.status === 401 || appStatus.status === 404 ) {
+                console.log(appStatus.message);
+                this.status[this.progress / 10 ] = 'ERROR: ' + appStatus.message;
+                this.isError = true;
+              } else  {
                 setTimeout(() => {
-                  this.addDeployment(callback);
-                }, 2000));
+                  this.increment(
+                    setTimeout(() => {
+                      this.addApplication(
+                        this.applicationDeployer,
+                        (addAppStatus) => {
+                          if (addAppStatus.status === 401 || addAppStatus.status === 404 ) {
+                            console.log(addAppStatus.message);
+                            this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
+                            this.isError = true;
+                          } else {
+                            this.addDeployment(callback);
+                          }
+                        }
+                      );
+                    }, 2000));
+                }, 2000);
+              }
             }
           }
         );
@@ -362,6 +421,10 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                   this.increment(setTimeout(
                     () => {
                       console.log(deployStatus);
+                      this.tsiID = deployStatus['reference'];
+
+                      this.deploymentInstance = <DeploymentInstance>deployStatus;
+                      this.getDeploymentLogsFeed(this.deploymentInstance, 3000);
                       this.getDeploymentStatusFeed(deployStatus, 3000, (result) => {
                         console.log(result);
 
@@ -415,6 +478,25 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     );
   }
 
+  public getDeploymentLogsFeed(deploymentInstance: DeploymentInstance, interval: number) {
+
+    const logsFeedSubscription = this._deploymentService.getDeploymentLogsFeed(
+      this.credentialService.getUsername(),
+      this._tokenService.getToken(),
+      deploymentInstance, interval).subscribe(
+      res => {
+        this.deploymentInstance.logs = res;
+      },
+      error => {
+        logsFeedSubscription.unsubscribe();
+      },
+      () => {
+        console.log('[DeploymentComponent] Deployment logs feed retrieved');
+      }
+    );
+    this.logsFeedSubscription = logsFeedSubscription;
+  }
+
   addCloudCredential(value: any, callback) {
     console.log('[Profile] adding ' + value.name);
     // value.fields = JSON.parse(value.fields);
@@ -449,21 +531,21 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       );
   }
 
-  removeCloudCredentials(value: any, callback) {
-    console.log('[Profile] removing cloud credentials ' + value.name);
-    this._cloudCredentialsService.delete(
-      this._tokenService.getToken(), value).subscribe(
-      res => {
-        console.log('[Profile] got response %O', res);
-        callback(res);
-      },
-      error => {
-        console.log('[Profile] error %O', error);
-        this.errorService.setCurrentError(error);
-        callback(error);
-      }
-    );
-  }
+  // removeCloudCredentials(value: any, callback) {
+  //   console.log('[Profile] removing cloud credentials ' + value.name);
+  //   this._cloudCredentialsService.delete(
+  //     this._tokenService.getToken(), value).subscribe(
+  //     res => {
+  //       console.log('[Profile] got response %O', res);
+  //       callback(res);
+  //     },
+  //     error => {
+  //       console.log('[Profile] error %O', error);
+  //       this.errorService.setCurrentError(error);
+  //       callback(error);
+  //     }
+  //   );
+  // }
 
   getAllApplication(callback) {
     this._applicationService.getAll(this.credentialService.getUsername(),
