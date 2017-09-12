@@ -8,6 +8,7 @@ import {Http} from '@angular/http';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Rx';
 import {UserService} from '../shared/service/user/user.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -16,6 +17,7 @@ import {UserService} from '../shared/service/user/user.service';
 })
 export class CreDashboardComponent implements OnInit {
 
+  @BlockUI() blockUI: NgBlockUI;
   private _galaxy_icon = 'assets/img/logo/galaxy.png';
   private _text = 'http://public.phenomenal-h2020.eu/';
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
@@ -173,6 +175,8 @@ export class CreDashboardComponent implements OnInit {
 
   remove(deployment: Deployment) {
     this.isClickedOnce = true;
+    this.blockUI.start('WARNING: Please wait and check your dashboard after the Cloud Research Environment is completely destroyed.');
+
     console.log('Remove deployment %O', deployment);
     this._deploymentService.stop(this.credentialService.getUsername(), this._tokenService.getToken(),
       deployment).subscribe(
