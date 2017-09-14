@@ -117,9 +117,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
             cluster_prefix: this.name,
-            aws_access_key_id: this.credential.access_key_id,
-            aws_secret_access_key: this.credential.secret_access_key,
-            aws_region: this.credential.default_region,
+            // aws_access_key_id: this.credential.access_key_id,
+            // aws_secret_access_key: this.credential.secret_access_key,
+            // aws_region: this.credential.default_region,
             availability_zone: this.credential.default_region + 'b',
             master_as_edge: 'true',
             master_instance_type: 't2.xlarge',
@@ -128,12 +128,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             glusternode_count: '1',
             glusternode_instance_type: 't2.xlarge',
             glusternode_extra_disk_size: '100',
-            phenomenal_pvc_size: '95Gi',
-            galaxy_admin_email: this.credential.galaxy_admin_email,
-            galaxy_admin_password: this.credential.galaxy_admin_password,
-            jupyter_password: this.credential.galaxy_admin_password,
-            dashboard_username: this.credential.galaxy_admin_email,
-            dashboard_password: this.credential.galaxy_admin_password
+            phenomenal_pvc_size: '95Gi'
+            // galaxy_admin_email: this.credential.galaxy_admin_email,
+            // galaxy_admin_password: this.credential.galaxy_admin_password,
+            // jupyter_password: this.credential.galaxy_admin_password,
+            // dashboard_username: this.credential.galaxy_admin_email,
+            // dashboard_password: this.credential.galaxy_admin_password
           };
           this.applicationDeployer.assignedParameters = {};
           this.applicationDeployer.configurations = [];
@@ -142,9 +142,14 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             accountUsername: this.username,
             cloudProvider: 'AWS',
             fields: [
-              {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
-              {'key': 'AWS_SECRET_ACCESS_KEY', 'value': this.credential.secret_access_key},
-              {'key': 'AWS_DEFAULT_REGION', 'value': this.credential.default_region}
+              {'key': 'TF_VAR_aws_access_key_id', 'value': this.credential.access_key_id},
+              {'key': 'TF_VAR_aws_secret_access_key', 'value': this.credential.secret_access_key},
+              {'key': 'TF_VAR_aws_region', 'value': this.credential.default_region},
+              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ],
             sharedWithAccountEmails: [],
             sharedWithTeamNames: []
@@ -153,9 +158,14 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             'name': this.name + '-' + this.credential.provider,
             'cloudProvider': this.credential.provider,
             'fields': [
-              {'key': 'AWS_ACCESS_KEY_ID', 'value': this.credential.access_key_id},
-              {'key': 'AWS_SECRET_ACCESS_KEY', 'value': this.credential.secret_access_key},
-              {'key': 'AWS_DEFAULT_REGION', 'value': this.credential.default_region}
+              {'key': 'TF_VAR_aws_access_key_id', 'value': this.credential.access_key_id},
+              {'key': 'TF_VAR_aws_secret_access_key', 'value': this.credential.secret_access_key},
+              {'key': 'TF_VAR_aws_region', 'value': this.credential.default_region},
+              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ]
           };
         } else if (this.credential.provider === 'GCP') {
@@ -176,12 +186,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             glusternode_count: '1',
             glusternode_flavor: 'n1-standard-2',
             glusternode_extra_disk_size: '100',
-            phenomenal_pvc_size: '95Gi',
-            galaxy_admin_email: this.credential.galaxy_admin_email,
-            galaxy_admin_password: this.credential.galaxy_admin_password,
-            jupyter_password: this.credential.galaxy_admin_password,
-            dashboard_username: this.credential.galaxy_admin_email,
-            dashboard_password: this.credential.galaxy_admin_password
+            phenomenal_pvc_size: '95Gi'
+            // galaxy_admin_email: this.credential.galaxy_admin_email,
+            // galaxy_admin_password: this.credential.galaxy_admin_password,
+            // jupyter_password: this.credential.galaxy_admin_password,
+            // dashboard_username: this.credential.galaxy_admin_email,
+            // dashboard_password: this.credential.galaxy_admin_password
           };
           this.applicationDeployer.assignedParameters = {};
           this.applicationDeployer.configurations = [];
@@ -192,7 +202,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             fields: [
               {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
               {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
-              {'key': 'GCE_ZONE', 'value': this.credential.default_region}
+              {'key': 'GCE_ZONE', 'value': this.credential.default_region},
+              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ],
             sharedWithAccountEmails: [],
             sharedWithTeamNames: []
@@ -203,7 +218,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             'fields': [
               {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
               {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
-              {'key': 'GCE_ZONE', 'value': this.credential.default_region}
+              {'key': 'GCE_ZONE', 'value': this.credential.default_region},
+              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ]
           };
         } else {
@@ -224,12 +244,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             glusternode_count: '1',
             glusternode_flavor: this.credential.flavor,
             glusternode_extra_disk_size: '100',
-            phenomenal_pvc_size: '95Gi',
-            galaxy_admin_email: this.credential.galaxy_admin_email,
-            galaxy_admin_password: this.credential.galaxy_admin_password,
-            jupyter_password: this.credential.galaxy_admin_password,
-            dashboard_username: this.credential.galaxy_admin_email,
-            dashboard_password: this.credential.galaxy_admin_password
+            phenomenal_pvc_size: '95Gi'
+            // galaxy_admin_email: this.credential.galaxy_admin_email,
+            // galaxy_admin_password: this.credential.galaxy_admin_password,
+            // jupyter_password: this.credential.galaxy_admin_password,
+            // dashboard_username: this.credential.galaxy_admin_email,
+            // dashboard_password: this.credential.galaxy_admin_password
           };
           this.applicationDeployer.assignedParameters = {};
           this.applicationDeployer.configurations = [];
@@ -242,7 +262,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
               {'key': 'OS_AUTH_URL', 'value': this.credential.url},
               {'key': 'OS_PASSWORD', 'value': this.credential.password},
-              {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
+              {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name},
+              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ],
             sharedWithAccountEmails: [],
             sharedWithTeamNames: []
@@ -255,7 +280,12 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'OS_TENANT_NAME', 'value': this.credential.tenant_name},
               {'key': 'OS_AUTH_URL', 'value': this.credential.url},
               {'key': 'OS_PASSWORD', 'value': this.credential.password},
-              {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name}
+              {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name},
+              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
+              {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
+              {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ]
           };
         }
