@@ -37,10 +37,10 @@ import { Subscription } from 'rxjs/Subscription';
   <div *ngIf="isError">
     <a type="button" class="btn btn-primary" href="/cloud-research-environment">Cancel</a>
   </div>
-  <div (click)="toggleAdvancedButton()">
+  <div *ngIf="tsiID !== ''" (click)="toggleAdvancedButton()">
     <i *ngIf='!isAdvanced' class="fa fa-chevron-down" aria-hidden="true"></i>
     <i *ngIf='isAdvanced' class="fa fa-chevron-up" aria-hidden="true"></i>
-    <a style="font-weight: bold">Advanced Option</a>
+    <a style="font-weight: bold">Advanced Deployment Log</a>
   </div>
   <div *ngIf="isAdvanced">
     <div class="container" style="text-align:left; font-size: smaller; margin-bottom: 20px; overflow: auto; height: 300px; width: 95%; color: white; background-color: black">

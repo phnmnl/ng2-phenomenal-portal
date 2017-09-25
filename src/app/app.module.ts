@@ -43,7 +43,6 @@ import {
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import {ClipboardModule} from 'ngx-clipboard';
-import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 import {RouterModule} from '@angular/router';
 import {GalaxyService} from './shared/service/galaxy/galaxy.service';
@@ -65,6 +64,7 @@ import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtHelper } from 'angular2-jwt';
 import { BlockUIModule } from 'ng-block-ui';
+import { MdButtonModule, MdCardModule, MdInputModule, MdOptionModule, MdSelectModule } from '@angular/material';
 
 export function SSOConfigService () {
   // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -120,12 +120,16 @@ export function initConfig(config: AppConfig) {
     ModalModule,
     CollapseModule.forRoot(),
     NgbModule.forRoot(),
-    MaterialModule,
     Ng2PhenomenalPortalRoutingModule,
     ReactiveFormsModule,
     RouterModule,
     BrowserAnimationsModule,
-    BlockUIModule
+    BlockUIModule,
+    MdCardModule,
+    MdOptionModule,
+    MdButtonModule,
+    MdInputModule,
+    MdSelectModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
