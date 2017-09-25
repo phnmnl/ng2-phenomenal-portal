@@ -64,7 +64,10 @@ import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtHelper } from 'angular2-jwt';
 import { BlockUIModule } from 'ng-block-ui';
-import { MdButtonModule, MdCardModule, MdInputModule, MdOptionModule, MdSelectModule } from '@angular/material';
+import {
+  MdButtonModule, MdCardModule, MdCheckboxModule, MdInputModule, MdOptionModule,
+  MdSelectModule
+} from '@angular/material';
 
 export function SSOConfigService () {
   // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -129,7 +132,8 @@ export function initConfig(config: AppConfig) {
     MdOptionModule,
     MdButtonModule,
     MdInputModule,
-    MdSelectModule
+    MdSelectModule,
+    MdCheckboxModule
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
