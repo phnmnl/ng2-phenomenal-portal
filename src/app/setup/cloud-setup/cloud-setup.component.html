@@ -2,7 +2,10 @@
   <md-card>
     <img md-card-image src="{{cloudProvider.logo}}" class="card-image">
     <md-card-content>
-      <h5 class="card-title"><strong>{{cloudProvider.title}}</strong></h5>
+      <h5 class="card-title">
+        <strong>{{cloudProvider.title}}</strong>
+        <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
+      </h5>
       <div *ngIf="cloudProvider.isSelected === 0">
         <p>{{cloudProvider.description}}</p>
         <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
@@ -16,7 +19,8 @@
           <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
         </div>
         <div *ngIf="cloudProvider.name === 'ostack'">
-          <button md-raised-button disabled color="primary">Coming Soon</button>
+          <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
+          <!--<button md-raised-button disabled color="primary">Coming Soon</button>-->
         </div>
       </div>
       <div *ngIf="cloudProvider.isSelected === 1">

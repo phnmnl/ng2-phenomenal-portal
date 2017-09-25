@@ -33,7 +33,7 @@ export class CreRegistrationFormComponent implements OnInit {
     'password': {
       'required': 'Password is required.',
       'minlength': 'Password must be at least 8 characters long.',
-      'invalidPassword': 'Your Password must only contains numbers and letters.'
+      'invalidPassword': 'Your Password must contain numbers and letters.'
     },
     'confirmPassword': {
       'required': 'Please confirm your password.',
