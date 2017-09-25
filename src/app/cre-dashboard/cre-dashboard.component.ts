@@ -175,7 +175,7 @@ export class CreDashboardComponent implements OnInit {
 
   remove(deployment: Deployment) {
     this.isClickedOnce = true;
-    this.blockUI.start('WARNING: Please wait and check your dashboard after the Cloud Research Environment is completely destroyed.');
+    this.blockUI.start('WARNING: Please wait and check your cloud provider dashboard after the Cloud Research Environment is completely destroyed.');
 
     console.log('Remove deployment %O', deployment);
     this._deploymentService.stop(this.credentialService.getUsername(), this._tokenService.getToken(),
