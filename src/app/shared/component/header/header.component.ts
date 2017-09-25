@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
 
   public isCollapsed = false;
   private _logo = 'assets/img/logo/phenomenal_4x.png';
+  private subdomain;
 
   constructor(private _eref: ElementRef,
               private _router: Router,
@@ -23,12 +24,15 @@ export class HeaderComponent implements OnInit {
               public tokenService: TokenService,
               public errorService: ErrorService
   ) {
-    if (isDevMode()) {
+
+
+    if (isDevMode() || this.subdomain === 'portaldev') {
       this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
     }
   }
 
   ngOnInit() {
+    this.getSubdomain();
   }
 
   toggleMenu() {
@@ -51,6 +55,17 @@ export class HeaderComponent implements OnInit {
     if (!this._eref.nativeElement.contains(event.target)) {
       this.closeMenu();
     }
+  }
+
+  getSubdomain() {
+    const domain = window.location.hostname;
+    if (domain.indexOf('.') < 0 ||
+      domain.split('.')[0] === 'example' || domain.split('.')[0] === 'lvh' || domain.split('.')[0] === 'www') {
+      this.subdomain = '';
+    } else {
+      this.subdomain = domain.split('.')[0];
+    }
+    console.log('subdomain', this.subdomain);
   }
 
   getAllApplication() {
