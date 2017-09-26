@@ -24,15 +24,13 @@ export class HeaderComponent implements OnInit {
               public tokenService: TokenService,
               public errorService: ErrorService
   ) {
-
-
-    if (isDevMode() || this.subdomain === 'portaldev') {
-      this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
-    }
+    this.getSubdomain();
   }
 
   ngOnInit() {
-    this.getSubdomain();
+    if (isDevMode() || this.subdomain === 'portaldev') {
+      this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
+    }
   }
 
   toggleMenu() {
