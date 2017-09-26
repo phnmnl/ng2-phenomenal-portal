@@ -42,7 +42,7 @@ export class HelpTopicComponent implements OnInit {
    */
   process(data) {
     data = data.replace(/(href=")([^http])/g, 'href="help/$2');
-    data = data.replace(/(src=")([^http])/g, 'src="http://phenomenal-h2020.eu/wiki/wiki-markdown/phenomenal-h2020.wiki/$2');
+    data = data.replace(/(src=")([^http])/g, 'src="/php-phenomenal-portal-wiki/wiki-markdown/phenomenal-h2020.wiki/$2');
     return data;
   }
 
