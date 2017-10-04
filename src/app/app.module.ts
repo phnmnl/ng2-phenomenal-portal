@@ -69,9 +69,9 @@ import {
   MdSelectModule
 } from '@angular/material';
 
-export function SSOConfigService () {
-  // return new ConfigService('https://explore.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
-  return new ConfigService('https://api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
+export function SSOConfigService (config: AppConfig) {
+
+  return new ConfigService(config.getConfig('tsi_portal_url'), 'https://api.aap.tsi.ebi.ac.uk/');
 
   // return new ConfigService('https://dev.api.portal.tsi.ebi.ac.uk/', 'https://api.aap.tsi.ebi.ac.uk/');
   // return new ConfigService('http://localhost:8080/', 'https://api.aap.tsi.ebi.ac.uk/');
@@ -137,18 +137,12 @@ export function initConfig(config: AppConfig) {
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
-    {
-      provide: ConfigService,
-      useFactory: SSOConfigService,
-      deps: []
-    },
     BreadcrumbService,
     WikiService,
     JenkinsReportService,
     ApplicationLibraryService,
     UserService,
     PhenomenalTokenService,
-
     ApplicationService,
     AuthService,
     CloudProviderParametersService,
@@ -164,7 +158,12 @@ export function initConfig(config: AppConfig) {
     { provide: APP_INITIALIZER,
       useFactory: initConfig,
       deps: [AppConfig],
-      multi: true }
+      multi: true },
+    {
+      provide: ConfigService,
+      useFactory: SSOConfigService,
+      deps: [AppConfig]
+    },
   ],
   bootstrap: [AppComponent]
 })

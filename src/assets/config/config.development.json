@@ -3,5 +3,6 @@
   "galaxy_url": "",
   "galaxy_api_key": "",
   "deployment_repo_url": "https://github.com/andersla/cloud-deploy-kubenow.git",
-  "announcement": ""
+  "announcement": "",
+  "tsi_portal_url": "https://api.portal.tsi.ebi.ac.uk/"
 }
