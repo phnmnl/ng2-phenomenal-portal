@@ -15,7 +15,8 @@ export class CloudProviderMetadataService {
     private tokenService: TokenService,
     private _configService: ConfigService
 ) {
-    this.baseUrl = 'http://localhost:8080/';
+    // this.baseUrl = 'http://localhost:8080/';
+    this.baseUrl = 'https://api.portal.tsi.ebi.ac.uk/';
     // this.baseUrl = _configService.getApiAddress();
     this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
