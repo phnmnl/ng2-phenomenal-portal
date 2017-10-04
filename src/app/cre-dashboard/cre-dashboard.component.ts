@@ -107,7 +107,7 @@ export class CreDashboardComponent implements OnInit {
             for (let i = 0; i < deployment.assignedInputs.length; i++) {
 
               if (deployment['assignedInputs'][i]['inputName'] === 'cluster_prefix') {
-                deployment['galaxyUrlName'] = 'http://galaxy-' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
+                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
               }
               if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_email') {
                 deployment['galaxyAdminEmail'] = deployment['assignedInputs'][i]['assignedValue'];
