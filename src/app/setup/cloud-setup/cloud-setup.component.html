@@ -19,8 +19,8 @@
           <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
         </div>
         <div *ngIf="cloudProvider.name === 'ostack'">
-          <!--<button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>-->
-          <button md-raised-button disabled color="primary">Coming Soon</button>
+          <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
+          <!--<button md-raised-button disabled color="primary">Coming Soon</button>-->
         </div>
       </div>
       <div *ngIf="cloudProvider.isSelected === 1">

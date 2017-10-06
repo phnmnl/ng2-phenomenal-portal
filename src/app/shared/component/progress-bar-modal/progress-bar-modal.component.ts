@@ -1,7 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationDeployer } from 'ng2-cloud-portal-presentation-lib';
-import {DeploymentService, Deployment, CloudProviderParameters, AccountService} from 'ng2-cloud-portal-service-lib';
+import {
+  DeploymentService, Deployment, CloudProviderParameters, AccountService,
+  ConfigurationService, ConfigurationDeploymentParameters, Configuration
+} from 'ng2-cloud-portal-service-lib';
 import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
@@ -92,6 +95,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               public credentialService: CredentialService,
               public errorService: ErrorService,
               public _accountService: AccountService,
+              public configurationService: ConfigurationService,
               private config: AppConfig
   ) {
     this.repoUrl = config.getConfig('deployment_repo_url');
@@ -152,8 +156,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ],
             sharedWithAccountEmails: [],
-            sharedWithTeamNames: []
-          }
+            sharedWithTeamNames: [],
+            reference: ''
+          };
           value = {
             'name': this.name + '-' + this.credential.provider,
             'cloudProvider': this.credential.provider,
@@ -210,8 +215,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ],
             sharedWithAccountEmails: [],
-            sharedWithTeamNames: []
-          }
+            sharedWithTeamNames: [],
+            reference: ''
+          };
           value = {
             'name': this.name + '-' + this.credential.provider,
             'cloudProvider': this.credential.provider,
@@ -270,8 +276,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
             ],
             sharedWithAccountEmails: [],
-            sharedWithTeamNames: []
-          }
+            sharedWithTeamNames: [],
+            reference: ''
+          };
           value = {
             'name': this.name + '-' + this.credential.provider,
             'cloudProvider': this.credential.provider,
@@ -302,20 +309,22 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                   }
                 }
                 if (isExist) {
-                  this.addApp(callback);
+                  this.addApp();
                 } else {
 
-                  this.addCloudCredential(value,
-                    (status) => {
-                      if (status.status === 401 ) {
-                        console.log(status.message);
-                        this.status[this.progress / 10 ] = 'ERROR: ' + status.message;
+                  this._cloudCredentialsService.add(this._tokenService.getToken(), value)
+                    .subscribe(
+                      cloudCredentials  => {
+                        console.log('[Profile] got response %O', cloudCredentials);
+                        this.addDeploymentParameter(cloudCredentials, 0);
+                      },
+                      error => {
+                        console.log('[Profile] error %O', error);
+                        this.errorService.setCurrentError(error);
+                        this.status[this.progress / 10 ] = 'ERROR: ' + error.message;
                         this.isError = true;
-                      } else {
-                        this.addApp(callback);
                       }
-                    }
-                  );
+                    );
                 }
 
               });
@@ -345,7 +354,46 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     this.isAdvanced = !this.isAdvanced;
   }
 
-  addApp(callback) {
+  addDeploymentParameter(cloudProviderParameters: CloudProviderParameters, cdpId: number) {
+    this.configurationService.addDeploymentParameters(this._tokenService.getToken(),
+      <ConfigurationDeploymentParameters>{
+        name: this.selectedCloudProvider.name,
+        accountUsername: this.username,
+        fields: [],
+        sharedWithTeamNames: []
+      }).subscribe(
+      (deploymentParameters) => {
+        this.addConfiguration(deploymentParameters, cloudProviderParameters, cdpId);
+      }, (error) => {
+
+      }
+    );
+  }
+
+  addConfiguration(deploymentParameters: ConfigurationDeploymentParameters,
+                   cloudProviderParameters: CloudProviderParameters, cdpId: number) {
+    this.configurationService.add(this._tokenService.getToken(),
+      <Configuration>{
+        name: this.selectedCloudProvider.name,
+        accountUsername: this.username,
+        cloudProviderParametersName: cloudProviderParameters.name,
+        sshKey: 'thisisnotused',
+        deploymentParametersName: deploymentParameters.name,
+        sharedWithTeamNames: [],
+        obsolete: false,
+        cloudProviderParametersReference: cloudProviderParameters.reference,
+        cdpId: cdpId
+      }).subscribe(
+      (data) => {
+        this.applicationDeployer.configurations = [data];
+        this.addApp();
+      }, (error) => {
+
+      }
+    );
+  }
+
+  addApp() {
     setTimeout(() => {
       this.increment(setTimeout(() => {
         this.getAllApplication(
@@ -384,7 +432,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                                 this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
                                 this.isError = true;
                               } else {
-                                this.addDeployment(callback);
+                                this.addDeployment();
                               }
                             }
                           );
@@ -396,7 +444,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                   setTimeout(() => {
                     this.increment(
                       setTimeout(() => {
-                              this.addDeployment(callback);
+                              this.addDeployment();
                       }, 2000));
                   }, 2000);
                 }
@@ -418,7 +466,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                             this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
                             this.isError = true;
                           } else {
-                            this.addDeployment(callback);
+                            this.addDeployment();
                           }
                         }
                       );
@@ -432,7 +480,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  addDeployment(callback) {
+  addDeployment() {
     setTimeout(() => {
       this.increment(
         this.increment(setTimeout( () => {
@@ -527,23 +575,23 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     this.logsFeedSubscription = logsFeedSubscription;
   }
 
-  addCloudCredential(value: any, callback) {
-    console.log('[Profile] adding ' + value.name);
-    // value.fields = JSON.parse(value.fields);
-
-    this._cloudCredentialsService.add(this._tokenService.getToken(), value)
-      .subscribe(
-        cloudCredentials  => {
-          console.log('[Profile] got response %O', cloudCredentials);
-          callback(cloudCredentials);
-        },
-        error => {
-          console.log('[Profile] error %O', error);
-          this.errorService.setCurrentError(error);
-          callback(error);
-        }
-      );
-  }
+  // addCloudCredential(value: any, callback) {
+  //   console.log('[Profile] adding ' + value.name);
+  //   // value.fields = JSON.parse(value.fields);
+  //
+  //   this._cloudCredentialsService.add(this._tokenService.getToken(), value)
+  //     .subscribe(
+  //       cloudCredentials  => {
+  //         console.log('[Profile] got response %O', cloudCredentials);
+  //         callback(cloudCredentials);
+  //       },
+  //       error => {
+  //         console.log('[Profile] error %O', error);
+  //         this.errorService.setCurrentError(error);
+  //         callback(error);
+  //       }
+  //     );
+  // }
 
   getAllCloudCredential(callback) {
     this._cloudCredentialsService.getAll(this.credentialService.getUsername(),
@@ -625,7 +673,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       applicationDeployer.attachedVolumes,
       applicationDeployer.assignedInputs,
       applicationDeployer.assignedParameters,
-      applicationDeployer.configurations
+      applicationDeployer.configurations[0]
     ).subscribe(
       deployment  => {
         console.log('[RepositoryComponent] deployed %O', deployment);

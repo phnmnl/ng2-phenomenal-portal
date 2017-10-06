@@ -32,7 +32,8 @@ import {
   ConfigService,
   DeploymentService,
   ErrorService,
-  TokenService, AccountService} from 'ng2-cloud-portal-service-lib';
+  TokenService, AccountService, ConfigurationService
+} from 'ng2-cloud-portal-service-lib';
 import {SetupCloudEnvironmentComponent} from './setup/setup-cloud-environment.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent, NgbdModalContentComponent} from './shared/component/modal/modal.component';
@@ -154,6 +155,7 @@ export function initConfig(config: AppConfig) {
     AccountService,
     CloudProviderMetadataService,
     JwtHelper,
+    ConfigurationService,
     AppConfig,
     { provide: APP_INITIALIZER,
       useFactory: initConfig,

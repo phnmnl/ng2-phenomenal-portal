@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import { ConfigService, TokenService } from 'ng2-cloud-portal-service-lib';
+import { AppConfig } from '../../../app.config';
 
 @Injectable()
 export class CloudProviderMetadataService {
@@ -13,11 +14,9 @@ export class CloudProviderMetadataService {
   constructor(
     private http: Http,
     private tokenService: TokenService,
-    private _configService: ConfigService
+    private config: AppConfig
 ) {
-    // this.baseUrl = 'http://localhost:8080/';
-    this.baseUrl = 'https://api.portal.tsi.ebi.ac.uk/';
-    // this.baseUrl = _configService.getApiAddress();
+    this.baseUrl = config.getConfig('tsi_portal_url');
     this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }

@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private _applicationService: ApplicationService,
-    private _authService: AuthService,
+    private authService: AuthService,
     public credentialService: CredentialService,
     public tokenService: TokenService,
     public phTokenService: PhenomenalTokenService,
@@ -42,17 +42,30 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     // We cache the function "listenGlobal" returns, as it's one that allows to cleanly unregister the event listener
-    this.removeMessageListener = this.renderer.listenGlobal('window', 'message', (event: MessageEvent) => {
-      if (this._authService.canAcceptMessage(event)) {
-        this.saveToken(event.data, () => {
-        });
-        event.source.close();
+    // this.removeMessageListener = this.renderer.listenGlobal('window', 'message', (event: MessageEvent) => {
+    //   if (this._authService.canAcceptMessage(event)) {
+    //     this.saveToken(event.data, () => {
+    //     });
+    //     event.source.close();
+    //   }
+    // });
+
+    this.removeMessageListener = renderer.listenGlobal('window', 'message', (event: MessageEvent) => {
+      if (!this.authService.canAcceptMessage(event)) {
+        console.log('received unacceptable message! Ignoring...', event);
+        return;
+      }
+      this.authService.processToken(event.data);
+      event.source.close();
+      if (tokenService.getToken()) {
+        // this.router.navigateByUrl('/');
+        this.getAllApplication();
       }
     });
 
-    if (this.tokenService.getToken()) {
-      this.getAllApplication();
-    }
+    // if (this.tokenService.getToken()) {
+    //   this.getAllApplication();
+    // }
 
   }
 
@@ -81,7 +94,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     const theToken: JwtToken = <JwtToken>{ token: jwt };
     this.tokenService.setToken(theToken);
     const tokenClaims = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(jwt.split('.')[1]));
-    this.credentialService.setCredentials(tokenClaims.sub, null, tokenClaims.name);
+    // this.credentialService.setCredentials(tokenClaims.sub, null, tokenClaims.name);
+    // this.credentialService.setCredentials();
+
   }
 
 
@@ -90,7 +105,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ssoLink() {
-    return this._authService.ssoLink();
+    return this.authService.ssoLink();
   }
 
   getAllApplication() {
