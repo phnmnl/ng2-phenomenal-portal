@@ -132,9 +132,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             glusternode_count: '1',
             glusternode_instance_type: 't2.xlarge',
             glusternode_extra_disk_size: '100',
-            phenomenal_pvc_size: '95Gi'
-            // galaxy_admin_email: this.credential.galaxy_admin_email,
-            // galaxy_admin_password: this.credential.galaxy_admin_password,
+            phenomenal_pvc_size: '95Gi',
+            galaxy_admin_email: this.credential.galaxy_admin_email,
+            galaxy_admin_password: this.credential.galaxy_admin_password
             // jupyter_password: this.credential.galaxy_admin_password,
             // dashboard_username: this.credential.galaxy_admin_email,
             // dashboard_password: this.credential.galaxy_admin_password
@@ -149,8 +149,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'TF_VAR_aws_access_key_id', 'value': this.credential.access_key_id},
               {'key': 'TF_VAR_aws_secret_access_key', 'value': this.credential.secret_access_key},
               {'key': 'TF_VAR_aws_region', 'value': this.credential.default_region},
-              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
-              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              // {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              // {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
@@ -166,8 +166,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'TF_VAR_aws_access_key_id', 'value': this.credential.access_key_id},
               {'key': 'TF_VAR_aws_secret_access_key', 'value': this.credential.secret_access_key},
               {'key': 'TF_VAR_aws_region', 'value': this.credential.default_region},
-              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
-              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              // {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              // {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
@@ -191,9 +191,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             glusternode_count: '1',
             glusternode_flavor: 'n1-standard-2',
             glusternode_extra_disk_size: '100',
-            phenomenal_pvc_size: '95Gi'
-            // galaxy_admin_email: this.credential.galaxy_admin_email,
-            // galaxy_admin_password: this.credential.galaxy_admin_password,
+            phenomenal_pvc_size: '95Gi',
+            galaxy_admin_email: this.credential.galaxy_admin_email,
+            galaxy_admin_password: this.credential.galaxy_admin_password
             // jupyter_password: this.credential.galaxy_admin_password,
             // dashboard_username: this.credential.galaxy_admin_email,
             // dashboard_password: this.credential.galaxy_admin_password
@@ -208,8 +208,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
               {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
               {'key': 'GCE_ZONE', 'value': this.credential.default_region},
-              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
-              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              // {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              // {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
@@ -225,8 +225,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'GOOGLE_CREDENTIALS', 'value': this.credential.access_key_id.replace(/\\n/g, '\\n')},
               {'key': 'GCE_PROJECT', 'value': this.credential.tenant_name},
               {'key': 'GCE_ZONE', 'value': this.credential.default_region},
-              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
-              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              // {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              // {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
@@ -250,9 +250,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             glusternode_count: '1',
             glusternode_flavor: this.credential.flavor,
             glusternode_extra_disk_size: '100',
-            phenomenal_pvc_size: '95Gi'
-            // galaxy_admin_email: this.credential.galaxy_admin_email,
-            // galaxy_admin_password: this.credential.galaxy_admin_password,
+            phenomenal_pvc_size: '95Gi',
+            galaxy_admin_email: this.credential.galaxy_admin_email,
+            galaxy_admin_password: this.credential.galaxy_admin_password
             // jupyter_password: this.credential.galaxy_admin_password,
             // dashboard_username: this.credential.galaxy_admin_email,
             // dashboard_password: this.credential.galaxy_admin_password
@@ -269,8 +269,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'OS_AUTH_URL', 'value': this.credential.url},
               {'key': 'OS_PASSWORD', 'value': this.credential.password},
               {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name},
-              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
-              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              // {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              // {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}
@@ -288,8 +288,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               {'key': 'OS_AUTH_URL', 'value': this.credential.url},
               {'key': 'OS_PASSWORD', 'value': this.credential.password},
               {'key': 'OS_PROJECT_NAME', 'value': this.credential.tenant_name},
-              {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
-              {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
+              // {'key': 'TF_VAR_galaxy_admin_email', 'value': this.credential.galaxy_admin_email},
+              // {'key': 'TF_VAR_galaxy_admin_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_jupyter_password', 'value': this.credential.galaxy_admin_password},
               {'key': 'TF_VAR_dashboard_username', 'value': this.credential.galaxy_admin_email},
               {'key': 'TF_VAR_dashboard_password', 'value': this.credential.galaxy_admin_password}

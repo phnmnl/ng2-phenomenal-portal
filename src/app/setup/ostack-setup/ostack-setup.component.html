@@ -6,7 +6,7 @@
     <input matInput placeholder="Password" type="password" formControlName="password" required>
   </mat-input-container>
   <!--<mat-input-container class="input-width">-->
-    <!--<input matInput placeholder="Confirm Password" type="password" formControlName="confirmPassword" required>-->
+  <!--<input matInput placeholder="Confirm Password" type="password" formControlName="confirmPassword" required>-->
   <!--</mat-input-container>-->
   <mat-input-container class="input-width">
     <input matInput placeholder="Project Name" formControlName="tenantName" required>
@@ -20,21 +20,24 @@
 
   <div *ngIf="isVerify">
     <mat-form-field class="input-width">
-      <mat-select formControlName="flavor" placeholder="Select flavours" style="display: inline-block; text-align: left;" required>
+      <mat-select formControlName="flavor" placeholder="Select flavours"
+                  style="display: inline-block; text-align: left;" required>
         <mat-option *ngFor="let flavor of flavors" [value]="flavor.name">
           {{flavor.name}} ({{flavor.vcpus}}CPU, {{flavor.ram/1024}}GB RAM, {{flavor.disk}}GB Disk)
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="input-width">
-      <mat-select formControlName="network" placeholder="Select network" style="display: inline-block; text-align: left;" required>
+      <mat-select formControlName="network" placeholder="Select network"
+                  style="display: inline-block; text-align: left;" required>
         <mat-option *ngFor="let network of networks" [value]="network['id']">
           {{network.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="input-width">
-      <mat-select formControlName="ipPool" placeholder="Select IP pool name" style="display: inline-block; text-align: left;" required>
+      <mat-select formControlName="ipPool" placeholder="Select IP pool name"
+                  style="display: inline-block; text-align: left;" required>
         <mat-option *ngFor="let ipPool of ipPools" [value]="ipPool">
           {{ipPool}}
         </mat-option>
@@ -42,16 +45,19 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="formErrors.username || formErrors.password ||  formErrors.tenantName || formErrors.authURL" class="alert alert-warning">
-    {{ formErrors.username + ' ' + formErrors.password + ' '  + formErrors.tenantName + ' ' + formErrors.authURL}}
+  <div *ngIf="formErrors.username || formErrors.password ||  formErrors.tenantName || formErrors.authURL"
+       class="alert alert-warning">
+    {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
   </div>
   <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
   <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
   <div *ngIf="!isVerify" style="display: inline-block">
-    <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary" style="width: 88px; height: 36px; margin: 0">
+    <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
+            style="width: 88px; height: 36px; margin: 0">
       Verify
     </button>
-    <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary" style="width: 88px; height: 36px; margin: 0">
+    <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
+            style="width: 88px; height: 36px; margin: 0">
       Waiting
     </button>
   </div>

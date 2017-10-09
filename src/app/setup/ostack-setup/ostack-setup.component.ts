@@ -1,8 +1,7 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {CloudProvider} from '../cloud-provider';
-import {FormBuilder, FormControl, Validators, FormGroup} from '@angular/forms';
-import { matchingPasswords } from '../validator';
-import {CloudProviderMetadataService} from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CloudProvider } from '../cloud-provider';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
 @Component({
   selector: 'ph-ostack-setup',
@@ -64,8 +63,7 @@ export class OstackSetupComponent implements OnInit {
   };
 
   constructor(private fb: FormBuilder,
-    private cpm: CloudProviderMetadataService
-  ) {
+              private cpm: CloudProviderMetadataService) {
 
 
   }
@@ -99,7 +97,9 @@ export class OstackSetupComponent implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     const form = this.form;
 
     for (const field of Object.keys(this.formErrors)) {
@@ -139,7 +139,7 @@ export class OstackSetupComponent implements OnInit {
 
     // console.log(this.cloudProvider);
     this.cloudProviderChange.emit(this.cloudProvider);
- }
+  }
 
   getFlavors() {
     this.cpm.getFlavors(
@@ -151,13 +151,13 @@ export class OstackSetupComponent implements OnInit {
       this.isUserDomainName ? '3' : '2'
     ).subscribe(
       (data) => {
-          this.flavors = data;
-          this.isVerify = true;
-          this.isWaiting = false;
+        this.flavors = data;
+        this.isVerify = true;
+        this.isWaiting = false;
       },
       (error) => {
-          console.log(error);
-          this.isWaiting = false;
+        console.log(error);
+        this.isWaiting = false;
       }
     );
   }
