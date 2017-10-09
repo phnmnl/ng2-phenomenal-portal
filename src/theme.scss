@@ -2,9 +2,9 @@
 
 @include mat-core();
 
-$primary: mat-palette($md-phenomenal-primary, 500);
-$accent:  mat-palette($md-phenomenal-secondary, 500, A100, A400);
-$warn:    mat-palette($md-phenomenal-complementary, 500);
+$primary: mat-palette($mat-phenomenal-primary, 500);
+$accent:  mat-palette($mat-phenomenal-secondary, 500, A100, A400);
+$warn:    mat-palette($mat-phenomenal-complementary, 500);
 $theme: mat-light-theme($primary, $accent, $warn);
 
 @include angular-material-theme($theme);

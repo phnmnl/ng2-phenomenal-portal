@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private _eref: ElementRef,
               private _router: Router,
-              private cloudCredentialsService: CloudProviderParametersService,
+              // private cloudCredentialsService: CloudProviderParametersService,
               private _applicationService: ApplicationService,
               public credentialService: CredentialService,
               public tokenService: TokenService,
@@ -63,23 +63,23 @@ export class HeaderComponent implements OnInit {
     } else {
       this.subdomain = domain.split('.')[0];
     }
-    console.log('subdomain', this.subdomain);
+    // console.log('subdomain', this.subdomain);
   }
 
-  getAllApplication() {
-    this._applicationService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      deployment  => {
-        // console.log('[RepositoryComponent] getAll %O', deployment);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        this.errorService.setCurrentError(error);
-        this.tokenService.clearToken();
-        this.credentialService.clearCredentials();
-      }
-    );
-  }
+  // getAllApplication() {
+  //   this._applicationService.getAll(
+  //     this.credentialService.getUsername(),
+  //     this.tokenService.getToken()
+  //   ).subscribe(
+  //     deployment  => {
+  //       // console.log('[RepositoryComponent] getAll %O', deployment);
+  //     },
+  //     error => {
+  //       console.log('[RepositoryComponent] getAll error %O', error);
+  //       this.errorService.setCurrentError(error);
+  //       this.tokenService.clearToken();
+  //       this.credentialService.clearCredentials();
+  //     }
+  //   );
+  // }
 }

@@ -2,28 +2,28 @@
   <p>Please register your Galaxy Administrator account</p>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <md-input-container class="input-width">
-      <input mdInput placeholder="Galaxy Email" formControlName="email" required>
-    </md-input-container>
-    <md-input-container class="input-width">
-      <input mdInput placeholder="Galaxy Password" type="password" formControlName="password" required>
-    </md-input-container>
-    <md-input-container class="input-width">
-      <input mdInput placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
-    </md-input-container>
+    <mat-input-container class="input-width">
+      <input matInput placeholder="Galaxy Email" formControlName="email" required>
+    </mat-input-container>
+    <mat-input-container class="input-width">
+      <input matInput placeholder="Galaxy Password" type="password" formControlName="password" required>
+    </mat-input-container>
+    <mat-input-container class="input-width">
+      <input matInput placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
+    </mat-input-container>
     <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword || _isFailed" class="alert alert-warning">
     {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
   </div>
     <div>
-      <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-      <button md-raised-button  *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">Register</button>
-      <button md-raised-button  *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">Next</button>
+      <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+      <button mat-raised-button  *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">Register</button>
+      <button mat-raised-button  *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">Next</button>
     </div>
   </form>
 </div>
 <div *ngIf="_isSuccess && cloudProvider.name === 'phenomenal'">
   <p>Congratulations! Please login with your PhenoMeNal Galaxy account.</p>
-  <a href="{{this.galaxyService.galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
+  <a href="{{this.galaxyService.galaxy_instance_url}}" target="_blank"><button mat-raised-button color="warn">Login</button></a>
 </div>
 <div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal'">
   <p>Please review your input data before deployment.</p>

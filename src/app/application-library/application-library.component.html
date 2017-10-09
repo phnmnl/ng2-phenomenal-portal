@@ -52,18 +52,18 @@
           <div class="col-xl-6">
             <div class="btn-group pull-right view">
               <div *ngIf="isList">
-                <button md-raised-button (click)="triigerList()" color='primary'>
+                <button mat-raised-button (click)="triigerList()" color='primary'>
                   <span class="fa fa-th"></span> Grid
                 </button>
-                <button md-raised-button disabled (click)="triigerList()" color='primary'>
+                <button mat-raised-button disabled (click)="triigerList()" color='primary'>
                   <span class="fa fa-list"></span> List
                 </button>
               </div>
               <div *ngIf="!isList">
-                <button md-raised-button disabled (click)="triigerList()" color='primary'>
+                <button mat-raised-button disabled (click)="triigerList()" color='primary'>
                   <span class="fa fa-th"></span> Grid
                 </button>
-                <button md-raised-button (click)="triigerList()" color='primary'>
+                <button mat-raised-button (click)="triigerList()" color='primary'>
                   <span class="fa fa-list"></span> List
                 </button>
               </div>

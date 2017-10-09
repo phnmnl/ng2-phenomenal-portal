@@ -1,8 +1,7 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {CloudProvider} from '../cloud-provider';
-import {FormBuilder, FormControl, Validators, FormGroup} from '@angular/forms';
-import { matchingPasswords } from '../validator';
-import {CloudProviderMetadataService} from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CloudProvider } from '../cloud-provider';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
 @Component({
   selector: 'ph-ostack-setup',
@@ -23,7 +22,7 @@ export class OstackSetupComponent implements OnInit {
   formErrors = {
     'username': '',
     'password': '',
-    'confirmPassword': '',
+    // 'confirmPassword': '',
     'tenantName': '',
     'authURL': '',
     'flavor': '',
@@ -39,10 +38,10 @@ export class OstackSetupComponent implements OnInit {
     'password': {
       'required': 'Password is required.'
     },
-    'confirmPassword': {
-      'required': 'Please confirm your password.',
-      'mismatchedPasswords': 'The password you entered does not match.'
-    },
+    // 'confirmPassword': {
+    //   'required': 'Please confirm your password.',
+    //   'mismatchedPasswords': 'The password you entered does not match.'
+    // },
     'tenantName': {
       'required': 'Tenant Name is required.'
     },
@@ -64,8 +63,7 @@ export class OstackSetupComponent implements OnInit {
   };
 
   constructor(private fb: FormBuilder,
-    private cpm: CloudProviderMetadataService
-  ) {
+              private cpm: CloudProviderMetadataService) {
 
 
   }
@@ -79,14 +77,14 @@ export class OstackSetupComponent implements OnInit {
     this.form = this.fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required],
-      'confirmPassword': ['', [Validators.required]],
+      // 'confirmPassword': ['', [Validators.required]],
       'tenantName': ['', [Validators.required]],
       'authURL': ['', [Validators.required]],
       'flavor': ['', [Validators.required]],
       'network': ['', [Validators.required]],
       'ipPool': ['', [Validators.required]],
       'userDomainName': ['', [Validators.required]]
-    }, {validator: matchingPasswords('password', 'confirmPassword')});
+    });
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
 
@@ -99,7 +97,9 @@ export class OstackSetupComponent implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     const form = this.form;
 
     for (const field of Object.keys(this.formErrors)) {
@@ -115,10 +115,10 @@ export class OstackSetupComponent implements OnInit {
       }
     }
 
-    if (form.getError('mismatchedPasswords')) {
-      const messages = this.validationMessages['confirmPassword'];
-      this.formErrors['confirmPassword'] += messages['mismatchedPasswords'] + ' ';
-    }
+    // if (form.getError('mismatchedPasswords')) {
+    //   const messages = this.validationMessages['confirmPassword'];
+    //   this.formErrors['confirmPassword'] += messages['mismatchedPasswords'] + ' ';
+    // }
 
     if (this.form.value['authURL'].substring(this.form.value['authURL'].length - 2, this.form.value['authURL'].length).toLocaleLowerCase() === 'v3') {
       this.isUserDomainName = true;
@@ -137,9 +137,9 @@ export class OstackSetupComponent implements OnInit {
     this.cloudProvider.credential.network = this.form.value['network'];
     this.cloudProvider.credential.ip_pool = this.form.value['ipPool'];
 
-    console.log(this.cloudProvider);
+    // console.log(this.cloudProvider);
     this.cloudProviderChange.emit(this.cloudProvider);
- }
+  }
 
   getFlavors() {
     this.cpm.getFlavors(
@@ -151,13 +151,13 @@ export class OstackSetupComponent implements OnInit {
       this.isUserDomainName ? '3' : '2'
     ).subscribe(
       (data) => {
-          this.flavors = data;
-          this.isVerify = true;
-          this.isWaiting = false;
+        this.flavors = data;
+        this.isVerify = true;
+        this.isWaiting = false;
       },
       (error) => {
-          console.log(error);
-          this.isWaiting = false;
+        console.log(error);
+        this.isWaiting = false;
       }
     );
   }

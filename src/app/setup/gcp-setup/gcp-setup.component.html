@@ -1,21 +1,21 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <br>
-  <md-select placeholder="Select Region" style="display: inline-block; text-align: left;" class="input-width" formControlName="region" required>
-    <md-option *ngFor="let region of _gcp_region" [value]="region.value">
-      {{region.displayValue}}
-    </md-option>
-  </md-select>
-  <br>
-  <br>
-  <md-input-container class="input-width">
-    <input mdInput placeholder="Google Compute Engine Service Credential" formControlName="accessKeyId" required>
-  </md-input-container>
-  <md-input-container class="input-width">
-    <input mdInput placeholder="Project ID" formControlName="tenantName" required>
-  </md-input-container>
+  <mat-form-field class="input-width">
+    <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
+                required>
+      <mat-option *ngFor="let region of _gcp_region" [value]="region.value">
+        {{region.displayValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-input-container class="input-width">
+    <input matInput placeholder="Google Compute Engine Service Credential" formControlName="accessKeyId" required>
+  </mat-input-container>
+  <mat-input-container class="input-width">
+    <input matInput placeholder="Project ID" formControlName="tenantName" required>
+  </mat-input-container>
   <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.tenantName" class="alert alert-warning">
     {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.tenantName }}
   </div>
-  <button md-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-  <button md-raised-button [disabled]="!form.valid" color="primary">Next</button>
+  <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+  <button mat-raised-button [disabled]="!form.valid" color="primary">Next</button>
 </form>

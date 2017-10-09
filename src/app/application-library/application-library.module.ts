@@ -9,8 +9,7 @@ import {applicationLibraryRouting} from './application-library.routing';
 import {ApplicationsDatabaseService} from '../shared/service/applications-database/applications-database.service';
 import {ApplicationGridComponent} from './application-grid/application-grid.component';
 import {TreeComponent} from '../shared/component/tree/tree.component';
-import { MdButtonModule } from '@angular/material';
-
+import { MatButtonModule } from '@angular/material';
 
 /**
  * @auther Dr. Sijin He
@@ -30,7 +29,7 @@ import { MdButtonModule } from '@angular/material';
   imports: [
     CommonModule,
     RouterModule,
-    MdButtonModule,
+    MatButtonModule,
     applicationLibraryRouting
   ],
   providers: [

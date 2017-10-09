@@ -1,7 +1,7 @@
 <div [ngClass]="{'col-lg-4': cloudProvider.name !== 'phenomenal', 'col-lg-12': cloudProvider.name === 'phenomenal', 'card-size': true}">
-  <md-card>
-    <img md-card-image src="{{cloudProvider.logo}}" class="card-image">
-    <md-card-content>
+  <mat-card>
+    <img mat-card-image src="{{cloudProvider.logo}}" class="card-image">
+    <mat-card-content>
       <h5 class="card-title">
         <strong>{{cloudProvider.title}}</strong>
         <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
@@ -12,15 +12,15 @@
         <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
         <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
         <div *ngIf="cloudProvider.name === 'phenomenal'">
-          <a href="{{galaxy_instance_url}}" target="_blank"><button md-raised-button color="warn">Login</button></a>
-          <button md-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
+          <a href="{{galaxy_instance_url}}" target="_blank"><button mat-raised-button color="warn">Login</button></a>
+          <button mat-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
         </div>
         <div *ngIf="cloudProvider.name === 'aws' || cloudProvider.name === 'gcp'">
-          <button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
+          <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
         </div>
         <div *ngIf="cloudProvider.name === 'ostack'">
-          <!--<button md-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>-->
-          <button md-raised-button disabled color="primary">Coming Soon</button>
+          <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
+          <!--<button mat-raised-button disabled color="primary">Coming Soon</button>-->
         </div>
       </div>
       <div *ngIf="cloudProvider.isSelected === 1">
@@ -31,6 +31,6 @@
       <div *ngIf="cloudProvider.isSelected === 2">
         <ph-cre-registration-form [cloudProvider]="cloudProvider"></ph-cre-registration-form>
       </div>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 </div>

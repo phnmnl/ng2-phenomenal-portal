@@ -2,82 +2,99 @@
   <!--Main layout-->
   <div class="container text-xs-center">
 
-      <div *ngIf="!isDeployment">
-        <div class="loader">Loading...</div>
+    <div *ngIf="!isDeployment">
+      <div class="loader">Loading...</div>
+    </div>
+
+    <div *ngIf="isDeployment">
+      <h5>Cloud Research Environment </h5>
+      <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
+
+      <div>
+        <button mat-raised-button [routerLink]="['/cloud-research-environment/setup']" color="primary">Create it Now!
+        </button>
       </div>
 
-      <div *ngIf="isDeployment">
-        <h5>Cloud Research Environment </h5>
-        <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
+      <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
+        <mat-card class="card-property">
+          <mat-card-content>
+            <img *ngIf="deployment.cloudProviderParametersCopy.cloudProvider === 'AWS'" mat-card-image
+                 src="{{aws_logo}}" class="phenomenal-image">
+            <img *ngIf="deployment.cloudProviderParametersCopy.cloudProvider === 'GCP'" mat-card-image
+                 src="{{gce_logo}}" class="phenomenal-image">
+            <img *ngIf="deployment.cloudProviderParametersCopy.cloudProvider === 'OSTACK'" mat-card-image
+                 src="{{openstack_logo}}" class="phenomenal-image">
 
-        <div>
-          <button md-raised-button [routerLink]="['/cloud-research-environment/setup']" color="primary">Create it Now!</button>
-        </div>
+            <mat-card-title><strong>{{ deployment.applicationName }}</strong></mat-card-title>
 
-        <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
-          <md-card class="card-property">
-            <md-card-content>
-              <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'AWS'" md-card-image src="{{aws_logo}}" class="phenomenal-image">
-              <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'GCP'" md-card-image src="{{gce_logo}}" class="phenomenal-image">
-              <img *ngIf="deployment.cloudProviderParameters.cloudProvider === 'OSTACK'" md-card-image src="{{openstack_logo}}" class="phenomenal-image">
-
-              <md-card-title><strong>{{ deployment.applicationName }}</strong></md-card-title>
-
-              <div *ngIf="!deployment['isMore']">
-                <md-card-subtitle><div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">{{deployment['status']}}</div></md-card-subtitle>
-                <md-card-subtitle>ID: {{deployment.reference}}</md-card-subtitle>
-                <p>Cloud Provider: {{deployment.cloudProviderParameters.cloudProvider}}</p>
-
-                <div *ngIf="deployment['status']==='RUNNING'">
-
-                  <a *ngIf="deployment['isGalaxy']" href="{{deployment['galaxyUrlName']}}" target="_blank">
-                    <button md-raised-button color="primary">Galaxy</button>
-                  </a>
-                  <a *ngIf="!deployment['isGalaxy']">
-                    <button md-raised-button color="primary" disabled>Loading ...</button>
-                  </a>
-                  <!--<a *ngIf="deployment['isJupyter']" href="{{deployment['jupyterUrlName']}}" target="_blank">-->
-                    <!--<button md-raised-button color="primary">Jupyter</button>-->
-                  <!--</a>-->
-                  <!--<a *ngIf="!deployment['isJupyter']">-->
-                    <!--<button md-raised-button color="primary" disabled>Loading ...</button>-->
-                  <!--</a>-->
-
-                  <br>
-                  <br>
-
+            <div *ngIf="!deployment['isMore']">
+              <mat-card-subtitle>
+                <div [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">
+                  {{deployment['status']}}
                 </div>
+              </mat-card-subtitle>
+              <mat-card-subtitle>ID: {{deployment.reference}}</mat-card-subtitle>
+              <p>Cloud Provider: {{deployment.cloudProviderParametersCopy.cloudProvider}}</p>
+
+              <div *ngIf="deployment['status']==='RUNNING'">
+
+                <a *ngIf="deployment['isGalaxy']" href="{{deployment['galaxyUrlName']}}" target="_blank">
+                  <button mat-raised-button color="primary">Galaxy</button>
+                </a>
+                <a *ngIf="!deployment['isGalaxy']">
+                  <button mat-raised-button color="primary" disabled>Loading ...</button>
+                </a>
+                <!--<a *ngIf="deployment['isJupyter']" href="{{deployment['jupyterUrlName']}}" target="_blank">-->
+                <!--<button mat-raised-button color="primary">Jupyter</button>-->
+                <!--</a>-->
+                <!--<a *ngIf="!deployment['isJupyter']">-->
+                <!--<button mat-raised-button color="primary" disabled>Loading ...</button>-->
+                <!--</a>-->
+
+                <br>
+                <br>
+
+              </div>
+            </div>
+
+            <div
+              *ngIf="!deployment['isMore']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
+              <button mat-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">More
+              </button>
+            </div>
+
+
+            <div *ngIf="deployment['isMore']">
+              <p>Galaxy Admin Email: {{deployment['galaxyAdminEmail']}}</p>
+              <p>Galaxy Admin Password: <a class="btn btn-primary button-width"><i class="fa fa-clipboard" ngxClipboard
+                                                                                   [cbContent]="deployment['galaxyAdminPassword']"></i></a>
+              </p>
+              <!--<p>Jupyter Password: <a class="btn btn-primary button-width" ><i class="fa fa-clipboard"  ngxClipboard [cbContent]="deployment['jupyterPassword']"></i></a></p>-->
+
+              <div
+                *ngIf="!deployment['isDelete']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
+                <button mat-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">Back
+                </button>
+                <button mat-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="warn">
+                  Destroy
+                </button>
               </div>
 
-              <div *ngIf="!deployment['isMore']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
-                <button md-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">More</button>
+              <div *ngIf="deployment['isDelete']">
+                <p>Please confirm</p>
+                <button mat-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="accent">No
+                </button>
+                <button mat-raised-button (click)="remove(deployment)" color="warn">Yes</button>
               </div>
+            </div>
+            <block-ui>
+            </block-ui>
 
-
-              <div *ngIf="deployment['isMore']">
-                <p>Galaxy Admin Email: {{deployment['galaxyAdminEmail']}}</p>
-                <p>Galaxy Admin Password: <a class="btn btn-primary button-width" ><i class="fa fa-clipboard"  ngxClipboard [cbContent]="deployment['galaxyAdminPassword']"></i></a></p>
-                <!--<p>Jupyter Password: <a class="btn btn-primary button-width" ><i class="fa fa-clipboard"  ngxClipboard [cbContent]="deployment['jupyterPassword']"></i></a></p>-->
-
-                <div *ngIf="!deployment['isDelete']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
-                  <button md-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">Back</button>
-                  <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="warn">Destroy</button>
-                </div>
-
-                <div *ngIf="deployment['isDelete']">
-                  <p>Please confirm</p>
-                  <button md-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="accent">No</button>
-                  <button md-raised-button (click)="remove(deployment)" color="warn">Yes</button>
-                </div>
-              </div>
-              <block-ui>
-              </block-ui>
-
-            </md-card-content>
-          </md-card>
-        </div>
-
+          </mat-card-content>
+        </mat-card>
       </div>
+
+    </div>
   </div>
 
 </main>

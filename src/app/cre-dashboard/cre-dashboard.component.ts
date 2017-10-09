@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ApplicationService, DeploymentService, Deployment, DeploymentStatus} from 'ng2-cloud-portal-service-lib';
+import {
+  ApplicationService, DeploymentService, Deployment, DeploymentStatus,
+  CloudProviderParametersService, CloudProviderParameters
+} from 'ng2-cloud-portal-service-lib';
 import { CredentialService } from 'ng2-cloud-portal-service-lib';
 import { ErrorService } from 'ng2-cloud-portal-service-lib';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
@@ -49,7 +52,7 @@ export class CreDashboardComponent implements OnInit {
   constructor(
     private _applicationService: ApplicationService,
     private _deploymentService: DeploymentService,
-    private _tokenService: TokenService,
+    private tokenService: TokenService,
     public credentialService: CredentialService,
     public errorService: ErrorService,
     public userService: UserService,
@@ -68,7 +71,7 @@ export class CreDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this._tokenService.getToken()) {
+    if (this.tokenService.getToken()) {
       this.getAllApplication((result) => {
         if (result.status === 401 || result.type === 'error') {
           this.logout();
@@ -82,7 +85,7 @@ export class CreDashboardComponent implements OnInit {
   }
 
   logout() {
-    this._tokenService.clearToken();
+    this.tokenService.clearToken();
     this.credentialService.clearCredentials();
     this.router.navigateByUrl('/login');
   }
@@ -140,7 +143,7 @@ export class CreDashboardComponent implements OnInit {
   getAllDeploymentServer(callback) {
     this._deploymentService.getAll(
       this.credentialService.getUsername(),
-      this._tokenService.getToken()
+      this.tokenService.getToken()
     ).subscribe(
       deployment  => {
         console.log('[RepositoryComponent] getAll %O', deployment);
@@ -159,7 +162,7 @@ export class CreDashboardComponent implements OnInit {
 
     this._deploymentService.getDeploymentStatus(
       this.credentialService.getUsername(),
-      this._tokenService.getToken(),
+      this.tokenService.getToken(),
       deployment).subscribe(
       res => {
         console.log('[Deployments] got status response %O', res);
@@ -178,7 +181,7 @@ export class CreDashboardComponent implements OnInit {
     this.blockUI.start('WARNING: Please wait and check your cloud provider dashboard after the Cloud Research Environment is completely destroyed.');
 
     console.log('Remove deployment %O', deployment);
-    this._deploymentService.stop(this.credentialService.getUsername(), this._tokenService.getToken(),
+    this._deploymentService.stop(this.credentialService.getUsername(), this.tokenService.getToken(),
       deployment).subscribe(
       res => {
         console.log('[remove.stop] res %O', res);
@@ -187,7 +190,7 @@ export class CreDashboardComponent implements OnInit {
           this.deploymentStatus = result;
           if (result.status === 'DESTROYED') {
 
-            this._deploymentService.delete(this.credentialService.getUsername(), this._tokenService.getToken(),
+            this._deploymentService.delete(this.credentialService.getUsername(), this.tokenService.getToken(),
               deployment).subscribe(
               res1 => {
                 console.log('deleted');
@@ -215,7 +218,7 @@ export class CreDashboardComponent implements OnInit {
   getDeploymentStatusFeed(deploymentInstance: Deployment, interval: number, callback) {
     const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
       this.credentialService.getUsername(),
-      this._tokenService.getToken(),
+      this.tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
         if (res.status === 'DESTROYED') {
@@ -232,7 +235,7 @@ export class CreDashboardComponent implements OnInit {
 
   removeApplication(applicationName, callback) {
     this._applicationService.delete(this.credentialService.getUsername(),
-      this._tokenService.getToken(), applicationName).subscribe(
+      this.tokenService.getToken(), applicationName).subscribe(
       res => {
         console.log('[RepositoryComponent] got response %O', res);
         callback(res);
@@ -248,7 +251,7 @@ export class CreDashboardComponent implements OnInit {
   getAllApplication(callback) {
     this._applicationService.getAll(
       this.credentialService.getUsername(),
-      this._tokenService.getToken()
+      this.tokenService.getToken()
     ).subscribe(
       app  => {
         callback(app);
