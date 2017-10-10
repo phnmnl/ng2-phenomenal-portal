@@ -3,98 +3,95 @@
     <!--Section: Author box-->
     <section class="m-b-4">
 
-      <!--Author box-->
-      <!--<div class="author-box">-->
-
-        <div class="col-md-12">
-          <!--Name-->
-          <div hidden #app>{{ application.name}}</div>
-          <h1 class="h1-responsive text-xs-center"><strong>{{ application.name }} </strong></h1>
+      <div class="col-md-12">
+        <!--Name-->
+        <div hidden #app>{{ application.name}}</div>
+        <h1 class="h1-responsive text-xs-center"><strong>{{ application.name }} </strong></h1>
+      </div>
+      <div class="col-md-12">
+        <h3 class="h5-responsive text-xs-center"><em>{{ application.short_description }}</em></h3>
+      </div>
+      <div class="col-md-12">
+        <div *ngIf="application.authors.length > 0" class="text-xs-center small">created by
+          {{concatenate(application.authors)}}
         </div>
-        <div class="col-md-12">
-          <h3 class="h5-responsive text-xs-center"><em>{{ application.short_description }}</em></h3>
+        <div *ngIf="application.contributors.length > 0" class="text-xs-center small">containerised by
+          {{concatenate(application.contributors)}}
         </div>
-        <div class="col-md-12">
-          <div *ngIf="application.authors.length > 0" class="text-xs-center small">created by
-            {{concatenate(application.authors)}}
-          </div>
-          <div *ngIf="application.contributors.length > 0" class="text-xs-center small">containerised by
-            {{concatenate(application.contributors)}}
-          </div>
-          <!--<hr>-->
-          <br>
-          <!--Avatar-->
-          <div class="col-lg-6">
-            <img src="{{ application.logo_large }}" class="img-fluid img-rounded z-depth-2 logo">
-          </div>
-          <br>
-          <!--Author Data-->
-          <div class="col-lg-6 text-sm-center small table-flow">
-
-            <table class="table">
-              <tbody>
-              <tr *ngIf="application.website.length > 0">
-                <th scope="row">Website</th>
-                <td>
-                  <a href="{{application.website[0]}}" target="_blank">{{application.website[0]}}</a>
-                </td>
-              </tr>
-              <tr *ngIf="application.version!=''">
-                <th scope="row">Version</th>
-                <td>
-                  {{application.version}}
-                </td>
-              </tr>
-              <tr *ngIf="application.git_repo.length > 0">
-                <th scope="row">Git Repository</th>
-                <td>
-                  <a href="{{application.git_repo[0]}}" target="_blank">{{application.git_repo}}</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-
-          </div>
+        <!--<hr>-->
+        <br>
+        <!--Avatar-->
+        <div class="col-lg-6">
+          <img src="{{ application.logo_large }}" class="img-fluid img-rounded z-depth-2 logo">
         </div>
+        <br>
+        <!--Author Data-->
+        <div class="col-lg-6 text-sm-center small table-flow">
 
-        <div class="col-md-12">
-          <br>
-          <div class="row" *ngIf="application.key_features.length > 0">
-            <!--Header-->
-            <div class="col-md-2">
-              <p><strong>Features</strong></p>
-            </div>
+          <table class="table">
+            <tbody>
+            <tr *ngIf="application.website.length > 0">
+              <th scope="row">Website</th>
+              <td>
+                <a href="{{application.website[0]}}" target="_blank">{{application.website[0]}}</a>
+              </td>
+            </tr>
+            <tr *ngIf="application.version!=''">
+              <th scope="row">Version</th>
+              <td>
+                {{application.version}}
+              </td>
+            </tr>
+            <tr *ngIf="application.git_repo.length > 0">
+              <th scope="row">Git Repository</th>
+              <td>
+                <a href="{{application.git_repo[0]}}" target="_blank">{{application.git_repo}}</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
 
-            <!--Infor-->
-            <div class="col-md-10">
+        </div>
+      </div>
 
-              <ul class="list-group" *ngFor="let feature of application.key_features">
-                <li class="list-group-item">{{ feature }}</li>
-              </ul>
-            </div>
+      <div class="col-md-12">
+        <br>
+        <div class="row" *ngIf="application.key_features.length > 0">
+          <!--Header-->
+          <div class="col-md-2">
+            <p><strong>Features</strong></p>
+          </div>
+
+          <!--Infor-->
+          <div class="col-md-10">
+
+            <ul class="list-group" *ngFor="let feature of application.key_features">
+              <li class="list-group-item">{{ feature }}</li>
+            </ul>
           </div>
         </div>
+      </div>
 
 
-        <div class="col-md-12">
-          <br>
+      <div class="col-md-12">
+        <br>
 
-          <div class="row" *ngIf="application.abstract!=''">
-            <!--Header-->
-            <div class="col-md-2">
-              <p><strong>Description</strong></p>
-            </div>
+        <div class="row" *ngIf="application.abstract!=''">
+          <!--Header-->
+          <div class="col-md-2">
+            <p><strong>Description</strong></p>
+          </div>
 
-            <!--Infor-->
-            <div class="col-md-10">
+          <!--Infor-->
+          <div class="col-md-10">
 
-              <p>{{ application.abstract }}</p>
+            <p>{{ application.abstract }}</p>
 
-            </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-12">
+      <div class="col-md-12">
         <br>
 
         <div class="row" *ngIf="application.screenshots.length > 0">
@@ -111,11 +108,11 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
-        <br>
+      <br>
 
-        <div class="col-md-12">
+      <div class="col-md-12">
         <div class="row" *ngIf="application.installation!=''">
           <!--Header-->
           <div class="col-md-2">
@@ -128,9 +125,9 @@
 
         </div>
 
-        </div>
+      </div>
 
-        <div class="col-md-12">
+      <div class="col-md-12">
         <br>
 
         <div class="row" *ngIf="application.instruction!=''">
@@ -144,9 +141,9 @@
           </div>
 
         </div>
-        </div>
+      </div>
 
-        <div class="col-md-12">
+      <div class="col-md-12">
         <br>
 
 
@@ -167,12 +164,7 @@
           </div>
 
         </div>
-        </div>
-
-
-      <!--</div>-->
-      <!--&lt;!&ndash;/.Author box&ndash;&gt;-->
-
+      </div>
 
     </section>
   </div>

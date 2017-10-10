@@ -1,10 +1,8 @@
-import {Component, OnInit, ViewChild, AfterViewChecked} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-// import {Observable} from 'rxjs/Observable';
-// import {Application} from '../../shared/model/application/application';
-import {ApplicationsDatabaseService} from '../../shared/service/applications-database/applications-database.service';
-import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.service';
-import {ApplicationLibraryService} from '../../shared/service/application-library/application-library.service';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApplicationsDatabaseService } from '../../shared/service/applications-database/applications-database.service';
+import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
+import { ApplicationLibraryService } from '../../shared/service/application-library/application-library.service';
 
 @Component({
   selector: 'ph-application-detail',
@@ -16,18 +14,12 @@ import {ApplicationLibraryService} from '../../shared/service/application-librar
 export class ApplicationDetailComponent implements OnInit, AfterViewChecked {
 
   id: string;
-  // applications$: Observable<Application[]>;
   @ViewChild('app') app;
-  // public isLoading = false;
   dockerApp;
 
-  constructor(
-    // private service: ApplicationsDatabaseService,
-              private appLibraryService: ApplicationLibraryService,
+  constructor(private appLibraryService: ApplicationLibraryService,
               private activatedRoute: ActivatedRoute,
-              private breadcrumbService: BreadcrumbService,
-              // private renderer: Renderer
-  ) {
+              private breadcrumbService: BreadcrumbService,) {
     this.id = activatedRoute.snapshot.params['id'];
 
     breadcrumbService.addFriendlyNameForRoute('/app-library/' + this.id, ' '); // Initialise as empty string
@@ -35,21 +27,12 @@ export class ApplicationDetailComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-
-    // this.applications$ = this.service.applications$;
-    // this.isLoading = true;
-    //
-    // this.service.load(this.id, () => {
-    //   this.isLoading = false;
-    // });
-
     this.getApp(this.id);
-
   }
 
   ngAfterViewChecked() {
     if (this.app !== undefined) {
-      let app_name = this.app.nativeElement.innerText;
+      const app_name = this.app.nativeElement.innerText;
       this.breadcrumbService.addFriendlyNameForRoute('/app-library/' + this.id, app_name);
     }
   }

@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Application} from '../../shared/model/application/application';
+import { Component, Input, OnInit } from '@angular/core';
+import { Application } from '../../shared/model/application/application';
 
 @Component({
   selector: 'ph-application-grid',
@@ -8,7 +8,6 @@ import {Application} from '../../shared/model/application/application';
 })
 export class ApplicationGridComponent implements OnInit {
   @Input() application: Application;
-  applicationId: number;
 
   constructor() {
   }
