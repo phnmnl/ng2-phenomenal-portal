@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ph-cre-local-installation-instruction',
@@ -46,7 +46,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q1o1() {
-    // console.log('q1o1');
     this.resetAll();
 
     this.enableQ2 = true;
@@ -56,7 +55,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q1o2() {
-    // console.log('q1o2');
     this.resetAll();
 
     this.enableQ4 = true;
@@ -66,7 +64,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q2o1() {
-    // console.log('q2o1');
 
     this.resetExcludeQ1();
 
@@ -81,7 +78,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q2o2() {
-    // console.log('q2o2');
 
     this.resetExcludeQ1();
 
@@ -92,7 +88,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q3o1() {
-    // console.log('q3o1');
 
     this.resetExcludeQ2();
 
@@ -104,7 +99,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q3o2() {
-    // console.log('q3o2');
     this.resetExcludeQ2();
 
     this.disableQ3O2 = true;
@@ -116,7 +110,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q3o3() {
-    // console.log('q3o3');
 
     this.resetExcludeQ2();
 
@@ -128,7 +121,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q3o4() {
-    // console.log('q3o4');
 
     this.resetExcludeQ2();
 
@@ -140,7 +132,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q4o1() {
-    // console.log('q4o1');
 
     this.resetExcludeQ4();
 
@@ -150,7 +141,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q4o2() {
-    // console.log('q4o2');
     this.resetExcludeQ4();
 
     this.enableQ5 = true;
@@ -159,7 +149,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q4o3() {
-    // console.log('q4o3');
     this.resetExcludeQ4();
 
     this.enableQ5 = true;
@@ -168,7 +157,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q5o1() {
-    // console.log('q5o1');
 
     this.resetExcludeQ5();
 
@@ -178,7 +166,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q5o2() {
-    // console.log('q5o2');
     this.resetExcludeQ5();
 
     this.disableQ5O2 = true;
@@ -187,7 +174,6 @@ export class CRELocalInstallationInstructionComponent {
   }
 
   q5o3() {
-    // console.log('q5o3');
     this.resetExcludeQ5();
 
     this.disableQ5O3 = true;
