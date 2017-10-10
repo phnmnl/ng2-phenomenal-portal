@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {BreadcrumbService} from '../../shared/component/breadcrumb/breadcrumb.service';
-import {WikiService} from '../../shared/service/wiki/wiki.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbService } from '../../shared/component/breadcrumb/breadcrumb.service';
+import { WikiService } from '../../shared/service/wiki/wiki.service';
 
 @Component({
   selector: 'ph-help-topic',

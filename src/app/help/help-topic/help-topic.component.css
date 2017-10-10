@@ -1,21 +1,17 @@
 :host >>> pre {
   padding: 16px;
   overflow: auto;
-  /*font-size: 95%;*/
-  /*line-height: 1.45;*/
   background-color: #f7f7f7;
   border-radius: 3px;
   margin-bottom: 6px;
   word-break: normal;
   word-wrap: normal;
   margin-top: 0;
-  /*font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;*/
   box-sizing: border-box;
 }
 
 :host >>> ul {
   display: block;
-  /*list-style-type: circle;*/
   -webkit-margin-before: 1em;
   -webkit-margin-after: 1em;
   -webkit-margin-start: 0;
@@ -29,7 +25,6 @@
 :host >>> li {
   display: list-item;
   text-align: -webkit-match-parent;
-  /*list-style-position: inside;*/
   list-style-type: disc;
   margin-bottom: 5px;
 }
@@ -37,7 +32,6 @@
 :host >>> ul ul li {
   display: list-item;
   text-align: -webkit-match-parent;
-  /*list-style-position: inside;*/
   list-style-type: circle;
   margin-bottom: 5px;
 }

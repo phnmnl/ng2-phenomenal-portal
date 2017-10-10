@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Faq} from './faq';
+import { Faq } from './faq';
 
 @Component({
   selector: 'ph-faq',
@@ -10,7 +10,8 @@ export class FaqComponent implements OnInit {
 
   faqSet: Faq[];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.faqSet = [
