@@ -52,7 +52,7 @@ export class HomeComponent {
 
   constructor(// private _applicationService: ApplicationService,
     //           public credentialService: CredentialService,
-    public tokenService: TokenService,
+    public tokenService: TokenService
     // public errorService: ErrorService
   ) {
     this.addNewSlide();

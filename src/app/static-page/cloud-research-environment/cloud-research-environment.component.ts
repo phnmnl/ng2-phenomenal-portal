@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {ApplicationService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
+import { Component } from '@angular/core';
+import { TokenService } from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-cloud-research-environment',
@@ -7,6 +7,17 @@ import {ApplicationService, CredentialService, ErrorService, TokenService} from 
   styleUrls: ['./cloud-research-environment.component.css'],
 })
 export class CloudResearchEnvironmentComponent {
+  private _noLoopSlides = false;
+
+  // carousel indicator
+  private _noLoopIndicator = true;
+
+  // Photos
+  private slides: Array<any> = [];
+
+  private _img2 = 'assets/img/cloud-research-environment/img2.png';
+  private _img3 = 'assets/img/cloud-research-environment/img3.png';
+
   get img2(): string {
     return this._img2;
   }
@@ -16,7 +27,7 @@ export class CloudResearchEnvironmentComponent {
   }
 
   // The time to show the next photo
-  private _NextPhotoInterval: number = 8000;
+  private _NextPhotoInterval = 8000;
 
   // Looping or not
   get NextPhotoInterval(): number {
@@ -31,22 +42,11 @@ export class CloudResearchEnvironmentComponent {
     return this._noLoopIndicator;
   }
 
-  private _noLoopSlides: boolean = false;
 
-  // carousel indicator
-  private _noLoopIndicator: boolean = true;
-
-  // Photos
-  private slides: Array<any> = [];
-
-  private _img2 = 'assets/img/cloud-research-environment/img2.png';
-  private _img3 = 'assets/img/cloud-research-environment/img3.png';
-
-  constructor(
-    private _applicationService: ApplicationService,
-    public credentialService: CredentialService,
-    public tokenService: TokenService,
-    public errorService: ErrorService
+  constructor(// private _applicationService: ApplicationService,
+    //           public credentialService: CredentialService,
+    public tokenService: TokenService
+    // public errorService: ErrorService
   ) {
     this.addNewSlide();
   }
@@ -76,21 +76,21 @@ export class CloudResearchEnvironmentComponent {
     );
   }
 
-  getAllApplication() {
-    this._applicationService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        this.errorService.setCurrentError(error);
-        this.tokenService.clearToken();
-        this.credentialService.clearCredentials();
-      }
-    );
-  }
+  // getAllApplication() {
+  //   this._applicationService.getAll(
+  //     this.credentialService.getUsername(),
+  //     this.tokenService.getToken()
+  //   ).subscribe(
+  //     deployment => {
+  //       console.log('[RepositoryComponent] getAll %O', deployment);
+  //     },
+  //     error => {
+  //       console.log('[RepositoryComponent] getAll error %O', error);
+  //       this.errorService.setCurrentError(error);
+  //       this.tokenService.clearToken();
+  //       this.credentialService.clearCredentials();
+  //     }
+  //   );
+  // }
 
 }
