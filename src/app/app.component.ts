@@ -1,6 +1,5 @@
-import {Component, ViewContainerRef} from '@angular/core';
-import {BreadcrumbService} from './shared/component/breadcrumb/breadcrumb.service';
-import {AppConfig} from './app.config';
+import { Component, ViewContainerRef } from '@angular/core';
+import { BreadcrumbService } from './shared/component/breadcrumb/breadcrumb.service';
 
 @Component({
   selector: 'ph-root',
@@ -9,10 +8,8 @@ import {AppConfig} from './app.config';
 })
 export class AppComponent {
 
-  constructor(
-    private breadcrumbService: BreadcrumbService,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor(private breadcrumbService: BreadcrumbService,
+              private viewContainerRef: ViewContainerRef) {
     breadcrumbService.addFriendlyNameForRoute('/', 'Home');
     breadcrumbService.addFriendlyNameForRoute('/home', 'Home');
     breadcrumbService.addFriendlyNameForRoute('/app-library', 'App Library - Service Catalogue');

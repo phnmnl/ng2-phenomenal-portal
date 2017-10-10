@@ -4,7 +4,8 @@ import { JwtToken } from 'ng2-cloud-portal-service-lib';
 @Injectable()
 export class PhenomenalTokenService {
 
-  constructor() { }
+  constructor() {
+  }
 
   public setToken(token: JwtToken) {
     localStorage.setItem('ph-token', token.token);

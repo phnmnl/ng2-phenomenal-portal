@@ -1,4 +1,4 @@
-import {Url} from '../../../application-library/application-grid/url/url';
+import { Url } from '../../../application-library/application-grid/url/url';
 
 export class Application {
 
@@ -40,7 +40,7 @@ export class Application {
       // mapping json to model
       if (_data instanceof Array) {
         // more than 1 object
-        for (let _item of _data) {
+        for (const _item of _data) {
           _url.push(new Url(_item));
         }
       } else { // only 1 object

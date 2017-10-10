@@ -4,7 +4,7 @@ import {FilterPipe} from './filter.pipe';
 
 describe('Pipe: Filter', () => {
   it('create an instance', () => {
-    let pipe = new FilterPipe();
+    const pipe = new FilterPipe();
     expect(pipe).toBeTruthy();
   });
 });
