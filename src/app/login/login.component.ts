@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Renderer } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import {
   ApplicationService,
   AuthService,
@@ -43,11 +43,11 @@ export class LoginComponent implements OnInit, OnDestroy {
               // public phTokenService: PhenomenalTokenService,
               public errorService: ErrorService,
               public userService: UserService,
-              public renderer: Renderer,
+              public renderer: Renderer2,
               private router: Router) {
 
 
-    this.removeMessageListener = renderer.listenGlobal('window', 'message', (event: MessageEvent) => {
+    this.removeMessageListener = renderer.listen('window', 'message', (event: MessageEvent) => {
       if (!this.authService.canAcceptMessage(event)) {
         console.log('received unacceptable message! Ignoring...', event);
         return;
