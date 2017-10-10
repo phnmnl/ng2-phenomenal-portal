@@ -32,7 +32,7 @@ export class BreadcrumbComponent implements OnInit {
     if (text !== '') {
       this.announcement = text;
       this.isEmptyAnnouncement = true;
-    };
+    }
   }
 
   generateBreadcrumbTrail(url: string): void {

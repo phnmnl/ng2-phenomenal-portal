@@ -29,7 +29,8 @@
         <p class="text-xs-center">Want to give it a go?</p>
 
         <div *ngIf="tokenService.getToken()" class="text-xs-center">
-          <a [routerLink]="['/cloud-research-environment/setup']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
+          <a [routerLink]="['/cloud-research-environment/setup']" class="btn btn-primary">Create <br> Cloud Research
+            Environment</a>
         </div>
 
         <div *ngIf="!tokenService.getToken()" class="text-xs-center">
@@ -104,7 +105,8 @@
         <hr>
         <p class="text-xs-center">Tutorials on PhenoMeNal Software and Workflows</p>
         <div class="text-xs-center">
-          <a href="https://www.youtube.com/channel/UCXGAvsVNQk-aUpckjRC8Ang" target="_blank" class="btn btn-primary">More <br>Tutorials</a>
+          <a href="https://www.youtube.com/channel/UCXGAvsVNQk-aUpckjRC8Ang" target="_blank" class="btn btn-primary">More
+            <br>Tutorials</a>
         </div>
         <br>
       </div>
@@ -129,26 +131,26 @@
 
         <br>
         <ph-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">
-          <ph-slide *ngFor="let slidez of slides; let index=index"
-                    [active]="slidez.active">
+          <ph-slide *ngFor="let slide of slides; let index=index"
+                    [active]="slide.active">
             <div class="col-md-6">
-              <a href="{{ slidez.website1 }}">
-                <img class="img-fluid host-logo" alt="{{ slidez.description1 }}" [src]="slidez.image1">
+              <a href="{{ slide.website1 }}">
+                <img class="img-fluid host-logo" alt="{{ slide.description1 }}" [src]="slide.image1">
               </a>
             </div>
             <div class="col-md-6">
-              <a href="{{ slidez.website2 }}">
-                <img class="img-fluid host-logo" alt="{{ slidez.description2 }}" [src]="slidez.image2">
+              <a href="{{ slide.website2 }}">
+                <img class="img-fluid host-logo" alt="{{ slide.description2 }}" [src]="slide.image2">
               </a>
             </div>
             <div class="col-md-6">
-              <a href="{{ slidez.website3 }}">
-                <img class="img-fluid host-logo" alt="{{ slidez.description3 }}" [src]="slidez.image3">
+              <a href="{{ slide.website3 }}">
+                <img class="img-fluid host-logo" alt="{{ slide.description3 }}" [src]="slide.image3">
               </a>
             </div>
             <div class="col-md-6">
-              <a href="{{ slidez.website4 }}">
-                <img class="img-fluid host-logo" alt="{{ slidez.description4 }}" [src]="slidez.image4">
+              <a href="{{ slide.website4 }}">
+                <img class="img-fluid host-logo" alt="{{ slide.description4 }}" [src]="slide.image4">
               </a>
             </div>
           </ph-slide>
