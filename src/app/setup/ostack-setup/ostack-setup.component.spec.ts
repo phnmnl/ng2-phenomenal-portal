@@ -8,9 +8,9 @@ describe('OstackSetupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OstackSetupComponent ]
+      declarations: [OstackSetupComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -22,7 +22,6 @@ export class OstackSetupComponent implements OnInit {
   formErrors = {
     'username': '',
     'password': '',
-    // 'confirmPassword': '',
     'tenantName': '',
     'authURL': '',
     'flavor': '',
@@ -38,10 +37,6 @@ export class OstackSetupComponent implements OnInit {
     'password': {
       'required': 'Password is required.'
     },
-    // 'confirmPassword': {
-    //   'required': 'Please confirm your password.',
-    //   'mismatchedPasswords': 'The password you entered does not match.'
-    // },
     'tenantName': {
       'required': 'Tenant Name is required.'
     },
@@ -77,7 +72,6 @@ export class OstackSetupComponent implements OnInit {
     this.form = this.fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required],
-      // 'confirmPassword': ['', [Validators.required]],
       'tenantName': ['', [Validators.required]],
       'authURL': ['', [Validators.required]],
       'flavor': ['', [Validators.required]],
@@ -115,12 +109,8 @@ export class OstackSetupComponent implements OnInit {
       }
     }
 
-    // if (form.getError('mismatchedPasswords')) {
-    //   const messages = this.validationMessages['confirmPassword'];
-    //   this.formErrors['confirmPassword'] += messages['mismatchedPasswords'] + ' ';
-    // }
-
-    if (this.form.value['authURL'].substring(this.form.value['authURL'].length - 2, this.form.value['authURL'].length).toLocaleLowerCase() === 'v3') {
+    if (this.form.value['authURL'].substring(this.form.value['authURL'].length - 2,
+        this.form.value['authURL'].length).toLocaleLowerCase() === 'v3') {
       this.isUserDomainName = true;
     } else {
       this.isUserDomainName = false;
@@ -137,7 +127,6 @@ export class OstackSetupComponent implements OnInit {
     this.cloudProvider.credential.network = this.form.value['network'];
     this.cloudProvider.credential.ip_pool = this.form.value['ipPool'];
 
-    // console.log(this.cloudProvider);
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 

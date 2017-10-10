@@ -1,6 +1,6 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {CloudProvider} from '../cloud-provider';
-import {GalaxyService} from '../../shared/service/galaxy/galaxy.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { CloudProvider } from '../cloud-provider';
+import { GalaxyService } from '../../shared/service/galaxy/galaxy.service';
 
 @Component({
   selector: 'ph-cloud-setup',
@@ -12,9 +12,8 @@ export class CloudSetupComponent implements OnInit {
 
   @Input() cloudProvider: CloudProvider;
 
-  constructor(
-    public galaxyService: GalaxyService
-  ) { }
+  constructor(public galaxyService: GalaxyService) {
+  }
 
   ngOnInit() {
   }

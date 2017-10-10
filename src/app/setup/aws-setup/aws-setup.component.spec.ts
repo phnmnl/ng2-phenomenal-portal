@@ -8,9 +8,9 @@ describe('AwsSetupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AwsSetupComponent ]
+      declarations: [AwsSetupComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

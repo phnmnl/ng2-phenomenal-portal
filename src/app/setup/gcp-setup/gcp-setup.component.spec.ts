@@ -8,9 +8,9 @@ describe('GcpSetupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GcpSetupComponent ]
+      declarations: [GcpSetupComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {CloudProvider} from '../cloud-provider';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {AwsRegion} from '../aws-region';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CloudProvider } from '../cloud-provider';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AwsRegion } from '../aws-region';
 
 @Component({
   selector: 'ph-gcp-setup',
@@ -36,12 +36,12 @@ export class GcpSetupComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this._gcp_region = [
-      { value: 'us-west1-a', displayValue: 'Western US'},
-      { value: 'us-central1-a', displayValue: 'Central US'},
-      { value: 'us-east1-b', displayValue: 'Eastern US'},
-      { value: 'europe-west1-b', displayValue: 'Western Europe'},
-      { value: 'asia-east1-a', displayValue: 'Eastern Asia-Pacific'},
-      { value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
+      {value: 'us-west1-a', displayValue: 'Western US'},
+      {value: 'us-central1-a', displayValue: 'Central US'},
+      {value: 'us-east1-b', displayValue: 'Eastern US'},
+      {value: 'europe-west1-b', displayValue: 'Western Europe'},
+      {value: 'asia-east1-a', displayValue: 'Eastern Asia-Pacific'},
+      {value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
     ];
   }
 
@@ -63,7 +63,9 @@ export class GcpSetupComponent implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     const form = this.form;
 
     for (const field of Object.keys(this.formErrors)) {

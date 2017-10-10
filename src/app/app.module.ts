@@ -50,13 +50,10 @@ import { GalaxyService } from './shared/service/galaxy/galaxy.service';
 import { UserService } from './shared/service/user/user.service';
 import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
-import { PhenomenalSetupComponent } from './setup/phenomenal-setup/phenomenal-setup.component';
 import { OstackSetupComponent } from './setup/ostack-setup/ostack-setup.component';
 import { AwsSetupComponent } from './setup/aws-setup/aws-setup.component';
 import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
-import { CloudDescriptionLayoutComponent } from './setup/cloud-description-layout/cloud-description-layout.component';
 import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
-import { ValidatorComponent } from './setup/validator/validator.component';
 import { FaqComponent } from './help/faq/faq.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { CloudProviderMetadataService } from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
@@ -109,13 +106,10 @@ export function initConfig(config: AppConfig) {
     ProgressBarComponent,
     CreDashboardComponent,
     CreRegistrationFormComponent,
-    PhenomenalSetupComponent,
     OstackSetupComponent,
     AwsSetupComponent,
     GcpSetupComponent,
-    CloudDescriptionLayoutComponent,
     CloudSetupComponent,
-    ValidatorComponent,
     FaqComponent,
     TermAndConditionComponent
   ],

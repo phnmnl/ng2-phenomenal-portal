@@ -1,8 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {CloudProvider} from '../cloud-provider';
-import {GalaxyUser} from '../../shared/service/galaxy/galaxy-user';
-import {GalaxyService} from '../../shared/service/galaxy/galaxy.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { CloudProvider } from '../cloud-provider';
+import { GalaxyUser } from '../../shared/service/galaxy/galaxy-user';
+import { GalaxyService } from '../../shared/service/galaxy/galaxy.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
 
 
@@ -45,11 +45,8 @@ export class CreRegistrationFormComponent implements OnInit {
     return this._message;
   }
 
-  constructor(
-    private fb: FormBuilder,
-    public galaxyService: GalaxyService
-  ) {
-    // console.log(this.cloudProvider.credential.username);
+  constructor(private fb: FormBuilder,
+              public galaxyService: GalaxyService) {
   }
 
   ngOnInit() {
@@ -59,10 +56,10 @@ export class CreRegistrationFormComponent implements OnInit {
   buildForm(): void {
 
     this.form = this.fb.group({
-      'email': ['', Validators.compose([Validators.required,  emailValidator])],
+      'email': ['', Validators.compose([Validators.required, emailValidator])],
       'password': ['', [Validators.required, Validators.minLength(8), passwordValidator]],
       'confirmPassword': ['', [Validators.required]]
-        }, {validator: matchingPasswords('password', 'confirmPassword')});
+    }, {validator: matchingPasswords('password', 'confirmPassword')});
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
 
@@ -70,7 +67,9 @@ export class CreRegistrationFormComponent implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     const form = this.form;
 
     for (const field of Object.keys(this.formErrors)) {
@@ -98,7 +97,6 @@ export class CreRegistrationFormComponent implements OnInit {
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
     this.galaxyService.createUser(user, this.galaxyService.galaxy_instance_url, this.galaxyService.galaxy_api_key).subscribe(
       data => {
-        // console.log(data);
         this._isFailed = false;
         this._isSuccess = true;
       },
