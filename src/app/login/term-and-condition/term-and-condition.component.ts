@@ -14,14 +14,10 @@ export class TermAndConditionComponent implements OnInit {
   checked2 = false;
   checked3 = false;
 
-  constructor(// private _applicationService: ApplicationService,
-              // private _authService: AuthService,
+  constructor(
               public credentialService: CredentialService,
               public tokenService: TokenService,
-              // public phTokenService: PhenomenalTokenService,
-              // public errorService: ErrorService,
               public userService: UserService,
-              // public renderer: Renderer,
               private router: Router) {
   }
 
