@@ -1,7 +1,6 @@
-import {Routes, RouterModule} from '@angular/router';
-import {ModuleWithProviders} from '@angular/core';
-import {ApplicationLibraryComponent} from './application-library.component';
-import {ApplicationDetailComponent} from './application-detail/application-detail.component';
+import { RouterModule, Routes } from '@angular/router';
+import { ApplicationLibraryComponent } from './application-library.component';
+import { ApplicationDetailComponent } from './application-detail/application-detail.component';
 
 /**
  * @auther Sijin He

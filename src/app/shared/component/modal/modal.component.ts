@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation, Input} from '@angular/core';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -21,7 +21,8 @@ export class NgbdModalContentComponent {
   @Input() img: string;
   @Input() title: string;
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal) {
+  }
 }
 
 @Component({
@@ -35,10 +36,11 @@ export class ModalComponent {
   @Input() img: string;
   @Input() title: string;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal) {
+  }
 
   open() {
-    const modalRef = this.modalService.open(NgbdModalContentComponent, { windowClass: 'adapt-modal', size: 'lg' });
+    const modalRef = this.modalService.open(NgbdModalContentComponent, {windowClass: 'adapt-modal', size: 'lg'});
     modalRef.componentInstance.img = this.img;
     modalRef.componentInstance.title = this.title;
   }

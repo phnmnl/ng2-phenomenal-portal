@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ph-cre-local-installation',
@@ -6,6 +6,11 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./cre-local-installation.component.css'],
 })
 export class CRELocalInstallationComponent implements OnInit {
+
+  private _img1 = 'assets/img/cloud-research-environment-installation/img1.png';
+  private _img2 = 'assets/img/cloud-research-environment-installation/img2.png';
+  private _img3 = 'assets/img/cloud-research-environment-installation/img3.png';
+
   get img1(): string {
     return this._img1;
   }
@@ -18,9 +23,6 @@ export class CRELocalInstallationComponent implements OnInit {
     return this._img3;
   }
 
-  private _img1 = 'assets/img/cloud-research-environment-installation/img1.png';
-  private _img2 = 'assets/img/cloud-research-environment-installation/img2.png';
-  private _img3 = 'assets/img/cloud-research-environment-installation/img3.png';
 
   constructor() {
   }

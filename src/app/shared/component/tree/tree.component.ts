@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ph-tree',
@@ -71,19 +71,6 @@ export class TreeComponent implements OnInit {
     }
 
   }
-
-  // private getNodeById(targetId: string, parentNode) {
-  //   let node: Node;
-  //
-  //   for (let n of parentNode) {
-  //     if (n.id === targetId) {
-  //       node = n;
-  //       break;
-  //     }
-  //   }
-  //
-  //   return node;
-  // }
 
   private isEmptyTree(parentNode) {
     let isEmpty = true;

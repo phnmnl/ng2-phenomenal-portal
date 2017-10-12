@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 export class AppConfig {
 
   private config: Object = null;
-  private env:    Object = null;
+  private env: Object = null;
 
   constructor(private http: Http) {
 
@@ -34,32 +34,35 @@ export class AppConfig {
   public load() {
     const path = '/assets/config/';
     return new Promise((resolve, reject) => {
-      this.http.get(path + 'env.json').map( res => res.json() ).catch((error: any): any => {
+      this.http.get(path + 'env.json').map(res => res.json()).catch((error: any): any => {
         console.log('Configuration file "env.json" could not be read');
         resolve(true);
         return Observable.throw(error.json().error || 'Server error');
-      }).subscribe( (envResponse) => {
+      }).subscribe((envResponse) => {
         this.env = envResponse;
         let request: any = null;
 
         switch (envResponse.env) {
           case 'production': {
             request = this.http.get(path + 'config.' + envResponse.env + '.json');
-          } break;
+          }
+            break;
 
           case 'development': {
             request = this.http.get(path + 'config.' + envResponse.env + '.json');
-          } break;
+          }
+            break;
 
           case 'default': {
             console.error('Environment file is not set or invalid');
             resolve(true);
-          } break;
+          }
+            break;
         }
 
         if (request) {
           request
-            .map( res => res.json() )
+            .map(res => res.json())
             .catch((error: any) => {
               console.error('Error reading ' + envResponse.env + ' configuration file');
               resolve(error);

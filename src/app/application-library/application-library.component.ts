@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ApplicationsDatabaseService} from '../shared/service/applications-database/applications-database.service';
-import {ApplicationLibraryService} from '../shared/service/application-library/application-library.service';
-import {Node} from '../shared/component/tree/node/node';
+import { Component, OnInit } from '@angular/core';
+import { ApplicationsDatabaseService } from '../shared/service/applications-database/applications-database.service';
+import { ApplicationLibraryService } from '../shared/service/application-library/application-library.service';
+import { Node } from '../shared/component/tree/node/node';
 
 @Component({
   selector: 'ph-application-library',
@@ -154,11 +154,11 @@ export class ApplicationLibraryComponent implements OnInit {
 
   getAppsByFilter() {
 
-    let filter1 = this.traverseTree(this.functionality);
+    const filter1 = this.traverseTree(this.functionality);
 
-    let filter2 = this.traverseTree(this.approaches);
+    const filter2 = this.traverseTree(this.approaches);
 
-    let filter3 = this.traverseTree(this.instrument);
+    const filter3 = this.traverseTree(this.instrument);
 
     let query = 'functionality=' + this.transformFilter(filter1);
 
@@ -181,10 +181,10 @@ export class ApplicationLibraryComponent implements OnInit {
 
   private traverseTree(tree: Node[]) {
 
-    let filter: string[] = [];
-    let temp: string[] = [];
+    const filter: string[] = [];
+    const temp: string[] = [];
 
-    for (let node of tree) {
+    for (const node of tree) {
       if (node.isCheck === true) {
         switch (node.name) {
           case '¹³C':
@@ -214,7 +214,7 @@ export class ApplicationLibraryComponent implements OnInit {
   private transformFilter(filter: string[]) {
 
     let text = '';
-    let plus = '+';
+    const plus = '+';
     for (let f of filter) {
 
       f = f.replace(/ /g, '_');

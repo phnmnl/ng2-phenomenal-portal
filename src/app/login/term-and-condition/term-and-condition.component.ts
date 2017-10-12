@@ -1,9 +1,7 @@
-import {Component, OnInit, Renderer, OnDestroy} from '@angular/core';
-import {ApplicationService, AuthService, CredentialService, ErrorService, JwtToken, TokenService} from 'ng2-cloud-portal-service-lib';
-import {UserService} from '../../shared/service/user/user.service';
-import {User} from '../../shared/service/user/user';
-import {PhenomenalTokenService} from '../../shared/service/phenomenal-token/phenomenal-token.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
+import { UserService } from '../../shared/service/user/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ph-term-and-condition',
@@ -12,21 +10,16 @@ import {Router} from '@angular/router';
 })
 export class TermAndConditionComponent implements OnInit {
 
-  private checked1 = false;
-  private checked2 = false;
-  private checked3 = false;
+  checked1 = false;
+  checked2 = false;
+  checked3 = false;
 
   constructor(
-    private _applicationService: ApplicationService,
-    private _authService: AuthService,
-    public credentialService: CredentialService,
-    public tokenService: TokenService,
-    public phTokenService: PhenomenalTokenService,
-    public errorService: ErrorService,
-    public userService: UserService,
-    public renderer: Renderer,
-    private router: Router
-  ) { }
+              public credentialService: CredentialService,
+              public tokenService: TokenService,
+              public userService: UserService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.isUserExist(this.credentialService.getUsername());

@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation} from '@angular/core';
-import {ApplicationService, CredentialService, ErrorService, TokenService} from 'ng2-cloud-portal-service-lib';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { TokenService } from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-home',
@@ -8,15 +8,19 @@ import {ApplicationService, CredentialService, ErrorService, TokenService} from 
   styleUrls: ['home.component.css']
 })
 export class HomeComponent {
+
+  // The time to show the next photo
+  private _NextPhotoInterval = 5000;
+  // Looping or not
+  private _noLoopSlides = false;
+  private _img1 = 'assets/img/home/img1.png';
+  private _img2 = 'assets/img/home/img2.png';
+  private _img3 = 'assets/img/home/img3.png';
+  private _img3_title = 'Galaxy Workflow';
+
   get img3_title(): string {
     return this._img3_title;
   }
-
-
-  // The time to show the next photo
-  private _NextPhotoInterval: number = 5000;
-  // Looping or not
-  private _noLoopSlides: boolean = false;
 
   get NextPhotoInterval(): number {
     return this._NextPhotoInterval;
@@ -30,7 +34,7 @@ export class HomeComponent {
     return this._noSlideControl;
   }
 
-  private _noSlideControl: boolean = false;
+  private _noSlideControl = false;
   // Photos
   slides: Array<any> = [];
 
@@ -46,15 +50,10 @@ export class HomeComponent {
     return this._img3;
   }
 
-  private _img1 = 'assets/img/home/img1.png';
-  private _img2 = 'assets/img/home/img2.png';
-  private _img3 = 'assets/img/home/img3.png';
-  private _img3_title: string = 'Galaxy Workflow';
-  constructor(
-    private _applicationService: ApplicationService,
-    public credentialService: CredentialService,
-    public tokenService: TokenService,
-    public errorService: ErrorService
+  constructor(// private _applicationService: ApplicationService,
+    //           public credentialService: CredentialService,
+    public tokenService: TokenService
+    // public errorService: ErrorService
   ) {
     this.addNewSlide();
   }
@@ -63,48 +62,49 @@ export class HomeComponent {
     this.slides.push(
       {
         image1: 'assets/img/logo/partner/EMBL-EBI.png',
-        decription1: 'EMBL-EBI',
+        description1: 'EMBL-EBI',
         website1: 'https://www.ebi.ac.uk/',
         image2: 'assets/img/logo/partner/Imperial-College-London.png',
-        decription2: 'Imperial College London',
+        description2: 'Imperial College London',
         website2: 'https://www.imperial.ac.uk/',
         image3: 'assets/img/logo/partner/Uppsala-University.png',
-        decription3: 'Uppsala University',
+        description3: 'Uppsala University',
         website3: 'http://www.uu.se/',
         image4: 'assets/img/logo/partner/IPB.png',
-        decription4: 'IPB',
+        description4: 'IPB',
         website4: 'http://www.ipb-halle.de/'
       },
       {
         image1: 'assets/img/logo/partner/Netherlands-Metabolomics-Centre.png',
-        decription1: 'Netherlands Metabolomics Centre',
+        description1: 'Netherlands Metabolomics Centre',
         website1: 'http://www.metabolomicscentre.nl/',
         image2: 'assets/img/logo/partner/C.I.R.M.M.P.png',
-        decription2: 'C.I.R.M.M.P',
+        description2: 'C.I.R.M.M.P',
         website2: 'http://www.cerm.unifi.it/cirmmp-sp-2001548042',
         image3: 'assets/img/logo/partner/University-of-Oxford.png',
-        decription3: 'University of Oxford',
+        description3: 'University of Oxford',
         website3: 'http://www.ox.ac.uk/',
         image4: 'assets/img/logo/partner/University-of-Barcelona.png',
-        decription4: 'University of Barcelona',
+        description4: 'University of Barcelona',
         website4: 'http://www.ub.edu/'
       }
     );
   }
-  getAllApplication() {
-    this._applicationService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      deployment  => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        this.errorService.setCurrentError(error);
-        this.tokenService.clearToken();
-        this.credentialService.clearCredentials();
-      }
-    );
-  }
+
+  // getAllApplication() {
+  //   this._applicationService.getAll(
+  //     this.credentialService.getUsername(),
+  //     this.tokenService.getToken()
+  //   ).subscribe(
+  //     deployment => {
+  //       console.log('[RepositoryComponent] getAll %O', deployment);
+  //     },
+  //     error => {
+  //       console.log('[RepositoryComponent] getAll error %O', error);
+  //       this.errorService.setCurrentError(error);
+  //       this.tokenService.clearToken();
+  //       this.credentialService.clearCredentials();
+  //     }
+  //   );
+  // }
 }

@@ -2,10 +2,6 @@
   background-color: #525991;
 }
 
-/*.card-block {*/
-/*height: 200px;*/
-/*}*/
-
 .md-form {
   margin-bottom: 0;
 }
@@ -17,9 +13,6 @@
 
 .suggestions {
   border: 0 solid #525991;
-  /*border-style: solid;*/
-  /*border-width: 0 2px 2px 2px;*/
-  /*border-color: #525991;*/
   position: absolute;
   width: 100%;
   background: white;

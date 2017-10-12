@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
-import {WikiService} from '../shared/service/wiki/wiki.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { WikiService } from '../shared/service/wiki/wiki.service';
+import { Router } from '@angular/router';
 import 'rxjs/Rx';
 
 @Component({
@@ -95,7 +95,7 @@ export class HelpComponent implements OnInit {
   onEnterKey($event, page, linka) {
 
     if ($event.key === 'Enter') {
-      let link = this.itemArray[this.selected].link;
+      const link = this.itemArray[this.selected].link;
       this.router.navigateByUrl(page + '/' + link);
     }
   }

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ApplicationService, DeploymentService, Deployment, DeploymentStatus,
-  CloudProviderParametersService, CloudProviderParameters
+  ApplicationService,
+  CredentialService,
+  Deployment,
+  DeploymentService,
+  DeploymentStatus,
+  ErrorService,
+  TokenService
 } from 'ng2-cloud-portal-service-lib';
-import { CredentialService } from 'ng2-cloud-portal-service-lib';
-import { ErrorService } from 'ng2-cloud-portal-service-lib';
-import { TokenService } from 'ng2-cloud-portal-service-lib';
-import {Router} from '@angular/router';
-import {Http} from '@angular/http';
+import { Router } from '@angular/router';
+import { Http } from '@angular/http';
 import 'rxjs/Rx';
-import {Observable} from 'rxjs/Rx';
-import {UserService} from '../shared/service/user/user.service';
+import { UserService } from '../shared/service/user/user.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
@@ -21,16 +22,20 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class CreDashboardComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
-  private _galaxy_icon = 'assets/img/logo/galaxy.png';
-  private _text = 'http://public.phenomenal-h2020.eu/';
-  private _phenomenal_logo = 'assets/img/logo/default_app.png';
+  // private _galaxy_icon = 'assets/img/logo/galaxy.png';
+  // private _text = 'http://public.phenomenal-h2020.eu/';
+  // private _phenomenal_logo = 'assets/img/logo/default_app.png';
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
   private _gce_logo = 'assets/img/logo/gce_logo.png';
+  deploymentServerList: Deployment[];
+  deploymentStatus: DeploymentStatus;
+  isDeployment = false;
+  isClickedOnce = false;
 
-  get phenomenal_logo(): string {
-    return this._phenomenal_logo;
-  }
+  // get phenomenal_logo(): string {
+  //   return this._phenomenal_logo;
+  // }
 
   get gce_logo(): string {
     return this._gce_logo;
@@ -44,30 +49,23 @@ export class CreDashboardComponent implements OnInit {
     return this._aws_logo;
   }
 
-  deploymentServerList: Deployment[];
-  deploymentStatus: DeploymentStatus;
-  isDeployment = false;
-  isClickedOnce = false;
+  // get galaxy_icon(): string {
+  //   return this._galaxy_icon;
+  // }
 
-  constructor(
-    private _applicationService: ApplicationService,
-    private _deploymentService: DeploymentService,
-    private tokenService: TokenService,
-    public credentialService: CredentialService,
-    public errorService: ErrorService,
-    public userService: UserService,
-    private router: Router,
-    private http: Http
-  ) {
+  // get text(): string {
+  //   return this._text;
+  // }
+
+  constructor(private _applicationService: ApplicationService,
+              private _deploymentService: DeploymentService,
+              private tokenService: TokenService,
+              public credentialService: CredentialService,
+              public errorService: ErrorService,
+              public userService: UserService,
+              private router: Router,
+              private http: Http) {
     this.isUserExist(this.credentialService.getUsername());
-  }
-
-  get galaxy_icon(): string {
-    return this._galaxy_icon;
-  }
-
-  get text(): string {
-    return this._text;
   }
 
   ngOnInit() {
@@ -125,27 +123,27 @@ export class CreDashboardComponent implements OnInit {
     );
   }
 
-  pingDomain(url, time, callback) {
-    const jupyterStatus = Observable.interval(time)
-      .switchMap(() => this.http.get('https://cors-anywhere.herokuapp.com/' + url)).map((data) => data)
-      .subscribe((data) => {
-          if (data.status === 200) {
-
-            jupyterStatus.unsubscribe();
-            return callback();
-          }
-        },
-        (error) => {
-          return this.pingDomain(url, 10000, callback);
-        });
-  }
+  // pingDomain(url, time, callback) {
+  //   const jupyterStatus = Observable.interval(time)
+  //     .switchMap(() => this.http.get('https://cors-anywhere.herokuapp.com/' + url)).map((data) => data)
+  //     .subscribe((data) => {
+  //         if (data.status === 200) {
+  //
+  //           jupyterStatus.unsubscribe();
+  //           return callback();
+  //         }
+  //       },
+  //       (error) => {
+  //         return this.pingDomain(url, 10000, callback);
+  //       });
+  // }
 
   getAllDeploymentServer(callback) {
     this._deploymentService.getAll(
       this.credentialService.getUsername(),
       this.tokenService.getToken()
     ).subscribe(
-      deployment  => {
+      deployment => {
         console.log('[RepositoryComponent] getAll %O', deployment);
         callback(deployment);
       },
@@ -178,7 +176,8 @@ export class CreDashboardComponent implements OnInit {
 
   remove(deployment: Deployment) {
     this.isClickedOnce = true;
-    this.blockUI.start('WARNING: Please wait and check your cloud provider dashboard after the Cloud Research Environment is completely destroyed.');
+    this.blockUI.start('WARNING: Please wait and check your cloud provider dashboard after the Cloud Research Environment ' +
+      'is completely destroyed.');
 
     console.log('Remove deployment %O', deployment);
     this._deploymentService.stop(this.credentialService.getUsername(), this.tokenService.getToken(),
@@ -193,7 +192,7 @@ export class CreDashboardComponent implements OnInit {
             this._deploymentService.delete(this.credentialService.getUsername(), this.tokenService.getToken(),
               deployment).subscribe(
               res1 => {
-                console.log('deleted');
+                // console.log('deleted');
                 this.removeApplication(deployment.applicationName,
                   (done) => {
                     location.reload();
@@ -253,7 +252,7 @@ export class CreDashboardComponent implements OnInit {
       this.credentialService.getUsername(),
       this.tokenService.getToken()
     ).subscribe(
-      app  => {
+      app => {
         callback(app);
       },
       error => {
@@ -267,9 +266,6 @@ export class CreDashboardComponent implements OnInit {
 
     this.userService.get(id).subscribe(
       (res) => {
-        // if (res['data']) {
-        //   this.router.navigateByUrl('cloud-research-environment');
-        // }
         if (res['error']) {
           this.router.navigateByUrl('term-and-condition');
         }

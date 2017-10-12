@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs';
 import { AppConfig } from '../../../app.config';
 
 @Injectable()
@@ -10,12 +10,9 @@ export class ApplicationLibraryService {
   private metadataUrl: string;
   private headUrl: string;
 
-  constructor(
-    private http: Http,
-    private config: AppConfig
-  ) {
-     // this.baseUrl = 'http://phenomenal-h2020.eu/wiki/wiki';
-    // this.baseUrl  = 'http://localhost';
+  constructor(private http: Http,
+              private config: AppConfig) {
+
     this.metadataUrl = '/php-phenomenal-portal-app-library';
     if (config.getConfig('host') !== '') {
       this.baseUrl = config.getConfig('host') + ':80';

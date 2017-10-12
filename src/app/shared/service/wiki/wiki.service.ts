@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Http, Response, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { AppConfig } from '../../../app.config';
 
 @Injectable()
@@ -10,12 +10,8 @@ export class WikiService {
   private metadataUrl: string;
   private headUrl: string;
 
-  constructor(
-    private http: Http,
-    private config: AppConfig
-  ) {
-    // this.baseUrl = 'http://phenomenal-h2020.eu/wiki';
-    // this.baseUrl  = 'http://localhost/FederatedGitWiki';
+  constructor(private http: Http,
+              private config: AppConfig) {
     this.metadataUrl = '/php-phenomenal-portal-wiki';
     if (config.getConfig('host') !== '') {
       this.baseUrl = config.getConfig('host') + ':80';

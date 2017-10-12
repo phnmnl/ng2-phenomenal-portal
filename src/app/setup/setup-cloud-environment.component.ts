@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ApplicationService, CredentialService, TokenService} from 'ng2-cloud-portal-service-lib';
-import {CloudProvider} from './cloud-provider';
-import {Router} from '@angular/router';
-import {GalaxyService} from '../shared/service/galaxy/galaxy.service';
-import {GalaxyUser} from '../shared/service/galaxy/galaxy-user';
-import {AwsRegion} from './aws-region';
-import {UserService} from '../shared/service/user/user.service';
+import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
+import { CloudProvider } from './cloud-provider';
+import { Router } from '@angular/router';
+import { GalaxyService } from '../shared/service/galaxy/galaxy.service';
+import { UserService } from '../shared/service/user/user.service';
 
 @Component({
   selector: 'ph-setup-cloud-environment',
@@ -13,89 +11,89 @@ import {UserService} from '../shared/service/user/user.service';
   styleUrls: ['./setup-cloud-environment.component.css']
 })
 export class SetupCloudEnvironmentComponent implements OnInit {
-  get cloudProviderCollection(): CloudProvider[] {
-    return this._cloudProviderCollection;
-  }
 
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
   private _gce_logo = 'assets/img/logo/gce_logo.png';
-  private _galaxy_instance_url = 'http://193.62.54.91:30700';
-  private _galaxy_api_key = 'b5d33930050dad02d448271c5ab7f80e';
-  private _isFailed = false;
-  _isSuccess = false;
-  private _message = '';
+  // private _galaxy_instance_url = 'http://193.62.54.91:30700';
+  // private _galaxy_api_key = 'b5d33930050dad02d448271c5ab7f80e';
+  // _isFailed = false;
+  // _isSuccess = false;
+  // private _message = '';
   private _cloudProviderCollection: CloudProvider[];
-  _aws_region: AwsRegion[];
-  _gcp_region: AwsRegion[];
-  private _provider: CloudProvider;
+  // _aws_region: AwsRegion[];
+  // _gcp_region: AwsRegion[];
+  // private _provider: CloudProvider;
 
+  //
+  // get provider(): CloudProvider {
+  //   return this._provider;
+  // }
+  //
+  // set provider(value: CloudProvider) {
+  //   this._provider = value;
+  // }
 
-  get provider(): CloudProvider {
-    return this._provider;
+  get cloudProviderCollection(): CloudProvider[] {
+    return this._cloudProviderCollection;
   }
 
-  set provider(value: CloudProvider) {
-    this._provider = value;
-  }
+  // get galaxy_api_key(): string {
+  //   return this._galaxy_api_key;
+  // }
+  //
+  // get galaxy_instance_url(): string {
+  //   return this._galaxy_instance_url;
+  // }
 
-  get galaxy_api_key(): string {
-    return this._galaxy_api_key;
-  }
-
-  get galaxy_instance_url(): string {
-    return this._galaxy_instance_url;
-  }
-
-  constructor(
-    private _applicationService: ApplicationService,
-    public credentialService: CredentialService,
-    public tokenService: TokenService,
-    private router: Router,
-    public galaxyService: GalaxyService,
-    public userService: UserService,
-  ) {
+  constructor(private _applicationService: ApplicationService,
+              public credentialService: CredentialService,
+              public tokenService: TokenService,
+              private router: Router,
+              public galaxyService: GalaxyService,
+              public userService: UserService) {
 
     this.isUserExist(this.credentialService.getUsername());
 
-    this._aws_region = [
-      { value: 'eu-west-1', displayValue: 'EU (Ireland)'},
-      { value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
-      { value: 'eu-west-2', displayValue: 'EU (London)'},
-      { value: 'us-east-1', displayValue: 'US East (N. Virginia)'},
-      { value: 'us-east-2', displayValue: 'US East (Ohio)'},
-      { value: 'us-west-1', displayValue: 'US West (N. California)'},
-      { value: 'us-west-2', displayValue: 'US West (Oregon)'},
-      { value: 'ca-central-1', displayValue: 'Canada (Central)'}
-    ];
-
-    this._gcp_region = [
-      { value: 'us-west1-a', displayValue: 'Western US'},
-      { value: 'us-central1-a', displayValue: 'Central US'},
-      { value: 'us-east1-b', displayValue: 'Eastern US'},
-      { value: 'europe-west1-b', displayValue: 'Western Europe'},
-      { value: 'asia-east1-a', displayValue: 'Eastern Asia-Pacific'},
-      { value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
-    ];
+    // this._aws_region = [
+    //   {value: 'eu-west-1', displayValue: 'EU (Ireland)'},
+    //   {value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
+    //   {value: 'eu-west-2', displayValue: 'EU (London)'},
+    //   {value: 'us-east-1', displayValue: 'US East (N. Virginia)'},
+    //   {value: 'us-east-2', displayValue: 'US East (Ohio)'},
+    //   {value: 'us-west-1', displayValue: 'US West (N. California)'},
+    //   {value: 'us-west-2', displayValue: 'US West (Oregon)'},
+    //   {value: 'ca-central-1', displayValue: 'Canada (Central)'}
+    // ];
+    //
+    // this._gcp_region = [
+    //   {value: 'us-west1-a', displayValue: 'Western US'},
+    //   {value: 'us-central1-a', displayValue: 'Central US'},
+    //   {value: 'us-east1-b', displayValue: 'Eastern US'},
+    //   {value: 'europe-west1-b', displayValue: 'Western Europe'},
+    //   {value: 'asia-east1-a', displayValue: 'Eastern Asia-Pacific'},
+    //   {value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
+    // ];
 
     this._cloudProviderCollection = [
       {
         title: 'PhenoMeNal Cloud',
         name: 'phenomenal',
-        help: '',
-        description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
+        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
+        description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
+        'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
         paymentDescription: 'Free',
         providerDescription: 'EMBL-EBI, Uppsala Uni',
         locationDescription: 'Europe',
         logo: this._phenomenal_logo,
         isSelected: 0,
         credential: {
-          username: 'sijin',
+          username: '',
           password: '',
-          tenant_name: 'PhenoMeNal-Mesos',
-          url: 'https://extcloud05.ebi.ac.uk:13000/v2.0',
-          provider: 'OSTACK',
+          tenant_name: '',
+          url: '',
+          provider: '',
           galaxy_admin_username: '',
           galaxy_admin_email: '',
           galaxy_admin_password: '',
@@ -105,7 +103,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'OpenStack',
         name: 'ostack',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/How-to-obtain-OpenStack-credentials',
+        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
         description: 'Your Cloud Research Environment can be deployed at any OpenStack cloud you have an account for.',
         paymentDescription: 'Commercial or Free',
         providerDescription: 'N/a',
@@ -127,7 +125,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'AWS',
         name: 'aws',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/How-to-obtain-AWS-credentials',
+        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
         description: 'Amazon WS is a commercial cloud provider. Use this if you already have an Amazon AWS account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Amazon AWS',
@@ -152,7 +150,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'Google Cloud Platform',
         name: 'gcp',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/How-to-obtain-GCE-credentials',
+        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
         description: 'Google Cloud Platform is a commercial cloud provider. Use this if you already have an GCP account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Google Cloud',
@@ -200,7 +198,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       this.credentialService.getUsername(),
       this.tokenService.getToken()
     ).subscribe(
-      app  => {
+      app => {
         // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
@@ -211,30 +209,26 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     );
   }
 
-  registerGalaxyAccount(username: string, email: string, password: string) {
-
-    const user: GalaxyUser = {username: username, password: password, email: email};
-    this.galaxyService.createUser(user, this.galaxy_instance_url, this.galaxy_api_key).subscribe(
-      data => {
-        // console.log(data);
-        this._isFailed = false;
-        this._isSuccess = true;
-      },
-      error => {
-        this._isFailed = true;
-        this._isSuccess = false;
-        this._message = error.json().err_msg;
-      }
-    );
-  }
+  // registerGalaxyAccount(username: string, email: string, password: string) {
+  //
+  //   const user: GalaxyUser = {username: username, password: password, email: email};
+  //   this.galaxyService.createUser(user, this.galaxy_instance_url, this.galaxy_api_key).subscribe(
+  //     data => {
+  //       this._isFailed = false;
+  //       this._isSuccess = true;
+  //     },
+  //     error => {
+  //       this._isFailed = true;
+  //       this._isSuccess = false;
+  //       this._message = error.json().err_msg;
+  //     }
+  //   );
+  // }
 
   private isUserExist(id: string) {
 
     this.userService.get(id).subscribe(
       (res) => {
-        // if (res['data']) {
-        //   this.router.navigateByUrl('cloud-research-environment');
-        // }
         if (res['error']) {
           this.router.navigateByUrl('term-and-condition');
         }

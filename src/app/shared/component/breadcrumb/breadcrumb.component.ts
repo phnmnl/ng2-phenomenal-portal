@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
-import {BreadcrumbService} from './breadcrumb.service';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { BreadcrumbService } from './breadcrumb.service';
 import { AppConfig } from '../../../app.config';
 
 @Component({
@@ -17,11 +17,9 @@ export class BreadcrumbComponent implements OnInit {
   ngOnInit() {
   }
 
-  constructor(
-    private router: Router,
-    private breadcrumbService: BreadcrumbService,
-    private config: AppConfig
-  ) {
+  constructor(private router: Router,
+              private breadcrumbService: BreadcrumbService,
+              private config: AppConfig) {
     this._urls = [];
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this._urls.length = 0; // Fastest way to clear out array
@@ -32,7 +30,7 @@ export class BreadcrumbComponent implements OnInit {
     if (text !== '') {
       this.announcement = text;
       this.isEmptyAnnouncement = true;
-    };
+    }
   }
 
   generateBreadcrumbTrail(url: string): void {

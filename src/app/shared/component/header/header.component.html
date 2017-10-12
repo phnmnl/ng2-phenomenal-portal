@@ -35,7 +35,7 @@
           </li>
 
           <li *ngIf="!tokenService.getToken()" class="nav-item" routerLinkActive="active">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']" >Login</a>
+            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']">Login</a>
           </li>
 
           <li *ngIf="tokenService.getToken()" class="nav-item" routerLinkActive="active">

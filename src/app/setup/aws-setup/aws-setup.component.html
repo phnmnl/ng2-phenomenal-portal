@@ -1,6 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field class="input-width">
-    <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region" required>
+    <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
+                required>
       <mat-option *ngFor="let region of _aws_region" [value]="region.value">
         {{region.displayValue}}
       </mat-option>

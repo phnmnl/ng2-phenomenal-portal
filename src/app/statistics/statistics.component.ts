@@ -1,5 +1,5 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {JenkinsReportService} from '../shared/service/jenkins-report/jenkins-report.service';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { JenkinsReportService } from '../shared/service/jenkins-report/jenkins-report.service';
 
 declare var gapi: any;
 declare var jQuery: any;
@@ -39,7 +39,7 @@ export class StatisticsComponent implements OnInit {
            * Creates a new DataChart instance showing sessions over the past 30 days.
            * It will be rendered inside an element with the id "chart-1-container".
            */
-          let dataChart1 = new gapi.analytics.googleCharts.DataChart({
+          const dataChart1 = new gapi.analytics.googleCharts.DataChart({
             query: {
               'ids': 'ga:129019594', // <-- Replace with the ids value for your view.
               'start-date': '30daysAgo',
@@ -63,7 +63,7 @@ export class StatisticsComponent implements OnInit {
            * amongst returning users only.
            * It will be rendered inside an element with the id "chart-3-container".
            */
-          let dataChart2 = new gapi.analytics.googleCharts.DataChart({
+          const dataChart2 = new gapi.analytics.googleCharts.DataChart({
             query: {
               'ids': 'ga:129019594', // <-- Replace with the ids value for your view.
               'start-date': '30daysAgo',
@@ -101,7 +101,7 @@ export class StatisticsComponent implements OnInit {
      * Creates a new DataChart instance showing sessions over the past 30 days.
      * It will be rendered inside an element with the id "chart-1-container".
      */
-    let dataChart1 = new gapi.analytics.googleCharts.DataChart({
+    const dataChart1 = new gapi.analytics.googleCharts.DataChart({
       query: {
         'ids': 'ga:129019594', // <-- Replace with the ids value for your view.
         'start-date': '30daysAgo',
@@ -126,7 +126,7 @@ export class StatisticsComponent implements OnInit {
      * amongst returning users only.
      * It will be rendered inside an element with the id "chart-3-container".
      */
-    let dataChart2 = new gapi.analytics.googleCharts.DataChart({
+    const dataChart2 = new gapi.analytics.googleCharts.DataChart({
       query: {
         'ids': 'ga:129019594', // <-- Replace with the ids value for your view.
         'start-date': '30daysAgo',

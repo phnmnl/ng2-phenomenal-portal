@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {Application} from '../../shared/model/application/application';
+import { Component, Input } from '@angular/core';
+import { Application } from '../../shared/model/application/application';
 
 @Component({
   selector: 'ph-application-list',

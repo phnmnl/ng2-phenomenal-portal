@@ -1,17 +1,23 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationDeployer } from 'ng2-cloud-portal-presentation-lib';
 import {
-  DeploymentService, Deployment, CloudProviderParameters, AccountService,
-  ConfigurationService, ConfigurationDeploymentParameters, Configuration
+  AccountService,
+  ApplicationService,
+  CloudProviderParameters,
+  CloudProviderParametersService,
+  Configuration,
+  ConfigurationDeploymentParameters,
+  ConfigurationService,
+  CredentialService,
+  Deployment,
+  DeploymentService,
+  ErrorService,
+  TokenService
 } from 'ng2-cloud-portal-service-lib';
-import { CredentialService } from 'ng2-cloud-portal-service-lib';
-import { ErrorService } from 'ng2-cloud-portal-service-lib';
-import { TokenService } from 'ng2-cloud-portal-service-lib';
-import { ApplicationService, CloudProviderParametersService} from 'ng2-cloud-portal-service-lib';
-import {isError} from 'util';
-import {Credential } from '../../../setup/credential';
-import {CloudProvider} from '../../../setup/cloud-provider';
+import { isError } from 'util';
+import { Credential } from '../../../setup/credential';
+import { CloudProvider } from '../../../setup/cloud-provider';
 import { AppConfig } from '../../../app.config';
 import { DeploymentInstance } from 'ng2-cloud-portal-presentation-lib/dist';
 import { Subscription } from 'rxjs/Subscription';
@@ -19,38 +25,39 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'ph-progress-bar-modal-content',
   template: `
-<div style="text-align: center">
-  <div class="modal-header">
-    <h4 class="modal-title text-center">Cloud Research Environment Installation {{tsiID}}</h4>
-  </div>
-  <div class="modal-body">
-    <ph-progress-bar [progress]="progress"></ph-progress-bar>
-  </div>
-  <div *ngIf="progress <= 100">
-    <div *ngIf="!isError">
-      <b><p>{{status[progress/10]}}</p></b>
+    <div style="text-align: center">
+      <div class="modal-header">
+        <h4 class="modal-title text-center">Cloud Research Environment Installation {{tsiID}}</h4>
+      </div>
+      <div class="modal-body">
+        <ph-progress-bar [progress]="progress"></ph-progress-bar>
+      </div>
+      <div *ngIf="progress <= 100">
+        <div *ngIf="!isError">
+          <b><p>{{status[progress / 10]}}</p></b>
+        </div>
+        <div *ngIf="isError">
+          <b><p style="color:red">{{status[progress / 10]}}</p></b>
+        </div>
+      </div>
+      <div *ngIf="progress > 100">
+        <a type="button" class="btn btn-primary" href="/cloud-research-environment">Installation Complete</a>
+      </div>
+      <div *ngIf="isError">
+        <a type="button" class="btn btn-primary" href="/cloud-research-environment">Cancel</a>
+      </div>
+      <div *ngIf="tsiID !== ''" (click)="toggleAdvancedButton()">
+        <i *ngIf='!isAdvanced' class="fa fa-chevron-down" aria-hidden="true"></i>
+        <i *ngIf='isAdvanced' class="fa fa-chevron-up" aria-hidden="true"></i>
+        <a style="font-weight: bold">Advanced Deployment Log</a>
+      </div>
+      <div *ngIf="isAdvanced">
+        <div class="container"
+             style="text-align:left; font-size: smaller; margin-bottom: 20px; overflow: auto; height: 300px; width: 95%; color: white; background-color: black">
+          {{ this.deploymentInstance.logs }}
+        </div>
+      </div>
     </div>
-    <div *ngIf="isError">
-      <b><p style="color:red">{{status[progress/10]}}</p></b>
-    </div>
-  </div>
-  <div *ngIf="progress > 100">
-    <a type="button" class="btn btn-primary" href="/cloud-research-environment">Installation Complete</a>
-  </div>
-  <div *ngIf="isError">
-    <a type="button" class="btn btn-primary" href="/cloud-research-environment">Cancel</a>
-  </div>
-  <div *ngIf="tsiID !== ''" (click)="toggleAdvancedButton()">
-    <i *ngIf='!isAdvanced' class="fa fa-chevron-down" aria-hidden="true"></i>
-    <i *ngIf='isAdvanced' class="fa fa-chevron-up" aria-hidden="true"></i>
-    <a style="font-weight: bold">Advanced Deployment Log</a>
-  </div>
-  <div *ngIf="isAdvanced">
-    <div class="container" style="text-align:left; font-size: smaller; margin-bottom: 20px; overflow: auto; height: 300px; width: 95%; color: white; background-color: black">
-        {{ this.deploymentInstance.logs }}
-    </div>
-  </div>
-</div>
   `
 })
 
@@ -96,14 +103,11 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
               public errorService: ErrorService,
               public _accountService: AccountService,
               public configurationService: ConfigurationService,
-              private config: AppConfig
-  ) {
+              private config: AppConfig) {
     this.repoUrl = config.getConfig('deployment_repo_url');
   }
 
-  ngOnInit(
-
-  ) {
+  ngOnInit() {
     this._accountService.getAccount(this.credentialService.getUsername(), this._tokenService.getToken()).subscribe(
       account => {
         this.name = 'ph' + this.generateUIDNotMoreThan1million();
@@ -117,7 +121,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             name: 'Phenomenal VRE',
             accountUsername: this.username,
             repoUri: this.repoUrl,
-            selectedCloudProvider: 'AWS' };
+            selectedCloudProvider: 'AWS'
+          };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
             cluster_prefix: this.name,
@@ -178,7 +183,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             name: 'Phenomenal VRE',
             accountUsername: this.username,
             repoUri: this.repoUrl,
-            selectedCloudProvider: 'GCP' };
+            selectedCloudProvider: 'GCP'
+          };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
             cluster_prefix: this.name,
@@ -237,7 +243,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
             name: 'Phenomenal VRE',
             accountUsername: this.username,
             repoUri: this.repoUrl,
-            selectedCloudProvider: 'OSTACK' };
+            selectedCloudProvider: 'OSTACK'
+          };
           this.applicationDeployer.attachedVolumes = {};
           this.applicationDeployer.assignedInputs = {
             cluster_prefix: this.name,
@@ -314,14 +321,14 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
 
                   this._cloudCredentialsService.add(this._tokenService.getToken(), value)
                     .subscribe(
-                      cloudCredentials  => {
+                      cloudCredentials => {
                         console.log('[Profile] got response %O', cloudCredentials);
                         this.addDeploymentParameter(cloudCredentials, 0);
                       },
                       error => {
                         console.log('[Profile] error %O', error);
                         this.errorService.setCurrentError(error);
-                        this.status[this.progress / 10 ] = 'ERROR: ' + error.message;
+                        this.status[this.progress / 10] = 'ERROR: ' + error.message;
                         this.isError = true;
                       }
                     );
@@ -427,9 +434,9 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                           this.addApplication(
                             this.applicationDeployer,
                             (addAppStatus) => {
-                              if (addAppStatus.status === 401 || addAppStatus.status === 404 ) {
+                              if (addAppStatus.status === 401 || addAppStatus.status === 404) {
                                 console.log(addAppStatus.message);
-                                this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
+                                this.status[this.progress / 10] = 'ERROR: ' + addAppStatus.message;
                                 this.isError = true;
                               } else {
                                 this.addDeployment();
@@ -444,26 +451,26 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                   setTimeout(() => {
                     this.increment(
                       setTimeout(() => {
-                              this.addDeployment();
+                        this.addDeployment();
                       }, 2000));
                   }, 2000);
                 }
               });
             } else {
-              if (appStatus.status === 401 || appStatus.status === 404 ) {
+              if (appStatus.status === 401 || appStatus.status === 404) {
                 console.log(appStatus.message);
-                this.status[this.progress / 10 ] = 'ERROR: ' + appStatus.message;
+                this.status[this.progress / 10] = 'ERROR: ' + appStatus.message;
                 this.isError = true;
-              } else  {
+              } else {
                 setTimeout(() => {
                   this.increment(
                     setTimeout(() => {
                       this.addApplication(
                         this.applicationDeployer,
                         (addAppStatus) => {
-                          if (addAppStatus.status === 401 || addAppStatus.status === 404 ) {
+                          if (addAppStatus.status === 401 || addAppStatus.status === 404) {
                             console.log(addAppStatus.message);
-                            this.status[this.progress / 10 ] = 'ERROR: ' + addAppStatus.message;
+                            this.status[this.progress / 10] = 'ERROR: ' + addAppStatus.message;
                             this.isError = true;
                           } else {
                             this.addDeployment();
@@ -483,13 +490,13 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
   addDeployment() {
     setTimeout(() => {
       this.increment(
-        this.increment(setTimeout( () => {
+        this.increment(setTimeout(() => {
           this.createDeploymentServer(
             this.applicationDeployer,
             (deployStatus) => {
-              if (deployStatus.status === 401 || deployStatus.status === 404 ) {
+              if (deployStatus.status === 401 || deployStatus.status === 404) {
                 console.log(deployStatus.message);
-                this.status[this.progress / 10 ] = 'ERROR: ' + deployStatus.message;
+                this.status[this.progress / 10] = 'ERROR: ' + deployStatus.message;
                 this.isError = true;
               } else {
                 let isStarted: boolean;
@@ -507,7 +514,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
                         console.log(result);
 
                         if (result.status === 'STARTING_FAILED') {
-                          this.status[this.progress / 10 ] = 'ERROR: ' + result.status;
+                          this.status[this.progress / 10] = 'ERROR: ' + result.status;
                           this.isError = true;
                         }
                         if (result.status === 'STARTING' && isStarted) {
@@ -539,7 +546,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       deploymentInstance, interval).subscribe(
       res => {
         if (res.status === 'STARTING_FAILED') {
-            statusFeedSubscription.unsubscribe();
+          statusFeedSubscription.unsubscribe();
         }
         if (res.status === 'RUNNING') {
           this.isRunning++;
@@ -647,7 +654,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
     this._applicationService.add(this.credentialService.getUsername(),
       this._tokenService.getToken(), repoUri)
       .subscribe(
-        application  => {
+        application => {
           console.log('[RepositoryComponent] got response %O', application);
           callback(application);
         },
@@ -675,7 +682,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       applicationDeployer.assignedParameters,
       applicationDeployer.configurations[0]
     ).subscribe(
-      deployment  => {
+      deployment => {
         console.log('[RepositoryComponent] deployed %O', deployment);
         callback(deployment);
       },
@@ -692,7 +699,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
       this.credentialService.getUsername(),
       this._tokenService.getToken()
     ).subscribe(
-      deployment  => {
+      deployment => {
         console.log('[RepositoryComponent] getAll %O', deployment);
         callback(deployment);
       },
@@ -733,10 +740,11 @@ export class ProgressBarModalComponent {
   @Input() credential: Credential;
   @Input() cloudProvider: CloudProvider;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal) {
+  }
 
   open() {
-    const modalRef = this.modalService.open(ProgressBarModalContentComponent, { size: 'lg', backdrop: 'static'});
+    const modalRef = this.modalService.open(ProgressBarModalContentComponent, {size: 'lg', backdrop: 'static'});
     modalRef.componentInstance.credential = this.credential;
     modalRef.componentInstance.cloudProvider = this.cloudProvider;
   }

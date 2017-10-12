@@ -1,8 +1,7 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {AwsRegion} from '../aws-region';
-import {CloudProvider} from '../cloud-provider';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import { matchingPasswords } from '../validator';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AwsRegion } from '../aws-region';
+import { CloudProvider } from '../cloud-provider';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ph-aws-setup',
@@ -37,14 +36,13 @@ export class AwsSetupComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this._aws_region = [
-      { value: 'eu-west-1', displayValue: 'EU (Ireland)'},
-      { value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
-      // { value: 'eu-west-2', displayValue: 'EU (London)'},
-      { value: 'us-east-1', displayValue: 'US East (N. Virginia)'},
-      { value: 'us-east-2', displayValue: 'US East (Ohio)'},
-      { value: 'us-west-1', displayValue: 'US West (N. California)'},
-      { value: 'us-west-2', displayValue: 'US West (Oregon)'},
-      { value: 'ca-central-1', displayValue: 'Canada (Central)'}
+      {value: 'eu-west-1', displayValue: 'EU (Ireland)'},
+      {value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
+      {value: 'us-east-1', displayValue: 'US East (N. Virginia)'},
+      {value: 'us-east-2', displayValue: 'US East (Ohio)'},
+      {value: 'us-west-1', displayValue: 'US West (N. California)'},
+      {value: 'us-west-2', displayValue: 'US West (Oregon)'},
+      {value: 'ca-central-1', displayValue: 'Canada (Central)'}
     ];
   }
 
@@ -66,7 +64,9 @@ export class AwsSetupComponent implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    if (!this.form) { return; }
+    if (!this.form) {
+      return;
+    }
     const form = this.form;
 
     for (const field of Object.keys(this.formErrors)) {

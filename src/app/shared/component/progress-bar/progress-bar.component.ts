@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ph-progress-bar',
@@ -8,7 +8,9 @@ import {Component, OnInit, Input} from '@angular/core';
 export class ProgressBarComponent implements OnInit {
 
   @Input() progress: number;
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

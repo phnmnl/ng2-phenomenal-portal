@@ -5,8 +5,11 @@
         <!--Panel-->
         <div class="card card-block">
           <p class="card-text">App Library showcases our service catalogue listing {{appSize}} applications that are
-            available via Galaxy workflows and Jupyter libraries through the Cloud Research Environment. For further information
-          please click <a href="http://portal.phenomenal-h2020.eu/help/How-to-make-your-software-tool-available-through-PhenoMeNal">here</a>.</p>
+            available via Galaxy workflows and Jupyter libraries through the Cloud Research Environment. For further
+            information
+            please click <a
+              href="http://portal.phenomenal-h2020.eu/help/How-to-make-your-software-tool-available-through-PhenoMeNal">here</a>.
+          </p>
         </div>
         <!--/.Panel-->
       </div>
@@ -19,24 +22,24 @@
           <div class="card-block">
 
             <!--<form class="form-inline">-->
-              <h6 class="card-title">
-                <small>Functionality</small>
-              </h6>
-              <ph-tree (click)="getAppsByFilter()" [childrenNodes]='functionality'></ph-tree>
+            <h6 class="card-title">
+              <small>Functionality</small>
+            </h6>
+            <ph-tree (click)="getAppsByFilter()" [childrenNodes]='functionality'></ph-tree>
             <!--</form>-->
 
             <!--<form class="form-inline">-->
-              <h6 class="card-title">
-                <small>Approaches</small>
-              </h6>
-              <ph-tree (click)="getAppsByFilter()" [childrenNodes]='approaches'></ph-tree>
+            <h6 class="card-title">
+              <small>Approaches</small>
+            </h6>
+            <ph-tree (click)="getAppsByFilter()" [childrenNodes]='approaches'></ph-tree>
             <!--</form>-->
 
             <!--<form class="form-inline">-->
-              <h6 class="card-title">
-                <small>Instrument Data Types</small>
-              </h6>
-              <ph-tree (click)="getAppsByFilter()" [childrenNodes]='instrument'></ph-tree>
+            <h6 class="card-title">
+              <small>Instrument Data Types</small>
+            </h6>
+            <ph-tree (click)="getAppsByFilter()" [childrenNodes]='instrument'></ph-tree>
             <!--</form>-->
 
 
@@ -74,22 +77,22 @@
         <div class="row">
           <div class="app-list">
             <!--<div class="row">-->
-              <div *ngFor="let app of apps | filter:word.value">
-                <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}">
-                  <div *ngIf="isList">
-                    <ph-application-list [application]="app"></ph-application-list>
-                  </div>
-                  <div *ngIf="!isList">
-                    <ph-application-grid [application]="app"></ph-application-grid>
-                  </div>
-                </div><!-- /.col-lg-4 -->
-              </div>
+            <div *ngFor="let app of apps | filter:word.value">
+              <div [ngClass]="{'col-md-4': !isList, 'col-md-12': isList}">
+                <div *ngIf="isList">
+                  <ph-application-list [application]="app"></ph-application-list>
+                </div>
+                <div *ngIf="!isList">
+                  <ph-application-grid [application]="app"></ph-application-grid>
+                </div>
+              </div><!-- /.col-lg-4 -->
+            </div>
 
             <!--</div>-->
           </div>
 
           <div *ngIf="(apps | filter:word.value)?.length==0" class="col-md-12">
-              <h3 class="no-app-found">Opps, no app found.</h3>
+            <h3 class="no-app-found">Opps, no app found.</h3>
           </div>
         </div>
 
