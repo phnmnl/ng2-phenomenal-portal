@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
+import { OpenstackConfig } from '../../shared/service/cloud-provider-metadata/openstack-config';
 
 @Component({
   selector: 'ph-ostack-setup',
@@ -131,13 +132,16 @@ export class OstackSetupComponent implements OnInit {
   }
 
   getFlavors() {
-    this.cpm.getFlavors(
-      this.form.value['username'],
+
+    const openstackConfig = new OpenstackConfig(this.form.value['username'],
       this.form.value['password'],
       this.form.value['tenantName'],
       this.form.value['userDomainName'],
       this.form.value['authURL'],
-      this.isUserDomainName ? '3' : '2'
+      this.isUserDomainName ? '3' : '2');
+
+    this.cpm.getFlavors(
+      openstackConfig
     ).subscribe(
       (data) => {
         this.flavors = data;
@@ -152,13 +156,15 @@ export class OstackSetupComponent implements OnInit {
   }
 
   getNetworks() {
-    this.cpm.getNetworks(
-      this.form.value['username'],
+    const openstackConfig = new OpenstackConfig(this.form.value['username'],
       this.form.value['password'],
       this.form.value['tenantName'],
       this.form.value['userDomainName'],
       this.form.value['authURL'],
-      this.isUserDomainName ? '3' : '2'
+      this.isUserDomainName ? '3' : '2');
+
+    this.cpm.getNetworks(
+      openstackConfig
     ).subscribe(
       (data) => {
         this.networks = data;
@@ -172,13 +178,15 @@ export class OstackSetupComponent implements OnInit {
   }
 
   getIPPools() {
-    this.cpm.getIPPools(
-      this.form.value['username'],
+    const openstackConfig = new OpenstackConfig(this.form.value['username'],
       this.form.value['password'],
       this.form.value['tenantName'],
       this.form.value['userDomainName'],
       this.form.value['authURL'],
-      this.isUserDomainName ? '3' : '2'
+      this.isUserDomainName ? '3' : '2');
+
+    this.cpm.getIPPools(
+      openstackConfig
     ).subscribe(
       (data) => {
         this.ipPools = data;

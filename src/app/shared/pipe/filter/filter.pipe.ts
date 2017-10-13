@@ -11,15 +11,15 @@ export class FilterPipe implements PipeTransform {
     if (value === undefined || value === null) {
       return value;
     }
-    let resultArray = [];
+    const resultArray = [];
 
-    for (let item of value) {
+    for (const item of value) {
       if (args.length === 0) {
         resultArray.push(item);
       } else {
         let text: string;
         text = '';
-        for (let i of args) {
+        for (const i of args) {
           text += i;
         }
 

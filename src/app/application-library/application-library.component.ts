@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicationsDatabaseService } from '../shared/service/applications-database/applications-database.service';
 import { ApplicationLibraryService } from '../shared/service/application-library/application-library.service';
 import { Node } from '../shared/component/tree/node/node';
 
@@ -9,6 +8,10 @@ import { Node } from '../shared/component/tree/node/node';
   styleUrls: ['./application-library.component.css'],
 
 })
+
+/**
+ * Application library page
+ */
 export class ApplicationLibraryComponent implements OnInit {
 
   content: string;
@@ -126,7 +129,7 @@ export class ApplicationLibraryComponent implements OnInit {
     }
   ];
 
-  constructor(private service: ApplicationsDatabaseService,
+  constructor(// private service: ApplicationsDatabaseService,
               private appLibraryService: ApplicationLibraryService) {
 
   }

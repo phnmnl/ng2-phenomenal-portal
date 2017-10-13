@@ -3,7 +3,12 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { AppConfig } from '../../../app.config';
+import { OpenstackConfig } from './openstack-config';
 
+
+/**
+ * Fetch OpenStack metadata from TSI portal API
+ */
 @Injectable()
 export class CloudProviderMetadataService {
 
@@ -19,47 +24,58 @@ export class CloudProviderMetadataService {
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
+  /**
+   * Fetch all available flavors from OpenStack
+   * @param {OpenstackConfig} config
+   * @returns {Observable<string[]>}
+   */
+  getFlavors(config: OpenstackConfig): Observable<string[]> {
 
-  getFlavors(username, password, tenantName, domainName, endpoint, version): Observable<string[]> {
-
-    const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + this.tokenService.getToken().token);
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-
-    const body = JSON.stringify('{"username": "' + username + '", "password": "' + password + '", "tenantName": "'
-      + tenantName + '", "domainName": "' + domainName + '", "endpoint": "' + endpoint + '", "version": "' + version + '"}');
-    const options = new RequestOptions({headers: headers});
+    const body = this.getBody(config);
+    const options = new RequestOptions({headers: this.getHeader()});
 
     return this.http.post(this.headUrl + '/flavors', body, options).map(res => res.json());
   }
 
-  getNetworks(username, password, tenantName, domainName, endpoint, version): Observable<string[]> {
+  /**
+   * Fetch all available networks from OpenStack
+   * @param {OpenstackConfig} config
+   * @returns {Observable<string[]>}
+   */
+  getNetworks(config: OpenstackConfig): Observable<string[]> {
 
-    const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + this.tokenService.getToken().token);
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-
-    const body = JSON.stringify('{"username": "' + username + '", "password": "' + password + '", "tenantName": "'
-      + tenantName + '", "domainName": "' + domainName + '", "endpoint": "' + endpoint + '", "version": "' + version + '"}');
-    const options = new RequestOptions({headers: headers});
+    const body = this.getBody(config);
+    const options = new RequestOptions({headers: this.getHeader()});
 
     return this.http.post(this.headUrl + '/networks', body, options).map(res => res.json());
   }
 
-  getIPPools(username, password, tenantName, domainName, endpoint, version): Observable<string[]> {
+  /**
+   * Fetch all available IP pools from OpenStack
+   * @param {OpenstackConfig} config
+   * @returns {Observable<string[]>}
+   */
+  getIPPools(config: OpenstackConfig): Observable<string[]> {
+    const body = this.getBody(config);
+    const options = new RequestOptions({headers: this.getHeader()});
+
+    return this.http.post(this.headUrl + '/ippools', body, options).map(res => res.json());
+  }
+
+  private getHeader() {
 
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + this.tokenService.getToken().token);
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
+    return headers;
+  }
 
-    const body = JSON.stringify('{"username": "' + username + '", "password": "' + password + '", "tenantName": "'
-      + tenantName + '", "domainName": "' + domainName + '", "endpoint": "' + endpoint + '", "version": "' + version + '"}');
-    const options = new RequestOptions({headers: headers});
-
-    return this.http.post(this.headUrl + '/ippools', body, options).map(res => res.json());
+  private getBody(config: OpenstackConfig) {
+    const body = JSON.stringify('{"username": "' + config.username + '", "password": "' + config.password
+      + '", "tenantName": "' + config.tenantName + '", "domainName": "' + config.domainName + '", "endpoint": "'
+      + config.endpoint + '", "version": "' + config.version + '"}');
+    return body;
   }
 
 }

@@ -11,6 +11,9 @@ import { ApplicationLibraryService } from '../../shared/service/application-libr
   providers: [ApplicationsDatabaseService]
 })
 
+/**
+ * Process each individual application page
+ */
 export class ApplicationDetailComponent implements OnInit, AfterViewChecked {
 
   id: string;

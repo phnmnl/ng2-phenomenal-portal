@@ -3,6 +3,9 @@ import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AppConfig } from '../../../app.config';
 
+/**
+ * fetch PhenoMeNal Wiki pages
+ */
 @Injectable()
 export class WikiService {
   private gitRepoName = 'phenomenal-h2020.wiki';
@@ -21,31 +24,57 @@ export class WikiService {
     }
   }
 
+  /**
+   * fetch the menu of wiki
+   * @returns {Observable<string[]>}
+   */
   loadMenu(): Observable<string[]> {
     const url = this.headUrl + '/wiki/controller.php?filename=' + this.gitRepoName + '&format=array';
     return this.http.get(url).map(this.extractData);
   }
 
+  /**
+   * fetch the user documentation menu
+   * @returns {Observable<string[]>}
+   */
   loadUserDocumentationMenu(): Observable<string[]> {
     const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
+  /**
+   * fetch the developer documentation menu
+   * @returns {Observable<string[]>}
+   */
   loadDeveloperDocumentationMenu(): Observable<string[]> {
     const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
+  /**
+   * fetch the tutorial menu
+   * @returns {Observable<string[]>}
+   */
   loadTutorialsMenu(): Observable<string[]> {
     const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
+  /**
+   * fetch the wiki page by id
+   * @param id
+   * @returns {Observable<{}>}
+   */
   loadPage(id) {
     const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '&format=array&limit=3';
     return this.http.get(url).map(this.extractData);
   }
 
+  /**
+   * search a term in wiki
+   * @param {string} term
+   * @returns {Observable<{}>}
+   */
   search(term: string) {
     const url = this.headUrl + '/wiki/search.php?term=' + term;
 

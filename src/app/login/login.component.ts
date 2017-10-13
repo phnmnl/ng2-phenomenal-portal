@@ -16,16 +16,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  // get logo_white(): string {
-  //   return this._logo_white;
-  // }
 
   private _elixir_logo = 'assets/img/logo/elixir.png';
-  // private _logo_white = 'assets/img/logo/phenomenal_white_4x.png';
   removeMessageListener: Function;
-  // private checked1 = false;
-  // private checked2 = false;
-  // private checked3 = false;
+
   private _user: User;
 
   get user(): User {
@@ -40,7 +34,6 @@ export class LoginComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               public credentialService: CredentialService,
               public tokenService: TokenService,
-              // public phTokenService: PhenomenalTokenService,
               public errorService: ErrorService,
               public userService: UserService,
               public renderer: Renderer2,
@@ -80,16 +73,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  // private saveToken(jwt: string, callback) {
-  //   const theToken: JwtToken = <JwtToken>{token: jwt};
-  //   this.tokenService.setToken(theToken);
-  //   const tokenClaims = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(jwt.split('.')[1]));
-  //   // this.credentialService.setCredentials(tokenClaims.sub, null, tokenClaims.name);
-  //   // this.credentialService.setCredentials();
-  //
-  // }
-
 
   ngOnInit() {
 
