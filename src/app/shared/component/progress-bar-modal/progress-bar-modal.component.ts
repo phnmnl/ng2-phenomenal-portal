@@ -389,7 +389,7 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
         sharedWithTeamNames: [],
         obsolete: false,
         cloudProviderParametersReference: cloudProviderParameters.reference,
-        cdpId: cdpId
+        configDeploymentParametersReference: deploymentParameters.reference
       }).subscribe(
       (data) => {
         this.applicationDeployer.configurations = [data];
