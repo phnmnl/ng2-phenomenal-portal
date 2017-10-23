@@ -48,7 +48,7 @@ import 'hammerjs';
 import { RouterModule } from '@angular/router';
 import { GalaxyService } from './shared/service/galaxy/galaxy.service';
 import { UserService } from './shared/service/user/user.service';
-import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
+// import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
 import { OstackSetupComponent } from './setup/ostack-setup/ostack-setup.component';
 import { AwsSetupComponent } from './setup/aws-setup/aws-setup.component';
@@ -71,7 +71,12 @@ import {
   MatSelectModule
 } from '@angular/material';
 
-
+/**
+ * To set the global environment variables
+ *
+ * @param config
+ *
+ */
 export function SSOConfigService(config: AppConfig) {
 
   return new ConfigService(config.getConfig('tsi_portal_url'), 'https://api.aap.tsi.ebi.ac.uk/');
@@ -140,7 +145,7 @@ export function initConfig(config: AppConfig) {
     JenkinsReportService,
     ApplicationLibraryService,
     UserService,
-    PhenomenalTokenService,
+    // PhenomenalTokenService,
     ApplicationService,
     AuthService,
     CloudProviderParametersService,

@@ -22,9 +22,6 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class CreDashboardComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
-  // private _galaxy_icon = 'assets/img/logo/galaxy.png';
-  // private _text = 'http://public.phenomenal-h2020.eu/';
-  // private _phenomenal_logo = 'assets/img/logo/default_app.png';
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
   private _gce_logo = 'assets/img/logo/gce_logo.png';
@@ -32,10 +29,6 @@ export class CreDashboardComponent implements OnInit {
   deploymentStatus: DeploymentStatus;
   isDeployment = false;
   isClickedOnce = false;
-
-  // get phenomenal_logo(): string {
-  //   return this._phenomenal_logo;
-  // }
 
   get gce_logo(): string {
     return this._gce_logo;
@@ -48,14 +41,6 @@ export class CreDashboardComponent implements OnInit {
   get aws_logo(): string {
     return this._aws_logo;
   }
-
-  // get galaxy_icon(): string {
-  //   return this._galaxy_icon;
-  // }
-
-  // get text(): string {
-  //   return this._text;
-  // }
 
   constructor(private _applicationService: ApplicationService,
               private _deploymentService: DeploymentService,
@@ -91,7 +76,7 @@ export class CreDashboardComponent implements OnInit {
   getAllDeploymentServerWrapper() {
     this.getAllDeploymentServer(
       (result) => {
-        console.log(result);
+        // console.log(result);
         if (result.length === 0) {
           this.router.navigateByUrl('/cloud-research-environment/setup');
         }
@@ -122,21 +107,6 @@ export class CreDashboardComponent implements OnInit {
       }
     );
   }
-
-  // pingDomain(url, time, callback) {
-  //   const jupyterStatus = Observable.interval(time)
-  //     .switchMap(() => this.http.get('https://cors-anywhere.herokuapp.com/' + url)).map((data) => data)
-  //     .subscribe((data) => {
-  //         if (data.status === 200) {
-  //
-  //           jupyterStatus.unsubscribe();
-  //           return callback();
-  //         }
-  //       },
-  //       (error) => {
-  //         return this.pingDomain(url, 10000, callback);
-  //       });
-  // }
 
   getAllDeploymentServer(callback) {
     this._deploymentService.getAll(

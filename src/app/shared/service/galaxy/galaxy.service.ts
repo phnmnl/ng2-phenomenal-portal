@@ -3,6 +3,9 @@ import { GalaxyUser } from './galaxy-user';
 import { Headers, Http, Response } from '@angular/http';
 import { AppConfig } from '../../../app.config';
 
+/**
+ * Calling galaxy API
+ */
 @Injectable()
 export class GalaxyService {
 
@@ -15,6 +18,13 @@ export class GalaxyService {
     this._galaxy_instance_url = config.getConfig('galaxy_url');
   }
 
+  /**
+   * Create a galaxy user
+   * @param {GalaxyUser} user
+   * @param {string} url
+   * @param {string} key
+   * @returns {Observable<any>}
+   */
   createUser(user: GalaxyUser, url: string, key: string) {
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(user);

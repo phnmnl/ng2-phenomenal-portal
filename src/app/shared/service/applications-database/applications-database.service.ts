@@ -6,6 +6,9 @@ import { Application } from '../../model/application/application';
 
 declare var xml2json: any;
 
+/**
+ * Fetch application information from APPDB
+ */
 @Injectable()
 export class ApplicationsDatabaseService {
 
@@ -25,6 +28,10 @@ export class ApplicationsDatabaseService {
     return this._applications$.asObservable();
   }
 
+  /**
+   * load all application data from APPDB
+   * @param callback
+   */
   loadAll(callback) {
     this.http
       .get(this.baseUrl + '?flt=phenomenal')
@@ -38,6 +45,11 @@ export class ApplicationsDatabaseService {
       }, error => console.log('Could not load applications from AppDB.'));
   }
 
+  /**
+   * load application by application id
+   * @param id
+   * @param callback
+   */
   load(id, callback) {
     this.http
       .get(this.baseUrl + '/' + id)

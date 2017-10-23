@@ -1,5 +1,8 @@
 import { Url } from '../../../application-library/application-grid/url/url';
 
+/**
+ * get application from APPDB
+ */
 export class Application {
 
   abstract: string;
@@ -19,6 +22,10 @@ export class Application {
     console.log('Construction Initialisation [Model: AppdbAppliance]' + this.name);
   }
 
+  /**
+   * get application information
+   * @param _item
+   */
   loadParameterAsRequired(_item) {
     this.abstract = _item['application:abstract'];
     this.short_description = _item['application:description'];

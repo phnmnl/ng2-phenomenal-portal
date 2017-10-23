@@ -3,6 +3,9 @@ import { Headers, Http, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AppConfig } from '../../../app.config';
 
+/**
+ * Control user metadata
+ */
 @Injectable()
 export class UserService {
   private baseUrl = '';
@@ -20,11 +23,21 @@ export class UserService {
     }
   }
 
+  /**
+   * get user metadata by id
+   * @param {string} id
+   * @returns {Observable<string[]>}
+   */
   get(id: string): Observable<string[]> {
     const url = this.headUrl + '/' + id;
     return this.http.get(url).map(this.extractData);
   }
 
+  /**
+   * add user metadata
+   * @param {string} id
+   * @returns {Observable<string[]>}
+   */
   add(id: string): Observable<string[]> {
     const url = this.headUrl;
     const data = {Idmetadata: id, Isaccepttermcondition: 1, Isregistergalaxy: 0};
@@ -41,6 +54,11 @@ export class UserService {
     return this.http.post(url, urlSearchParams.toString(), options).map(this.extractData);
   }
 
+  /**
+   * update a user metadata
+   * @param {string} id
+   * @returns {Observable<string[]>}
+   */
   updateTermCondition(id: string): Observable<string[]> {
     const url = this.headUrl;
     const data = {Idmetadata: id, Isaccepttermcondition: 1, Isregistergalaxy: 0};
@@ -59,7 +77,7 @@ export class UserService {
 
   private extractData(res: Response) {
     const body = res.json();
-    return body || {}
+    return body || {};
   }
 
 
