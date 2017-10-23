@@ -80,7 +80,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'PhenoMeNal Cloud',
         name: 'phenomenal',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
+        help: '/help/Deployment-Cloud-Research-Environment',
         description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
         'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
         paymentDescription: 'Free',
@@ -103,7 +103,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'OpenStack',
         name: 'ostack',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
+        help: '/help/How-to-obtain-OpenStack-credentials',
         description: 'Your Cloud Research Environment can be deployed at any OpenStack cloud you have an account for.',
         paymentDescription: 'Commercial or Free',
         providerDescription: 'N/a',
@@ -125,7 +125,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'AWS',
         name: 'aws',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
+        help: '/help/How-to-obtain-AWS-credentials',
         description: 'Amazon WS is a commercial cloud provider. Use this if you already have an Amazon AWS account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Amazon AWS',
@@ -150,7 +150,7 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       {
         title: 'Google Cloud Platform',
         name: 'gcp',
-        help: 'https://github.com/phnmnl/phenomenal-h2020/wiki/Deployment-Cloud-Research-Environment',
+        help: '/help/How-to-obtain-GCE-credentials',
         description: 'Google Cloud Platform is a commercial cloud provider. Use this if you already have an GCP account.',
         paymentDescription: 'Commercial',
         providerDescription: 'Google Cloud',
