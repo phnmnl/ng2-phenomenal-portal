@@ -20,6 +20,8 @@ export class CloudProviderMetadataService {
               private tokenService: TokenService,
               private config: AppConfig) {
     this.baseUrl = config.getConfig('tsi_portal_url');
+    // this.baseUrl = 'http://localhost:8080/';
+
     this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
