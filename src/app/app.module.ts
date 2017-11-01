@@ -79,7 +79,7 @@ import {
  */
 export function SSOConfigService(config: AppConfig) {
 
-  return new ConfigService(config.getConfig('tsi_portal_url'), 'https://api.aap.tsi.ebi.ac.uk/');
+  return new ConfigService(config.getConfig('tsi_portal_url'), config.getConfig('aap_url'));
 
 }
 
