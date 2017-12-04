@@ -1,8 +1,8 @@
 {
   "host": "",
+  "port": "",
   "galaxy_url": "",
   "galaxy_api_key": "",
-  "port": "30767",
   "deployment_repo_url": "https://github.com/andersla/cloud-deploy-kubenow.git",
   "announcement": "",
   "tsi_portal_url": "https://api.portal.tsi.ebi.ac.uk/",
