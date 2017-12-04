@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 export class ApplicationLibraryService {
 
   private baseUrl = window.location.protocol + '//';
-  private metadataUrl='/php-phenomenal-portal-app-library';
+  private metadataUrl = '/php-phenomenal-portal-app-library';
   private headUrl: string;
 
   constructor(private http: Http,
