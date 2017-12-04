@@ -16,7 +16,7 @@ export class UserService {
               private config: AppConfig) {
     this.metadataUrl = '/api/v1/metadata';
     if (config.getConfig('host') !== '') {
-      this.baseUrl = config.getConfig('host') + ':8888';
+      this.baseUrl = config.getConfig('host') + ':' + this.config.getConfig('port');
       this.headUrl = this.baseUrl + this.metadataUrl;
     } else {
       this.headUrl = this.metadataUrl;

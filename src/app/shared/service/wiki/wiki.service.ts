@@ -17,7 +17,7 @@ export class WikiService {
               private config: AppConfig) {
     this.metadataUrl = '/php-phenomenal-portal-wiki';
     if (config.getConfig('host') !== '') {
-      this.baseUrl = config.getConfig('host') + ':80';
+      this.baseUrl = config.getConfig('host') + ':' + config.getConfig('port');
       this.headUrl = this.baseUrl + this.metadataUrl;
     } else {
       this.headUrl = this.metadataUrl;

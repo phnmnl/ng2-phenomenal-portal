@@ -18,7 +18,7 @@ export class ApplicationLibraryService {
 
     this.metadataUrl = '/php-phenomenal-portal-app-library';
     if (config.getConfig('host') !== '') {
-      this.baseUrl = config.getConfig('host') + ':80';
+      this.baseUrl = config.getConfig('host') + ':' + this.config.getConfig('port');
       this.headUrl = this.baseUrl + this.metadataUrl;
     } else {
       this.headUrl = this.metadataUrl;
