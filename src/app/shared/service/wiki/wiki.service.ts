@@ -9,19 +9,16 @@ import { AppConfig } from '../../../app.config';
 @Injectable()
 export class WikiService {
   private gitRepoName = 'phenomenal-h2020.wiki';
-  private baseUrl = '';
-  private metadataUrl: string;
+  private baseUrl = window.location.protocol + '//';
+  private metadataUrl = '/php-phenomenal-portal-wiki';
   private headUrl: string;
 
   constructor(private http: Http,
               private config: AppConfig) {
-    this.metadataUrl = '/php-phenomenal-portal-wiki';
-    if (config.getConfig('host') !== '') {
-      this.baseUrl = config.getConfig('host') + ':' + config.getConfig('port');
-      this.headUrl = this.baseUrl + this.metadataUrl;
-    } else {
-      this.headUrl = this.metadataUrl;
-    }
+    this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
+    this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
+    this.headUrl = this.baseUrl + this.metadataUrl;
+    console.log("BASE URL", this.baseUrl)
   }
 
   /**
