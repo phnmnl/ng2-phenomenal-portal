@@ -3,7 +3,15 @@
 This project was generated with [angular-cli](https://github.com/angular/angular-cli).
 
 ## Development server
-Run `ng serve --port 3000` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+To setup a development environment:
+
+ * update the URLs of the portal back-ends within the `proxy.config.json` configuration file; 
+ * run `ng serve --proxy-config proxy.config.json [--port <PORT>] [--host <HOST>]` for a dev server 
+(default `HOST` is `localhost`; default `PORT` is `3000`). 
+
+Navigate to `http://<HOST>:<PORT>/`.
+
+The app will automatically reload if you change any of the source files.
 
 
 ## Code scaffolding
