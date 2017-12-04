@@ -6,4 +6,6 @@
   "deployment_repo_url": "https://github.com/andersla/cloud-deploy-kubenow.git",
   "announcement": "",
   "tsi_portal_url": "https://api.portal.tsi.ebi.ac.uk"
+  "tsi_portal_url": "https://api.portal.tsi.ebi.ac.uk",
+  "aap_url": "https://api.aai.ebi.ac.uk/"
 }

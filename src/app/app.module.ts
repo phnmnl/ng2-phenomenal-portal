@@ -78,9 +78,7 @@ import {
  *
  */
 export function SSOConfigService(config: AppConfig) {
-
   return new ConfigService(config.getConfig('tsi_portal_url'), config.getConfig('aap_url'));
-
 }
 
 export function initConfig(config: AppConfig) {
