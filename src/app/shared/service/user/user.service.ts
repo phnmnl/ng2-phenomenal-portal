@@ -8,19 +8,15 @@ import { AppConfig } from '../../../app.config';
  */
 @Injectable()
 export class UserService {
-  private baseUrl = '';
-  private metadataUrl: string;
+  private baseUrl = window.location.protocol + '//';
+  private metadataUrl = '/api/v1/metadata';
   private headUrl: string;
 
   constructor(private http: Http,
               private config: AppConfig) {
-    this.metadataUrl = '/api/v1/metadata';
-    if (config.getConfig('host') !== '') {
-      this.baseUrl = config.getConfig('host') + ':8888';
-      this.headUrl = this.baseUrl + this.metadataUrl;
-    } else {
-      this.headUrl = this.metadataUrl;
-    }
+    this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
+    this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
+    this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
   /**

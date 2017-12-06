@@ -1,0 +1,16 @@
+{
+  "/api": {
+    "target": "http://localhost:3001",
+    "secure": false
+  },
+
+  "/php-phenomenal-portal-app-library": {
+    "target": "http://localhost:3002/",
+    "secure": true
+  },
+
+  "/php-phenomenal-portal-wiki": {
+    "target": "http://localhost:3003",
+    "secure": false
+  }
+}
