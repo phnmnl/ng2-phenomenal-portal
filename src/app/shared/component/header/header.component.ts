@@ -1,32 +1,53 @@
-import { Component, ElementRef, HostListener, isDevMode, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
+import { UserService } from "../../service/user/user.service";
+import { User } from "../../service/user/user";
 
 @Component({
   selector: 'ph-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  get logo(): string {
-    return this._logo;
-  }
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  public isCollapsed = false;
+  private subDomain;
+  private currentUser: User;
+  private removeMessageListener;
+  private isCollapsed = false;
   private _logo = 'assets/img/logo/phenomenal_4x.png';
-  private subdomain;
 
   constructor(private _eref: ElementRef,
-              private _router: Router,
-              public credentialService: CredentialService,
-              public tokenService: TokenService,) {
+              private router: Router,
+              private renderer: Renderer2,
+              private userService: UserService) {
     this.getSubdomain();
   }
 
   ngOnInit() {
-    if (isDevMode() || this.subdomain === 'portaldev') {
+    if (isDevMode() || this.subDomain === 'portaldev') {
       this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
     }
+
+    this.userService.currentUserObservable.subscribe(user => {
+      console.log("Updated user", user);
+      this.currentUser = <User> user;
+      if (this.currentUser) {
+        if (this.currentUser.hasAcceptedTermConditions) {
+          this.router.navigateByUrl('cloud-research-environment');
+        } else {
+          console.log("Already in terms & conditions");
+        }
+      } else {
+        this.router.navigateByUrl('/home');
+      }
+    });
+    this.removeMessageListener = this.userService.registerTokenListener(this.renderer);
+  }
+
+  ngOnDestroy() {
+    if (this.removeMessageListener)
+      this.removeMessageListener();
+  }
   }
 
   toggleMenu() {
@@ -38,10 +59,8 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.credentialService.clearCredentials();
-    this.tokenService.clearToken();
+    this.userService.logout();
     this.isCollapsed = false;
-    this._router.navigateByUrl('/home');
   }
 
   @HostListener('document:click', ['$event.target'])
