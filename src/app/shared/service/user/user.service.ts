@@ -1,7 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { Headers, Http, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AppConfig } from '../../../app.config';
+import { GalaxyUser } from "../galaxy/galaxy-user";
+import { AuthService } from "ng2-cloud-portal-service-lib";
+import { Subject } from "rxjs/Subject";
+import { User } from "./user";
 
 /**
  * Control user metadata
