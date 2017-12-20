@@ -23,6 +23,44 @@ export class UserService {
     this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
     this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
     this.headUrl = this.baseUrl + this.metadataUrl;
+  public logout() {
+    this.authService.credentialService.clearCredentials();
+    this.authService.tokenService.clearToken();
+    this.setCurrentUser(null);
+  }
+
+  public registerTokenListener(renderer: Renderer2) {
+    let removeMessageListener = renderer.listen('window', 'message', (event: MessageEvent) => {
+      if (!this.authService.canAcceptMessage(event)) {
+        console.log('received unacceptable message! Ignoring...', event);
+        return;
+      } else {
+        this.authService.processToken(event.data);
+        event.source.close();
+        if (this.authService.tokenService.getToken()) {
+          this.findById(this.authService.credentialService.getUsername()).subscribe(
+            (userInfo) => {
+              console.log("User exists", userInfo);
+              if (userInfo) { // TODO: explicit check if the user has accepted the terms&conditions
+                userInfo["id"] = this.authService.credentialService.getUsername();
+                userInfo["username"] = this.authService.credentialService.getUsername();
+                userInfo["email"] = this.authService.credentialService.getEmail();
+                console.log("Fetched user info: ", userInfo);
+                this.setCurrentUser(userInfo);
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      }
+    });
+
+    return removeMessageListener;
+  }
+
+
   private notifyUser() {
     this.currentUserSource.next(this.currentUser);
   }
