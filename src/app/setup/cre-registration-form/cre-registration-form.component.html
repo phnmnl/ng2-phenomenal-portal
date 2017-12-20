@@ -27,7 +27,7 @@
 </div>
 <div *ngIf="_isSuccess && cloudProvider.name === 'phenomenal'">
   <p>Congratulations! Please login with your PhenoMeNal Galaxy account.</p>
-  <a href="{{this.galaxyService.galaxy_instance_url}}" target="_blank">
+  <a href="{{this.galaxyInstanceUrl}}" target="_blank">
     <button mat-raised-button color="warn">Login</button>
   </a>
 </div>

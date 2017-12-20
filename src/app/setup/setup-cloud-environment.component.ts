@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
 import { CloudProvider } from './cloud-provider';
 import { Router } from '@angular/router';
-import { GalaxyService } from '../shared/service/galaxy/galaxy.service';
 import { UserService } from '../shared/service/user/user.service';
 
 @Component({
@@ -51,7 +50,6 @@ export class SetupCloudEnvironmentComponent implements OnInit {
               public credentialService: CredentialService,
               public tokenService: TokenService,
               private router: Router,
-              public galaxyService: GalaxyService,
               public userService: UserService) {
 
     this.isUserExist(this.credentialService.getUsername());
@@ -209,28 +207,13 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     );
   }
 
-  // registerGalaxyAccount(username: string, email: string, password: string) {
-  //
-  //   const user: GalaxyUser = {username: username, password: password, email: email};
-  //   this.galaxyService.createUser(user, this.galaxy_instance_url, this.galaxy_api_key).subscribe(
-  //     data => {
-  //       this._isFailed = false;
-  //       this._isSuccess = true;
-  //     },
-  //     error => {
-  //       this._isFailed = true;
-  //       this._isSuccess = false;
-  //       this._message = error.json().err_msg;
-  //     }
-  //   );
-  // }
 
   private isUserExist(id: string) {
 
     this.userService.get(id).subscribe(
-      (res) => {
-        if (res['error']) {
-          this.router.navigateByUrl('term-and-condition');
+      (userInfo) => {
+        if (!userInfo) {
+          // this.router.navigateByUrl('term-and-condition');
         }
       },
       (err) => {

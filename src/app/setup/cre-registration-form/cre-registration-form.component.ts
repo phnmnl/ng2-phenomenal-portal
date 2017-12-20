@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
 import { GalaxyUser } from '../../shared/service/galaxy/galaxy-user';
-import { GalaxyService } from '../../shared/service/galaxy/galaxy.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
 
@@ -46,11 +45,14 @@ export class CreRegistrationFormComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              public galaxyService: GalaxyService) {
   }
 
   ngOnInit() {
     this.buildForm();
+  }
+
+  get galaxyInstanceUrl(){
+    return this.appConfig.getConfig("galaxy_instance_url");
   }
 
   buildForm(): void {
@@ -95,7 +97,6 @@ export class CreRegistrationFormComponent implements OnInit {
 
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
-    this.galaxyService.createUser(user, this.galaxyService.galaxy_instance_url, this.galaxyService.galaxy_api_key).subscribe(
       data => {
         this._isFailed = false;
         this._isSuccess = true;

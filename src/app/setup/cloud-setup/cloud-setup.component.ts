@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
-import { GalaxyService } from '../../shared/service/galaxy/galaxy.service';
 
 @Component({
   selector: 'ph-cloud-setup',
@@ -12,13 +11,13 @@ export class CloudSetupComponent implements OnInit {
 
   @Input() cloudProvider: CloudProvider;
 
-  constructor(public galaxyService: GalaxyService) {
   }
 
   ngOnInit() {
   }
 
   get galaxy_instance_url(): string {
-    return this.galaxyService.galaxy_instance_url;
+    console.debug("Galaxy instance URL:", this.config.getConfig("galaxy_url"));
+    return this.config.getConfig("galaxy_url") + "/user/login";
   }
 }

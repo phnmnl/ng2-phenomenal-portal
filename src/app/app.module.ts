@@ -46,7 +46,6 @@ import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
-import { GalaxyService } from './shared/service/galaxy/galaxy.service';
 import { UserService } from './shared/service/user/user.service';
 // import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
@@ -151,7 +150,6 @@ export function initConfig(config: AppConfig) {
     ErrorService,
     CredentialService,
     TokenService,
-    GalaxyService,
     AccountService,
     CloudProviderMetadataService,
     JwtHelper,
