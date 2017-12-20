@@ -22,6 +22,7 @@ import { Ng2PhenomenalPortalRoutingModule } from './app-routing.module';
 import { JenkinsReportService } from './shared/service/jenkins-report/jenkins-report.service';
 import { ApplicationLibraryService } from './shared/service/application-library/application-library.service';
 import { LoginComponent } from './login/login.component';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import {
   AccountService,
   ApplicationService,
@@ -133,7 +134,8 @@ export function initConfig(config: AppConfig) {
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    BsDropdownModule.forRoot()
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
