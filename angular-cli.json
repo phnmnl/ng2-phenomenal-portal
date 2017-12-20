@@ -19,7 +19,6 @@
       "prefix": "ph",
       "mobile": false,
       "styles": [
-        "assets/css/font-awesome.min.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "assets/css/mdb.min.css",
         "styles.css",
