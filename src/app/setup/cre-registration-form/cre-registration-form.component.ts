@@ -3,6 +3,8 @@ import { CloudProvider } from '../cloud-provider';
 import { GalaxyUser } from '../../shared/service/galaxy/galaxy-user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
+import { UserService } from "../../shared/service/user/user.service";
+import { AppConfig } from "../../app.config";
 
 
 @Component({
@@ -45,6 +47,8 @@ export class CreRegistrationFormComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
+              private appConfig: AppConfig,
+              private userService: UserService) {
   }
 
   ngOnInit() {
