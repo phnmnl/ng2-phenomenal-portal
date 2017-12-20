@@ -136,6 +136,29 @@ export class UserService {
   /**
    * update a user metadata
    * @param {string} id
+   * @param user
+   * @returns {Observable<string[]>}
+   */
+  createGalaxyAccount(id: string, user: GalaxyUser): Observable<string[]> {
+    const url = this.headUrl + "/createGalaxyUser";
+    const headers = new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    const options = new RequestOptions({headers: headers}); // Create a request option
+
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('token', id);
+    urlSearchParams.append('username', user.username);
+    urlSearchParams.append('password', user.password);
+    urlSearchParams.append('email', user.email);
+
+    return this.http.post(url, urlSearchParams.toString(), options).map(this.extractData);
+  }
+
+  /**
+   * update a user metadata
+   * @param {string} id
    * @returns {Observable<string[]>}
    */
   updateTermCondition(id: string): Observable<string[]> {
@@ -154,10 +177,18 @@ export class UserService {
     return this.http.put(url, urlSearchParams.toString(), options).map(this.extractData);
   }
 
+  private extractUserData(res: Response) {
+    console.log("Response", res);
+    let data = res.json();
+    console.log("Response body", data);
+    return "data" in data ? data["data"] : false;
+  }
+
   private extractData(res: Response) {
+    console.log("Response", res);
+    console.log("Response body", res.json());
     const body = res.json();
     return body || {};
   }
-
 
 }
