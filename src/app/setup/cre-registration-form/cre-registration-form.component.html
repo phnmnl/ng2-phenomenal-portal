@@ -11,7 +11,7 @@
     <mat-input-container class="input-width">
       <input matInput placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
     </mat-input-container>
-    <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword || _isFailed"
+    <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
@@ -30,6 +30,11 @@
   <a href="{{this.galaxyInstanceUrl}}" target="_blank">
     <button mat-raised-button color="warn">Login</button>
   </a>
+  <!-- Display existent error messages -->
+  <div *ngIf="message.length > 0">
+    <br>
+    <div class="alert alert-warning">{{ message}}</div>
+  </div>
 </div>
 <div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal'">
   <p>Please review your input data before deployment.</p>
