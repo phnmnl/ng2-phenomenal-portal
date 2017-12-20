@@ -23,6 +23,30 @@ export class UserService {
     this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
     this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
     this.headUrl = this.baseUrl + this.metadataUrl;
+
+    // Check whether a user is already logged in and loads its data
+    console.log("Current username in CredentialService", this.authService.credentialService.getUsername());
+    if (this.authService.credentialService.getUsername()) {
+      this.findById(this.authService.credentialService.getUsername()).subscribe(
+        (userInfo) => {
+          console.log("IsUser Exists @ LoginComponent", userInfo);
+          if (userInfo) { // TODO: explicit check if the user has accepted the terms&conditions
+            userInfo["id"] = this.authService.credentialService.getUsername();
+            userInfo["username"] = this.authService.credentialService.getUsername();
+            userInfo["email"] = this.authService.credentialService.getEmail();
+            console.log("Fetched user info: ", userInfo);
+            this.setCurrentUser(userInfo);
+          }
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    }
+
+    console.info("UserService initialized!!!");
+  }
+
   public logout() {
     this.authService.credentialService.clearCredentials();
     this.authService.tokenService.clearToken();
