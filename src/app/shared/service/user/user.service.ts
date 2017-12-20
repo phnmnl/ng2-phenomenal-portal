@@ -17,7 +17,7 @@ export class UserService {
   private headUrl: string;
   private currentUser;
 
-  // 
+  //
   private currentUserSource = new Subject<{}>();
   public currentUserObservable = this.currentUserSource.asObservable();
 
@@ -102,6 +102,14 @@ export class UserService {
     this.currentUser = userInfo ? new User(userInfo) : null;
     this.notifyUser();
   }
+
+
+  findById(id: string): Observable<string[]> {
+    const url = this.headUrl + '?id=' + id;
+    return this.http.get(url).map(this.extractUserData);
+  }
+
+
   /**
    * get user metadata by id
    * @param {string} id
