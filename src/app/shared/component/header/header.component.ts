@@ -48,6 +48,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.removeMessageListener)
       this.removeMessageListener();
   }
+
+  get logo(): string {
+    return this._logo;
   }
 
   toggleMenu() {
@@ -74,9 +77,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const domain = window.location.hostname;
     if (domain.indexOf('.') < 0 ||
       domain.split('.')[0] === 'example' || domain.split('.')[0] === 'lvh' || domain.split('.')[0] === 'www') {
-      this.subdomain = '';
+      this.subDomain = '';
     } else {
-      this.subdomain = domain.split('.')[0];
+      this.subDomain = domain.split('.')[0];
     }
   }
 
