@@ -11,14 +11,31 @@ export class UserService {
   private baseUrl = window.location.protocol + '//';
   private metadataUrl = '/api/v1/metadata';
   private headUrl: string;
+  private currentUser;
+
+  // 
+  private currentUserSource = new Subject<{}>();
+  public currentUserObservable = this.currentUserSource.asObservable();
 
   constructor(private http: Http,
+              private authService: AuthService,
               private config: AppConfig) {
     this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
     this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
     this.headUrl = this.baseUrl + this.metadataUrl;
+  private notifyUser() {
+    this.currentUserSource.next(this.currentUser);
   }
 
+  getCurrentUser(): User {
+    return this.currentUser;
+  }
+
+  setCurrentUser(userInfo: any) {
+    console.log("Call to 'setCurrentUser'");
+    this.currentUser = userInfo ? new User(userInfo) : null;
+    this.notifyUser();
+  }
   /**
    * get user metadata by id
    * @param {string} id
