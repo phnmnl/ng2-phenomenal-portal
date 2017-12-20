@@ -22,17 +22,7 @@
       <p></p>
 
     </div>
-
-    <div *ngIf="tokenService.getToken()">
-
-      <h1>Welcome, {{ this.credentialService.getGivenName() }}!</h1>
-      <br>
-      <p>Please click Continue</p>
-
-      <button mat-raised-button (click)="next()" color="primary">
-        Continue
-      </button>
-    </div>
+    
   </div>
 
 </main>
