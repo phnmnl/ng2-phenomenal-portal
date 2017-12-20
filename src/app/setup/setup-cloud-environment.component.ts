@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
 import { CloudProvider } from './cloud-provider';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
+import { User } from "../shared/service/user/user";
 
 @Component({
   selector: 'ph-setup-cloud-environment',
   templateUrl: './setup-cloud-environment.component.html',
-  styleUrls: ['./setup-cloud-environment.component.css']
+  styleUrls: ['./setup-cloud-environment.component.css'],
+  providers: [UserService]
 })
 export class SetupCloudEnvironmentComponent implements OnInit {
 
+  private currentUser: User = new User({"username": "pino"});
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
@@ -50,9 +53,19 @@ export class SetupCloudEnvironmentComponent implements OnInit {
               public credentialService: CredentialService,
               public tokenService: TokenService,
               private router: Router,
-              public userService: UserService) {
+              public userService: UserService,
+              private ref: ChangeDetectorRef,
+              private zone: NgZone) {
 
-    this.isUserExist(this.credentialService.getUsername());
+
+    this.userService.currentUserObservable.subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
 
     // this._aws_region = [
     //   {value: 'eu-west-1', displayValue: 'EU (Ireland)'},
@@ -203,21 +216,6 @@ export class SetupCloudEnvironmentComponent implements OnInit {
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);
         callback(error);
-      }
-    );
-  }
-
-
-  private isUserExist(id: string) {
-
-    this.userService.get(id).subscribe(
-      (userInfo) => {
-        if (!userInfo) {
-          // this.router.navigateByUrl('term-and-condition');
-        }
-      },
-      (err) => {
-        console.log(err);
       }
     );
   }

@@ -1,7 +1,7 @@
 <main>
   <div class="container text-xs-center">
 
-    <div *ngIf="tokenService.getToken()">
+    <div *ngIf="currentUser">
       <h1>Welcome, {{ this.credentialService.getGivenName() }}!</h1>
       <br>
       <p>Please agree the following terms and conditions before continue</p>
