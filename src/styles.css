@@ -99,8 +99,17 @@ input:focus {
   margin-top: 200px;
 }
 
+.user-profile-menu-info{
+  padding: 0;
+}
+
 #user-profile{
   padding: 13.5px;
+}
+
+.user-id{
+  margin-top: 10px;
+  font-size: x-small;
 }
 
 @-webkit-keyframes load8 {
