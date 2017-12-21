@@ -34,8 +34,9 @@ export class UserService {
       this.findById(this.authService.credentialService.getUsername()).subscribe(
         (userInfo) => {
           console.log("IsUser Exists @ LoginComponent", userInfo);
-          if (userInfo) { // TODO: explicit check if the user has accepted the terms&conditions
+          if (userInfo) {
             userInfo["id"] = this.authService.credentialService.getUsername();
+            userInfo["name"] = this.authService.credentialService.getGivenName();
             userInfo["username"] = this.authService.credentialService.getUsername();
             userInfo["email"] = this.authService.credentialService.getEmail();
             console.log("Fetched user info: ", userInfo);

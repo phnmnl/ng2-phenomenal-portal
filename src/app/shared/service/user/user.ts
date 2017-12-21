@@ -1,5 +1,6 @@
 export class User {
   id: string;
+  name: string;
   username: string;
   email: string;
   hasAcceptedTermConditions: boolean;
@@ -7,6 +8,7 @@ export class User {
 
   constructor(userInfo: any) {
     this.id = userInfo.id || userInfo.Idmetadata;
+    this.name = userInfo.name;
     this.username = userInfo.username;
     this.email = userInfo.email;
     this.hasAcceptedTermConditions = userInfo.hasAcceptedTermConditions || userInfo.Isaccepttermcondition === 1;
