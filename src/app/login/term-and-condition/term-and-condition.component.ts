@@ -7,7 +7,8 @@ import { User } from "../../shared/service/user/user";
 @Component({
   selector: 'ph-term-and-condition',
   templateUrl: './term-and-condition.component.html',
-  styleUrls: ['./term-and-condition.component.scss']
+  styleUrls: ['./term-and-condition.component.scss'],
+  providers: [UserService]
 })
 export class TermAndConditionComponent implements OnInit {
 
@@ -26,13 +27,11 @@ export class TermAndConditionComponent implements OnInit {
       console.log("Updated user", user);
       this.currentUser = <User> user;
       if (this.currentUser && this.currentUser.hasAcceptedTermConditions) {
+        console.log("Terms & conditions already accepted");
         this.router.navigateByUrl('cloud-research-environment');
-      } else {
-        console.log("Already in terms & conditions");
       }
     });
   }
-
 
   acceptTermCondition() {
     this.userService.add(this.credentialService.getUsername()).subscribe(
