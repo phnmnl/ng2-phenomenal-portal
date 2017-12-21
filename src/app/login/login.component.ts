@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'ph-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [UserService]
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
@@ -33,6 +34,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.userService.currentUserObservable.subscribe(user => {
+      console.log("Updated user", user);
+      this._user = <User> user;
+    });
   }
 
   get user(): User {
