@@ -33,9 +33,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.currentUser = <User> user;
       if (this.currentUser) {
         if (this.currentUser.hasAcceptedTermConditions) {
+          console.log("Already in terms & conditions");
           this.router.navigateByUrl('cloud-research-environment');
         } else {
-          console.log("Already in terms & conditions");
+          this.router.navigateByUrl('term-and-condition');
         }
       } else {
         this.router.navigateByUrl('/home');
