@@ -56,7 +56,7 @@ export class CreRegistrationFormComponent implements OnInit {
   }
 
   get galaxyInstanceUrl(){
-    return this.appConfig.getConfig("galaxy_instance_url");
+    return this.appConfig.getConfig("galaxy_url");
   }
 
   buildForm(): void {
