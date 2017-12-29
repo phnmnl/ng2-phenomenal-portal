@@ -6,7 +6,8 @@ import { User } from "../../service/user/user";
 @Component({
   selector: 'ph-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  providers: [UserService]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
