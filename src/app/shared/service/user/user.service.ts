@@ -72,6 +72,7 @@ export class UserService {
               console.log("User exists", userInfo);
               if (userInfo) { // TODO: explicit check if the user has accepted the terms&conditions
                 userInfo["id"] = this.authService.credentialService.getUsername();
+                userInfo["name"] = this.authService.credentialService.getGivenName();
                 userInfo["username"] = this.authService.credentialService.getUsername();
                 userInfo["email"] = this.authService.credentialService.getEmail();
                 console.log("Fetched user info: ", userInfo);
