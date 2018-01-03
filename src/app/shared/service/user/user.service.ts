@@ -19,7 +19,6 @@ export class UserService {
 
   //
   private currentUserSource = new Subject<{}>();
-  public currentUserObservable = this.currentUserSource.asObservable();
 
   constructor(private http: Http,
               private authService: AuthService,
@@ -56,6 +55,11 @@ export class UserService {
     this.authService.credentialService.clearCredentials();
     this.authService.tokenService.clearToken();
     this.setCurrentUser(null);
+  }
+
+
+  public getObservableCurrentUser(): Observable<any> {
+    return this.currentUserSource.asObservable();
   }
 
   public registerTokenListener(renderer: Renderer2) {
