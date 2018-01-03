@@ -57,6 +57,10 @@ export class UserService {
     this.setCurrentUser(null);
   }
 
+  public isUserAuthenticated() {
+    console.log(this.authService.credentialService.getUsername(), this.authService.credentialService.getUsername() !== null);
+    return this.authService.credentialService.getUsername() !== null;
+  }
 
   public getObservableCurrentUser(): Observable<any> {
     return this.currentUserSource.asObservable();
