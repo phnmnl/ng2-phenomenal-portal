@@ -71,6 +71,9 @@ import {
   MatSelectModule
 } from '@angular/material';
 
+import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
+import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
+
 /**
  * To set the global environment variables
  *
@@ -144,6 +147,8 @@ export function initConfig(config: AppConfig) {
     JenkinsReportService,
     ApplicationLibraryService,
     UserService,
+    UserAuthenticatedGuard,
+    AcceptedTermsGuard,
     // PhenomenalTokenService,
     ApplicationService,
     AuthService,
