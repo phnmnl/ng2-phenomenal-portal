@@ -56,16 +56,6 @@ export class SetupCloudEnvironmentComponent implements OnInit {
               private ref: ChangeDetectorRef,
               private zone: NgZone) {
 
-
-    this.userService.currentUserObservable.subscribe(user => {
-      console.log("Updating the current user", user);
-      this.currentUser = <User> user;
-      if (user) {
-        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
-        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
-      }
-    });
-
     // this._aws_region = [
     //   {value: 'eu-west-1', displayValue: 'EU (Ireland)'},
     //   {value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
@@ -182,6 +172,17 @@ export class SetupCloudEnvironmentComponent implements OnInit {
         }
       }
     ];
+  }
+
+  ngOnInit() {
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
 
     if (this.tokenService.getToken()) {
       this.getAllApplication((result) => {
@@ -198,9 +199,6 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     this.tokenService.clearToken();
     this.credentialService.clearCredentials();
     this.router.navigateByUrl('/login');
-  }
-
-  ngOnInit() {
   }
 
   getAllApplication(callback) {
