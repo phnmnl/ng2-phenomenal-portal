@@ -2,7 +2,10 @@
 
   <div class="container text-xs-center">
 
-    <div *ngIf="tokenService.getToken()">
+    <div *ngIf="!currentUser">
+      <div class="loader">Loading...</div>
+    </div>
+
       <p>In order to deploy your CRE you need a cloud provider.</p>
       <p>Please select a cloud provider for setting up your Cloud Research Environment.</p>
       <small>
@@ -17,7 +20,5 @@
       </div>
 
     </div>
-
-  </div>
 
 </main>
