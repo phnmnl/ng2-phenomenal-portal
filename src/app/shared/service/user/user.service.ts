@@ -32,7 +32,7 @@ export class UserService {
     if (this.authService.credentialService.getUsername()) {
       this.findById(this.authService.credentialService.getUsername()).subscribe(
         (userInfo) => {
-          console.log("IsUser Exists @ LoginComponent", userInfo);
+          console.log("User info from backend service", userInfo);
           if (userInfo) {
             userInfo["id"] = this.authService.credentialService.getUsername();
             userInfo["name"] = this.authService.credentialService.getGivenName();
@@ -40,9 +40,12 @@ export class UserService {
             userInfo["email"] = this.authService.credentialService.getEmail();
             console.log("Fetched user info: ", userInfo);
             this.setCurrentUser(userInfo);
+          } else {
+            console.log("User with id '" + this.authService.credentialService.getUsername() + "' not found!");
           }
         },
         (err) => {
+          this.logout();
           console.error(err);
         }
       );
@@ -108,7 +111,7 @@ export class UserService {
   }
 
   setCurrentUser(userInfo: any) {
-    console.log("Call to 'setCurrentUser'");
+    console.log("Call to 'setCurrentUser'", userInfo);
     this.currentUser = userInfo ? new User(userInfo) : null;
     this.notifyUser();
   }
