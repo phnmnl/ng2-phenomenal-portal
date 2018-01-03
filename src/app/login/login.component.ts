@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  public existsUser() {
+    return this.userService.isUserAuthenticated();
   }
 
   get user(): User {

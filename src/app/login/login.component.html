@@ -3,7 +3,7 @@
 
     <br>
 
-    <div *ngIf="!tokenService.getToken()">
+    <div *ngIf="!existsUser()">
 
       <p>Let us setup your Cloud Research Environment.</p>
 
@@ -21,6 +21,10 @@
 
       <p></p>
 
+    </div>
+
+    <div *ngIf="existsUser()">
+      <div class="loader">Loading...</div>
     </div>
     
   </div>
