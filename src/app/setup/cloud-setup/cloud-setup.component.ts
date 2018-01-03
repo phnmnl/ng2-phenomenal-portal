@@ -7,8 +7,7 @@ import { AppConfig } from "../../app.config";
 @Component({
   selector: 'ph-cloud-setup',
   templateUrl: './cloud-setup.component.html',
-  styleUrls: ['./cloud-setup.component.scss'],
-  providers: [UserService]
+  styleUrls: ['./cloud-setup.component.scss']
 })
 
 export class CloudSetupComponent implements OnInit {

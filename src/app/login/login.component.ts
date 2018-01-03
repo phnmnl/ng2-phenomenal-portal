@@ -13,8 +13,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'ph-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  providers: [UserService]
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
 

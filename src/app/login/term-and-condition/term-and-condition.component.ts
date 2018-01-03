@@ -7,8 +7,7 @@ import { User } from "../../shared/service/user/user";
 @Component({
   selector: 'ph-term-and-condition',
   templateUrl: './term-and-condition.component.html',
-  styleUrls: ['./term-and-condition.component.scss'],
-  providers: [UserService]
+  styleUrls: ['./term-and-condition.component.scss']
 })
 export class TermAndConditionComponent implements OnInit {
 

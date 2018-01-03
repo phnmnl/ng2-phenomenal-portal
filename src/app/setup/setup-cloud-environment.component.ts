@@ -8,8 +8,7 @@ import { User } from "../shared/service/user/user";
 @Component({
   selector: 'ph-setup-cloud-environment',
   templateUrl: './setup-cloud-environment.component.html',
-  styleUrls: ['./setup-cloud-environment.component.css'],
-  providers: [UserService]
+  styleUrls: ['./setup-cloud-environment.component.css']
 })
 export class SetupCloudEnvironmentComponent implements OnInit {
 
