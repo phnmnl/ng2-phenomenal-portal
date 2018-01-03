@@ -11,10 +11,10 @@ import { User } from "../../shared/service/user/user";
 })
 export class TermAndConditionComponent implements OnInit {
 
-  currentUser: User;
   checked1 = false;
   checked2 = false;
   checked3 = false;
+  currentUser: User;
 
   constructor(public credentialService: CredentialService,
               public userService: UserService,
@@ -33,6 +33,9 @@ export class TermAndConditionComponent implements OnInit {
       (res) => {
         console.log(res);
         this.router.navigateByUrl('cloud-research-environment');
+      },
+      (err) => {
+        console.error(err);
       }
     );
   }
