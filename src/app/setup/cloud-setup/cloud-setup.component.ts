@@ -22,7 +22,7 @@ export class CloudSetupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.currentUserObservable.subscribe(user => {
+    this.userService.getObservableCurrentUser().subscribe(user => {
       this.user = <User> user;
       if(user) {
         console.log("*** Has Galaxy account: " + this.user.hasGalaxyAccount);
