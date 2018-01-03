@@ -33,10 +33,28 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.userService.currentUserObservable.subscribe(user => {
-      console.log("Updated user", user);
-      this._user = <User> user;
-    });
+    this._user = this.userService.getCurrentUser();
+    if (this._user)
+      this.isAuthorized(this._user);
+    else
+      this.userService.getObservableCurrentUser().subscribe(user => {
+        console.log("Updated user", user);
+        this.isAuthorized(user);
+        this._user = <User> user;
+      });
+  }
+
+  private isAuthorized(user: User) {
+    if (user) {
+      if (user.hasAcceptedTermConditions) {
+        console.log("Already in terms & conditions");
+        this.router.navigateByUrl('cloud-research-environment/setup');
+      } else {
+        this.router.navigateByUrl('term-and-condition');
+      }
+    }
+  }
+
   }
 
   get user(): User {

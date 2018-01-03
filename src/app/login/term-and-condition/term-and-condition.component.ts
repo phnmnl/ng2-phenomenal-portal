@@ -22,13 +22,9 @@ export class TermAndConditionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.currentUserObservable.subscribe(user => {
-      console.log("Updated user", user);
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updated user", this, user);
       this.currentUser = <User> user;
-      if (this.currentUser && this.currentUser.hasAcceptedTermConditions) {
-        console.log("Terms & conditions already accepted");
-        this.router.navigateByUrl('cloud-research-environment');
-      }
     });
   }
 

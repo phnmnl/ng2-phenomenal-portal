@@ -28,19 +28,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
     }
 
-    this.userService.currentUserObservable.subscribe(user => {
-      console.log("Updated user", user);
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updated user @ ", user);
       this.currentUser = <User> user;
-      if (this.currentUser) {
-        if (this.currentUser.hasAcceptedTermConditions) {
-          console.log("Already in terms & conditions");
-          this.router.navigateByUrl('cloud-research-environment');
-        } else {
-          this.router.navigateByUrl('term-and-condition');
-        }
-      } else {
-        this.router.navigateByUrl('/home');
-      }
     });
     this.removeMessageListener = this.userService.registerTokenListener(this.renderer);
   }
@@ -65,6 +55,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.userService.logout();
     this.isCollapsed = false;
+    this.router.navigateByUrl('/home');
   }
 
   @HostListener('document:click', ['$event.target'])
