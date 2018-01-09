@@ -50,7 +50,6 @@ export class CreDashboardComponent implements OnInit {
               public userService: UserService,
               private router: Router,
               private http: Http) {
-    this.isUserExist(this.credentialService.getUsername());
   }
 
   ngOnInit() {
@@ -231,19 +230,4 @@ export class CreDashboardComponent implements OnInit {
       }
     );
   }
-
-  private isUserExist(id: string) {
-
-    this.userService.get(id).subscribe(
-      (res) => {
-        if (res['error']) {
-          this.router.navigateByUrl('term-and-condition');
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
 }

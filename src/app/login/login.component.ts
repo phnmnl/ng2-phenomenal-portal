@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ApplicationService,
   AuthService,
@@ -17,10 +17,48 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  private _elixir_logo = 'assets/img/logo/elixir.png';
-  removeMessageListener: Function;
-
   private _user: User;
+
+  private _elixir_logo = 'assets/img/logo/elixir.png';
+
+
+  constructor(private applicationService: ApplicationService,
+              private authService: AuthService,
+              public credentialService: CredentialService,
+              public tokenService: TokenService,
+              public errorService: ErrorService,
+              public userService: UserService,
+              private router: Router) {
+  }
+
+
+  ngOnInit() {
+    this._user = this.userService.getCurrentUser();
+    if (this._user)
+      this.isAuthorized(this._user);
+    else
+      this.userService.getObservableCurrentUser().subscribe(user => {
+        console.log("Updated user", user);
+        this.isAuthorized(user);
+        this._user = <User> user;
+      });
+  }
+
+  private isAuthorized(user: User) {
+    if (user) {
+      if (user.hasAcceptedTermConditions) {
+        console.log("Already in terms & conditions");
+        this.router.navigateByUrl('cloud-research-environment/setup');
+      } else {
+        this.router.navigateByUrl('term-and-condition');
+      }
+    }
+  }
+
+
+  public existsUser() {
+    return this.userService.isUserAuthenticated();
+  }
 
   get user(): User {
     return this._user;
@@ -30,55 +68,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     return this._elixir_logo;
   }
 
-  constructor(private applicationService: ApplicationService,
-              private authService: AuthService,
-              public credentialService: CredentialService,
-              public tokenService: TokenService,
-              public errorService: ErrorService,
-              public userService: UserService,
-              public renderer: Renderer2,
-              private router: Router) {
-
-
-    this.removeMessageListener = renderer.listen('window', 'message', (event: MessageEvent) => {
-      if (!this.authService.canAcceptMessage(event)) {
-        console.log('received unacceptable message! Ignoring...', event);
-        return;
-      }
-      this.authService.processToken(event.data);
-      event.source.close();
-      if (tokenService.getToken()) {
-        this.getAllApplication();
-      }
-    });
-  }
-
-  next() {
-    this.isUserExist(this.credentialService.getUsername());
-  }
-
-  private isUserExist(id: string) {
-
-    this.userService.get(id).subscribe(
-      (res) => {
-        if (res['data']) {
-          this.router.navigateByUrl('cloud-research-environment');
-        }
-        if (res['error']) {
-          this.router.navigateByUrl('term-and-condition');
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  ngOnInit() {
-
-  }
-
   ssoLink() {
+    console.log("SSO link: " + this.authService.ssoLink());
     return this.authService.ssoLink();
   }
 
@@ -99,8 +90,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
   }
 
-
   ngOnDestroy() {
-    this.removeMessageListener();
   }
 }

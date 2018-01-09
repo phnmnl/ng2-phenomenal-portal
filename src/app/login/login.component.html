@@ -3,7 +3,7 @@
 
     <br>
 
-    <div *ngIf="!tokenService.getToken()">
+    <div *ngIf="!existsUser()">
 
       <p>Let us setup your Cloud Research Environment.</p>
 
@@ -23,16 +23,10 @@
 
     </div>
 
-    <div *ngIf="tokenService.getToken()">
-
-      <h1>Welcome, {{ this.credentialService.getGivenName() }}!</h1>
-      <br>
-      <p>Please click Continue</p>
-
-      <button mat-raised-button (click)="next()" color="primary">
-        Continue
-      </button>
+    <div *ngIf="existsUser()">
+      <div class="loader">Loading...</div>
     </div>
+    
   </div>
 
 </main>

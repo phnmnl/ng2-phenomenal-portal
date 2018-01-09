@@ -1,7 +1,7 @@
 <header>
 
   <!--Navbar-->
-  <nav class="navbar navbar-fixed-top scrolling-navbar navbar-light primary-color-light bg-faded">
+  <nav class="navbar navbar-fixed-top scrolling-navbar navbar-light  nav-pills primary-color-light bg-faded">
 
     <div class="container">
 
@@ -17,8 +17,16 @@
       </button>
       <!--Collapse content-->
       <div [collapse]="!isCollapsed" class="collapse navbar-toggleable-md">
+
+        <!-- User info when the NavBar is collapsed -->
+        <div *ngIf="currentUser && isCollapsed" class="text-right">
+          <span>Signed as {{ credentialService.getEmail() }}</span>
+          <hr>
+        </div>
+
         <!--Links-->
         <ul class="nav navbar-nav pull-xs-right">
+
           <li class="nav-item">
             <a (click)="closeMenu()" class="nav-link" [routerLink]="['/home']" routerLinkActive="active">Home</a>
           </li>
@@ -34,14 +42,51 @@
             <a (click)="closeMenu()" class="nav-link" [routerLink]="['/help']" routerLinkActive="active">Help</a>
           </li>
 
-          <li *ngIf="!tokenService.getToken()" class="nav-item" routerLinkActive="active">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']">Login</a>
+          <li *ngIf="!currentUser" class="nav-item" routerLinkActive="active">
+            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+              Sign in
+            </a>
           </li>
 
-          <li *ngIf="tokenService.getToken()" class="nav-item" routerLinkActive="active">
-            <a (click)="logout()" class="nav-link">Logout</a>
+          <li *ngIf="currentUser && isCollapsed" class="nav-item" routerLinkActive="active">
+            <hr>
+            <a (click)="logout()" class="nav-link">
+              <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+            </a>
+            <hr>
           </li>
 
+          <li *ngIf="currentUser && !isCollapsed" class="nav-item" routerLinkActive="active">
+            <div class="btn-group" dropdown>
+              <a id="user-profile" dropdownToggle (click)="closeMenu()" class="nav-link dropdown-toggle">
+                <span style="margin-top: -4px;">
+                  <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+                  <!--<span class="caret"></span>-->
+                </span>
+              </a>
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                <li role="menuitem" class="dropdown-item">
+                  <div class="dropdown-item user-profile-menu-info" href="#">
+                    <div class="text-sm-right">
+                      Hi, <span class="font-weight-bold">{{ currentUser.name }} !</span><br>
+                      <div class="text-sm-right">
+                        <div class="font-italic">{{ currentUser.email }}</div>
+                        <div class="user-id">id: {{ currentUser.id }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </li>
+                <li class="divider dropdown-divider"></li>
+                <li role="menuitem">
+                  <a (click)="logout()" class="dropdown-item nav-link">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i> Sign out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
         </ul>
       </div>
       <!--/.Collapse content-->

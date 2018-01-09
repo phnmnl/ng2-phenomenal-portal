@@ -22,6 +22,7 @@ import { Ng2PhenomenalPortalRoutingModule } from './app-routing.module';
 import { JenkinsReportService } from './shared/service/jenkins-report/jenkins-report.service';
 import { ApplicationLibraryService } from './shared/service/application-library/application-library.service';
 import { LoginComponent } from './login/login.component';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import {
   AccountService,
   ApplicationService,
@@ -46,7 +47,6 @@ import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
-import { GalaxyService } from './shared/service/galaxy/galaxy.service';
 import { UserService } from './shared/service/user/user.service';
 // import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
@@ -70,6 +70,9 @@ import {
   MatOptionModule,
   MatSelectModule
 } from '@angular/material';
+
+import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
+import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
 
 /**
  * To set the global environment variables
@@ -134,7 +137,8 @@ export function initConfig(config: AppConfig) {
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    BsDropdownModule.forRoot()
   ],
   entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
   providers: [
@@ -143,6 +147,8 @@ export function initConfig(config: AppConfig) {
     JenkinsReportService,
     ApplicationLibraryService,
     UserService,
+    UserAuthenticatedGuard,
+    AcceptedTermsGuard,
     // PhenomenalTokenService,
     ApplicationService,
     AuthService,
@@ -151,7 +157,6 @@ export function initConfig(config: AppConfig) {
     ErrorService,
     CredentialService,
     TokenService,
-    GalaxyService,
     AccountService,
     CloudProviderMetadataService,
     JwtHelper,

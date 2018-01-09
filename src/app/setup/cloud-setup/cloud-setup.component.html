@@ -16,7 +16,7 @@
           <a href="{{galaxy_instance_url}}" target="_blank">
             <button mat-raised-button color="warn">Login</button>
           </a>
-          <button mat-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
+          <button *ngIf="user && !user.hasGalaxyAccount" mat-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
         </div>
         <div *ngIf="cloudProvider.name === 'aws' || cloudProvider.name === 'gcp'">
           <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>

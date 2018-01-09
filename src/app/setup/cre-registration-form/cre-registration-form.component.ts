@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
 import { GalaxyUser } from '../../shared/service/galaxy/galaxy-user';
-import { GalaxyService } from '../../shared/service/galaxy/galaxy.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
+import { UserService } from "../../shared/service/user/user.service";
+import { AppConfig } from "../../app.config";
 
 
 @Component({
@@ -46,11 +47,16 @@ export class CreRegistrationFormComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              public galaxyService: GalaxyService) {
+              private appConfig: AppConfig,
+              private userService: UserService) {
   }
 
   ngOnInit() {
     this.buildForm();
+  }
+
+  get galaxyInstanceUrl(){
+    return this.appConfig.getConfig("galaxy_url") + "/user/login";
   }
 
   buildForm(): void {
@@ -93,17 +99,31 @@ export class CreRegistrationFormComponent implements OnInit {
 
   registerGalaxyAccount(username: string, email: string, password: string) {
 
+    let currentUser = this.userService.getCurrentUser();
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
-    this.galaxyService.createUser(user, this.galaxyService.galaxy_instance_url, this.galaxyService.galaxy_api_key).subscribe(
+
+    this.userService.createGalaxyAccount(currentUser.id, user).subscribe(
       data => {
         this._isFailed = false;
         this._isSuccess = true;
+        currentUser.hasGalaxyAccount = true;
+        return false;
       },
       error => {
-        this._isFailed = true;
-        this._isSuccess = false;
-        this._message = error.json().err_msg;
+        let error_info = JSON.parse(error._body);
+        console.log("The error object", error_info);
+        if(error_info.code === 409){
+          // Consider registration OK even if the user has an existent account with that email:
+          // in such a case an error message is shown
+          this._isFailed = false;
+          this._isSuccess = true;
+        }else{
+          this._isFailed = true;
+          this._isSuccess = false;
+        }
+        this._message = error_info.message;
+        return false;
       }
     );
   }
