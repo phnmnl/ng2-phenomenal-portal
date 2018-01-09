@@ -11,9 +11,6 @@ import { User } from "../../shared/service/user/user";
 })
 export class TermAndConditionComponent implements OnInit {
 
-  checked1 = false;
-  checked2 = false;
-  checked3 = false;
   currentUser: User;
 
   constructor(public credentialService: CredentialService,
