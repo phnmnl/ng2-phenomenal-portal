@@ -104,8 +104,13 @@ input:focus {
   padding: 0;
 }
 
+
 #user-profile {
-  padding: 13.5px;
+  padding: 15.5px;
+}
+
+ph-menu-item-container  {
+  margin-top: -4px;
 }
 
 .user-id {
@@ -122,6 +127,7 @@ input:focus {
   padding: 5px;
 }
 
+
 .elixir_aai_logo {
   width: 30%;
 }
@@ -132,6 +138,10 @@ input:focus {
 
 .elixir_aai_description {
   margin: 5% 17% 0 17%;
+}
+
+.deployment-list {
+  margin-top: 40px;
 }
 
 @-webkit-keyframes load8 {
