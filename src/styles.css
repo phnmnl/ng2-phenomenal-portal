@@ -127,7 +127,6 @@ ph-menu-item-container  {
   padding: 5px;
 }
 
-
 .elixir_aai_logo {
   width: 30%;
 }
@@ -140,8 +139,17 @@ ph-menu-item-container  {
   margin: 5% 17% 0 17%;
 }
 
-.deployment-list {
+.your-cres-title {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.deployment-list-title {
   margin-top: 40px;
+}
+
+.deployment-list {
+  margin-top: 50px;
 }
 
 @-webkit-keyframes load8 {
