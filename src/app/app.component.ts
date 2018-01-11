@@ -15,14 +15,14 @@ export class AppComponent {
     breadcrumbService.addFriendlyNameForRoute('/app-library', 'App Library - Service Catalogue');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment', 'Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/docs', 'Documentation');
-    breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/dashboard', 'My CREs');
+    breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment-dashboard', 'My Cloud Research Environments');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/local-installation', 'Local Installation');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/instruction', 'Local Installation Instruction');
     breadcrumbService.addFriendlyNameForRoute('/term-and-condition', 'Terms and Conditions');
     breadcrumbService.addFriendlyNameForRoute('/help', 'Help');
     breadcrumbService.addFriendlyNameForRoute('/help/faq', 'FAQs');
     breadcrumbService.addFriendlyNameForRoute('/login', 'Welcome to Cloud Research Environment');
-    breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/setup', 'Setup');
+    breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment-setup', 'Setup New Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/statistics', 'VRE Site Statistics');
     breadcrumbService.addFriendlyNameForRoute('/cre-dashboard', 'Cloud Research Environment Dashboard');
     // You need this small hack in order to catch application root view container ref
