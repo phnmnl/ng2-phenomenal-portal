@@ -46,14 +46,14 @@
 
           <li *ngIf="currentUser && isCollapsed" class="nav-item">
             <a class="nav-link" (click)="closeMenu()"
-               [routerLink]="['/cloud-research-environment/dashboard']">
+               [routerLink]="['/cloud-research-environment-dashboard']">
               <i class="fa fa-bars" aria-hidden="true"></i> My CREs
             </a>
           </li>
 
           <li *ngIf="currentUser && isCollapsed" class="nav-item">
             <a (click)="closeMenu()" class="nav-link"
-               [routerLink]="['/cloud-research-environment/setup']">
+               [routerLink]="['/cloud-research-environment-setup']">
               <i class="fa fa-plus" aria-hidden="true"></i> Create new CRE
             </a>
           </li>
@@ -66,16 +66,15 @@
                  [ngClass]="(!isActiveCREMenu())?'dropdown-toggle nav-link':'dropdown-toggle nav-link active'">CRE</a>
 
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-left" role="menu">
-
                 <li role="menuitem">
                   <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
-                     [routerLink]="['/cloud-research-environment/dashboard']">
+                     [routerLink]="['/cloud-research-environment-dashboard']">
                     <i class="fa fa-bars nav-menu-item-icon" aria-hidden="true"></i> My CREs
                   </a>
                 </li>
                 <li role="menuitem" class="pull-xs-left">
                   <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
-                     [routerLink]="['/cloud-research-environment/setup']">
+                     [routerLink]="['/cloud-research-environment-setup']">
                     <i class="fa fa-plus nav-menu-item-icon" aria-hidden="true"></i> Create new CRE
                   </a>
                 </li>

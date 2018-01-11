@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (user) {
       if (user.hasAcceptedTermConditions) {
         console.log("Already in terms & conditions");
-        this.router.navigateByUrl('cloud-research-environment/setup');
+        this.router.navigateByUrl('cloud-research-environment-setup');
       } else {
         this.router.navigateByUrl('term-and-condition');
       }

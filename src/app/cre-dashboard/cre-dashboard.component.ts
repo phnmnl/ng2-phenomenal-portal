@@ -77,7 +77,7 @@ export class CreDashboardComponent implements OnInit {
       (result) => {
         // console.log(result);
         if (result.length === 0) {
-          this.router.navigateByUrl('/cloud-research-environment/setup');
+          this.router.navigateByUrl('/cloud-research-environment-setup');
         }
         this.isDeployment = true;
         this.deploymentServerList = result;
