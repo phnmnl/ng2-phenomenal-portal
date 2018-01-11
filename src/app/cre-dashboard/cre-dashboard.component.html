@@ -15,7 +15,7 @@
         </button>
       </div>
 
-      <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
+      <div *ngFor="let deployment of deploymentServerList" class="col-lg-4 deployment-list">
         <mat-card class="card-property">
           <mat-card-content>
             <img *ngIf="deployment.cloudProviderParametersCopy.cloudProvider === 'AWS'" mat-card-image
