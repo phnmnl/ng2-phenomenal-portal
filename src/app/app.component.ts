@@ -14,6 +14,8 @@ export class AppComponent {
     breadcrumbService.addFriendlyNameForRoute('/home', 'Home');
     breadcrumbService.addFriendlyNameForRoute('/app-library', 'App Library - Service Catalogue');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment', 'Cloud Research Environment');
+    breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/docs', 'Documentation');
+    breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/dashboard', 'My CREs');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/local-installation', 'Local Installation');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment/instruction', 'Local Installation Instruction');
     breadcrumbService.addFriendlyNameForRoute('/term-and-condition', 'Terms and Conditions');
