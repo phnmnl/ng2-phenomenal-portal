@@ -142,8 +142,17 @@ input:focus {
   margin-top: 50px;
 }
 
-.deployment-list {
+.your-cres-title {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.deployment-list-title {
   margin-top: 40px;
+}
+
+.deployment-list {
+  margin-top: 50px;
 }
 
 @-webkit-keyframes load8 {
