@@ -31,27 +31,6 @@
         </div>
       </div>
 
-      <div class="col-lg-4">
-        <mat-card class="card-property hidden-md-down">
-          <mat-card-content>
-            <div class="row text-center" style="padding: 0; margin: 5% auto 5%;">
-              <img src="{{providers_logo}}" style="width: 100%;">
-            </div>
-
-            <div style="margin: 0 auto;">
-              <a class="dropdown-item nav-link"
-                 [routerLink]="['/cloud-research-environment-setup']">
-                <i style="color: #525991" class="fa fa-plus-circle fa-5x" aria-hidden="true"></i>
-              </a>
-            </div>
-
-            <div class="row text-center" style="margin: 20% auto 0;">
-              <mat-card-title><strong>Create a new CRE</strong></mat-card-title>
-            </div>
-
-          </mat-card-content>
-        </mat-card>
-      </div>
 
       <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
         <mat-card class="card-property">
@@ -126,6 +105,28 @@
             </div>
             <block-ui>
             </block-ui>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-lg-4">
+        <mat-card class="card-property hidden-md-down">
+          <mat-card-content>
+            <div class="row text-center" style="padding: 0; margin: 5% auto 5%;">
+              <img src="{{providers_logo}}" style="width: 100%;">
+            </div>
+
+            <div style="margin: 0 auto;">
+              <a class="dropdown-item nav-link"
+                 [routerLink]="['/cloud-research-environment-setup']">
+                <i style="color: #525991" class="fa fa-plus-circle fa-5x" aria-hidden="true"></i>
+              </a>
+            </div>
+
+            <div class="row text-center" style="margin: 20% auto 0;">
+              <mat-card-title><strong>Create new CRE</strong></mat-card-title>
+            </div>
 
           </mat-card-content>
         </mat-card>
