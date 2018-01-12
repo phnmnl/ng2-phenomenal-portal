@@ -17,9 +17,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
+  /* Reference to the currently logged user */
   private _user: User;
 
-  private _elixir_logo = 'assets/img/logo/elixir.png';
+  /* Link to external resource */
+  public elixir_aai_logo = 'assets/img/logo/elixir_aai.png';
+  public elixir_aai_link = 'https://www.elixir-europe.org/services/compute/aai';
+  public elixir_czech_link = 'https://www.elixir-europe.org/about-us/who-we-are/nodes/czech-republic';
+  public elixir_link = 'https://www.elixir-europe.org';
+  public orcid_link = 'https://orcid.org';
+  public google_link = 'https://www.google.it';
+  public linkedin_link = 'https://www.linkedin.com';
 
 
   constructor(private applicationService: ApplicationService,
@@ -62,10 +70,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   get user(): User {
     return this._user;
-  }
-
-  get elixir_logo(): string {
-    return this._elixir_logo;
   }
 
   ssoLink() {
