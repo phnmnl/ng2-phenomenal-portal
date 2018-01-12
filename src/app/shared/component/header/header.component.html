@@ -65,20 +65,19 @@
               <a dropdownToggle (click)="closeMenu()"
                  [ngClass]="(!isActiveCREMenu())?'dropdown-toggle nav-link':'dropdown-toggle nav-link active'">CRE</a>
 
-              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-left" role="menu">
 
-                <li role="menuitem" class="user-profile-menu-info">
-                  <a (click)="closeMenu()" class="dropdown-item nav-link"
-                     [routerLink]="['/cloud-research-environment/dashboard']"
-                     class="dropdown-item nav-link">
-                    <i class="fa fa-bars" aria-hidden="true"></i> My CREs
+                <li role="menuitem">
+                  <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
+                     [routerLink]="['/cloud-research-environment/dashboard']">
+                    <i class="fa fa-bars nav-menu-item-icon" aria-hidden="true"></i> My CREs
                   </a>
                 </li>
 
-                <li role="menuitem">
-                  <a (click)="closeMenu()" class="dropdown-item nav-link"
+                <li role="menuitem" class="pull-xs-left">
+                  <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
                      [routerLink]="['/cloud-research-environment/setup']">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Create new CRE
+                    <i class="fa fa-plus nav-menu-item-icon" aria-hidden="true"></i> Create new CRE
                   </a>
                 </li>
 
@@ -122,11 +121,13 @@
               </a>
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                 <li role="menuitem" class="dropdown-item">
-                  <div class="dropdown-item user-profile-menu-info" href="#">
-                    <div class="text-sm-right">
-                      Hi, <span class="font-weight-bold">{{ currentUser.name }} !</span><br>
-                      <div class="text-sm-right">
-                        <div class="font-italic">{{ currentUser.email }}</div>
+                  <div class="dropdown-item user-profile-menu-info cre-menu-item" href="#">
+                    <div>
+                      <div class="text-left" style="font-size: 18px;">
+                        Hi, <span class="font-weight-bold">{{ currentUser.name }} !</span>
+                      </div>
+                      <div class="text-left" style="margin-top: 10px;">
+                        <div class="font-italic user-email">{{ currentUser.email }}</div>
                         <div class="user-id">id: {{ currentUser.id }}</div>
                       </div>
                     </div>
@@ -134,7 +135,7 @@
                 </li>
                 <li class="divider dropdown-divider"></li>
                 <li role="menuitem">
-                  <a (click)="logout()" class="dropdown-item nav-link">
+                  <a (click)="logout()" class="dropdown-item nav-link cre-menu-item">
                     <i class="fa fa-sign-out" aria-hidden="true"></i> Sign out
                   </a>
                 </li>
