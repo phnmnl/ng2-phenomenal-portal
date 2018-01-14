@@ -100,19 +100,6 @@ input:focus {
   margin-top: 200px;
 }
 
-.user-profile-menu-info {
-  padding: 0;
-}
-
-#user-profile {
-  padding: 13.5px;
-}
-
-.user-id {
-  margin-top: 10px;
-  font-size: x-small;
-}
-
 .terms-list {
   display: inline-block;
   margin: 15px 0;
@@ -120,6 +107,14 @@ input:focus {
 
 .terms-list li {
   padding: 5px;
+}
+
+.sso_link_button {
+  margin: 5%;
+}
+
+.elixir_aai_description {
+  margin: 5% 17% 0 17%;
 }
 
 .elixir_aai_logo {
@@ -132,6 +127,19 @@ input:focus {
 
 .elixir_aai_description {
   margin: 5% 17% 0 17%;
+}
+
+.your-cres-title {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.deployment-list-title {
+  margin-top: 40px;
+}
+
+.deployment-list {
+  margin-top: 50px;
 }
 
 @-webkit-keyframes load8 {

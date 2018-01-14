@@ -20,7 +20,7 @@
 
         <!-- User info when the NavBar is collapsed -->
         <div *ngIf="currentUser && isCollapsed" class="text-right">
-          <span>Signed as {{ credentialService.getEmail() }}</span>
+          <span>Signed as {{ currentUser.email }}</span>
           <hr>
         </div>
 
@@ -28,18 +28,75 @@
         <ul class="nav navbar-nav pull-xs-right">
 
           <li class="nav-item">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/home']" routerLinkActive="active">Home</a>
+            <div class="ph-menu-item-container">
+              <a (click)="closeMenu()" class="nav-link"
+                 [routerLink]="['/home']" routerLinkActive="active">Home</a>
+            </div>
           </li>
-          <li class="nav-item">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/cloud-research-environment']"
-               routerLinkActive="active">CRE</a>
+
+          <li class="nav-item" *ngIf="!currentUser">
+            <div class="ph-menu-item-container">
+              <a (click)="closeMenu()" class="nav-link"
+                 [routerLink]="['/cloud-research-environment/docs']"
+                 routerLinkActive="active">CRE</a>
+            </div>
           </li>
-          <li class="nav-item">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/app-library']" routerLinkActive="active">App
-              Library</a>
+
+          <li *ngIf="currentUser && isCollapsed" class="nav-item"><hr></li>
+
+          <li *ngIf="currentUser && isCollapsed" class="nav-item">
+            <a class="nav-link" (click)="closeMenu()"
+               [routerLink]="['/cloud-research-environment/dashboard']">
+              <i class="fa fa-bars" aria-hidden="true"></i> My CREs
+            </a>
           </li>
+
+          <li *ngIf="currentUser && isCollapsed" class="nav-item">
+            <a (click)="closeMenu()" class="nav-link"
+               [routerLink]="['/cloud-research-environment/setup']">
+              <i class="fa fa-plus" aria-hidden="true"></i> Create new CRE
+            </a>
+          </li>
+
+          <li *ngIf="currentUser && isCollapsed" class="nav-item"><hr></li>
+
+          <li *ngIf="currentUser && !isCollapsed" class="nav-item">
+            <div class="btn-group" dropdown>
+              <a dropdownToggle (click)="closeMenu()"
+                 [ngClass]="(!isActiveCREMenu())?'dropdown-toggle nav-link':'dropdown-toggle nav-link active'">CRE</a>
+
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-left" role="menu">
+
+                <li role="menuitem">
+                  <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
+                     [routerLink]="['/cloud-research-environment/dashboard']">
+                    <i class="fa fa-bars nav-menu-item-icon" aria-hidden="true"></i> My CREs
+                  </a>
+                </li>
+
+                <li role="menuitem" class="pull-xs-left">
+                  <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
+                     [routerLink]="['/cloud-research-environment/setup']">
+                    <i class="fa fa-plus nav-menu-item-icon" aria-hidden="true"></i> Create new CRE
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
+
+
           <li class="nav-item">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/help']" routerLinkActive="active">Help</a>
+            <div class="ph-menu-item-container">
+              <a (click)="closeMenu()" class="nav-link" [routerLink]="['/app-library']" routerLinkActive="active">App
+                Library</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <div class="ph-menu-item-container">
+              <a (click)="closeMenu()" class="nav-link" [routerLink]="['/help']" routerLinkActive="active">Help</a>
+            </div>
           </li>
 
           <li *ngIf="!currentUser" class="nav-item" routerLinkActive="active">
@@ -60,27 +117,25 @@
           <li *ngIf="currentUser && !isCollapsed" class="nav-item" routerLinkActive="active">
             <div class="btn-group" dropdown>
               <a id="user-profile" dropdownToggle (click)="closeMenu()" class="nav-link dropdown-toggle">
-                <span style="margin-top: -4px;">
-                  <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                  <!--<span class="caret"></span>-->
-                </span>
+                <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
               </a>
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
                 <li role="menuitem" class="dropdown-item">
-                  <div class="dropdown-item user-profile-menu-info" href="#">
-                    <div class="text-sm-right">
-                      Hi, <span class="font-weight-bold">{{ currentUser.name }} !</span><br>
-                      <div class="text-sm-right">
-                        <div class="font-italic">{{ currentUser.email }}</div>
+                  <div class="dropdown-item user-profile-menu-info cre-menu-item" href="#">
+                    <div>
+                      <div class="text-left" style="font-size: 18px;">
+                        Hi, <span class="font-weight-bold">{{ currentUser.name }} !</span>
+                      </div>
+                      <div class="text-left" style="margin-top: 10px;">
+                        <div class="font-italic user-email">{{ currentUser.email }}</div>
                         <div class="user-id">id: {{ currentUser.id }}</div>
                       </div>
                     </div>
                   </div>
-
                 </li>
                 <li class="divider dropdown-divider"></li>
                 <li role="menuitem">
-                  <a (click)="logout()" class="dropdown-item nav-link">
+                  <a (click)="logout()" class="dropdown-item nav-link cre-menu-item">
                     <i class="fa fa-sign-out" aria-hidden="true"></i> Sign out
                   </a>
                 </li>

@@ -48,6 +48,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isCollapsed = !this.isCollapsed;
   }
 
+  isActiveCREMenu(){
+    return this.router.url.includes("cloud-research-environment");
+  }
+
   closeMenu() {
     this.isCollapsed = false;
   }
