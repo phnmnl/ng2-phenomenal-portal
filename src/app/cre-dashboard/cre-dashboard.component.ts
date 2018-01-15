@@ -22,9 +22,12 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class CreDashboardComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
+
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
   private _gce_logo = 'assets/img/logo/gce_logo.png';
+  providers_logo = 'assets/img/logo/providers_logo.png';
+
   deploymentServerList: Deployment[];
   deploymentStatus: DeploymentStatus;
   isDeployment = false;
@@ -77,7 +80,7 @@ export class CreDashboardComponent implements OnInit {
       (result) => {
         // console.log(result);
         if (result.length === 0) {
-          this.router.navigateByUrl('/cloud-research-environment/setup');
+          this.router.navigateByUrl('/cloud-research-environment-setup');
         }
         this.isDeployment = true;
         this.deploymentServerList = result;

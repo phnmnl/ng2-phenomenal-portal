@@ -25,9 +25,9 @@ const routes: Routes = [
   {
     path: 'cloud-research-environment', component: CreDashboardComponent
   },
-  {path: 'cloud-research-environment/dashboard', component: CreDashboardComponent},
+  {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent},
   {
-    path: 'cloud-research-environment/setup',
+    path: 'cloud-research-environment-setup',
     component: SetupCloudEnvironmentComponent,
     canActivate: [AcceptedTermsGuard],
     pathMatch: 'full'

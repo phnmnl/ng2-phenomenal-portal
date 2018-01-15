@@ -6,16 +6,33 @@
       <div class="loader">Loading...</div>
     </div>
 
+    <br>
     <div *ngIf="isDeployment">
-      <h5>Cloud Research Environment </h5>
-      <p>An easy to use, cloud based scalable software infrastructure for Metabolomic research</p>
-
-      <div>
-        <button mat-raised-button [routerLink]="['/cloud-research-environment/setup']" color="primary">Create new CRE
-        </button>
+      <div class="row hidden-lg-up">
+        <div class="col-lg-12">
+          <!--Panel-->
+          <div class="">
+            <div class="row">
+              <div class="col-lg-9">
+                <p class="text-left"></p>
+              </div>
+              <div class="col-lg-3 text-center plus-button">
+                <a class="dropdown-item nav-link" title="Create new CRE"
+                   [routerLink]="['/cloud-research-environment-setup']">
+                  <i style="color: #525991" class="fa fa-plus-circle fa-4x" aria-hidden="true"></i>
+                </a>
+                <!--<div class="font-weight-bold">Create new CRE</div>-->
+              </div>
+            </div>
+          </div>
+          <!--/.Panel-->
+          <br>
+          <br>
+        </div>
       </div>
 
-      <div *ngFor="let deployment of deploymentServerList" class="col-lg-4 deployment-list">
+
+      <div *ngFor="let deployment of deploymentServerList" class="col-lg-4">
         <mat-card class="card-property">
           <mat-card-content>
             <img *ngIf="deployment.cloudProviderParametersCopy.cloudProvider === 'AWS'" mat-card-image
@@ -57,8 +74,7 @@
               </div>
             </div>
 
-            <div
-              *ngIf="!deployment['isMore']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
+            <div *ngIf="!deployment['isMore']&& (deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED')">
               <button mat-raised-button (click)="deployment['isMore'] = !deployment['isMore']" color="accent">More
               </button>
             </div>
@@ -92,6 +108,28 @@
 
           </mat-card-content>
         </mat-card>
+      </div>
+
+      <div class="col-lg-4">
+        <a class="card-plus-button" title="Create new CRE"
+           [routerLink]="['/cloud-research-environment-setup']">
+        <mat-card class="card-property hidden-md-down card-plus">
+          <mat-card-content>
+            <!--<div class="row text-center" style="padding: 0; margin: 5% auto 5%;">-->
+              <!--<img src="{{providers_logo}}" style="width: 100%;">-->
+            <!--</div>-->
+
+            <div style="margin: 0 auto;">
+                <i style="color: #525991" class="fa fa-plus-circle card-plus-button-icon" aria-hidden="true"></i>
+            </div>
+
+            <!--<div class="row text-center" style="margin: 20% auto 0;">-->
+              <!--<mat-card-title><strong>Create new CRE</strong></mat-card-title>-->
+            <!--</div>-->
+
+          </mat-card-content>
+        </mat-card>
+        </a>
       </div>
 
     </div>
