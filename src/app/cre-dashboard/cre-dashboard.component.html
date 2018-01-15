@@ -16,12 +16,12 @@
               <div class="col-lg-9">
                 <p class="text-left"></p>
               </div>
-              <div class="col-lg-3 text-center">
-                <a class="dropdown-item nav-link"
+              <div class="col-lg-3 text-center plus-button">
+                <a class="dropdown-item nav-link" title="Create new CRE"
                    [routerLink]="['/cloud-research-environment-setup']">
                   <i style="color: #525991" class="fa fa-plus-circle fa-4x" aria-hidden="true"></i>
                 </a>
-                <div class="font-weight-bold">Create new CRE</div>
+                <!--<div class="font-weight-bold">Create new CRE</div>-->
               </div>
             </div>
           </div>
@@ -111,25 +111,25 @@
       </div>
 
       <div class="col-lg-4">
-        <mat-card class="card-property hidden-md-down">
+        <a class="card-plus-button" title="Create new CRE"
+           [routerLink]="['/cloud-research-environment-setup']">
+        <mat-card class="card-property hidden-md-down card-plus">
           <mat-card-content>
-            <div class="row text-center" style="padding: 0; margin: 5% auto 5%;">
-              <img src="{{providers_logo}}" style="width: 100%;">
-            </div>
+            <!--<div class="row text-center" style="padding: 0; margin: 5% auto 5%;">-->
+              <!--<img src="{{providers_logo}}" style="width: 100%;">-->
+            <!--</div>-->
 
             <div style="margin: 0 auto;">
-              <a class="dropdown-item nav-link"
-                 [routerLink]="['/cloud-research-environment-setup']">
-                <i style="color: #525991" class="fa fa-plus-circle fa-5x" aria-hidden="true"></i>
-              </a>
+                <i style="color: #525991" class="fa fa-plus-circle card-plus-button-icon" aria-hidden="true"></i>
             </div>
 
-            <div class="row text-center" style="margin: 20% auto 0;">
-              <mat-card-title><strong>Create new CRE</strong></mat-card-title>
-            </div>
+            <!--<div class="row text-center" style="margin: 20% auto 0;">-->
+              <!--<mat-card-title><strong>Create new CRE</strong></mat-card-title>-->
+            <!--</div>-->
 
           </mat-card-content>
         </mat-card>
+        </a>
       </div>
 
     </div>

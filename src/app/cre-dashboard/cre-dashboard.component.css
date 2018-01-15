@@ -17,6 +17,42 @@
   width: 300px;
 }
 
+.plus-button{
+  opacity: 0.5;
+}
+
+.plus-button:hover {
+  opacity: 1;
+  background-color: #ffffff;
+}
+
+.plus-button > a:hover {
+  background-color: #ffffff;
+}
+
+.card-plus {
+  background-color: #f9f9f9;
+  border: dashed thin #c1c1c1;
+  opacity: 0.5;
+}
+
+.card-plus:hover {
+  opacity: 1;
+}
+
+.card-plus-button {
+  background-color: #ffffff;
+}
+
+.card-plus-button:hover {
+  opacity: 1;
+}
+
+.card-plus-button-icon {
+  margin-top: 55%;
+  font-size: 10em;
+}
+
 @media (max-width: 1199px) and (min-width: 992px) {
   .phenomenal-image {
     height: 156.25px;
