@@ -10,13 +10,13 @@
         <div class="text-xs-center">
           Test drive our Cloud Research Environment
           <br>
-          <a href="http://public.phenomenal-h2020.eu/" target="_blank">
-            <button mat-raised-button color="primary">Galaxy Workflow</button>
-          </a>
+          <div class="text-xs-center">
+            <a [routerLink]="['/cloud-research-environment-test']" class="btn btn-primary">Galaxy Workflow Manager</a>
+          </div>
         </div>
-        <p class="text-xs-center">
-          <small>Note that this is a public instance accessible by everyone</small>
-        </p>
+        <!--<p class="text-xs-center">-->
+          <!--<small>Note that this is a public instance accessible by everyone</small>-->
+        <!--</p>-->
       </div>
 
       <!--Main information-->
@@ -24,29 +24,29 @@
         <h3 class="h3-responsive text-xs-left">An easy to use, cloud based scalable software infrastructure for
           metabolomic research</h3>
         <hr>
-        <br>
+
 
         <p class="text-xs-center">Want to give it a go?</p>
 
-        <div *ngIf="tokenService.getToken()" class="text-xs-center">
-          <a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">Create <br> Cloud Research
-            Environment</a>
+        <!--<div *ngIf="tokenService.getToken()" class="text-xs-center">-->
+          <!--<a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">Create your <br> Cloud Research-->
+            <!--Environment</a>-->
+        <!--</div>-->
+
+        <div class="text-xs-center">
+          <a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">Create your<br> Cloud Research Environment</a>
         </div>
 
-        <div *ngIf="!tokenService.getToken()" class="text-xs-center">
-          <a [routerLink]="['/login']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
-        </div>
-
-        <br>
         <br>
 
         <div class="text-xs-center">
-          <a [routerLink]="['/cloud-research-environment']" class="btn btn-primary-outline waves-effect">Find out
+          <a [routerLink]="['/cloud-research-environment-docs']" class="btn btn-primary-outline waves-effect">Find out
             more</a>
         </div>
       </div>
     </div>
     <!--/.First row-->
+
 
     <hr class="extra-margins">
 
