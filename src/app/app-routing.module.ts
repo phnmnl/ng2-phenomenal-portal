@@ -14,6 +14,7 @@ import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
 import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
+import { TestCreComponent } from "./static-page/test-cre/test-cre.component";
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
