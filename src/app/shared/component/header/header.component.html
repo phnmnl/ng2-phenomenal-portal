@@ -37,12 +37,14 @@
           <li class="nav-item" *ngIf="!currentUser">
             <div class="ph-menu-item-container">
               <a (click)="closeMenu()" class="nav-link"
-                 [routerLink]="['/cloud-research-environment/docs']"
+                 [routerLink]="['/cloud-research-environment-docs']"
                  routerLinkActive="active">CRE</a>
             </div>
           </li>
 
-          <li *ngIf="currentUser && isCollapsed" class="nav-item"><hr></li>
+          <li *ngIf="currentUser && isCollapsed" class="nav-item">
+            <hr>
+          </li>
 
           <li *ngIf="currentUser && isCollapsed" class="nav-item">
             <a class="nav-link" (click)="closeMenu()"
@@ -58,7 +60,9 @@
             </a>
           </li>
 
-          <li *ngIf="currentUser && isCollapsed" class="nav-item"><hr></li>
+          <li *ngIf="currentUser && isCollapsed" class="nav-item">
+            <hr>
+          </li>
 
           <li *ngIf="currentUser && !isCollapsed" class="nav-item">
             <div class="btn-group" dropdown>
@@ -97,10 +101,12 @@
           </li>
 
           <li *ngIf="!currentUser" class="nav-item" routerLinkActive="active">
-            <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']">
-              <i class="fa fa-sign-in" aria-hidden="true"></i>
-              Sign in
-            </a>
+            <div class="ph-menu-item-container">
+              <a (click)="closeMenu()" class="nav-link" [routerLink]="['/login']">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                Sign in
+              </a>
+            </div>
           </li>
 
           <li *ngIf="currentUser && isCollapsed" class="nav-item" routerLinkActive="active">
