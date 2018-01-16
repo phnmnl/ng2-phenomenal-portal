@@ -15,6 +15,7 @@ import { TermAndConditionComponent } from './login/term-and-condition/term-and-c
 import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
 import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from "./static-page/test-cre/test-cre.component";
+import { CreRegistrationFormComponent } from "./setup/cre-registration-form/cre-registration-form.component";
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
@@ -23,25 +24,19 @@ const routes: Routes = [
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
   {path: 'term-and-condition', component: TermAndConditionComponent, canActivate: [UserAuthenticatedGuard]},
-  {
-    path: 'cloud-research-environment', component: CreDashboardComponent
-  },
+  {path: 'cloud-research-environment-test', component: TestCreComponent, canActivate: [AcceptedTermsGuard]},
+  {path: 'cloud-research-environment', component: CreDashboardComponent},
   {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent},
+  {path: 'cloud-research-environment-registration', component: CreRegistrationFormComponent},
   {
     path: 'cloud-research-environment-setup',
     component: SetupCloudEnvironmentComponent,
     canActivate: [AcceptedTermsGuard],
     pathMatch: 'full'
   },
-  {path: 'cloud-research-environment/docs', component: CloudResearchEnvironmentComponent, pathMatch: 'full'},
-  {
-    path: 'cloud-research-environment/local-installation',
-    component: CRELocalInstallationComponent
-  },
-  {
-    path: 'cloud-research-environment/instruction',
-    component: CRELocalInstallationInstructionComponent
-  },
+  {path: 'cloud-research-environment-docs', component: CloudResearchEnvironmentComponent, pathMatch: 'full'},
+  {path: 'cloud-research-environment/local-installation', component: CRELocalInstallationComponent},
+  {path: 'cloud-research-environment/instruction', component: CRELocalInstallationInstructionComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'cre-dashboard', component: CreDashboardComponent},
   {path: 'home', component: HomeComponent},
