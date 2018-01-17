@@ -1,7 +1,7 @@
-import { ApplicationRef, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
 import { CloudProvider } from './cloud-provider';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from "../shared/service/user/user";
 
@@ -27,30 +27,16 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   // _gcp_region: AwsRegion[];
   // private _provider: CloudProvider;
 
-  //
-  // get provider(): CloudProvider {
-  //   return this._provider;
-  // }
-  //
-  // set provider(value: CloudProvider) {
-  //   this._provider = value;
-  // }
+  private selectedCloudProvider: CloudProvider = null;
 
-  get cloudProviderCollection(): CloudProvider[] {
-    return this._cloudProviderCollection;
-  }
+  // Listener of query param changes
+  private _queryParamChangeListener;
 
-  // get galaxy_api_key(): string {
-  //   return this._galaxy_api_key;
-  // }
-  //
-  // get galaxy_instance_url(): string {
-  //   return this._galaxy_instance_url;
-  // }
 
   constructor(private _applicationService: ApplicationService,
               public credentialService: CredentialService,
               public tokenService: TokenService,
+              private route: ActivatedRoute,
               private router: Router,
               public userService: UserService,
               private ref: ChangeDetectorRef,
@@ -218,11 +204,11 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
       this.tokenService.getToken()
     ).subscribe(
       app => {
-        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);
+        this.userService.logout();
         callback(error);
       }
     );
