@@ -10,7 +10,7 @@ import { User } from "../shared/service/user/user";
   templateUrl: './setup-cloud-environment.component.html',
   styleUrls: ['./setup-cloud-environment.component.css']
 })
-export class SetupCloudEnvironmentComponent implements OnInit {
+export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
   private currentUser: User = new User({"username": "pino"});
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
@@ -76,30 +76,48 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     //   {value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
     // ];
 
+  }
+
+  ngOnInit() {
+
+    this._queryParamChangeListener = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        console.log("Component params", params);
+        this.selectedCloudProvider = null;
+        // reset state
+        this.initializeProviders();
+        this.selectedCloudProvider = null;
+      });
+
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
+
+    if (this.tokenService.getToken()) {
+      this.getAllApplication((result) => {
+        if (result.status === 401 || result.type === 'error') {
+          this.logout();
+        }
+      });
+    } else {
+      this.logout();
+    }
+  }
+
+  ngOnDestroy() {
+    this._queryParamChangeListener.unsubscribe();
+  }
+
+  initializeProviders() {
+    console.log("Generating providers...");
     this._cloudProviderCollection = [
-      // {
-      //   title: 'PhenoMeNal Cloud',
-      //   name: 'phenomenal',
-      //   help: '/help/Deployment-Cloud-Research-Environment',
-      //   description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
-      //   'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
-      //   paymentDescription: 'Free',
-      //   providerDescription: 'EMBL-EBI, Uppsala Uni',
-      //   locationDescription: 'Europe',
-      //   logo: this._phenomenal_logo,
-      //   isSelected: 0,
-      //   credential: {
-      //     username: '',
-      //     password: '',
-      //     tenant_name: '',
-      //     url: '',
-      //     provider: '',
-      //     galaxy_admin_username: '',
-      //     galaxy_admin_email: '',
-      //     galaxy_admin_password: '',
-      //     jupyter_password: ''
-      //   }
-      // },
       {
         title: 'OpenStack',
         name: 'ostack',
@@ -174,25 +192,8 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {
-    this.userService.getObservableCurrentUser().subscribe(user => {
-      console.log("Updating the current user", user);
-      this.currentUser = <User> user;
-      if (user) {
-        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
-        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
-      }
-    });
-
-    if (this.tokenService.getToken()) {
-      this.getAllApplication((result) => {
-        if (result.status === 401 || result.type === 'error') {
-          this.logout();
-        }
-      });
-    } else {
-      this.logout();
-    }
+  get cloudProviderCollection(): CloudProvider[] {
+    return this._cloudProviderCollection;
   }
 
   logout() {
