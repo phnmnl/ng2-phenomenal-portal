@@ -18,6 +18,10 @@
   width: 200px;
 }
 
+.mat-card:hover{
+  background: #DFDFDF;
+}
+
 .phenomenal-image {
   height: 125px;
   width: 200px;
