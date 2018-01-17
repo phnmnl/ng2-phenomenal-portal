@@ -15,12 +15,13 @@
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
-    <div>
+    <div class="mat-card-control-buttons">
       <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
       <button mat-raised-button *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">
         Register
       </button>
-      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">Next
+      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">
+        Next
       </button>
     </div>
   </form>
