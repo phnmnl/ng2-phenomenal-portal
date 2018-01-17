@@ -77,8 +77,9 @@
                   </a>
                 </li>
                 <li role="menuitem" class="pull-xs-left">
-                  <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
-                     [routerLink]="['/cloud-research-environment-setup']">
+                  <!-- workaround to force component reset from a control outside the tree which it belongs to -->
+                  <a (click)="closeMenu(); createNewCre()" class="nav-link dropdown-item cre-menu-item">
+                     <!--[routerLink]="['/cloud-research-environment-setup']" [queryParams]="{'state': newState()}">-->
                     <i class="fa fa-plus nav-menu-item-icon" aria-hidden="true"></i> Create new CRE
                   </a>
                   <hr>

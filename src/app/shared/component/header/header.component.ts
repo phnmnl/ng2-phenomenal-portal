@@ -16,6 +16,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private isCollapsed = false;
   private _logo = 'assets/img/logo/phenomenal_4x.png';
 
+  private lastChoice = true;
+
   constructor(private _eref: ElementRef,
               private router: Router,
               private renderer: Renderer2,
@@ -42,6 +44,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   get logo(): string {
     return this._logo;
+  }
+
+  public createNewCre(){
+    this.lastChoice = !this.lastChoice;
+    this.router.navigate(['cloud-research-environment-setup'], {queryParams: {'state': this.lastChoice }});
   }
 
   toggleMenu() {
