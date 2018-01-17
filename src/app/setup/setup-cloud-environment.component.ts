@@ -202,6 +202,16 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/login');
   }
 
+  public isCloudProviderSelected() {
+    return this.selectedCloudProvider && this.selectedCloudProvider.isSelected > 0;
+  }
+
+  selectCloudProvider(provider: CloudProvider) {
+    this.selectedCloudProvider = provider;
+    this.selectedCloudProvider.isSelected = 1;
+    console.log("Selected CloudProvider", provider);
+  }
+
   getAllApplication(callback) {
     this._applicationService.getAll(
       this.credentialService.getUsername(),
