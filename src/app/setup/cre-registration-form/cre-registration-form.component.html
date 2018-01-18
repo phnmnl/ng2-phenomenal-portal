@@ -18,7 +18,8 @@
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
-    <div *ngIf="cloudProvider.isSelected === 2" class="mat-card-control-buttons">
+    <div class="mat-card-control-buttons"
+         *ngIf="cloudProvider.isSelected === 2 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
       <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
       <button mat-raised-button *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">
         Register
