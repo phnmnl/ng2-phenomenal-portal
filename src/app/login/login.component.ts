@@ -8,7 +8,7 @@ import {
 } from 'ng2-cloud-portal-service-lib';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from '../shared/service/user/user';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'ph-login',
@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public google_link = 'https://www.google.it';
   public linkedin_link = 'https://www.linkedin.com';
 
+  private returnUrl: string;
 
   constructor(private applicationService: ApplicationService,
               private authService: AuthService,
@@ -36,11 +37,13 @@ export class LoginComponent implements OnInit, OnDestroy {
               public tokenService: TokenService,
               public errorService: ErrorService,
               public userService: UserService,
+              private route: ActivatedRoute,
               private router: Router) {
   }
 
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
     this._user = this.userService.getCurrentUser();
     if (this._user)
       this.isAuthorized(this._user);
@@ -56,7 +59,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (user) {
       if (user.hasAcceptedTermConditions) {
         console.log("Already in terms & conditions");
-        this.router.navigateByUrl('cloud-research-environment-setup');
+        if(this.returnUrl && this.returnUrl.length>0) {
+          this.router.navigateByUrl(this.returnUrl);
+          console.log("Navigating to URL " + this.returnUrl + " after login!");
+        }else
+          this.router.navigateByUrl('cloud-research-environment-setup');
       } else {
         this.router.navigateByUrl('term-and-condition');
       }

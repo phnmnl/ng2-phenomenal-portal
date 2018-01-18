@@ -1,0 +1,46 @@
+<main>
+
+  <div class="container text-xs-center">
+    <div class="row">
+      <h3 class="h3-responsive">
+        Test drive our Cloud Research Environment
+      </h3>
+      <br>
+
+      <div class="col-lg-12">
+        <mat-card>
+          <img mat-card-image src="{{publicProvider.logo}}" class="card-image">
+          <mat-card-content>
+            <h5 class="card-title">
+              <strong>{{publicProvider.title}}</strong>
+              <a href="{{publicProvider.help}}" target="_blank">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              </a>
+            </h5>
+
+            <div *ngIf="publicProvider.isSelected!==2">
+              <p>{{publicProvider.description}}</p>
+              <p><strong>{{publicProvider.paymentDescription}}</strong></p>
+              <p>Cloud location: <strong>{{publicProvider.locationDescription}}</strong></p>
+              <p>Providers: <strong>{{publicProvider.providerDescription}}</strong></p>
+              <div *ngIf="user && user.hasGalaxyAccount">
+                <a href="{{galaxy_instance_url}}" target="_blank">
+                  <button mat-raised-button color="warn">Login</button>
+                </a>
+              </div>
+              <div *ngIf="user && !user.hasGalaxyAccount">
+                <button mat-raised-button (click)="publicProvider.isSelected=2;" color="primary">Register
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="publicProvider.isSelected===2">
+              <ph-cre-registration-form [cloudProvider]="publicProvider"></ph-cre-registration-form>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</main>

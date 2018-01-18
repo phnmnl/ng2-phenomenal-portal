@@ -15,7 +15,6 @@
               <img [src]="slide.image" class="img-fluid">
             </ph-slide>
           </ph-carousel>
-
           <br>
         </div>
 
@@ -26,30 +25,23 @@
             accessible through Open Source scientific web environments, Galaxy Workflow and Jupyter IPython coding
             environment</h3>
           <hr>
-
           <div class="text-xs-center">
             Test drive our Cloud Research Environment
             <br>
-            <a href="http://public.phenomenal-h2020.eu/" target="_blank">
-              <button mat-raised-button color="primary">Galaxy Workflow</button>
-            </a>
-            <!--or-->
-            <!--<a>-->
-            <!--<button mat-raised-button disabled>Jupyter IPython</button>-->
-            <!--</a>-->
+            <div class="text-xs-center">
+              <a [routerLink]="['/cloud-research-environment-test']" class="btn btn-primary">Galaxy Workflow Manager</a>
+            </div>
           </div>
-          <p class="text-xs-center">
-            <small>Note that this is a public instance accessible by everyone</small>
-          </p>
+          <br>
+          <br>
           <div class="text-xs-center">
             Want to give it a go?
             <br>
-            <a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">Create <br> Cloud Research
-              Environment</a>
+            <a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">
+              Create your<br> Cloud Research Environment
+            </a>
           </div>
-
           <br>
-
         </div>
       </div>
       <!--/.First row-->
@@ -74,14 +66,11 @@
           <br>
         </div>
 
-
         <div class="col-md-6">
           <!--Featured image -->
           <img [src]="img2" class="img-fluid" alt="">
           <br>
         </div>
-
-
       </div>
       <!--/.First row-->
 

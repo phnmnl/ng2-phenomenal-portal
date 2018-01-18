@@ -77,29 +77,29 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     // ];
 
     this._cloudProviderCollection = [
-      {
-        title: 'PhenoMeNal Cloud',
-        name: 'phenomenal',
-        help: '/help/Deployment-Cloud-Research-Environment',
-        description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
-        'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
-        paymentDescription: 'Free',
-        providerDescription: 'EMBL-EBI, Uppsala Uni',
-        locationDescription: 'Europe',
-        logo: this._phenomenal_logo,
-        isSelected: 0,
-        credential: {
-          username: '',
-          password: '',
-          tenant_name: '',
-          url: '',
-          provider: '',
-          galaxy_admin_username: '',
-          galaxy_admin_email: '',
-          galaxy_admin_password: '',
-          jupyter_password: ''
-        }
-      },
+      // {
+      //   title: 'PhenoMeNal Cloud',
+      //   name: 'phenomenal',
+      //   help: '/help/Deployment-Cloud-Research-Environment',
+      //   description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
+      //   'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
+      //   paymentDescription: 'Free',
+      //   providerDescription: 'EMBL-EBI, Uppsala Uni',
+      //   locationDescription: 'Europe',
+      //   logo: this._phenomenal_logo,
+      //   isSelected: 0,
+      //   credential: {
+      //     username: '',
+      //     password: '',
+      //     tenant_name: '',
+      //     url: '',
+      //     provider: '',
+      //     galaxy_admin_username: '',
+      //     galaxy_admin_email: '',
+      //     galaxy_admin_password: '',
+      //     jupyter_password: ''
+      //   }
+      // },
       {
         title: 'OpenStack',
         name: 'ostack',

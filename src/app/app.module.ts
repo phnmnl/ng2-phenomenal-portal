@@ -73,6 +73,7 @@ import {
 
 import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
 import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
+import { TestCreComponent } from './static-page/test-cre/test-cre.component';
 
 /**
  * To set the global environment variables
@@ -117,7 +118,8 @@ export function initConfig(config: AppConfig) {
     GcpSetupComponent,
     CloudSetupComponent,
     FaqComponent,
-    TermAndConditionComponent
+    TermAndConditionComponent,
+    TestCreComponent
   ],
   imports: [
     BrowserModule,
