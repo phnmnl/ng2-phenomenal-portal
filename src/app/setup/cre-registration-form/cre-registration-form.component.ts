@@ -157,7 +157,7 @@ export class CreRegistrationFormComponent implements OnInit {
     if (this.cloudProvider.name === 'phenomenal') {
       this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
     } else {
-      this.cloudProvider.credential.galaxy_admin_email = this.form.value['email'];
+      this.cloudProvider.credential.galaxy_admin_email = this.currentUser.email;
       this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
       this.cloudProvider.isSelected = 3;
       this._isSuccess = true;
