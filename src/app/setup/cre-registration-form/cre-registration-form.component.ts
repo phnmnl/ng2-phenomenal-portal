@@ -63,7 +63,6 @@ export class CreRegistrationFormComponent implements OnInit {
   buildForm(): void {
 
     this.form = this.fb.group({
-      'email': ['', Validators.compose([Validators.required, emailValidator])],
       'password': ['', [Validators.required, Validators.minLength(8), passwordValidator]],
       'confirmPassword': ['', [Validators.required]]
     }, {validator: matchingPasswords('password', 'confirmPassword')});
