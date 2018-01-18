@@ -97,7 +97,7 @@
               </div>
 
               <div *ngIf="deployment['isDelete']">
-                <p>Please confirm</p>
+                <p>Are you sure you want to destroy this CRE? </p>
                 <button mat-raised-button (click)="deployment['isDelete'] = !deployment['isDelete']" color="accent">No
                 </button>
                 <button mat-raised-button (click)="remove(deployment)" color="warn">Yes</button>
