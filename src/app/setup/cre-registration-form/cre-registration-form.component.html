@@ -31,13 +31,15 @@
   <a href="{{ galaxyInstanceUrl }}" target="_blank">
     <button mat-raised-button color="warn">Login</button>
   </a>
-  <!-- Display existent error messages -->
-  <div *ngIf="message.length > 0">
-    <br>
-    <div class="alert alert-warning">{{ message}}</div>
-  </div>
 </div>
-<div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal'">
+
+<!-- Display existent error messages -->
+<div *ngIf="message.length > 0">
+  <br>
+  <div class="alert alert-warning">{{ message}}</div>
+</div>
+
+<div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal' && cloudProvider.isSelected === 3">
   <p>Please review your input data before deployment.</p>
   <div *ngIf="cloudProvider.name === 'ostack'">
     <p>Username: <b>{{cloudProvider.credential.username}}</b></p>
