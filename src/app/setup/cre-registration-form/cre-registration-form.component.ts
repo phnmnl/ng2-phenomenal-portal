@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
 import { UserService } from "../../shared/service/user/user.service";
 import { AppConfig } from "../../app.config";
+import { User } from "../../shared/service/user/user";
 
 
 @Component({
@@ -18,7 +19,8 @@ export class CreRegistrationFormComponent implements OnInit {
   private _isFailed = false;
   _isSuccess = false;
   private _message = '';
-  passwordConfirm = "";
+  public currentUser: User;
+  passwordConfirm = '';
   form: FormGroup;
 
   formErrors = {
@@ -54,6 +56,14 @@ export class CreRegistrationFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
   }
 
   get galaxyInstanceUrl() {
@@ -63,11 +73,11 @@ export class CreRegistrationFormComponent implements OnInit {
   buildForm(): void {
 
     this.form = this.fb.group({
-      'email': ['', Validators.compose([Validators.required, emailValidator])],
       'password': ['', [Validators.required, Validators.minLength(8), passwordValidator]],
       'confirmPassword': ['', [Validators.required]]
     }, {validator: matchingPasswords('password', 'confirmPassword')});
 
+    this.currentUser = this.userService.getCurrentUser();
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged(); // (re)set validation messages now
@@ -100,23 +110,19 @@ export class CreRegistrationFormComponent implements OnInit {
 
   registerGalaxyAccount(username: string, email: string, password: string) {
 
-    let currentUser = this.userService.getCurrentUser();
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
-
     try {
-      this.userService.createGalaxyAccount(currentUser.id, user).subscribe(
+      this.userService.createGalaxyAccount(this.currentUser.id, user).subscribe(
         data => {
-          console.log(data);
-
+          console.log("User data registered", data);
           if (data===null) {
             console.warn("Server response is empty");
             return this.processGalaxyAccountRegistrationFailure("No server response !!!");
           }
-
           this._isFailed = false;
           this._isSuccess = true;
-          currentUser.hasGalaxyAccount = true;
+          this.currentUser.hasGalaxyAccount = true;
           return false;
         },
         error => {
@@ -149,7 +155,7 @@ export class CreRegistrationFormComponent implements OnInit {
 
   onSubmit() {
     if (this.cloudProvider.name === 'phenomenal') {
-      this.registerGalaxyAccount('', this.form.value['email'], this.form.value['password']);
+      this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
     } else {
       this.cloudProvider.credential.galaxy_admin_email = this.form.value['email'];
       this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];

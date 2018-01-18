@@ -1,11 +1,11 @@
 <div *ngIf="cloudProvider.isSelected === 2">
-  <p>Please register your Galaxy Administrator account</p>
+  <p>
+    Please choose the password for your Galaxy Administrator account<br>
+    (username: <em>{{ currentUser.email }}</em>)
+  </p>
+  <br>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-input-container class="input-width">
-      <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_email"
-             placeholder="Galaxy Email" formControlName="email" required>
-    </mat-input-container>
     <mat-input-container class="input-width">
       <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_password"
              placeholder="Galaxy Password" type="password" formControlName="password" required>
@@ -18,7 +18,8 @@
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
-    <div *ngIf="cloudProvider.isSelected === 2" class="mat-card-control-buttons">
+    <div class="mat-card-control-buttons"
+         *ngIf="cloudProvider.isSelected === 2 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
       <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
       <button mat-raised-button *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">
         Register
@@ -48,19 +49,21 @@
     <p>Username: <b>{{cloudProvider.credential.username}}</b></p>
     <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
     <p>Auth URL: <b>{{cloudProvider.credential.url}}</b></p>
-    <p>Galaxy Email: <b>{{cloudProvider.credential.galaxy_admin_email}}</b></p>
+    <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
   </div>
   <div *ngIf="cloudProvider.name === 'aws'">
     <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
     <p>Access Key ID: <b>{{cloudProvider.credential.access_key_id}}</b></p>
-    <p>Galaxy Email: <b>{{cloudProvider.credential.galaxy_admin_email}}</b></p>
+    <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
   </div>
   <div *ngIf="cloudProvider.name === 'gcp'">
     <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
     <p>Project ID: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-    <p>Galaxy Email: <b>{{cloudProvider.credential.galaxy_admin_email}}</b></p>
+    <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
   </div>
-  <ng-template ngbModalContainer></ng-template>
+  <div class="mat-card-control-buttons">
+    <ng-template ngbModalContainer></ng-template>
+  </div>
   <ph-progress-bar-modal [credential]="cloudProvider.credential"
                          [cloudProvider]="cloudProvider"></ph-progress-bar-modal>
 </div>
