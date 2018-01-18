@@ -18,6 +18,7 @@ export class CreRegistrationFormComponent implements OnInit {
   private _isFailed = false;
   _isSuccess = false;
   private _message = '';
+  passwordConfirm = "";
   form: FormGroup;
 
   formErrors = {

@@ -1,17 +1,19 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field class="input-width">
     <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
-                required>
+                required [(ngModel)]="cloudProvider.credential.default_region">
       <mat-option *ngFor="let region of _aws_region" [value]="region.value">
         {{region.displayValue}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-input-container class="input-width">
-    <input matInput placeholder="Access Key ID" type="password" formControlName="accessKeyId" required>
+    <input matInput [(ngModel)]="cloudProvider.credential.access_key_id"
+           placeholder="Access Key ID" type="password" formControlName="accessKeyId" required>
   </mat-input-container>
   <mat-input-container class="input-width">
-    <input matInput placeholder="Secret Access Key" type="password" formControlName="secretAccessKey" required>
+    <input matInput [(ngModel)]="cloudProvider.credential.secret_access_key"
+           placeholder="Secret Access Key" type="password" formControlName="secretAccessKey" required>
   </mat-input-container>
   <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.secretAccessKey" class="alert alert-warning">
     {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.secretAccessKey }}
