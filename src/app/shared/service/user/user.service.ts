@@ -207,9 +207,9 @@ export class UserService {
 
   private extractData(res: Response) {
     console.log("Response", res);
-    console.log("Response body", res.json());
-    const body = res.json();
-    return body || {};
+    const jresponse = res.json();
+    console.log(jresponse);
+    return jresponse && jresponse.body && jresponse.body!=="null" ? jresponse : null;
   }
 
 }
