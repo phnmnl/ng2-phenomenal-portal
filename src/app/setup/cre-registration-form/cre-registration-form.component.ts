@@ -110,23 +110,19 @@ export class CreRegistrationFormComponent implements OnInit {
 
   registerGalaxyAccount(username: string, email: string, password: string) {
 
-    let currentUser = this.userService.getCurrentUser();
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
-
     try {
-      this.userService.createGalaxyAccount(currentUser.id, user).subscribe(
+      this.userService.createGalaxyAccount(this.currentUser.id, user).subscribe(
         data => {
-          console.log(data);
-
+          console.log("User data registered", data);
           if (data===null) {
             console.warn("Server response is empty");
             return this.processGalaxyAccountRegistrationFailure("No server response !!!");
           }
-
           this._isFailed = false;
           this._isSuccess = true;
-          currentUser.hasGalaxyAccount = true;
+          this.currentUser.hasGalaxyAccount = true;
           return false;
         },
         error => {
@@ -159,7 +155,7 @@ export class CreRegistrationFormComponent implements OnInit {
 
   onSubmit() {
     if (this.cloudProvider.name === 'phenomenal') {
-      this.registerGalaxyAccount('', this.form.value['email'], this.form.value['password']);
+      this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
     } else {
       this.cloudProvider.credential.galaxy_admin_email = this.form.value['email'];
       this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
