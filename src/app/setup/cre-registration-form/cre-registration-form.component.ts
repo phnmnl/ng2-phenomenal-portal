@@ -56,7 +56,7 @@ export class CreRegistrationFormComponent implements OnInit {
     this.buildForm();
   }
 
-  get galaxyInstanceUrl(){
+  get galaxyInstanceUrl() {
     return this.appConfig.getConfig("galaxy_url") + "/user/login";
   }
 
@@ -153,6 +153,7 @@ export class CreRegistrationFormComponent implements OnInit {
     } else {
       this.cloudProvider.credential.galaxy_admin_email = this.form.value['email'];
       this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
+      this.cloudProvider.isSelected = 3;
       this._isSuccess = true;
     }
   }

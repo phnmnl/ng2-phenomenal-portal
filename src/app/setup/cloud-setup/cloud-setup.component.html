@@ -33,13 +33,13 @@
       </div>
 
       <div *ngIf="cloudProvider.isSelected === 1">
+        <p>Please register your Cloud Provider credentials</p>
         <ph-aws-setup *ngIf="cloudProvider.name === 'aws'" [cloudProvider]="cloudProvider"></ph-aws-setup>
         <ph-gcp-setup *ngIf="cloudProvider.name === 'gcp'" [cloudProvider]="cloudProvider"></ph-gcp-setup>
-        <ph-ostack-setup *ngIf="cloudProvider.name === 'ostack'"
-                         [cloudProvider]="cloudProvider"></ph-ostack-setup>
+        <ph-ostack-setup *ngIf="cloudProvider.name === 'ostack'" [cloudProvider]="cloudProvider"></ph-ostack-setup>
       </div>
 
-      <div *ngIf="cloudProvider.isSelected === 2">
+      <div *ngIf="cloudProvider.isSelected >= 2">
         <ph-cre-registration-form [cloudProvider]="cloudProvider"></ph-cre-registration-form>
       </div>
 
