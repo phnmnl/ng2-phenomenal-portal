@@ -46,16 +46,18 @@
        class="alert alert-warning">
     {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
   </div>
-  <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-  <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
-  <div *ngIf="!isVerify" style="display: inline-block">
-    <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
-            style="width: 88px; height: 36px; margin: 0">
-      Verify
-    </button>
-    <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
-            style="width: 88px; height: 36px; margin: 0">
-      Waiting
-    </button>
+  <div class="mat-card-control-buttons">
+    <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+    <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
+    <div *ngIf="!isVerify" style="display: inline-block">
+      <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
+              style="width: 88px; height: 36px; margin: 0">
+        Verify
+      </button>
+      <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
+              style="width: 88px; height: 36px; margin: 0">
+        Waiting
+      </button>
+    </div>
   </div>
 </form>

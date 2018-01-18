@@ -1,26 +1,30 @@
-<div *ngIf="cloudProvider.isSelected === 2 && !_isSuccess">
+<div *ngIf="cloudProvider.isSelected === 2">
   <p>Please register your Galaxy Administrator account</p>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-input-container class="input-width">
-      <input matInput placeholder="Galaxy Email" formControlName="email" required>
+      <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_email"
+             placeholder="Galaxy Email" formControlName="email" required>
     </mat-input-container>
     <mat-input-container class="input-width">
-      <input matInput placeholder="Galaxy Password" type="password" formControlName="password" required>
+      <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_password"
+             placeholder="Galaxy Password" type="password" formControlName="password" required>
     </mat-input-container>
     <mat-input-container class="input-width">
-      <input matInput placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
+      <input matInput [(ngModel)]="passwordConfirm"
+             placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
     </mat-input-container>
     <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
-    <div>
-      <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+    <div *ngIf="cloudProvider.isSelected === 2" class="mat-card-control-buttons">
+      <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
       <button mat-raised-button *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">
         Register
       </button>
-      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">Next
+      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">
+        Next
       </button>
     </div>
   </form>
@@ -30,13 +34,15 @@
   <a href="{{ galaxyInstanceUrl }}" target="_blank">
     <button mat-raised-button color="warn">Login</button>
   </a>
-  <!-- Display existent error messages -->
-  <div *ngIf="message.length > 0">
-    <br>
-    <div class="alert alert-warning">{{ message}}</div>
-  </div>
 </div>
-<div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal'">
+
+<!-- Display existent error messages -->
+<div *ngIf="message.length > 0">
+  <br>
+  <div class="alert alert-warning">{{ message}}</div>
+</div>
+
+<div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal' && cloudProvider.isSelected === 3">
   <p>Please review your input data before deployment.</p>
   <div *ngIf="cloudProvider.name === 'ostack'">
     <p>Username: <b>{{cloudProvider.credential.username}}</b></p>

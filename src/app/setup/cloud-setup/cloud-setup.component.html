@@ -1,39 +1,48 @@
-<div
-  [ngClass]="{'col-lg-4': cloudProvider.name !== 'phenomenal', 'col-lg-12': cloudProvider.name === 'phenomenal', 'card-size': true}">
+<div class="text-xs-center">
+
   <mat-card>
     <img mat-card-image src="{{cloudProvider.logo}}" class="card-image">
     <mat-card-content>
       <h5 class="card-title">
         <strong>{{cloudProvider.title}}</strong>
-        <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
+        <a href="{{cloudProvider.help}}" target="_blank">
+          <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        </a>
       </h5>
-      <div *ngIf="cloudProvider.isSelected === 0">
+      <div>
         <p>{{cloudProvider.description}}</p>
         <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-        <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
-        <p>Providers: <strong>{{cloudProvider.providerDescription}}</strong></p>
+
+        <div>
+          <p>
+            <small>
+              <i class="fa fa-lock" aria-hidden="true"></i>
+              No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
+            </small>
+          </p>
+        </div>
+
         <div *ngIf="cloudProvider.name === 'phenomenal'">
           <a href="{{galaxy_instance_url}}" target="_blank">
             <button mat-raised-button color="warn">Login</button>
           </a>
-          <button *ngIf="user && !user.hasGalaxyAccount" mat-raised-button (click)="cloudProvider.isSelected=2;" color="primary">Register</button>
-        </div>
-        <div *ngIf="cloudProvider.name === 'aws' || cloudProvider.name === 'gcp'">
-          <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
-        </div>
-        <div *ngIf="cloudProvider.name === 'ostack'">
-          <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="primary">Select</button>
-          <!--<button mat-raised-button disabled color="primary">Coming Soon</button>-->
+          <button *ngIf="user && !user.hasGalaxyAccount" mat-raised-button (click)="cloudProvider.isSelected=2;"
+                  color="primary">Register
+          </button>
         </div>
       </div>
+
       <div *ngIf="cloudProvider.isSelected === 1">
-        <ph-ostack-setup *ngIf="cloudProvider.name === 'ostack'" [(cloudProvider)]="cloudProvider"></ph-ostack-setup>
+        <p>Please register your Cloud Provider credentials</p>
         <ph-aws-setup *ngIf="cloudProvider.name === 'aws'" [cloudProvider]="cloudProvider"></ph-aws-setup>
         <ph-gcp-setup *ngIf="cloudProvider.name === 'gcp'" [cloudProvider]="cloudProvider"></ph-gcp-setup>
+        <ph-ostack-setup *ngIf="cloudProvider.name === 'ostack'" [cloudProvider]="cloudProvider"></ph-ostack-setup>
       </div>
-      <div *ngIf="cloudProvider.isSelected === 2">
+
+      <div *ngIf="cloudProvider.isSelected >= 2">
         <ph-cre-registration-form [cloudProvider]="cloudProvider"></ph-cre-registration-form>
       </div>
+
     </mat-card-content>
   </mat-card>
 </div>

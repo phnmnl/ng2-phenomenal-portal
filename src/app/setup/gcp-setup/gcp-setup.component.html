@@ -1,21 +1,25 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field class="input-width">
     <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
-                required>
+                [(ngModel)]="cloudProvider.credential.default_region" required>
       <mat-option *ngFor="let region of _gcp_region" [value]="region.value">
         {{region.displayValue}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-input-container class="input-width">
-    <input matInput placeholder="Google Compute Engine Service Credential" formControlName="accessKeyId" required>
+    <input matInput [(ngModel)]="cloudProvider.credential.access_key_id"
+           placeholder="Google Compute Engine Service Credential" formControlName="accessKeyId" required>
   </mat-input-container>
   <mat-input-container class="input-width">
-    <input matInput placeholder="Project ID" formControlName="tenantName" required>
+    <input matInput [(ngModel)]="cloudProvider.credential.tenant_name"
+           placeholder="Project ID" formControlName="tenantName" required>
   </mat-input-container>
   <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.tenantName" class="alert alert-warning">
     {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.tenantName }}
   </div>
-  <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-  <button mat-raised-button [disabled]="!form.valid" color="primary">Next</button>
+  <div class="mat-card-control-buttons">
+    <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
+    <button mat-raised-button [disabled]="!form.valid" color="primary">Next</button>
+  </div>
 </form>

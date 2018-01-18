@@ -1,7 +1,7 @@
-import { ApplicationRef, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
 import { CloudProvider } from './cloud-provider';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from "../shared/service/user/user";
 
@@ -10,7 +10,7 @@ import { User } from "../shared/service/user/user";
   templateUrl: './setup-cloud-environment.component.html',
   styleUrls: ['./setup-cloud-environment.component.css']
 })
-export class SetupCloudEnvironmentComponent implements OnInit {
+export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
   private currentUser: User = new User({"username": "pino"});
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
@@ -27,30 +27,16 @@ export class SetupCloudEnvironmentComponent implements OnInit {
   // _gcp_region: AwsRegion[];
   // private _provider: CloudProvider;
 
-  //
-  // get provider(): CloudProvider {
-  //   return this._provider;
-  // }
-  //
-  // set provider(value: CloudProvider) {
-  //   this._provider = value;
-  // }
+  private selectedCloudProvider: CloudProvider = null;
 
-  get cloudProviderCollection(): CloudProvider[] {
-    return this._cloudProviderCollection;
-  }
+  // Listener of query param changes
+  private _queryParamChangeListener;
 
-  // get galaxy_api_key(): string {
-  //   return this._galaxy_api_key;
-  // }
-  //
-  // get galaxy_instance_url(): string {
-  //   return this._galaxy_instance_url;
-  // }
 
   constructor(private _applicationService: ApplicationService,
               public credentialService: CredentialService,
               public tokenService: TokenService,
+              private route: ActivatedRoute,
               private router: Router,
               public userService: UserService,
               private ref: ChangeDetectorRef,
@@ -76,30 +62,48 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     //   {value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
     // ];
 
+  }
+
+  ngOnInit() {
+
+    this._queryParamChangeListener = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        console.log("Component params", params);
+        this.selectedCloudProvider = null;
+        // reset state
+        this.initializeProviders();
+        this.selectedCloudProvider = null;
+      });
+
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
+
+    if (this.tokenService.getToken()) {
+      this.getAllApplication((result) => {
+        if (result.status === 401 || result.type === 'error') {
+          this.logout();
+        }
+      });
+    } else {
+      this.logout();
+    }
+  }
+
+  ngOnDestroy() {
+    this._queryParamChangeListener.unsubscribe();
+  }
+
+  initializeProviders() {
+    console.log("Generating providers...");
     this._cloudProviderCollection = [
-      // {
-      //   title: 'PhenoMeNal Cloud',
-      //   name: 'phenomenal',
-      //   help: '/help/Deployment-Cloud-Research-Environment',
-      //   description: 'Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
-      //   'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
-      //   paymentDescription: 'Free',
-      //   providerDescription: 'EMBL-EBI, Uppsala Uni',
-      //   locationDescription: 'Europe',
-      //   logo: this._phenomenal_logo,
-      //   isSelected: 0,
-      //   credential: {
-      //     username: '',
-      //     password: '',
-      //     tenant_name: '',
-      //     url: '',
-      //     provider: '',
-      //     galaxy_admin_username: '',
-      //     galaxy_admin_email: '',
-      //     galaxy_admin_password: '',
-      //     jupyter_password: ''
-      //   }
-      // },
       {
         title: 'OpenStack',
         name: 'ostack',
@@ -174,25 +178,8 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {
-    this.userService.getObservableCurrentUser().subscribe(user => {
-      console.log("Updating the current user", user);
-      this.currentUser = <User> user;
-      if (user) {
-        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
-        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
-      }
-    });
-
-    if (this.tokenService.getToken()) {
-      this.getAllApplication((result) => {
-        if (result.status === 401 || result.type === 'error') {
-          this.logout();
-        }
-      });
-    } else {
-      this.logout();
-    }
+  get cloudProviderCollection(): CloudProvider[] {
+    return this._cloudProviderCollection;
   }
 
   logout() {
@@ -201,17 +188,27 @@ export class SetupCloudEnvironmentComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
+  public isCloudProviderSelected() {
+    return this.selectedCloudProvider && this.selectedCloudProvider.isSelected > 0;
+  }
+
+  selectCloudProvider(provider: CloudProvider) {
+    this.selectedCloudProvider = provider;
+    this.selectedCloudProvider.isSelected = 1;
+    console.log("Selected CloudProvider", provider);
+  }
+
   getAllApplication(callback) {
     this._applicationService.getAll(
       this.credentialService.getUsername(),
       this.tokenService.getToken()
     ).subscribe(
       app => {
-        // console.log('[RepositoryComponent] getAll %O', app);
         callback(app);
       },
       error => {
         console.log('[RepositoryComponent] getAll error %O', error);
+        this.userService.logout();
         callback(error);
       }
     );

@@ -18,6 +18,7 @@ export class CreRegistrationFormComponent implements OnInit {
   private _isFailed = false;
   _isSuccess = false;
   private _message = '';
+  passwordConfirm = "";
   form: FormGroup;
 
   formErrors = {
@@ -55,7 +56,7 @@ export class CreRegistrationFormComponent implements OnInit {
     this.buildForm();
   }
 
-  get galaxyInstanceUrl(){
+  get galaxyInstanceUrl() {
     return this.appConfig.getConfig("galaxy_url") + "/user/login";
   }
 
@@ -103,29 +104,47 @@ export class CreRegistrationFormComponent implements OnInit {
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
 
-    this.userService.createGalaxyAccount(currentUser.id, user).subscribe(
-      data => {
-        this._isFailed = false;
-        this._isSuccess = true;
-        currentUser.hasGalaxyAccount = true;
-        return false;
-      },
-      error => {
-        let error_info = JSON.parse(error._body);
-        console.log("The error object", error_info);
-        if(error_info.code === 409){
-          // Consider registration OK even if the user has an existent account with that email:
-          // in such a case an error message is shown
+    try {
+      this.userService.createGalaxyAccount(currentUser.id, user).subscribe(
+        data => {
+          console.log(data);
+
+          if (data===null) {
+            console.warn("Server response is empty");
+            return this.processGalaxyAccountRegistrationFailure("No server response !!!");
+          }
+
           this._isFailed = false;
           this._isSuccess = true;
-        }else{
-          this._isFailed = true;
-          this._isSuccess = false;
+          currentUser.hasGalaxyAccount = true;
+          return false;
+        },
+        error => {
+          let error_info = JSON.parse(error._body);
+          console.log("The error object", error_info);
+          if (error_info.code === 409) {
+            // Consider registration OK even if the user has an existent account with that email:
+            // in such a case an error message is shown
+            this._isFailed = false;
+            this._isSuccess = true;
+          } else {
+            this._isFailed = true;
+            this._isSuccess = false;
+          }
+          this._message = error_info.message;
+          return false;
         }
-        this._message = error_info.message;
-        return false;
-      }
-    );
+      );
+    } catch (error) {
+      this.processGalaxyAccountRegistrationFailure(error);
+    }
+  }
+
+  private processGalaxyAccountRegistrationFailure(error){
+    this._isFailed = true;
+    this._isSuccess = false;
+    this._message = error ? error.toString() : "Internal Server Error";
+    return false;
   }
 
   onSubmit() {
@@ -134,6 +153,7 @@ export class CreRegistrationFormComponent implements OnInit {
     } else {
       this.cloudProvider.credential.galaxy_admin_email = this.form.value['email'];
       this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
+      this.cloudProvider.isSelected = 3;
       this._isSuccess = true;
     }
   }
