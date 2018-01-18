@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
 import { UserService } from "../../shared/service/user/user.service";
 import { AppConfig } from "../../app.config";
+import { User } from "../../shared/service/user/user";
 
 
 @Component({
@@ -18,7 +19,8 @@ export class CreRegistrationFormComponent implements OnInit {
   private _isFailed = false;
   _isSuccess = false;
   private _message = '';
-  passwordConfirm = "";
+  public currentUser: User;
+  passwordConfirm = '';
   form: FormGroup;
 
   formErrors = {
@@ -54,6 +56,14 @@ export class CreRegistrationFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
   }
 
   get galaxyInstanceUrl() {
@@ -67,6 +77,7 @@ export class CreRegistrationFormComponent implements OnInit {
       'confirmPassword': ['', [Validators.required]]
     }, {validator: matchingPasswords('password', 'confirmPassword')});
 
+    this.currentUser = this.userService.getCurrentUser();
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged(); // (re)set validation messages now
