@@ -5,7 +5,7 @@
       <!--First row-->
       <div class="row">
         <div class="col-md-6">
-          <p class="text-xs-center">
+          <p class="text-xs-center font-italic">
             How does it work?
           </p>
 
@@ -18,25 +18,26 @@
           <br>
         </div>
 
-
         <!--Main information-->
         <div class="col-md-6">
-          <h3 class="h3-responsive text-justify">All your favourite metabolomics analysis applications under one hood
-            accessible through Open Source scientific web environments, Galaxy Workflow and Jupyter IPython coding
-            environment</h3>
+          <h3 class="h3-responsive text-justify">
+            All your favourite metabolomics analysis applications in one place,
+            accessible through the open source Galaxy and Jupyter workflow environments
+          </h3>
           <hr>
           <div class="text-xs-center">
-            Test drive our Cloud Research Environment
-            <br>
-            <div class="text-xs-center">
-              <a [routerLink]="['/cloud-research-environment-test']" class="btn btn-primary">Galaxy Workflow Manager</a>
+            <div class="font-italic">
+              If you don’t have a cloud infrastructure on which to deploy <br>
+              your own Cloud Research Environment<br>
+              <a [routerLink]="['/cloud-research-environment-test']" class="btn btn-primary">
+                Try our free Public Instance
+              </a>
             </div>
           </div>
           <br>
           <br>
           <div class="text-xs-center">
-            Want to give it a go?
-            <br>
+            <div class="text-xs-center font-italic">Ready to use a real cloud infrastructure?</div>
             <a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">
               Create your<br> Cloud Research Environment
             </a>
@@ -54,11 +55,14 @@
         <div class="col-md-6">
           <h3 class="h3-responsive text-xs-left">Do you like the idea but need a local installation of the CRE?</h3>
           <hr>
-          <p class="text-xs-center">Don't worry, we have a solution for you too. We can provide you with all the kit for
-            a
-            local installation of our Cloud Research Environment. This approach is more work for you but you will have
-            the
-            benefit of having jall the apps on our App Library available locally.</p>
+          <p class="text-xs-center">
+            Don't worry, we have a solution for you too.
+            We can provide you with all the kit for a local installation of our Cloud Research Environment.
+            This approach is more work for you but you will have the
+            benefit of having all the apps on our App Library available locally
+            and the possibility of securing your deployment to process sensitive data.
+          </p>
+          <br>
           <div class="text-xs-center">
             <a [routerLink]="['/cloud-research-environment/local-installation']"
                class="btn btn-primary">Find out more about <br> local installation</a>
@@ -73,34 +77,8 @@
         </div>
       </div>
       <!--/.First row-->
-
-      <hr class="extra-margins">
-
-      <!--First row-->
-      <div class="row">
-        <div class="col-md-6">
-          <!--Featured image -->
-          <img [src]="img3" class="img-fluid" alt="">
-        </div>
-
-        <br>
-        <!--Main information-->
-        <div class="col-md-6">
-          <h3 class="h3-responsive text-xs-left">Access to all the standard Cloud providers or own free PhenoMeNal
-            cloud</h3>
-          <hr>
-          <p class="text-xs-center">Don't know much about Cloud providers but want to use our CRE? Don't worry. Our
-            default setup process is easy to use and will get you started in no time</p>
-
-        </div>
-
-      </div>
-      <!--/.First row-->
-
-
     </div>
     <!--/.Main layout-->
   </div>
-
 
 </main>
