@@ -26,11 +26,19 @@ export class BreadcrumbService {
    * @returns {*}
    */
   getFriendlyNameForRoute(route: string): string {
-    let val = this.routeFriendlyNames[route];
-    if (!val) {
-      val = route.substr(1, route.length);
+    let name = this.routeFriendlyNames[route];
+    if (!name) {
+      let paramsStart = route.indexOf('?');
+      if(paramsStart>0){
+        let simplfiedRoute = route.substring(0, paramsStart);
+        name = this.routeFriendlyNames[simplfiedRoute];
+      }
+
+      if (!name) {
+        name = route.substr(1, route.length);
+      }
     }
 
-    return val;
+    return name;
   }
 }
