@@ -1,8 +1,16 @@
 <div *ngIf="cloudProvider.isSelected === 2">
-  <p>
-    Please choose the password for your Galaxy Administrator account<br>
+
+  <h3 class="h3-responsive text-center cloud-setup-title">
+    Setup of your Galaxy Administrator account<br>
+  </h3>
+  <h6 class="h6-responsive text-center">
     (username: <em>{{ currentUser.email }}</em>)
-  </p>
+  </h6>
+
+  <h3 class="h3-responsive text-center cloud-setup-title">
+    Please choose a password<br>
+  </h3>
+
   <br>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
