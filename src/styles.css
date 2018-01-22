@@ -155,6 +155,15 @@ input:focus {
   margin-top: 50px;
 }
 
+.no-login-stored {
+  margin-top: 50px;
+  margin-bottom: -20px;
+}
+
+.cloud-setup-title {
+  margin-top: 50px;
+}
+
 @-webkit-keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);

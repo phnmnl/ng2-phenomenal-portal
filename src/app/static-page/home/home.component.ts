@@ -17,6 +17,9 @@ export class HomeComponent {
   private _img2 = 'assets/img/home/img2.png';
   private _img3 = 'assets/img/home/img3.png';
   private _img3_title = 'Galaxy Workflow';
+  public galaxy_logo = 'assets/img/logo/galaxy_with_txt.png';
+  public jupyter_logo = 'assets/img/logo/jupyter_with_txt.png';
+  public providers_logo = 'assets/img/logo/providers_logo.png';
 
   get img3_title(): string {
     return this._img3_title;

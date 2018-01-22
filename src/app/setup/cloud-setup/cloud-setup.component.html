@@ -13,15 +13,6 @@
         <p>{{cloudProvider.description}}</p>
         <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
 
-        <div>
-          <p>
-            <small>
-              <i class="fa fa-lock" aria-hidden="true"></i>
-              No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
-            </small>
-          </p>
-        </div>
-
         <div *ngIf="cloudProvider.name === 'phenomenal'">
           <a href="{{galaxy_instance_url}}" target="_blank">
             <button mat-raised-button color="warn">Login</button>
@@ -33,14 +24,33 @@
       </div>
 
       <div *ngIf="cloudProvider.isSelected === 1">
-        <p>Please register your Cloud Provider credentials</p>
+        <h3 class="h3-responsive text-center cloud-setup-title">Please insert your Cloud Provider credentials</h3>
+        <br>
         <ph-aws-setup *ngIf="cloudProvider.name === 'aws'" [cloudProvider]="cloudProvider"></ph-aws-setup>
         <ph-gcp-setup *ngIf="cloudProvider.name === 'gcp'" [cloudProvider]="cloudProvider"></ph-gcp-setup>
         <ph-ostack-setup *ngIf="cloudProvider.name === 'ostack'" [cloudProvider]="cloudProvider"></ph-ostack-setup>
+
+        <div class="no-login-stored">
+          <p>
+            <small>
+              <i class="fa fa-lock" aria-hidden="true"></i>
+              No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
+            </small>
+          </p>
+        </div>
+
       </div>
 
       <div *ngIf="cloudProvider.isSelected >= 2">
         <ph-cre-registration-form [cloudProvider]="cloudProvider"></ph-cre-registration-form>
+        <div class="no-login-stored">
+          <p>
+            <small>
+              <i class="fa fa-lock" aria-hidden="true"></i>
+              No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
+            </small>
+          </p>
+        </div>
       </div>
 
     </mat-card-content>
