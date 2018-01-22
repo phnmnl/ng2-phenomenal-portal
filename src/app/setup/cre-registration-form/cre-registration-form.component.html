@@ -74,8 +74,8 @@
     </div>
   </div>
   <div class="mat-card-control-buttons">
-    <ng-template ngbModalContainer></ng-template>
+    <!--<ng-template ngbModalContainer></ng-template>-->
+    <ph-progress-bar-modal [credential]="cloudProvider.credential"
+                           [cloudProvider]="cloudProvider"></ph-progress-bar-modal>
   </div>
-  <ph-progress-bar-modal [credential]="cloudProvider.credential"
-                         [cloudProvider]="cloudProvider"></ph-progress-bar-modal>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApplicationDeployer } from 'ng2-cloud-portal-presentation-lib';
 import {
@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'ph-progress-bar-modal-content',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div style="text-align: center">
       <div class="modal-header">
@@ -57,7 +58,7 @@ import { Subscription } from 'rxjs/Subscription';
           {{ this.deploymentInstance.logs }}
         </div>
       </div>
-    </div>
+    </div>    
   `
 })
 
@@ -734,7 +735,8 @@ export class ProgressBarModalContentComponent implements OnInit, OnDestroy {
 @Component({
   selector: 'ph-progress-bar-modal',
   templateUrl: './progress-bar-modal.component.html',
-  styleUrls: ['./progress-bar-modal.component.css']
+  styleUrls: ['./progress-bar-modal.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProgressBarModalComponent {
   @Input() credential: Credential;
@@ -744,7 +746,11 @@ export class ProgressBarModalComponent {
   }
 
   open() {
-    const modalRef = this.modalService.open(ProgressBarModalContentComponent, {size: 'lg', backdrop: 'static'});
+    const modalRef = this.modalService.open(ProgressBarModalContentComponent, {
+      windowClass: 'progress-bar-modal',
+      size: 'lg',
+      backdrop: 'static'
+    });
     modalRef.componentInstance.credential = this.credential;
     modalRef.componentInstance.cloudProvider = this.cloudProvider;
   }

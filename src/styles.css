@@ -92,14 +92,6 @@ input:focus {
   height: 10em;
 }
 
-.modal-backdrop.fade {
-  opacity: 0.5 !important;
-}
-
-.modal-dialog {
-  margin-top: 200px;
-}
-
 .terms-list {
   display: inline-block;
   margin: 15px 0;
