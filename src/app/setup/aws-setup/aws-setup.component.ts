@@ -3,6 +3,9 @@ import { AwsRegion } from '../aws-region';
 import { CloudProvider } from '../cloud-provider';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import AWS = require('aws-sdk');
+import { AWSError } from "aws-sdk/lib/error";
+
 @Component({
   selector: 'ph-aws-setup',
   templateUrl: './aws-setup.component.html',
@@ -83,7 +86,36 @@ export class AwsSetupComponent implements OnInit {
     }
   }
 
+
   onSubmit() {
+    // Validate AWS credentials before continuing
+    let credentials = this.cloudProvider.credential;
+    if (credentials.default_region && credentials.access_key_id && credentials.secret_access_key) {
+      AWS.config.update({
+        region: credentials.default_region,
+        accessKeyId: credentials.access_key_id,
+        secretAccessKey: credentials.secret_access_key
+      });
+
+      // Validate AWS credentials trying to get the list of instances from the AWS EC2 service
+      // Check whether there exists a specific API method to validate credentials
+      let ec2 = new AWS.EC2();
+      ec2.describeInstances({}, (err: AWSError /*, data */) => {
+        if (err) {
+          if(err.code==='AuthFailure'){
+            this.formErrors['accessKeyId'] = err.message;
+          }else{
+            console.error(err.code, err.message, err);
+            this.formErrors['accessKeyId'] = "Unable to validate access credentials";
+          }
+        } else {
+          this.onValidationSuccess();
+        }
+      });
+    }
+  }
+
+  private onValidationSuccess() {
     this.cloudProvider.isSelected = 2;
     this.cloudProvider.credential.default_region = this.form.value['region'];
     this.cloudProvider.credential.access_key_id = this.form.value['accessKeyId'];
