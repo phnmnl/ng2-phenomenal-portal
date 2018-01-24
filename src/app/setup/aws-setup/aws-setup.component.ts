@@ -89,7 +89,6 @@ export class AwsSetupComponent implements OnInit {
     }
   }
 
-
   onSubmit() {
     // Validate AWS credentials before continuing
     let credentials = this.cloudProvider.credential;
@@ -112,18 +111,14 @@ export class AwsSetupComponent implements OnInit {
             this.formErrors['accessKeyId'] = "Unable to validate access credentials";
           }
         } else {
-          this.onValidationSuccess();
+          // If the Validation is OK
+          this.cloudProvider.isSelected = 2;
+          this.cloudProvider.credential.default_region = this.form.value['region'];
+          this.cloudProvider.credential.access_key_id = this.form.value['accessKeyId'];
+          this.cloudProvider.credential.secret_access_key = this.form.value['secretAccessKey'];
+          this.cloudProviderChange.emit(this.cloudProvider);
         }
       });
     }
-  }
-
-  private onValidationSuccess() {
-    this.cloudProvider.isSelected = 2;
-    this.cloudProvider.credential.default_region = this.form.value['region'];
-    this.cloudProvider.credential.access_key_id = this.form.value['accessKeyId'];
-    this.cloudProvider.credential.secret_access_key = this.form.value['secretAccessKey'];
-
-    this.cloudProviderChange.emit(this.cloudProvider);
   }
 }
