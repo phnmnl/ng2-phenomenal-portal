@@ -8,8 +8,9 @@
     </mat-select>
   </mat-form-field>
   <mat-input-container class="input-width">
-    <input matInput [(ngModel)]="cloudProvider.credential.access_key_id"
-           placeholder="Google Compute Engine Service Credential" formControlName="accessKeyId" required>
+    <textarea matInput [(ngModel)]="cloudProvider.credential.access_key_id"
+              placeholder="Google Compute Engine Service Credential" formControlName="accessKeyId" required>
+    </textarea>
   </mat-input-container>
   <mat-input-container class="input-width">
     <input matInput [(ngModel)]="cloudProvider.credential.tenant_name"
