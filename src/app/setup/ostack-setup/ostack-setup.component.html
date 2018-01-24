@@ -3,7 +3,12 @@
     <input matInput placeholder="Username" formControlName="username" required>
   </mat-input-container>
   <mat-input-container class="input-width">
-    <input matInput placeholder="Password" type="password" formControlName="password" required>
+    <input matInput placeholder="Password"
+           [type]="hidePassword ? 'password' : 'text'"
+           formControlName="password" required>
+    <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+      <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+    </mat-icon>
   </mat-input-container>
   <mat-input-container class="input-width">
     <input matInput placeholder="Project Name" formControlName="tenantName" required>
