@@ -16,11 +16,18 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-input-container class="input-width">
       <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_password"
-             placeholder="Galaxy Password" type="password" formControlName="password" required>
+             [type]="hidePassword ? 'password' : 'text'"
+             placeholder="Galaxy Password" formControlName="password" required>
+      <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+        <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
     </mat-input-container>
     <mat-input-container class="input-width">
-      <input matInput [(ngModel)]="passwordConfirm"
-             placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
+      <input matInput [(ngModel)]="passwordConfirm" [type]="hidePasswordConfirm ? 'password' : 'text'"
+             placeholder="Confirm Galaxy Password" formControlName="confirmPassword" required>
+      <mat-icon matSuffix (click)="hidePasswordConfirm = !hidePasswordConfirm">
+        <i class="fa {{ hidePasswordConfirm ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
     </mat-input-container>
     <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
          class="alert alert-warning">

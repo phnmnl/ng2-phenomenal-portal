@@ -23,6 +23,9 @@ export class CreRegistrationFormComponent implements OnInit {
   passwordConfirm = '';
   form: FormGroup;
 
+  hidePassword: boolean = true;
+  hidePasswordConfirm: boolean = true;
+
   formErrors = {
     'email': '',
     'password': '',
