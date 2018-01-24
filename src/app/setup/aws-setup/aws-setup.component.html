@@ -1,4 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
   <mat-form-field class="input-width">
     <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
                 required [(ngModel)]="cloudProvider.credential.default_region">
@@ -7,19 +8,32 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
   <mat-input-container class="input-width">
     <input matInput [(ngModel)]="cloudProvider.credential.access_key_id"
-           placeholder="Access Key ID" type="password" formControlName="accessKeyId" required>
+           placeholder="Access Key ID" [type]="hideAccessKey ? 'password' : 'text'"
+           formControlName="accessKeyId" required>
+    <mat-icon matSuffix (click)="hideAccessKey = !hideAccessKey">
+      <i class="fa {{ hideAccessKey ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+    </mat-icon>
   </mat-input-container>
+
   <mat-input-container class="input-width">
     <input matInput [(ngModel)]="cloudProvider.credential.secret_access_key"
-           placeholder="Secret Access Key" type="password" formControlName="secretAccessKey" required>
+           placeholder="Secret Access Key" [type]="hideSecretKey ? 'password' : 'text'"
+           formControlName="secretAccessKey" required>
+    <mat-icon matSuffix (click)="hideSecretKey = !hideSecretKey">
+      <i class="fa {{ hideSecretKey ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+    </mat-icon>
   </mat-input-container>
+
   <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.secretAccessKey" class="alert alert-warning">
     {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.secretAccessKey }}
   </div>
+
   <div class="mat-card-control-buttons">
     <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
     <button mat-raised-button [disabled]="!form.valid" color="primary">Next</button>
   </div>
+
 </form>

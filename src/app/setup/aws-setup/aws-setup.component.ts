@@ -18,6 +18,9 @@ export class AwsSetupComponent implements OnInit {
   form: FormGroup;
   _aws_region: AwsRegion[];
 
+  hideAccessKey: boolean = true;
+  hideSecretKey: boolean = true;
+
 
   formErrors = {
     'region': '',
@@ -102,9 +105,9 @@ export class AwsSetupComponent implements OnInit {
       let ec2 = new AWS.EC2();
       ec2.describeInstances({}, (err: AWSError /*, data */) => {
         if (err) {
-          if(err.code==='AuthFailure'){
+          if (err.code === 'AuthFailure') {
             this.formErrors['accessKeyId'] = err.message;
-          }else{
+          } else {
             console.error(err.code, err.message, err);
             this.formErrors['accessKeyId'] = "Unable to validate access credentials";
           }
