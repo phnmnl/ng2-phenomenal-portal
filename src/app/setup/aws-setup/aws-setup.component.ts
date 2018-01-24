@@ -108,7 +108,7 @@ export class AwsSetupComponent implements OnInit {
             this.formErrors['accessKeyId'] = err.message;
           } else {
             console.error(err.code, err.message, err);
-            this.formErrors['accessKeyId'] = "Unable to validate access credentials";
+            this.formErrors['accessKeyId'] = "We couldn't contact AWS to validate your credentials";
           }
         } else {
           // If the Validation is OK
