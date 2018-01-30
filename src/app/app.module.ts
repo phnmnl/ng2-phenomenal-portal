@@ -74,6 +74,7 @@ import {
 import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
 import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from './static-page/test-cre/test-cre.component';
+import { LogMonitorComponent } from './log-monitor/log-monitor.component';
 
 /**
  * To set the global environment variables

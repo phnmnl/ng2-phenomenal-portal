@@ -17,6 +17,7 @@ import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from "./static-page/test-cre/test-cre.component";
 import { CreRegistrationFormComponent } from "./setup/cre-registration-form/cre-registration-form.component";
 import { CloudSetupComponent } from "./setup/cloud-setup/cloud-setup.component";
+import { LogMonitorComponent } from "./log-monitor/log-monitor.component";
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: 'help/faq', component: FaqComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'logs', component: LogMonitorComponent, canActivate: [AcceptedTermsGuard]},
   {path: 'term-and-condition', component: TermAndConditionComponent, canActivate: [UserAuthenticatedGuard]},
   {path: 'cloud-research-environment-test', component: TestCreComponent, canActivate: [AcceptedTermsGuard]},
   {path: 'cloud-research-environment', component: CreDashboardComponent},
