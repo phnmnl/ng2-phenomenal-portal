@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Route } from "@angular/router";
 
 @Injectable()
 export class BreadcrumbService {
 
+  private hiddenRoutes = [];
   private routeFriendlyNames: any = {};
 
   constructor() {
@@ -25,20 +27,60 @@ export class BreadcrumbService {
    * @param route
    * @returns {*}
    */
-  getFriendlyNameForRoute(route: string): string {
-    let name = this.routeFriendlyNames[route];
+  getFriendlyNameForRoute(route: Route | string): string {
+    let url = <string> route.toString();
+    // console.log("Searching route", url);
+    let name = this.routeFriendlyNames[url];
+    let hidden = name in this.hiddenRoutes;
+    let paramsStart = url.lastIndexOf('/');
+    if (paramsStart > 0) {
+      let simplified = url.substring(0, paramsStart);
+      hidden = simplified in this.hiddenRoutes;
+      if (!hidden)
+        if (this.routeFriendlyNames[simplified]) {
+          name = url.substring(paramsStart + 1).replace(new RegExp('-', 'g'), ' ');
+        } else {
+          name = simplified;
+          // console.log("ParamID:", name);
+        }
+    }
+    // console.log("Found route", name);
     if (!name) {
-      let paramsStart = route.indexOf('?');
-      if(paramsStart>0){
-        let simplfiedRoute = route.substring(0, paramsStart);
+      let paramsStart = url.indexOf('?');
+      if (paramsStart > 0) {
+        let simplfiedRoute = url.substring(0, paramsStart);
+        hidden = simplfiedRoute in this.hiddenRoutes;
         name = this.routeFriendlyNames[simplfiedRoute];
-      }
-
-      if (!name) {
-        name = route.substr(1, route.length);
       }
     }
 
+    if (!name && !hidden) {
+      name = url.substr(1, url.length);
+    }
+
+    // console.log("The route NAME", name);
+
     return name;
+  }
+
+  hideRoute(route: string) {
+    this.hiddenRoutes.push(route);
+  }
+
+  hidden(route: string) {
+    if (route) {
+      let url = <string> route.toString();
+
+      if (this.hiddenRoutes.indexOf(url) > -1) return true;
+      let paramsStart = url.lastIndexOf('/');
+      if (paramsStart > 0) {
+        return this.hiddenRoutes.indexOf(url.substring(0, paramsStart)) > -1;
+      }
+      paramsStart = url.indexOf('?');
+      if (paramsStart > 0) {
+        return this.hiddenRoutes.indexOf(url.substring(0, paramsStart)) > -1;
+      }
+    }
+    return false;
   }
 }
