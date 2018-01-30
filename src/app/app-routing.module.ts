@@ -29,7 +29,7 @@ const routes: Routes = [
   {path: 'term-and-condition', component: TermAndConditionComponent, canActivate: [UserAuthenticatedGuard]},
   {path: 'cloud-research-environment-test', component: TestCreComponent, canActivate: [AcceptedTermsGuard]},
   {path: 'cloud-research-environment', component: CreDashboardComponent},
-  {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent},
+  {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent, canActivate: [AcceptedTermsGuard]},
   {path: 'cloud-research-environment-registration', component: CreRegistrationFormComponent},
   {
     path: 'cloud-research-environment-setup',
