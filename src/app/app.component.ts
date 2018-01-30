@@ -22,12 +22,16 @@ export class AppComponent {
     breadcrumbService.addFriendlyNameForRoute('/term-and-condition', 'Terms and Conditions');
     breadcrumbService.addFriendlyNameForRoute('/help', 'Help');
     breadcrumbService.addFriendlyNameForRoute('/help/faq', 'FAQs');
+    breadcrumbService.addFriendlyNameForRoute('/logs', 'Deployment logs');
     breadcrumbService.addFriendlyNameForRoute('/login', 'Welcome to Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment-setup', 'Setup New Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment-setup?state=true', 'Setup New Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/cloud-research-environment-setup?state=false', 'Setup New Cloud Research Environment');
     breadcrumbService.addFriendlyNameForRoute('/statistics', 'VRE Site Statistics');
     breadcrumbService.addFriendlyNameForRoute('/cre-dashboard', 'Cloud Research Environment Dashboard');
+    // hidden routes
+    breadcrumbService.hideRoute('/logs');
+
     // You need this small hack in order to catch application root view container ref
     this.viewContainerRef = viewContainerRef;
   }
