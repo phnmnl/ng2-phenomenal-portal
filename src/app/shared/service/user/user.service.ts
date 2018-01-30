@@ -61,8 +61,11 @@ export class UserService {
   }
 
   public isUserAuthenticated() {
-    console.log(this.authService.credentialService.getUsername(), this.authService.credentialService.getUsername() !== null);
-    return this.authService.credentialService.getUsername() !== null;
+    let result = this.authService.credentialService.getUsername() !== null
+      && this.authService.tokenService.getToken() !== null
+      && this.authService.tokenService.getToken().token !== 'null';
+    console.log("Is user authenticated", result);
+    return result;
   }
 
   public getObservableCurrentUser(): Observable<any> {
@@ -209,7 +212,7 @@ export class UserService {
     console.log("Response", res);
     const jresponse = res.json();
     console.log(jresponse);
-    return jresponse && jresponse.body && jresponse.body!=="null" ? jresponse : null;
+    return jresponse && jresponse.body && jresponse.body !== "null" ? jresponse : null;
   }
 
 }
