@@ -16,10 +16,6 @@
   /*margin-top: -10px;*/
 }
 
-.deployment-progress-bar {
-  padding-top: 50px;
-}
-
 .deployment-identifiers {
   min-height: 57px;
 }
@@ -107,6 +103,26 @@
 
 .deployment-services > .row > .col-xs-4 {
   padding: 0;
+}
+
+.deployment-progress-bar {
+  padding-top: 10px;
+}
+
+.installing .mat-progress-spinner {
+  padding: 0;
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+.installing .mat-progress-spinner > svg > circle {
+  stroke: #5cb85c !important;
+  stroke-width: 5px;
+  r: 25px;
+}
+
+.deleting .mat-progress-spinner > svg > circle {
+  stroke: red !important;
 }
 
 .running {
