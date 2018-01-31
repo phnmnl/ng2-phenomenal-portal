@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { TokenService } from 'ng2-cloud-portal-service-lib';
 
 @Component({
   selector: 'ph-home',
@@ -11,6 +10,7 @@ export class HomeComponent {
 
   // The time to show the next photo
   private _NextPhotoInterval = 5000;
+  
   // Looping or not
   private _noLoopSlides = false;
   private _img1 = 'assets/img/home/img1.png';
@@ -53,11 +53,7 @@ export class HomeComponent {
     return this._img3;
   }
 
-  constructor(// private _applicationService: ApplicationService,
-    //           public credentialService: CredentialService,
-    public tokenService: TokenService
-    // public errorService: ErrorService
-  ) {
+  constructor() {
     this.addNewSlide();
   }
 
@@ -93,21 +89,4 @@ export class HomeComponent {
       }
     );
   }
-
-  // getAllApplication() {
-  //   this._applicationService.getAll(
-  //     this.credentialService.getUsername(),
-  //     this.tokenService.getToken()
-  //   ).subscribe(
-  //     deployment => {
-  //       console.log('[RepositoryComponent] getAll %O', deployment);
-  //     },
-  //     error => {
-  //       console.log('[RepositoryComponent] getAll error %O', error);
-  //       this.errorService.setCurrentError(error);
-  //       this.tokenService.clearToken();
-  //       this.credentialService.clearCredentials();
-  //     }
-  //   );
-  // }
 }

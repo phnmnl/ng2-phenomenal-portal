@@ -10,7 +10,6 @@ import {
   CredentialService,
   Deployment,
   DeploymentService,
-  ErrorService,
   TokenService
 } from "ng2-cloud-portal-service-lib";
 import { AppConfig } from "../../../app.config";
@@ -45,31 +44,10 @@ export class DeployerService implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.username = this.credentialService.getUsername();
     this.updateDeployments();
   }
 
   ngOnDestroy() {
-    // if (this.id) {
-    //   clearInterval(this.id);
-    // }
-  }
-
-  async getUserName() {
-    return (await this._accountService.getAccount(this.credentialService.getUsername(), this._tokenService.getToken()).toPromise());
-  }
-
-  public simulateAdd(deployment: Deployment) {
-    let d = JSON.parse(JSON.stringify(deployment));
-    d["status"] = "RUNNING";
-    d["destroyedTime"] = "";
-    this.lastLoadedDeploymentList.push(d);
-    d = JSON.parse(JSON.stringify(deployment));
-    d["status"] = "STARTING";
-    d["destroyedTime"] = "";
-    d["progress"] = 30;
-    this.lastLoadedDeploymentList.push(d);
-    this.updateDeployments();
   }
 
   public updateDeployments(reload: boolean = false) {
@@ -143,7 +121,7 @@ export class DeployerService implements OnInit, OnDestroy {
               deployment['status'] = res.status;
               deployment.status_info = res;
               if (res.status === "STARTING" || res.status === "DESTROYING") {
-                deployment.progress = 60;
+                deployment.progress = 70;
                 deployment.isInstalling = true;
                 deployment.isRunning = 0;
                 this.registerStatusFeed(deployment, 3000);
@@ -1103,18 +1081,4 @@ export class DeployerService implements OnInit, OnDestroy {
     );
     deploymentInstance["logsFeedSubscription"] = logsFeedSubscription;
   }
-
-
-  private merge(...args: any[]): any {
-    const newObj = {};
-    for (const obj of args) {
-      for (const key in obj) {
-        //copy all the fields
-        newObj[key] = obj[key];
-      }
-    }
-    return newObj;
-  };
-
-
 }

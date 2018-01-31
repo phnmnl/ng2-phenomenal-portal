@@ -2,13 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ApplicationService,
   AuthService,
-  CredentialService,
-  ErrorService,
-  TokenService
+  CredentialService
 } from 'ng2-cloud-portal-service-lib';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from '../shared/service/user/user';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'ph-login',
@@ -28,20 +26,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   public orcid_link = 'https://orcid.org';
   public google_link = 'https://www.google.it';
   public linkedin_link = 'https://www.linkedin.com';
-
   private previousUrl: string;
   private returnUrl: string;
 
   constructor(private applicationService: ApplicationService,
               private authService: AuthService,
               public credentialService: CredentialService,
-              public tokenService: TokenService,
-              public errorService: ErrorService,
               public userService: UserService,
               private route: ActivatedRoute,
               private router: Router) {
   }
-
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
@@ -56,9 +50,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.router.events
       .filter(event => event instanceof NavigationStart)
       .subscribe((event: NavigationStart) => {
-        if (event.url !== '/home')
+        if (event.url !== '/login')
           this.previousUrl = event.url;
       });
+  }
+
+  ngOnDestroy() {
   }
 
   private isAuthorized() {
@@ -80,7 +77,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
-
   public existsUser() {
     return this.userService.isUserInSession();
   }
@@ -92,25 +88,5 @@ export class LoginComponent implements OnInit, OnDestroy {
   ssoLink() {
     console.log("SSO link: " + this.authService.ssoLink());
     return this.authService.ssoLink();
-  }
-
-  getAllApplication() {
-    this.applicationService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      deployment => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        this.errorService.setCurrentError(error);
-        this.tokenService.clearToken();
-        this.credentialService.clearCredentials();
-      }
-    );
-  }
-
-  ngOnDestroy() {
   }
 }
