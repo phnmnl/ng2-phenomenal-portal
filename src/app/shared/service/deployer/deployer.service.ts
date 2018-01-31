@@ -396,15 +396,6 @@ export class DeployerService implements OnInit, OnDestroy {
     this.lastLoadedDeploymentList.push(deploymentInstance);
     this.updateDeployments();
 
-    let sub = setInterval(() => {
-      deploymentInstance.progress += 10;
-      console.log(deploymentInstance.progress);
-      if (deploymentInstance.progress === 100)
-        clearInterval(sub);
-    }, 1000);
-
-    if (deploymentInstance.progress > 0) return;
-
     setTimeout((callback) => {
       this.increment(deploymentInstance,
         setTimeout(() => {
