@@ -130,8 +130,9 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.body = "Are you sure?";
     modalRef.componentInstance.onConfirm = new EventEmitter();
     modalRef.componentInstance.onConfirm.subscribe((ok) => {
-      console.log("Removing");
       deployment['show-wheel'] = true;
+      modalRef.close();
+      console.log("Removing");
       this._deploymentService.delete(
         this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
         res1 => {

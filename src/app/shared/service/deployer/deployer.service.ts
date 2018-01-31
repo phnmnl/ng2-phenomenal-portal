@@ -169,7 +169,6 @@ export class DeployerService implements OnInit, OnDestroy {
     return deployment;
   }
 
-
   public deploy(deploymentInstance: CreDeployment) {
     let value;
     let applicationDeployer;
@@ -177,11 +176,11 @@ export class DeployerService implements OnInit, OnDestroy {
     let selectedCloudProvider;
     let credential = deploymentInstance.configuration.credential;
 
-    let name = 'ph' + this.generateUIDNotMoreThan1million();
+    let name = deploymentInstance.applicationName;
 
     if (credential.provider === 'AWS') {
       applicationDeployer = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
+        name: name,
         accountUsername: username,
         repoUri: this.repoUrl,
         selectedCloudProvider: 'AWS'
@@ -243,7 +242,7 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     } else if (credential.provider === 'GCP') {
       applicationDeployer = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
+        name: name,
         accountUsername: username,
         repoUri: this.repoUrl,
         selectedCloudProvider: 'GCP'
@@ -303,7 +302,7 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     } else {
       applicationDeployer = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
+        name: name,
         accountUsername: username,
         repoUri: this.repoUrl,
         selectedCloudProvider: 'OSTACK'
@@ -771,15 +770,17 @@ export class DeployerService implements OnInit, OnDestroy {
     );
   }
 
-
-  generateUIDNotMoreThan1million() {
+  private generateUIDNotMoreThan1million() {
     return ('000000' + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6);
   }
 
+  private generateName(): string {
+    return 'ph' + this.generateUIDNotMoreThan1million();
+  }
 
   configDeploymentInstance(credential: Credential): CreDeployment {
     let deployer, params, provider;
-    let prefixName = 'ph' + this.generateUIDNotMoreThan1million();
+    let prefixName = this.generateName();
     let deploymentName = prefixName + '-' + credential.provider;
 
     if (credential.provider === 'AWS') {
@@ -810,7 +811,7 @@ export class DeployerService implements OnInit, OnDestroy {
 
   configAwsDeployer(deploymentName: string, credential: Credential): ApplicationDeployer {
     let applicationDeployer = <ApplicationDeployer> {
-      name: 'Phenomenal VRE',
+      name: deploymentName,
       accountUsername: credential.username,
       repoUri: this.repoUrl,
       selectedCloudProvider: 'AWS'
@@ -843,7 +844,7 @@ export class DeployerService implements OnInit, OnDestroy {
 
   configGcpDeployer(deploymentName: string, credential: Credential): ApplicationDeployer {
     let applicationDeployer = <ApplicationDeployer> {
-      name: 'Phenomenal VRE',
+      name: deploymentName,
       accountUsername: credential.username,
       repoUri: this.repoUrl,
       selectedCloudProvider: 'GCP'
@@ -874,7 +875,7 @@ export class DeployerService implements OnInit, OnDestroy {
 
   configOStackDeployer(deploymentName: string, credential: Credential): ApplicationDeployer {
     let applicationDeployer = <ApplicationDeployer> {
-      name: 'Phenomenal VRE',
+      name: deploymentName,
       accountUsername: credential.username,
       repoUri: this.repoUrl,
       selectedCloudProvider: 'OSTACK'

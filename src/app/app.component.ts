@@ -90,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private redirectToLogin() {
     let returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.previousUrl;
     let queryParams = returnUrl ? {'returnUrl': returnUrl } : {};
+    this.userService.logout();
     this.deRegisterAuthChecker();
     this.router.navigate(['/login'], {queryParams: queryParams});
   }
