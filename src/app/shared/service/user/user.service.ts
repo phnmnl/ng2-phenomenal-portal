@@ -3,7 +3,7 @@ import { Headers, Http, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AppConfig } from '../../../app.config';
 import { GalaxyUser } from "../galaxy/galaxy-user";
-import { AuthService } from "ng2-cloud-portal-service-lib";
+import { ApplicationService, AuthService } from "ng2-cloud-portal-service-lib";
 import { Subject } from "rxjs/Subject";
 import { User } from "./user";
 
@@ -22,7 +22,8 @@ export class UserService {
 
   constructor(private http: Http,
               private authService: AuthService,
-              private config: AppConfig) {
+              private config: AppConfig,
+              private applicationService: ApplicationService) {
     this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
     this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
     this.headUrl = this.baseUrl + this.metadataUrl;
@@ -60,12 +61,30 @@ export class UserService {
     this.setCurrentUser(null);
   }
 
-  public isUserAuthenticated() {
+  public isUserInSession() {
     let result = this.authService.credentialService.getUsername() !== null
       && this.authService.tokenService.getToken() !== null
       && this.authService.tokenService.getToken().token !== 'null';
-    console.log("Is user authenticated", result);
     return result;
+  }
+
+  public isUserAuthorized(): Observable<User> {
+    let hasUserCredentials = this.authService.credentialService.getUsername() !== null
+      && this.authService.tokenService.getToken() !== null
+      && this.authService.tokenService.getToken().token !== 'null';
+    console.log("Has the user valid credentials in the current session?", hasUserCredentials);
+    if(!hasUserCredentials) return Observable.throw(this.getCurrentUser());
+    return this.applicationService.getAll(
+      this.authService.credentialService.getUsername(), this.authService.tokenService.getToken())
+      .map((apps) => {
+        console.log("Found apps", apps);
+        console.log("User authenticated");
+        return this.getCurrentUser();
+      })
+      .catch((error) => {
+        console.error("Error when trying to get apps", error);
+        return Observable.throw(this.getCurrentUser());
+      });
   }
 
   public getObservableCurrentUser(): Observable<any> {
