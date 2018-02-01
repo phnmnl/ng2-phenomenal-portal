@@ -108,10 +108,13 @@
               <div class="card-section-center">
 
                 <div *ngIf="deployment.isError">
-                  <p style="color:red" class="font-weight-bold">{{deployment.error.message}}</p>
+                  <div style="color:red" class="font-weight-bold">
+                    ERROR: <span class="font-italic">{{deployment.error.message || deployment.error }}</span>
+                  </div>
                 </div>
 
-                <div *ngIf="deployment['status']==='STARTING'" class="deployment-progress-bar">
+                <div class="deployment-progress-bar"
+                  *ngIf="deployment['status']==='STARTING' || deployment['status']==='STARTING_FAILED'">
                   <ph-progress-bar [progress]="deployment"></ph-progress-bar>
                 </div>
 

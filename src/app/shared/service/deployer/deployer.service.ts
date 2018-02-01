@@ -385,7 +385,7 @@ export class DeployerService implements OnInit, OnDestroy {
               }
             }
             if (isExist) {
-              // this.addApp();
+              this.addApp(deploymentInstance);
             } else {
               this._cloudCredentialsService.add(this._tokenService.getToken(), value)
                 .subscribe(
@@ -395,14 +395,12 @@ export class DeployerService implements OnInit, OnDestroy {
                   },
                   error => {
                     console.log('[Profile] error %O', error);
-                    deploymentInstance.isError = true;
-                    deploymentInstance['error'] = error;
+                    this.processError(deploymentInstance, error);
                   }
                 );
             }
           }, (error) => {
-            deploymentInstance.isError = true;
-            deploymentInstance['error'] = error;
+            this.processError(deploymentInstance, error);
           });
         }, 2000)
       );
@@ -443,8 +441,7 @@ export class DeployerService implements OnInit, OnDestroy {
       (deploymentParameters) => {
         this.addConfiguration(deploymentInstance, deploymentParameters, cloudProviderParameters, cdpId);
       }, (error) => {
-        deploymentInstance.isError = true;
-        deploymentInstance['error'] = error;
+        this.processError(deploymentInstance, error);
       }
     );
   }
@@ -468,8 +465,7 @@ export class DeployerService implements OnInit, OnDestroy {
         deploymentInstance.configuration.deployer.configurations = [data];
         this.addApp(deploymentInstance);
       }, (error) => {
-        deploymentInstance.isError = true;
-        deploymentInstance['error'] = error;
+        this.processError(deploymentInstance, error);
       }
     );
   }
@@ -512,23 +508,20 @@ export class DeployerService implements OnInit, OnDestroy {
                             (addAppStatus) => {
                               if (addAppStatus.status === 401 || addAppStatus.status === 404) {
                                 console.log(addAppStatus.message);
-                                deploymentInstance.isError = true;
-                                deploymentInstance['error'] = addAppStatus;
+                                this.processError(deploymentInstance, addAppStatus);
                               } else {
                                 this.addDeployment(deploymentInstance);
                               }
                             },
                             (error) => {
-                              deploymentInstance.isError = true;
-                              deploymentInstance['error'] = error;
+                              this.processError(deploymentInstance, error);
                             }
                           );
                         }, 2000));
                     }, 2000);
 
                   }, (error) => {
-                    deploymentInstance.isError = true;
-                    deploymentInstance['error'] = error;
+                    this.processError(deploymentInstance, error);
                   });
                 } else {
                   setTimeout(() => {
@@ -539,14 +532,12 @@ export class DeployerService implements OnInit, OnDestroy {
                   }, 2000);
                 }
               }, (error) => {
-                deploymentInstance.isError = true;
-                deploymentInstance['error'] = error;
+                this.handleError(error);
               });
             } else {
               if (appStatus.status === 401 || appStatus.status === 404) {
                 console.log(appStatus.message);
-                deploymentInstance.isError = true;
-                deploymentInstance['error'] = appStatus;
+                this.processError(deploymentInstance, appStatus);
               } else {
                 setTimeout(() => {
                   this.increment(deploymentInstance,
@@ -554,17 +545,10 @@ export class DeployerService implements OnInit, OnDestroy {
                       this.addApplication(
                         deploymentInstance.configuration.deployer,
                         (addAppStatus) => {
-                          // if (addAppStatus.status === 401 || addAppStatus.status === 404) {
-                          //   console.log(addAppStatus.message);
-                          //   deploymentInstance.isError = true;
-                          //   deploymentInstance['error'] = appStatus;
-                          // } else {
                           this.addDeployment(deploymentInstance);
-                          // }
                         },
                         (error) => {
-                          deploymentInstance.isError = true;
-                          deploymentInstance['error'] = error;
+                          this.processError(deploymentInstance, error);
                         }
                       );
                     }, 2000));
@@ -572,8 +556,7 @@ export class DeployerService implements OnInit, OnDestroy {
               }
             }
           }, (error) => {
-            deploymentInstance.isError = true;
-            deploymentInstance['error'] = error;
+            this.processError(deploymentInstance, error);
           });
       }, 2000));
     }, 2000);
@@ -586,27 +569,29 @@ export class DeployerService implements OnInit, OnDestroy {
           this.createDeploymentServer(
             deploymentInstance,
             (deployment) => {
-
               if (deployment.status === 401 || deployment.status === 404) {
                 console.log(deployment.message);
-                deploymentInstance.isError = true;
-                deploymentInstance['error'] = deployment;
+                this.processError(deploymentInstance, deployment);
               } else {
                 deploymentInstance.id = deployment['reference'];
                 deploymentInstance.update(deployment);
                 deploymentInstance.status = "STARTING";
                 deploymentInstance.isInstalling = true;
-                this.setSerivcesinfo(deploymentInstance);
 
-                setTimeout(() => {
-                  this.increment(deploymentInstance, setTimeout(
-                    () => {
-                      console.log(deployment);
-                      this.getDeploymentLogsFeed(deploymentInstance, 2000);
-                      this.registerStatusFeed(deploymentInstance, 3000);
-                    }, 2000)
-                  );
-                }, 2000);
+                try {
+                  this.setSerivcesinfo(deploymentInstance);
+                  setTimeout(() => {
+                    this.increment(deploymentInstance, setTimeout(
+                      () => {
+                        console.log(deployment);
+                        // this.getDeploymentLogsFeed(deploymentInstance, 2000);
+                        this.registerStatusFeed(deploymentInstance, 3000);
+                      }, 2000)
+                    );
+                  }, 2000);
+                }catch(e){
+                  this.processError(deploymentInstance, e);
+                }
               }
             }
           );
@@ -632,8 +617,7 @@ export class DeployerService implements OnInit, OnDestroy {
           });
         }
         if (res.status === 'STARTING_FAILED') {
-          deploymentInstance.isError = true;
-          deploymentInstance['error'] = res;
+          this.processError(deploymentInstance, res);
           statusFeedSubscription.unsubscribe();
         }
         if (res.status === 'RUNNING' || res.status === 'DESTROYED') {
@@ -654,8 +638,7 @@ export class DeployerService implements OnInit, OnDestroy {
       },
       error => {
         statusFeedSubscription.unsubscribe();
-        deploymentInstance.isError = true;
-        deploymentInstance['error'] = error;
+        this.processError(deploymentInstance, error);
         callback(error);
       }
     );
@@ -733,8 +716,7 @@ export class DeployerService implements OnInit, OnDestroy {
       },
       error => {
         console.log('[RepositoryComponent] error %O', error);
-        deploymentInstance.isError = true;
-        deploymentInstance['error'] = error;
+        this.processError(deploymentInstance, error);
         callback(error);
       }
     );
@@ -1027,7 +1009,6 @@ export class DeployerService implements OnInit, OnDestroy {
     console.log('[DeploymentService] error %O', error);
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
-    console.error('[DeploymentService] error ' + error);
     return Observable.throw(error.json ? <Error>error.json() : error);
   }
 
@@ -1081,5 +1062,44 @@ export class DeployerService implements OnInit, OnDestroy {
       }
     );
     deploymentInstance["logsFeedSubscription"] = logsFeedSubscription;
+  }
+
+  private processError(deploymentInstance: CreDeployment, error) {
+    let errMsg = error;
+    let ej = error;
+    console.error(error);
+    if (error instanceof Response) {
+      console.log("Response", error);
+      ej = error.json();
+    }
+    if (typeof ej === 'object') {
+      console.log("Error object", ej);
+      let message = "";
+      if (Array.isArray(ej)) {
+        for (let e of ej) {
+          message += e.message + " ";
+        }
+      }
+      console.log(message);
+      errMsg = message;
+    }
+    // set error info
+    deploymentInstance.isError = true;
+    deploymentInstance['error'] = errMsg;
+    // update deployment status
+    if (deploymentInstance.reference) {
+      this._deploymentService.getDeploymentStatus(
+        this.credentialService.getUsername(),
+        this._tokenService.getToken(),
+        deploymentInstance).subscribe(
+        status => {
+          deploymentInstance.status = status.status;
+          deploymentInstance.status_info = status;
+        });
+    } else {
+      // update the status when the deployment has not been created yet
+      deploymentInstance.status = 'STARTING_FAILED';
+    }
+    return error;
   }
 }
