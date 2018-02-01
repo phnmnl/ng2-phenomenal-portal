@@ -6,6 +6,8 @@ import { emailValidator, matchingPasswords, passwordValidator } from '../validat
 import { UserService } from "../../shared/service/user/user.service";
 import { AppConfig } from "../../app.config";
 import { User } from "../../shared/service/user/user";
+import { DeployerService } from "../../shared/service/deployer/deployer.service";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -54,7 +56,9 @@ export class CreRegistrationFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private appConfig: AppConfig,
-              private userService: UserService) {
+              private router: Router,
+              private userService: UserService,
+              private deployer: DeployerService) {
   }
 
   ngOnInit() {
@@ -164,7 +168,9 @@ export class CreRegistrationFormComponent implements OnInit {
       this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
       this.cloudProvider.isSelected = 3;
       this._isSuccess = true;
+      let deployment = this.deployer.create(this.cloudProvider.credential);
+      deployment.start();
+      this.router.navigateByUrl('/cloud-research-environment-dashboard');
     }
   }
-
 }

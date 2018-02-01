@@ -38,10 +38,10 @@ import {
 import { SetupCloudEnvironmentComponent } from './setup/setup-cloud-environment.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent, NgbdModalContentComponent } from './shared/component/modal/modal.component';
-import {
-  ProgressBarModalComponent,
-  ProgressBarModalContentComponent
-} from './shared/component/progress-bar-modal/progress-bar-modal.component';
+// import {
+//   ProgressBarModalComponent,
+//   ProgressBarModalContentComponent
+// } from './shared/component/progress-bar-modal/progress-bar-modal.component';
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -67,13 +67,19 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatInputModule,
-  MatOptionModule,
+  MatOptionModule, MatProgressSpinnerModule,
   MatSelectModule
 } from '@angular/material';
 
 import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
 import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from './static-page/test-cre/test-cre.component';
+import { DeployerService } from "./shared/service/deployer/deployer.service";
+import { LogMonitorComponent } from './log-monitor/log-monitor.component';
+import {
+  ModalDialogComponent,
+  ModalDialogContentComponent
+} from './shared/component/modal-dialog/modal-dialog.component';
 
 /**
  * To set the global environment variables
@@ -108,8 +114,8 @@ export function initConfig(config: AppConfig) {
     SetupCloudEnvironmentComponent,
     ModalComponent,
     NgbdModalContentComponent,
-    ProgressBarModalComponent,
-    ProgressBarModalContentComponent,
+    // ProgressBarModalComponent,
+    // ProgressBarModalContentComponent,
     ProgressBarComponent,
     CreDashboardComponent,
     CreRegistrationFormComponent,
@@ -119,7 +125,10 @@ export function initConfig(config: AppConfig) {
     CloudSetupComponent,
     FaqComponent,
     TermAndConditionComponent,
-    TestCreComponent
+    TestCreComponent,
+    LogMonitorComponent,
+    ModalDialogComponent,
+    ModalDialogContentComponent
   ],
   imports: [
     BrowserModule,
@@ -140,9 +149,10 @@ export function initConfig(config: AppConfig) {
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     BsDropdownModule.forRoot()
   ],
-  entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
+  entryComponents: [NgbdModalContentComponent, ModalDialogContentComponent],
   providers: [
     BreadcrumbService,
     WikiService,
@@ -151,6 +161,7 @@ export function initConfig(config: AppConfig) {
     UserService,
     UserAuthenticatedGuard,
     AcceptedTermsGuard,
+    DeployerService,
     // PhenomenalTokenService,
     ApplicationService,
     AuthService,

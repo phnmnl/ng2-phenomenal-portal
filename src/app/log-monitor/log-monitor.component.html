@@ -1,0 +1,24 @@
+<div *ngIf="deployment" class="container">
+
+  <mat-card>
+
+    <mat-card-header>
+
+      <div class="logs-title">
+        Deployment logs: {{ deployment.reference }}
+      </div>
+      <div class="logs-download-ctrl">
+        <a class="download-link" title="Download Logs" [href]="downloadLogsUri"
+           download="{{deployment.reference}}-deployment.log" style="color: white;">
+          <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </mat-card-header>
+
+    <mat-card-content [style.overflow]="'auto'" class="row-fluid logs-container">
+      <pre class="logs-text">{{deployment.logs}}</pre>
+    </mat-card-content>
+
+  </mat-card>
+</div>

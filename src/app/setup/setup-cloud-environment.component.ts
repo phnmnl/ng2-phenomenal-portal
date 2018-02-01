@@ -17,16 +17,8 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
   private _gce_logo = 'assets/img/logo/gce_logo.png';
-  // private _galaxy_instance_url = 'http://193.62.54.91:30700';
-  // private _galaxy_api_key = 'b5d33930050dad02d448271c5ab7f80e';
-  // _isFailed = false;
-  // _isSuccess = false;
-  // private _message = '';
-  private _cloudProviderCollection: CloudProvider[];
-  // _aws_region: AwsRegion[];
-  // _gcp_region: AwsRegion[];
-  // private _provider: CloudProvider;
 
+  private _cloudProviderCollection: CloudProvider[];
   private selectedCloudProvider: CloudProvider = null;
 
   // Listener of query param changes
@@ -41,42 +33,20 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
               public userService: UserService,
               private ref: ChangeDetectorRef,
               private zone: NgZone) {
-
-    // this._aws_region = [
-    //   {value: 'eu-west-1', displayValue: 'EU (Ireland)'},
-    //   {value: 'eu-central-1', displayValue: 'EU (Frankfurt)'},
-    //   {value: 'eu-west-2', displayValue: 'EU (London)'},
-    //   {value: 'us-east-1', displayValue: 'US East (N. Virginia)'},
-    //   {value: 'us-east-2', displayValue: 'US East (Ohio)'},
-    //   {value: 'us-west-1', displayValue: 'US West (N. California)'},
-    //   {value: 'us-west-2', displayValue: 'US West (Oregon)'},
-    //   {value: 'ca-central-1', displayValue: 'Canada (Central)'}
-    // ];
-    //
-    // this._gcp_region = [
-    //   {value: 'us-west1-a', displayValue: 'Western US'},
-    //   {value: 'us-central1-a', displayValue: 'Central US'},
-    //   {value: 'us-east1-b', displayValue: 'Eastern US'},
-    //   {value: 'europe-west1-b', displayValue: 'Western Europe'},
-    //   {value: 'asia-east1-a', displayValue: 'Eastern Asia-Pacific'},
-    //   {value: 'asia-northeast1-a', displayValue: 'Northeastern Asia-Pacific'}
-    // ];
-
   }
 
   ngOnInit() {
-
+    // subscribe to query params
     this._queryParamChangeListener = this.route
       .queryParams
       .subscribe(params => {
-        // Defaults to 0 if no query param provided.
         console.log("Component params", params);
         this.selectedCloudProvider = null;
         // reset state
         this.initializeProviders();
         this.selectedCloudProvider = null;
       });
-
+    // subscribe to user updates
     this.userService.getObservableCurrentUser().subscribe(user => {
       console.log("Updating the current user", user);
       this.currentUser = <User> user;
@@ -85,16 +55,8 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
         console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
       }
     });
-
-    if (this.tokenService.getToken()) {
-      this.getAllApplication((result) => {
-        if (result.status === 401 || result.type === 'error') {
-          this.logout();
-        }
-      });
-    } else {
-      this.logout();
-    }
+    // set the current user
+    this.currentUser = this.userService.getCurrentUser();
   }
 
   ngOnDestroy() {
@@ -182,12 +144,6 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     return this._cloudProviderCollection;
   }
 
-  logout() {
-    this.tokenService.clearToken();
-    this.credentialService.clearCredentials();
-    this.router.navigateByUrl('/login');
-  }
-
   public isCloudProviderSelected() {
     return this.selectedCloudProvider && this.selectedCloudProvider.isSelected > 0;
   }
@@ -196,21 +152,5 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     this.selectedCloudProvider = provider;
     this.selectedCloudProvider.isSelected = 1;
     console.log("Selected CloudProvider", provider);
-  }
-
-  getAllApplication(callback) {
-    this._applicationService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      app => {
-        callback(app);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        this.userService.logout();
-        callback(error);
-      }
-    );
   }
 }

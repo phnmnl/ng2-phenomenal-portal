@@ -48,4 +48,8 @@ export class BreadcrumbComponent implements OnInit {
   friendlyName(url: string): string {
     return !url ? '' : this.breadcrumbService.getFriendlyNameForRoute(url);
   }
+
+  hidden(): boolean {
+    return this._urls.length > 0 ? this.breadcrumbService.hidden(this._urls[0]) : false;
+  }
 }

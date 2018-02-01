@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {
-  ApplicationService,
+  ApplicationService, CloudProviderParametersService,
   CredentialService,
   Deployment,
   DeploymentService,
   DeploymentStatus,
-  ErrorService,
   TokenService
 } from 'ng2-cloud-portal-service-lib';
 import { Router } from '@angular/router';
@@ -13,25 +12,35 @@ import { Http } from '@angular/http';
 import 'rxjs/Rx';
 import { UserService } from '../shared/service/user/user.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { DeploymentInstance } from "../shared/service/deployer/deploymentInstance";
+
+import { DeployerService } from "../shared/service/deployer/deployer.service";
+import { ModalDialogContentComponent } from "../shared/component/modal-dialog/modal-dialog.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'ph-cre-dashboard',
   templateUrl: './cre-dashboard.component.html',
-  styleUrls: ['./cre-dashboard.component.css']
+  styleUrls: ['./cre-dashboard.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class CreDashboardComponent implements OnInit {
+export class CreDashboardComponent implements OnInit, OnDestroy {
 
   @BlockUI() blockUI: NgBlockUI;
 
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
   private _gce_logo = 'assets/img/logo/gce_logo.png';
-  providers_logo = 'assets/img/logo/providers_logo.png';
+
+  public galaxy_logo = 'assets/img/logo/galaxy_square.png';
+  public luigi_logo = 'assets/img/logo/luigi.png';
+  public jupyter_logo = 'assets/img/logo/jupyter_square.png';
 
   deploymentServerList: Deployment[];
   deploymentStatus: DeploymentStatus;
-  isDeployment = false;
-  isClickedOnce = false;
+
+  private onDestroyEvent = new EventEmitter<DeploymentInstance>();
+  private onDeleteEvent = new EventEmitter<DeploymentInstance>();
 
   get gce_logo(): string {
     return this._gce_logo;
@@ -45,28 +54,41 @@ export class CreDashboardComponent implements OnInit {
     return this._aws_logo;
   }
 
-  constructor(private _applicationService: ApplicationService,
+
+  constructor(private modalService: NgbModal,
+              private _applicationService: ApplicationService,
               private _deploymentService: DeploymentService,
               private tokenService: TokenService,
               public credentialService: CredentialService,
-              public errorService: ErrorService,
               public userService: UserService,
               private router: Router,
-              private http: Http) {
+              private http: Http,
+              private deployementManager: DeployerService,
+              private cloudCredentialsService: CloudProviderParametersService) {
   }
 
+
   ngOnInit() {
-    if (this.tokenService.getToken()) {
-      this.getAllApplication((result) => {
-        if (result.status === 401 || result.type === 'error') {
-          this.logout();
-        } else {
-          this.getAllDeploymentServerWrapper();
-        }
-      });
-    } else {
-      this.logout();
-    }
+    this.deployementManager.getDeployments().subscribe((deployments) => {
+      this.deploymentServerList = deployments;
+      console.log("Updated deployments", deployments);
+    }, (error) => {
+      console.error("The current error", error);
+      this.userService.logout();
+    });
+    this.deployementManager.updateDeployments();
+
+    this.onDestroyEvent.subscribe((deployment) => {
+      this.processDestroyDeployment(deployment);
+    });
+
+    this.onDeleteEvent.subscribe((deployment) => {
+      this.processDeleteDeployment(deployment);
+    });
+
+  }
+
+  ngOnDestroy() {
   }
 
   logout() {
@@ -75,123 +97,115 @@ export class CreDashboardComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  getAllDeploymentServerWrapper() {
-    this.getAllDeploymentServer(
-      (result) => {
-        // console.log(result);
-        if (result.length === 0) {
-          this.router.navigateByUrl('/cloud-research-environment-setup');
-        }
-        this.isDeployment = true;
-        this.deploymentServerList = result;
-        for (const deployment of this.deploymentServerList) {
-          this.getStatus(deployment, (res) => {
-            deployment['status'] = res.status;
-            deployment['isDelete'] = false;
-            deployment['isMore'] = false;
-            deployment['isGalaxy'] = true;
-            deployment['isJupyter'] = false;
-
-            for (let i = 0; i < deployment.assignedInputs.length; i++) {
-
-              if (deployment['assignedInputs'][i]['inputName'] === 'cluster_prefix') {
-                deployment['galaxyUrlName'] = 'http://galaxy.' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
-              }
-              if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_email') {
-                deployment['galaxyAdminEmail'] = deployment['assignedInputs'][i]['assignedValue'];
-              }
-              if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_password') {
-                deployment['galaxyAdminPassword'] = deployment['assignedInputs'][i]['assignedValue'];
-              }
-            }
-          });
-        }
-      }
-    );
-  }
-
-  getAllDeploymentServer(callback) {
-    this._deploymentService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      deployment => {
-        console.log('[RepositoryComponent] getAll %O', deployment);
-        callback(deployment);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        this.errorService.setCurrentError(error);
-        callback(error);
-      }
-    );
+  enabledServices(deployment: Deployment) {
+    return deployment && deployment["status"] === "RUNNING"
   }
 
 
-  getStatus(deployment: Deployment, callback) {
-
-    this._deploymentService.getDeploymentStatus(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken(),
-      deployment).subscribe(
-      res => {
-        console.log('[Deployments] got status response %O', res);
-        callback(res);
-      },
-      error => {
-        console.log('[Deployments] status error %O', error);
-        this.errorService.setCurrentError(error);
-        callback(error);
-      }
-    );
+  destroyDeployment(deployment: DeploymentInstance) {
+    let modalRef = this.modalService.open(ModalDialogContentComponent, {
+      windowClass: 'progress-bar-modal',
+      size: 'lg',
+      backdrop: 'static'
+    });
+    modalRef.componentInstance.onConfirm = new EventEmitter();
+    modalRef.componentInstance.onConfirm.subscribe((ok) => {
+      this.onDestroyEvent.emit(deployment);
+      modalRef.close();
+    });
+    modalRef.componentInstance.title = "Stop CRE '" + deployment.configurationName + "'";
+    modalRef.componentInstance.body = "Are you sure?";
   }
 
-  remove(deployment: Deployment) {
-    this.isClickedOnce = true;
-    this.blockUI.start('WARNING: Please wait and check your cloud provider dashboard after the Cloud Research Environment ' +
-      'is completely destroyed.');
-
-    console.log('Remove deployment %O', deployment);
-    this._deploymentService.stop(this.credentialService.getUsername(), this.tokenService.getToken(),
-      deployment).subscribe(
+  private processDestroyDeployment(deployment: DeploymentInstance) {
+    deployment['show-wheel'] = true;
+    deployment['status'] = 'DESTROYING';
+    console.log("Destroying deployment...");
+    this._deploymentService.stop(
+      this.credentialService.getUsername(), this.tokenService.getToken(),
+      <Deployment>{reference: deployment.reference}).subscribe(
       res => {
         console.log('[remove.stop] res %O', res);
-        this.getDeploymentStatusFeed(deployment, 3000, (result) => {
-          console.log('[remove.stop.feed] res %O', result);
-          this.deploymentStatus = result;
-          if (result.status === 'DESTROYED') {
+      });
+    this.getDeploymentStatusFeed(deployment, 3000, (result) => {
+      console.log('[remove.stop.feed] res %O', result);
+      this.deploymentStatus = result;
+      if (result.status === 'DESTROYED' || result.status === 'DESTROYING_FAILED') {
+        deployment['show-wheel'] = false;
+      }
+    });
+  }
 
-            this._deploymentService.delete(this.credentialService.getUsername(), this.tokenService.getToken(),
-              deployment).subscribe(
-              res1 => {
-                // console.log('deleted');
-                this.removeApplication(deployment.applicationName,
-                  (done) => {
-                    location.reload();
-                  },
-                );
-              },
-              error => {
-                console.log('[Deployments] error %O', error);
-                this.errorService.setCurrentError(error);
+  public deleteDeployment(deployment: DeploymentInstance) {
+    let modalRef = this.modalService.open(ModalDialogContentComponent, {
+      windowClass: 'progress-bar-modal',
+      size: 'lg',
+      backdrop: 'static'
+    });
+    modalRef.componentInstance.title = "Delete CRE '" + deployment.configurationName + "'";
+    modalRef.componentInstance.body = "Are you sure?";
+    modalRef.componentInstance.onConfirm = new EventEmitter();
+    modalRef.componentInstance.onConfirm.subscribe((ok) => {
+      modalRef.close();
+      this.onDeleteEvent.emit(deployment);
+    });
+  }
+
+  public processDeleteDeployment(deployment: DeploymentInstance) {
+    deployment['show-wheel'] = true;
+    console.log("Deleting deployment ...");
+    this._deploymentService.delete(
+      this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
+      res1 => {
+        this.deployementManager.getApplication(deployment.applicationName, (app) => {
+          if (app.name === deployment.applicationName) {
+            this.removeApplication(app,
+              (done) => {
+                this.removeDeploymentFromList(deployment);
+                deployment['show-wheel'] = false;
+              }, (error) => {
+                deployment.isError = true;
+                deployment['error'] = error;
+                deployment['show-wheel'] = false;
               }
             );
           }
+        }, (error) => {
+          if (error.status === 404)
+            this.removeDeploymentFromList(deployment);
+          deployment.isError = true;
+          deployment['error'] = error;
+          deployment['show-wheel'] = false;
         });
       },
       error => {
         console.log('[Deployments] error %O', error);
-        this.errorService.setCurrentError(error);
+        deployment.isError = true;
+        deployment['error'] = error;
+        deployment['show-wheel'] = false;
       }
     );
   }
 
-  getDeploymentStatusFeed(deploymentInstance: Deployment, interval: number, callback) {
+  private removeDeploymentFromList(deployment: DeploymentInstance) {
+    let counter = 0;
+    for (let d of this.deploymentServerList) {
+      if (d.reference === deployment.reference) {
+        this.deploymentServerList.splice(counter, 1);
+        break;
+      }
+      counter++;
+    }
+  }
+
+  getDeploymentStatusFeed(deploymentInstance: DeploymentInstance, interval: number, callback) {
     const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
       this.credentialService.getUsername(),
       this.tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
+        deploymentInstance.status = res.status;
+        deploymentInstance.status_info = res;
         if (res.status === 'DESTROYED') {
           statusFeedSubscription.unsubscribe();
         }
@@ -204,32 +218,16 @@ export class CreDashboardComponent implements OnInit {
     );
   }
 
-  removeApplication(applicationName, callback) {
+  removeApplication(application, onSuccess, onError) {
     this._applicationService.delete(this.credentialService.getUsername(),
-      this.tokenService.getToken(), applicationName).subscribe(
+      this.tokenService.getToken(), application).subscribe(
       res => {
         console.log('[RepositoryComponent] got response %O', res);
-        callback(res);
+        onSuccess(res);
       },
       error => {
         console.log('[RepositoryComponent] error %O', error);
-        this.errorService.setCurrentError(error);
-        callback(error);
-      }
-    );
-  }
-
-  getAllApplication(callback) {
-    this._applicationService.getAll(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken()
-    ).subscribe(
-      app => {
-        callback(app);
-      },
-      error => {
-        console.log('[RepositoryComponent] getAll error %O', error);
-        callback(error);
+        onError(error);
       }
     );
   }
