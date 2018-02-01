@@ -176,11 +176,11 @@ export class DeployerService implements OnInit, OnDestroy {
     let selectedCloudProvider;
     let credential = deploymentInstance.configuration.credential;
 
-    let name = deploymentInstance.applicationName;
+    let name = this.generateName();
 
     if (credential.provider === 'AWS') {
       applicationDeployer = <ApplicationDeployer> {
-        name: name,
+        name: 'Phenomenal VRE',
         accountUsername: username,
         repoUri: this.repoUrl,
         selectedCloudProvider: 'AWS'
@@ -242,7 +242,7 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     } else if (credential.provider === 'GCP') {
       applicationDeployer = <ApplicationDeployer> {
-        name: name,
+        name: 'Phenomenal VRE',
         accountUsername: username,
         repoUri: this.repoUrl,
         selectedCloudProvider: 'GCP'
@@ -302,7 +302,7 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     } else {
       applicationDeployer = <ApplicationDeployer> {
-        name: name,
+        name: 'Phenomenal VRE',
         accountUsername: username,
         repoUri: this.repoUrl,
         selectedCloudProvider: 'OSTACK'
@@ -811,7 +811,7 @@ export class DeployerService implements OnInit, OnDestroy {
 
   configAwsDeployer(deploymentName: string, credential: Credential): ApplicationDeployer {
     let applicationDeployer = <ApplicationDeployer> {
-      name: deploymentName,
+      name: 'Phenomenal VRE',
       accountUsername: credential.username,
       repoUri: this.repoUrl,
       selectedCloudProvider: 'AWS'
@@ -844,7 +844,7 @@ export class DeployerService implements OnInit, OnDestroy {
 
   configGcpDeployer(deploymentName: string, credential: Credential): ApplicationDeployer {
     let applicationDeployer = <ApplicationDeployer> {
-      name: deploymentName,
+      name: 'Phenomenal VRE',
       accountUsername: credential.username,
       repoUri: this.repoUrl,
       selectedCloudProvider: 'GCP'
@@ -875,7 +875,7 @@ export class DeployerService implements OnInit, OnDestroy {
 
   configOStackDeployer(deploymentName: string, credential: Credential): ApplicationDeployer {
     let applicationDeployer = <ApplicationDeployer> {
-      name: deploymentName,
+      name: 'Phenomenal VRE',
       accountUsername: credential.username,
       repoUri: this.repoUrl,
       selectedCloudProvider: 'OSTACK'
