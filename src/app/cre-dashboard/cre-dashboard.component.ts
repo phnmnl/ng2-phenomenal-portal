@@ -39,6 +39,9 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   deploymentServerList: Deployment[];
   deploymentStatus: DeploymentStatus;
 
+  private onDestroyEvent = new EventEmitter<DeploymentInstance>();
+  private onDeleteEvent = new EventEmitter<DeploymentInstance>();
+
   get gce_logo(): string {
     return this._gce_logo;
   }
@@ -74,6 +77,15 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       this.userService.logout();
     });
     this.deployementManager.updateDeployments();
+
+    this.onDestroyEvent.subscribe((deployment) => {
+      this.processDestroyDeployment(deployment);
+    });
+
+    this.onDeleteEvent.subscribe((deployment) => {
+      this.processDeleteDeployment(deployment);
+    });
+
   }
 
   ngOnDestroy() {
@@ -98,26 +110,30 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     });
     modalRef.componentInstance.onConfirm = new EventEmitter();
     modalRef.componentInstance.onConfirm.subscribe((ok) => {
-      deployment['show-wheel'] = true;
+      this.onDestroyEvent.emit(deployment);
       modalRef.close();
-      setTimeout(() => {
-        this._deploymentService.stop(
-          this.credentialService.getUsername(), this.tokenService.getToken(),
-          <Deployment>{reference: deployment.reference}).subscribe(
-          res => {
-            console.log('[remove.stop] res %O', res);
-            this.getDeploymentStatusFeed(deployment, 3000, (result) => {
-              console.log('[remove.stop.feed] res %O', result);
-              this.deploymentStatus = result;
-              if (result.status === 'DESTROYED' || result.status === 'DESTROYING_FAILED') {
-                deployment['show-wheel'] = false;
-              }
-            });
-          });
-      }, 2000);
     });
-    modalRef.componentInstance.title = "Destroying CRE '" + deployment.configurationName + "'";
+    modalRef.componentInstance.title = "Stop CRE '" + deployment.configurationName + "'";
     modalRef.componentInstance.body = "Are you sure?";
+  }
+
+  private processDestroyDeployment(deployment: DeploymentInstance) {
+    deployment['show-wheel'] = true;
+    deployment['status'] = 'DESTROYING';
+    console.log("Destroying deployment...");
+    this._deploymentService.stop(
+      this.credentialService.getUsername(), this.tokenService.getToken(),
+      <Deployment>{reference: deployment.reference}).subscribe(
+      res => {
+        console.log('[remove.stop] res %O', res);
+      });
+    this.getDeploymentStatusFeed(deployment, 3000, (result) => {
+      console.log('[remove.stop.feed] res %O', result);
+      this.deploymentStatus = result;
+      if (result.status === 'DESTROYED' || result.status === 'DESTROYING_FAILED') {
+        deployment['show-wheel'] = false;
+      }
+    });
   }
 
   public deleteDeployment(deployment: DeploymentInstance) {
@@ -130,46 +146,56 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.body = "Are you sure?";
     modalRef.componentInstance.onConfirm = new EventEmitter();
     modalRef.componentInstance.onConfirm.subscribe((ok) => {
-      deployment['show-wheel'] = true;
       modalRef.close();
-      console.log("Removing");
-      this._deploymentService.delete(
-        this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
-        res1 => {
-          this.deployementManager.getApplication(deployment.applicationName, (app) => {
-            if (app.name === deployment.applicationName) {
-              this.removeApplication(app,
-                (done) => {
-                  let counter = 0;
-                  for (let d of this.deploymentServerList) {
-                    if (d.reference === deployment.reference) {
-                      this.deploymentServerList.splice(counter, 1);
-                      break;
-                    }
-                    counter++;
-                  }
-                  deployment['show-wheel'] = false;
-                }, (error) => {
-                  deployment.isError = true;
-                  deployment['error'] = error;
-                  deployment['show-wheel'] = false;
-                }
-              );
-            }
-          }, (error) => {
-            deployment.isError = true;
-            deployment['error'] = error;
-            deployment['show-wheel'] = false;
-          });
-        },
-        error => {
-          console.log('[Deployments] error %O', error);
+      this.onDeleteEvent.emit(deployment);
+    });
+  }
+
+  public processDeleteDeployment(deployment: DeploymentInstance) {
+    deployment['show-wheel'] = true;
+    console.log("Deleting deployment ...");
+    this._deploymentService.delete(
+      this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
+      res1 => {
+        this.deployementManager.getApplication(deployment.applicationName, (app) => {
+          if (app.name === deployment.applicationName) {
+            this.removeApplication(app,
+              (done) => {
+                this.removeDeploymentFromList(deployment);
+                deployment['show-wheel'] = false;
+              }, (error) => {
+                deployment.isError = true;
+                deployment['error'] = error;
+                deployment['show-wheel'] = false;
+              }
+            );
+          }
+        }, (error) => {
+          if (error.status === 404)
+            this.removeDeploymentFromList(deployment);
           deployment.isError = true;
           deployment['error'] = error;
           deployment['show-wheel'] = false;
-        }
-      );
-    });
+        });
+      },
+      error => {
+        console.log('[Deployments] error %O', error);
+        deployment.isError = true;
+        deployment['error'] = error;
+        deployment['show-wheel'] = false;
+      }
+    );
+  }
+
+  private removeDeploymentFromList(deployment: DeploymentInstance) {
+    let counter = 0;
+    for (let d of this.deploymentServerList) {
+      if (d.reference === deployment.reference) {
+        this.deploymentServerList.splice(counter, 1);
+        break;
+      }
+      counter++;
+    }
   }
 
   getDeploymentStatusFeed(deploymentInstance: DeploymentInstance, interval: number, callback) {

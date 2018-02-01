@@ -46,24 +46,24 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
-    let user = this.userService.getCurrentUser();
-    if (user) {
-      this.registerAuthChecker();
-    } else {
-      this.userService.getObservableCurrentUser().subscribe(user => {
-        this.registerAuthChecker();
-      });
-    }
-    this.router.events
-      .filter(event => event instanceof NavigationStart)
-      .subscribe((event: NavigationStart) => {
-          this.previousUrl = event.url;
-      });
+  //   this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
+  //   let user = this.userService.getCurrentUser();
+  //   if (user) {
+  //     this.registerAuthChecker();
+  //   } else {
+  //     this.userService.getObservableCurrentUser().subscribe(user => {
+  //       this.registerAuthChecker();
+  //     });
+  //   }
+  //   this.router.events
+  //     .filter(event => event instanceof NavigationStart)
+  //     .subscribe((event: NavigationStart) => {
+  //         this.previousUrl = event.url;
+  //     });
   }
-
+  //
   ngOnDestroy() {
-    this.deRegisterAuthChecker();
+  //   this.deRegisterAuthChecker();
   }
 
   private registerAuthChecker() {
