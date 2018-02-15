@@ -25,6 +25,7 @@ export class CreRegistrationFormComponent implements OnInit {
   passwordConfirm = '';
   form: FormGroup;
 
+  registering: boolean = false;
   hidePassword: boolean = true;
   hidePasswordConfirm: boolean = true;
 
@@ -120,16 +121,19 @@ export class CreRegistrationFormComponent implements OnInit {
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
     const user: GalaxyUser = {username: newUsername, password: password, email: email};
     try {
+      this.registering = true;
       this.userService.createGalaxyAccount(this.currentUser.id, user).subscribe(
         data => {
           console.log("User data registered", data);
           if (!data) {
             console.warn("Server response is empty");
+            this.registering = false;
             return this.processGalaxyAccountRegistrationFailure("No server response !!!");
           }
           this._isFailed = false;
           this._isSuccess = true;
           this.currentUser.hasGalaxyAccount = true;
+          this.registering = false;
           return false;
         },
         error => {
@@ -145,10 +149,11 @@ export class CreRegistrationFormComponent implements OnInit {
               this._isSuccess = true;
             }
           } else {
+            this._message = "No server response !!!";
             this._isFailed = true;
             this._isSuccess = false;
           }
-          this._message = error_info.message;
+          this.registering = false;
           return false;
         }
       );
@@ -157,7 +162,7 @@ export class CreRegistrationFormComponent implements OnInit {
     }
   }
 
-  private processGalaxyAccountRegistrationFailure(error){
+  private processGalaxyAccountRegistrationFailure(error) {
     this._isFailed = true;
     this._isSuccess = false;
     this._message = error ? error.toString() : "Internal Server Error";
