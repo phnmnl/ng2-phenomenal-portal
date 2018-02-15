@@ -1,4 +1,13 @@
-import { ApplicationRef, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Provider
+} from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
 import { CloudProvider } from './cloud-provider';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -24,6 +33,10 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
   // Listener of query param changes
   private _queryParamChangeListener;
+
+
+  private smallScreen;
+  private onChangeScreenListener;
 
 
   constructor(private _applicationService: ApplicationService,
@@ -58,6 +71,14 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     });
     // set the current user
     this.currentUser = this.userService.getCurrentUser();
+
+    // set the current screen type
+    this.smallScreen = window.innerWidth < 990;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.smallScreen = event.target.innerWidth < 990;
   }
 
   ngOnDestroy() {
