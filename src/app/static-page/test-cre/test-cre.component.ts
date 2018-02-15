@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CloudProvider } from "../../setup/cloud-provider";
 import { UserService } from "../../shared/service/user/user.service";
 import { AppConfig } from "../../app.config";
 import { User } from "../../shared/service/user/user";
 import { Router } from "@angular/router";
+import { ProviderRegistry } from "../../shared/service/deployer/provider-registry";
 
 @Component({
   selector: 'ph-test-cre',
@@ -14,29 +15,7 @@ export class TestCreComponent implements OnInit {
 
   private user: User;
 
-  private _publicProvider = {
-    title: 'PhenoMeNal Cloud',
-    name: 'phenomenal',
-    help: '/help/Deployment-Cloud-Research-Environment',
-    description: 'Note that this is a public instance accessible by everyone. Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
-    'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
-    paymentDescription: 'Free',
-    providerDescription: 'EMBL-EBI, Uppsala Uni',
-    locationDescription: 'Europe',
-    logo: 'assets/img/logo/default_app.png',
-    isSelected: 0,
-    credential: {
-      username: '',
-      password: '',
-      tenant_name: '',
-      url: '',
-      provider: '',
-      galaxy_admin_username: '',
-      galaxy_admin_email: '',
-      galaxy_admin_password: '',
-      jupyter_password: ''
-    }
-  };
+  private _publicProvider = ProviderRegistry.getPhenomenalProvider();
 
   constructor(public userService: UserService, private config: AppConfig, private router: Router) {
     this.user = this.userService.getCurrentUser();

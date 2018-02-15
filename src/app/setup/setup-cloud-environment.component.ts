@@ -4,6 +4,7 @@ import { CloudProvider } from './cloud-provider';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from "../shared/service/user/user";
+import { ProviderRegistry } from "../shared/service/deployer/provider-registry";
 
 @Component({
   selector: 'ph-setup-cloud-environment',
@@ -65,79 +66,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
   initializeProviders() {
     console.log("Generating providers...");
-    this._cloudProviderCollection = [
-      {
-        title: 'OpenStack',
-        name: 'ostack',
-        help: '/help/How-to-obtain-OpenStack-credentials',
-        description: 'Your Cloud Research Environment can be deployed at any OpenStack cloud you have an account for.',
-        paymentDescription: 'Commercial or Free',
-        providerDescription: 'N/a',
-        locationDescription: 'N/a',
-        logo: this._openstack_logo,
-        isSelected: 0,
-        credential: {
-          username: '',
-          password: '',
-          tenant_name: '',
-          url: '',
-          provider: 'OSTACK',
-          galaxy_admin_username: '',
-          galaxy_admin_email: '',
-          galaxy_admin_password: '',
-          jupyter_password: ''
-        }
-      },
-      {
-        title: 'AWS',
-        name: 'aws',
-        help: '/help/How-to-obtain-AWS-credentials',
-        description: 'Amazon WS is a commercial cloud provider. Use this if you already have an Amazon AWS account.',
-        paymentDescription: 'Commercial',
-        providerDescription: 'Amazon AWS',
-        locationDescription: 'Worldwide',
-        logo: this._aws_logo,
-        isSelected: 0,
-        credential: {
-          username: '',
-          password: '',
-          tenant_name: '',
-          url: '',
-          provider: 'AWS',
-          galaxy_admin_username: '',
-          galaxy_admin_email: '',
-          galaxy_admin_password: '',
-          jupyter_password: '',
-          access_key_id: '',
-          secret_access_key: '',
-          default_region: ''
-        }
-      },
-      {
-        title: 'Google Cloud Platform',
-        name: 'gcp',
-        help: '/help/How-to-obtain-GCE-credentials',
-        description: 'Google Cloud Platform is a commercial cloud provider. Use this if you already have an GCP account.',
-        paymentDescription: 'Commercial',
-        providerDescription: 'Google Cloud',
-        locationDescription: 'Worldwide',
-        logo: this._gce_logo,
-        isSelected: 0,
-        credential: {
-          username: '',
-          password: '',
-          tenant_name: '',
-          url: '',
-          provider: 'GCP',
-          galaxy_admin_username: '',
-          galaxy_admin_email: '',
-          galaxy_admin_password: '',
-          jupyter_password: '',
-          access_key_id: '',
-          default_region: ''
-        }
-      }
-    ];
+    this._cloudProviderCollection = ProviderRegistry.getProviders();
   }
 
   get cloudProviderCollection(): CloudProvider[] {
