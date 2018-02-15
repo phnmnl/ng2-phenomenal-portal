@@ -123,7 +123,7 @@ export class CreRegistrationFormComponent implements OnInit {
       this.userService.createGalaxyAccount(this.currentUser.id, user).subscribe(
         data => {
           console.log("User data registered", data);
-          if (data===null) {
+          if (!data) {
             console.warn("Server response is empty");
             return this.processGalaxyAccountRegistrationFailure("No server response !!!");
           }
@@ -133,13 +133,17 @@ export class CreRegistrationFormComponent implements OnInit {
           return false;
         },
         error => {
-          let error_info = JSON.parse(error._body);
-          console.log("The error object", error_info);
-          if (error_info.code === 409) {
-            // Consider registration OK even if the user has an existent account with that email:
-            // in such a case an error message is shown
-            this._isFailed = false;
-            this._isSuccess = true;
+          console.log(error);
+          if (error._body !== 'null') {
+            let error_info = JSON.parse(error._body);
+            console.log("The error object", error_info);
+            this._message = error_info.message;
+            if (error_info.code === 409) {
+              // Consider registration OK even if the user has an existent account with that email:
+              // in such a case an error message is shown
+              this._isFailed = false;
+              this._isSuccess = true;
+            }
           } else {
             this._isFailed = true;
             this._isSuccess = false;

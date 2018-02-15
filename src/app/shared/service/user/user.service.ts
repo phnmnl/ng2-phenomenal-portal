@@ -196,7 +196,7 @@ export class UserService {
     urlSearchParams.append('password', user.password);
     urlSearchParams.append('email', user.email);
 
-    return this.http.post(url, urlSearchParams.toString(), options).map(this.extractData);
+    return this.http.post(url, urlSearchParams.toString(), options).map(this.extractUserData);
   }
 
   /**
@@ -224,7 +224,7 @@ export class UserService {
     console.log("Response", res);
     let data = res.json();
     console.log("Response body", data);
-    return "data" in data ? data["data"] : false;
+    return data && typeof data === "object" && "data" in data ? data["data"] : false;
   }
 
   private extractData(res: Response) {
