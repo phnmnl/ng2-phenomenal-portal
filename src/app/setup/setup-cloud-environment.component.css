@@ -18,6 +18,10 @@
   width: 200px;
 }
 
+.mat-card-image:first-child{
+  margin-top: 0;
+}
+
 .mat-card:hover{
   background: #DFDFDF;
 }
@@ -27,9 +31,23 @@
   width: 200px;
 }
 
+.card-row{
+  margin-bottom: 30px;
+}
+
+@media (min-width: 992px) {
+  .mat-card {
+    height: 400px;
+  }
+}
+
 @media (max-width: 991px) and (min-width: 404px) {
   .card-property {
     height: 500px;
+  }
+
+  .card-row{
+    margin-bottom: 30px;
   }
 }
 
