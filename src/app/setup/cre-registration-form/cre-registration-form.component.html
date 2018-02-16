@@ -28,13 +28,18 @@
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
+
+    <div *ngIf="registering" class="text-center">
+    <mat-progress-spinner mode="indeterminate" color="red">
+      Please wait...
+    </mat-progress-spinner>
+    </div>
+
+
     <div class="mat-card-control-buttons"
          *ngIf="cloudProvider.isSelected === 2 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
       <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
-      <button mat-raised-button *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">
-        Register
-      </button>
-      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">
+      <button mat-raised-button *ngIf="!registering" [disabled]="!form.valid || registering" color="warn">
         Next
       </button>
     </div>
