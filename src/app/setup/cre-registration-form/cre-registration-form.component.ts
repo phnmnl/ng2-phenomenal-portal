@@ -164,13 +164,16 @@ export class CreRegistrationFormComponent implements OnInit {
     if (this.cloudProvider.name === 'phenomenal') {
       this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
     } else {
-      this.cloudProvider.credential.galaxy_admin_email = this.currentUser.email;
-      this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
-      this.cloudProvider.isSelected = 3;
-      this._isSuccess = true;
-      let deployment = this.deployer.create(this.cloudProvider.credential);
-      deployment.start();
-      this.router.navigateByUrl('/cloud-research-environment-dashboard');
+      if(this.cloudProvider.isSelected === 2) {
+        this.cloudProvider.credential.galaxy_admin_email = this.currentUser.email;
+        this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
+        this.cloudProvider.isSelected = 3;
+        this._isSuccess = true;
+      }else {
+        let deployment = this.deployer.create(this.cloudProvider.credential);
+        deployment.start();
+        this.router.navigateByUrl('/cloud-research-environment-dashboard');
+      }
     }
   }
 }

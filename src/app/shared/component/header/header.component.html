@@ -54,6 +54,13 @@
           </li>
 
           <li *ngIf="currentUser && isCollapsed" class="nav-item">
+            <a class="nav-link" (click)="closeMenu()"
+               [routerLink]="['/cloud-research-environment-test']">
+              <i class="fa fa-cloud nav-menu-item-icon" aria-hidden="true"></i> Public CRE
+            </a>
+          </li>
+
+          <li *ngIf="currentUser && isCollapsed" class="nav-item">
             <a (click)="closeMenu()" class="nav-link"
                [routerLink]="['/cloud-research-environment-setup']">
               <i class="fa fa-plus" aria-hidden="true"></i> Create new CRE
@@ -76,18 +83,20 @@
                     <i class="fa fa-bars nav-menu-item-icon" aria-hidden="true"></i> My CREs
                   </a>
                 </li>
-                <li role="menuitem" class="pull-xs-left">
-                  <!-- workaround to force component reset from a control outside the tree which it belongs to -->
-                  <a (click)="closeMenu(); createNewCre()" class="nav-link dropdown-item cre-menu-item">
-                     <!--[routerLink]="['/cloud-research-environment-setup']" [queryParams]="{'state': newState()}">-->
-                    <i class="fa fa-plus nav-menu-item-icon" aria-hidden="true"></i> Create new CRE
-                  </a>
-                  <hr>
-                </li>
+
                 <li role="menuitem">
+                  <!-- workaround to force component reset from a control outside the tree which it belongs to -->
                   <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
                      [routerLink]="['/cloud-research-environment-test']">
                     <i class="fa fa-cloud nav-menu-item-icon" aria-hidden="true"></i> Public CRE
+                  </a>
+                  <hr>
+                </li>
+
+                <li role="menuitem">
+                  <a (click)="closeMenu(); createNewCre()" class="nav-link dropdown-item cre-menu-item">
+                    <!--[routerLink]="['/cloud-research-environment-setup']" [queryParams]="{'state': newState()}">-->
+                    <i class="fa fa-plus nav-menu-item-icon" aria-hidden="true"></i> Create new CRE
                   </a>
                 </li>
               </ul>

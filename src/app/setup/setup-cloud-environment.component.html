@@ -9,44 +9,37 @@
     <!-- provider selection -->
     <div *ngIf="!isCloudProviderSelected()">
       <p>In order to deploy your CRE you need a cloud provider.</p>
-      
+
       <h3 class="h3-responsive text-center cloud-setup-title">
         Please select a cloud provider for setting up your Cloud Research Environment
       </h3>
       <br><br>
 
-      <!-- list of available providers -->
-      <div *ngFor="let cloudProvider of cloudProviderCollection">
+      <div *ngFor="let cloudProvider of cloudProviderCollection; let i = index" [attr.data-index]="i">
 
-        <div
-          [ngClass]="{'col-lg-4': cloudProvider.name !== 'phenomenal', 'card-size': true}">
-          <mat-card (click)="selectCloudProvider(cloudProvider)">
-            <img mat-card-image src="{{cloudProvider.logo}}" class="card-image">
-            <mat-card-content>
-              <h5 class="card-title">
-                <strong>{{cloudProvider.title}}</strong>
-                <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o"
-                                                                    aria-hidden="true"></i></a>
-              </h5>
-              <div *ngIf="cloudProvider.isSelected === 0">
-                <p>{{cloudProvider.description}}</p>
-                <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-                <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
+        <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }">
 
-                <div *ngIf="cloudProvider.name === 'phenomenal'">
-                  <a href="{{galaxy_instance_url}}" target="_blank">
-                    <button mat-raised-button color="warn">Login</button>
-                  </a>
-                  <button *ngIf="user && !user.hasGalaxyAccount" mat-raised-button (click)="cloudProvider.isSelected=2;"
-                          color="primary">Register
-                  </button>
+          <div
+            [ngClass]="{'col-lg-6': true, 'card-size': true}">
+            <mat-card (click)="selectCloudProvider(cloudProvider)">
+              <img mat-card-image src="{{cloudProvider.logo}}" class="card-image">
+              <mat-card-content>
+                <h5 class="card-title">
+                  <strong>{{cloudProvider.title}}</strong>
+                  <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o"
+                                                                      aria-hidden="true"></i></a>
+                </h5>
+                <div *ngIf="cloudProvider.isSelected === 0">
+                  <p>{{cloudProvider.description}}</p>
+                  <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
+                  <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
                 </div>
-              </div>
 
-            </mat-card-content>
-          </mat-card>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <br class="hidden-lg-up"/>
         </div>
-        <br class="hidden-lg-up" />
       </div>
     </div>
 
