@@ -374,6 +374,12 @@ export class DeployerService implements OnInit, OnDestroy {
       value.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
       selectedCloudProvider.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
     }
+
+    if(this.config.getConfig("enable_debug_key") == true){
+      value.fields.push({'key': 'use_debug_key', 'value': true});
+      selectedCloudProvider.fields.push({'key': 'use_debug_key', 'value': true});
+    }
+
     deploymentInstance.configuration.deployer = applicationDeployer;
     deploymentInstance.configuration.provider = selectedCloudProvider;
     deploymentInstance.configuration.credential = credential;
