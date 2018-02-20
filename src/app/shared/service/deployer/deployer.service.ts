@@ -1036,8 +1036,7 @@ export class DeployerService implements OnInit, OnDestroy {
       this._tokenService.getToken(),
       deployment, interval).subscribe(
       res => {
-        console.log("Current log", res);
-        deployment['logs'] = res;
+        deployment['logs'] = this.sanitizeLogs(res);
       },
       error => {
         logsFeedSubscription.unsubscribe();
@@ -1047,6 +1046,10 @@ export class DeployerService implements OnInit, OnDestroy {
       }
     );
     deployment['logsFeedSubscription'] = logsFeedSubscription;
+  }
+
+  public sanitizeLogs(logs){
+    return logs.replace(new RegExp("FAILED - RETRYING", 'g'), " - RETRYING");
   }
 
   public getDeploymentLogsFeed(deploymentInstance: CreDeployment, interval: number) {

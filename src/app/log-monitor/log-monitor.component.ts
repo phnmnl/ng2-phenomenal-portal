@@ -29,9 +29,8 @@ export class LogMonitorComponent implements OnInit {
         console.log("Found deployment info", this.deployment);
         this.deployerManager.getDeploymentLogs(reference).subscribe(
           (logs) => {
-            this.deployment["logs"] = logs;
-
-            let blob = new Blob([logs], { type: 'text/plain' });
+            this.deployment["logs"] = this.deployerManager.sanitizeLogs(logs);
+            let blob = new Blob([this.deployment["logs"]], { type: 'text/plain' });
             let url= window.URL.createObjectURL(blob);
             this.downloadLogsUri = this.sanitizer.bypassSecurityTrustUrl(url);
 
