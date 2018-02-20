@@ -199,7 +199,7 @@ export class DeployerService implements OnInit, OnDestroy {
         glusternode_count: '1',
         glusternode_instance_type: 't2.xlarge',
         glusternode_extra_disk_size: '100',
-        phenomenal_pvc_size: '95Gi',
+        phenomenal_pvc_size: '90Gi',
         galaxy_admin_email: credential.galaxy_admin_email,
         galaxy_admin_password: credential.galaxy_admin_password
         // jupyter_password: credential.galaxy_admin_password,
@@ -259,7 +259,7 @@ export class DeployerService implements OnInit, OnDestroy {
         glusternode_count: '1',
         glusternode_flavor: 'n1-standard-2',
         glusternode_extra_disk_size: '100',
-        phenomenal_pvc_size: '95Gi',
+        phenomenal_pvc_size: '90Gi',
         galaxy_admin_email: credential.galaxy_admin_email,
         galaxy_admin_password: credential.galaxy_admin_password
         // jupyter_password: credential.galaxy_admin_password,
@@ -319,7 +319,7 @@ export class DeployerService implements OnInit, OnDestroy {
         glusternode_count: '1',
         glusternode_flavor: credential.flavor,
         glusternode_extra_disk_size: '100',
-        phenomenal_pvc_size: '95Gi',
+        phenomenal_pvc_size: '90Gi',
         galaxy_admin_email: credential.galaxy_admin_email,
         galaxy_admin_password: credential.galaxy_admin_password
         // jupyter_password: credential.galaxy_admin_password,
