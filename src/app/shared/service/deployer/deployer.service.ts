@@ -26,7 +26,8 @@ import { ApplicationDeployer } from "ng2-cloud-portal-presentation-lib/dist";
 @Injectable()
 export class DeployerService implements OnInit, OnDestroy {
 
-  repoUrl;
+  private readonly repoUrl;
+  private readonly use_https: boolean;
 
   private lastLoadedDeploymentList: Deployment[];
   private observableDeploymentList = new Subject<Deployment[]>();
@@ -40,6 +41,7 @@ export class DeployerService implements OnInit, OnDestroy {
               public configurationService: ConfigurationService,
               private config: AppConfig) {
     this.repoUrl = config.getConfig('deployment_repo_url');
+    this.use_https = config.getConfig('enable_https');
     this.updateDeployments();
   }
 
@@ -147,10 +149,12 @@ export class DeployerService implements OnInit, OnDestroy {
 
   private setSerivcesinfo(deployment: CreDeployment) {
     for (let i = 0; i < deployment.assignedInputs.length; i++) {
+      let separator = this.use_https ? "-" : ".";
+      let protocol = this.use_https ? "https://" : "http://";
       if (deployment['assignedInputs'][i]['inputName'] === 'cluster_prefix') {
-        deployment['galaxyUrl'] = 'http://galaxy.' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
-        deployment['luigiUrl'] = 'http://luigi.' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
-        deployment['jupyterUrl'] = 'http://notebook.' + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
+        deployment['galaxyUrl'] = protocol + 'galaxy' + separator + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
+        deployment['luigiUrl'] = protocol + 'luigi' +separator + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
+        deployment['jupyterUrl'] = protocol + 'notebook' + separator  + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
       }
       if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_email') {
         deployment['galaxyAdminEmail'] = deployment['assignedInputs'][i]['assignedValue'];
@@ -366,7 +370,13 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     }
 
+    if (this.use_https){
+      value.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
+      selectedCloudProvider.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
+    }
     deploymentInstance.configuration.deployer = applicationDeployer;
+    deploymentInstance.configuration.provider = selectedCloudProvider;
+    deploymentInstance.configuration.credential = credential;
 
     deploymentInstance.progress = 10;
     deploymentInstance.status = "STARTING";
