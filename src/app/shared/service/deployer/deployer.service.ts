@@ -205,10 +205,7 @@ export class DeployerService implements OnInit, OnDestroy {
         glusternode_extra_disk_size: '100',
         phenomenal_pvc_size: '90Gi',
         galaxy_admin_email: credential.galaxy_admin_email,
-        galaxy_admin_password: credential.galaxy_admin_password
-        // jupyter_password: credential.galaxy_admin_password,
-        // dashboard_username: credential.galaxy_admin_email,
-        // dashboard_password: credential.galaxy_admin_password
+        galaxy_admin_password: credential.galaxy_admin_password,
       };
       applicationDeployer.assignedParameters = {};
       applicationDeployer.configurations = [];
@@ -220,8 +217,8 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'TF_VAR_aws_access_key_id', 'value': credential.access_key_id},
           {'key': 'TF_VAR_aws_secret_access_key', 'value': credential.secret_access_key},
           {'key': 'TF_VAR_aws_region', 'value': credential.default_region},
-          // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-          // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+          {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -237,8 +234,8 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'TF_VAR_aws_access_key_id', 'value': credential.access_key_id},
           {'key': 'TF_VAR_aws_secret_access_key', 'value': credential.secret_access_key},
           {'key': 'TF_VAR_aws_region', 'value': credential.default_region},
-          // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-          // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+          {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -280,8 +277,8 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'GOOGLE_CREDENTIALS', 'value': credential.access_key_id.replace(/\\n/g, '\\n')},
           {'key': 'GCE_PROJECT', 'value': credential.tenant_name},
           {'key': 'GCE_ZONE', 'value': credential.default_region},
-          // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-          // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+          {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -297,8 +294,8 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'GOOGLE_CREDENTIALS', 'value': credential.access_key_id.replace(/\\n/g, '\\n')},
           {'key': 'GCE_PROJECT', 'value': credential.tenant_name},
           {'key': 'GCE_ZONE', 'value': credential.default_region},
-          // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-          // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+          {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -342,8 +339,8 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'OS_AUTH_URL', 'value': credential.url},
           {'key': 'OS_PASSWORD', 'value': credential.password},
           {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
-          // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-          // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+          {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -361,8 +358,8 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'OS_AUTH_URL', 'value': credential.url},
           {'key': 'OS_PASSWORD', 'value': credential.password},
           {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
-          // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-          // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+          {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -383,6 +380,7 @@ export class DeployerService implements OnInit, OnDestroy {
     deploymentInstance.configuration.deployer = applicationDeployer;
     deploymentInstance.configuration.provider = selectedCloudProvider;
     deploymentInstance.configuration.credential = credential;
+    deploymentInstance.configuration.params = value;
 
     deploymentInstance.progress = 10;
     deploymentInstance.status = "STARTING";
@@ -911,8 +909,8 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'TF_VAR_aws_access_key_id', 'value': credential.access_key_id},
         {'key': 'TF_VAR_aws_secret_access_key', 'value': credential.secret_access_key},
         {'key': 'TF_VAR_aws_region', 'value': credential.default_region},
-        // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-        // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+        {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -932,8 +930,8 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'GOOGLE_CREDENTIALS', 'value': credential.access_key_id.replace(/\\n/g, '\\n')},
         {'key': 'GCE_PROJECT', 'value': credential.tenant_name},
         {'key': 'GCE_ZONE', 'value': credential.default_region},
-        // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-        // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+        {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -955,8 +953,8 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'OS_AUTH_URL', 'value': credential.url},
         {'key': 'OS_PASSWORD', 'value': credential.password},
         {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
-        // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-        // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+        {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -976,8 +974,8 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'TF_VAR_aws_access_key_id', 'value': credential.access_key_id},
         {'key': 'TF_VAR_aws_secret_access_key', 'value': credential.secret_access_key},
         {'key': 'TF_VAR_aws_region', 'value': credential.default_region},
-        // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-        // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+        {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -993,8 +991,8 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'GOOGLE_CREDENTIALS', 'value': credential.access_key_id.replace(/\\n/g, '\\n')},
         {'key': 'GCE_PROJECT', 'value': credential.tenant_name},
         {'key': 'GCE_ZONE', 'value': credential.default_region},
-        // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-        // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+        {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
@@ -1012,8 +1010,8 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'OS_AUTH_URL', 'value': credential.url},
         {'key': 'OS_PASSWORD', 'value': credential.password},
         {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
-        // {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
-        // {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
+        {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
