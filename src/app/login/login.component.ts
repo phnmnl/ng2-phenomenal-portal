@@ -87,6 +87,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ssoLink() {
     console.log("SSO link: " + this.authService.ssoLink());
-    return this.authService.ssoLink();
+    return this.authService.ssoLink() + '&ttl=2400';
   }
 }
