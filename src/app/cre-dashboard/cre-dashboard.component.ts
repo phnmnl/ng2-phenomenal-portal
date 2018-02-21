@@ -157,26 +157,32 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     this._deploymentService.delete(
       this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
       res1 => {
-        this.deployementManager.getApplication(deployment.applicationName, (app) => {
-          if (app.name === deployment.applicationName) {
-            this.removeApplication(app,
-              (done) => {
-                this.removeDeploymentFromList(deployment);
-                deployment['show-wheel'] = false;
-              }, (error) => {
-                deployment.isError = true;
-                deployment['error'] = error;
-                deployment['show-wheel'] = false;
-              }
-            );
-          }
-        }, (error) => {
-          if (error.status === 404)
-            this.removeDeploymentFromList(deployment);
-          deployment.isError = true;
-          deployment['error'] = error;
+        this.removeDeploymentFromList(deployment);
+        if (this.deploymentServerList.length == 0) {
+          this.deployementManager.getApplication(deployment.applicationName, (app) => {
+            if (app.name === deployment.applicationName) {
+              this.removeApplication(app,
+                (done) => {
+                  deployment['show-wheel'] = false;
+                }, (error) => {
+                  deployment.isError = true;
+                  deployment['error'] = error;
+                  deployment['show-wheel'] = false;
+                }
+              );
+            }
+          }, (error) => {
+            if (error.status === 404)
+              this.removeDeploymentFromList(deployment);
+            else {
+              deployment.isError = true;
+              deployment['error'] = error;
+            }
+            deployment['show-wheel'] = false;
+          });
+        } else {
           deployment['show-wheel'] = false;
-        });
+        }
       },
       error => {
         console.log('[Deployments] error %O', error);
