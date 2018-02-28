@@ -1,0 +1,67 @@
+.container {
+  padding: 0;
+  margin: 0 auto;
+}
+
+mat-card {
+  background: #111111;
+  color: white;
+  padding: 0;
+  margin: -12px 0 -19px;
+}
+
+mat-card-header {
+  background: #525991;
+  padding: 10px;
+  width: 100%;
+}
+
+.logs-title {
+  font-size: 1.5em;
+  width: 95%;
+}
+
+.logs-download-ctrl {
+  width: 5%;
+  margin-right: 10px;
+}
+
+.download-link {
+  color: white;
+}
+
+.download-link :hover {
+  color: #a8b0ff;
+}
+
+.logs-container {
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  background: #212121;
+}
+
+.logs-text {
+  background: #212121;
+  color: white;
+  border: none;
+  margin: 20px;
+}
+
+@media (max-width: 991px) {
+  mat-card-header {
+
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 397px) {
+  .container {
+    margin-top: 40px;
+  }
+}

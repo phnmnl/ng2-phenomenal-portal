@@ -9,20 +9,15 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApplicationLibraryService {
 
-  private baseUrl = '';
-  private metadataUrl: string;
+  private baseUrl = window.location.protocol + '//';
+  private metadataUrl = '/php-phenomenal-portal-app-library';
   private headUrl: string;
 
   constructor(private http: Http,
               private config: AppConfig) {
-
-    this.metadataUrl = '/php-phenomenal-portal-app-library';
-    if (config.getConfig('host') !== '') {
-      this.baseUrl = config.getConfig('host') + ':80';
-      this.headUrl = this.baseUrl + this.metadataUrl;
-    } else {
-      this.headUrl = this.metadataUrl;
-    }
+    this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
+    this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
+    this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
   /**

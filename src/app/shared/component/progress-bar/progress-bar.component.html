@@ -1,2 +1,13 @@
-<ngb-progressbar type="success" [value]="progress" [striped]="true"></ngb-progressbar>
-
+<div *ngIf="deployment">
+  <ngb-progressbar type="{{deployment.status==='STARTING' ? 'success' : 'danger' }}"
+                   [value]="deployment.progress / 10" [striped]="true" [max]="10">
+  </ngb-progressbar>
+  <div *ngIf="deployment.progress <= 100">
+    <div *ngIf="deployment.status==='RUNNING' || deployment.status==='STARTING'">
+      <p class="font-weight-bold">{{status[deployment.progress / 10]}}</p>
+    </div>
+    <div *ngIf="deployment.status!=='RUNNING' && deployment.status!=='STARTING'">
+      <p style="color:red" class="font-weight-bold">{{status[deployment.progress / 10]}}</p>
+    </div>
+  </div>
+</div>

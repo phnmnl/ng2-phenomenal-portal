@@ -2,22 +2,53 @@
 
   <div class="container text-xs-center">
 
-    <div *ngIf="tokenService.getToken()">
-      <p>In order to deploy your CRE you need a cloud provider.</p>
-      <p>Please select a cloud provider for setting up your Cloud Research Environment.</p>
-      <small>
-        <p>
-          <i class="fa fa-lock" aria-hidden="true"></i>
-          No login or verification details will be stored by <strong><i>PhenoMeNal</i></strong>
-        </p>
-      </small>
-
-      <div *ngFor="let cloudProvider of cloudProviderCollection">
-        <ph-cloud-setup [cloudProvider]="cloudProvider"></ph-cloud-setup>
-      </div>
-
+    <div *ngIf="!currentUser">
+      <div class="loader">Loading...</div>
     </div>
 
+    <!-- provider selection -->
+    <div *ngIf="!isCloudProviderSelected()">
+      <p>In order to deploy your CRE you need a cloud provider.</p>
+
+      <h3 class="h3-responsive text-center cloud-setup-title">
+        Please select a cloud provider for setting up your Cloud Research Environment
+      </h3>
+      <br><br>
+
+      <div *ngFor="let cloudProvider of cloudProviderCollection; let i = index" [attr.data-index]="i">
+
+        <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }">
+
+          <div
+            [ngClass]="{'col-lg-6': true, 'card-size': true}">
+            <mat-card (click)="selectCloudProvider(cloudProvider)">
+              <img mat-card-image src="{{cloudProvider.logo}}" class="card-image">
+              <mat-card-content>
+                <h5 class="card-title">
+                  <strong>{{cloudProvider.title}}</strong>
+                  <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o"
+                                                                      aria-hidden="true"></i></a>
+                </h5>
+                <div *ngIf="cloudProvider.isSelected === 0">
+                  <p>{{cloudProvider.description}}</p>
+                  <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
+                  <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <br class="hidden-lg-up"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- provider setup -->
+    <div *ngIf="isCloudProviderSelected()">
+      <ph-cloud-setup [cloudProvider]="selectedCloudProvider"></ph-cloud-setup>
+    </div>
+
+    <!-- main center content -->
   </div>
 
 </main>

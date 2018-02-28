@@ -1,121 +1,179 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 /* TEMPLATE STYLES */
 body {
-    padding-top: 80px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
-    min-width: 324px; /* suppose you want minimun width of 324px */
+  padding-top: 80px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  min-width: 324px; /* suppose you want minimun width of 324px */
 }
 
 footer.page-footer {
-    background-color: #525991;
+  background-color: #525991;
 }
 
 main {
-    /*padding-top: 0.5rem;*/
-    padding-bottom: 2rem;
+  /*padding-top: 0.5rem;*/
+  padding-bottom: 2rem;
 }
 
 a {
-    color: #664F90;
+  color: #664F90;
 }
 
 a:focus, a:hover {
-    color: #D3B569;
+  color: #D3B569;
 }
 
 input:focus {
-    border-bottom-color: #525991 !important;
+  border-bottom-color: #525991 !important;
 }
 
 .btn {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .btn-primary {
-    background: #525991;
+  background: #525991;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-    background: #664F90 !important;
+  background: #664F90 !important;
 }
 
 .btn-primary:active, .btn-primary.active {
-    background: #525991 !important;
+  background: #525991 !important;
 }
 
 .btn-primary-outline {
-    border: 2px solid #525991;
-    color: #525991 !important;
+  border: 2px solid #525991;
+  color: #525991 !important;
 }
 
 .btn-primary-outline:hover {
-    border: 2px solid #664F90 !important;
-    color: #664F90 !important;
-    background-color: white;
+  border: 2px solid #664F90 !important;
+  color: #664F90 !important;
+  background-color: white;
 }
 
-.btn-primary-outline.active, .btn-primary-outline.focus, .btn-primary-outline:active, .btn-primary-outline:focus, .open>.btn-primary-outline.dropdown-toggle {
-    border-color: #664F90;
-    background-color: white;
+.btn-primary-outline.active, .btn-primary-outline.focus, .btn-primary-outline:active, .btn-primary-outline:focus, .open > .btn-primary-outline.dropdown-toggle {
+  border-color: #664F90;
+  background-color: white;
 }
 
 .extra-margins {
-    margin-top: 1rem;
-    margin-bottom: 2.5rem;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .flag-size {
-    width: 100px;
-    height: 70px;
+  width: 100px;
+  height: 70px;
 }
 
 .loader {
-    margin: 60px auto;
-    font-size: 10px;
-    position: relative;
-    text-indent: -9999em;
-    border-top: 1.1em solid rgba(81,88,147, 0.2);
-    border-right: 1.1em solid rgba(81,88,147, 0.2);
-    border-bottom: 1.1em solid rgba(81,88,147, 0.2);
-    border-left: 1.1em solid #515893;
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-animation: load8 1.1s infinite linear;
-    animation: load8 1.1s infinite linear;
+  margin: 60px auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(81, 88, 147, 0.2);
+  border-right: 1.1em solid rgba(81, 88, 147, 0.2);
+  border-bottom: 1.1em solid rgba(81, 88, 147, 0.2);
+  border-left: 1.1em solid #515893;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
 }
+
 .loader,
 .loader:after {
-    border-radius: 50%;
-    width: 10em;
-    height: 10em;
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
 }
 
-.modal-backdrop.fade {
-  opacity: 0.5 !important;
+.terms-list {
+  display: inline-block;
+  margin: 15px 0;
 }
 
-.modal-dialog {
-  margin-top: 200px;
+.terms-list li {
+  padding: 5px;
+}
+
+.sso_link_button {
+  margin: 5%;
+}
+
+.elixir_aai_description {
+  margin: 5% 17% 0 17%;
+}
+
+.elixir_aai_logo {
+  width: 30%;
+}
+
+.sso_link_button {
+  margin: 5%;
+}
+
+.elixir_aai_description {
+  margin: 5% 17% 0 17%;
+}
+
+.your-cres-title {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.deployment-list-title {
+  margin-top: 40px;
+}
+
+.deployment-list {
+  margin-top: 50px;
+}
+
+.your-cres-title {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.deployment-list-title {
+  margin-top: 40px;
+}
+
+.deployment-list {
+  margin-top: 50px;
+}
+
+.no-login-stored {
+  margin-top: 50px;
+  margin-bottom: -20px;
+}
+
+.cloud-setup-title {
+  margin-top: 50px;
 }
 
 @-webkit-keyframes load8 {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
+
 @keyframes load8 {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
 import { GalaxyUser } from '../../shared/service/galaxy/galaxy-user';
-import { GalaxyService } from '../../shared/service/galaxy/galaxy.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
-import { CredentialService } from 'ng2-cloud-portal-service-lib';
+import { UserService } from "../../shared/service/user/user.service";
+import { AppConfig } from "../../app.config";
+import { User } from "../../shared/service/user/user";
+import { DeployerService } from "../../shared/service/deployer/deployer.service";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -18,7 +21,13 @@ export class CreRegistrationFormComponent implements OnInit {
   private _isFailed = false;
   _isSuccess = false;
   private _message = '';
+  public currentUser: User;
+  passwordConfirm = '';
   form: FormGroup;
+
+  registering: boolean = false;
+  hidePassword: boolean = true;
+  hidePasswordConfirm: boolean = true;
 
   formErrors = {
     'email': '',
@@ -47,22 +56,36 @@ export class CreRegistrationFormComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              public galaxyService: GalaxyService,
-              private credentialService: CredentialService) {
+              private appConfig: AppConfig,
+              private router: Router,
+              private userService: UserService,
+              private deployer: DeployerService) {
   }
 
   ngOnInit() {
     this.buildForm();
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updating the current user", user);
+      this.currentUser = <User> user;
+      if (user) {
+        console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+      }
+    });
+  }
+
+  get galaxyInstanceUrl() {
+    return this.appConfig.getConfig("galaxy_url") + "/user/login";
   }
 
   buildForm(): void {
 
     this.form = this.fb.group({
-      'email': ['', Validators.compose([Validators.required, emailValidator])],
       'password': ['', [Validators.required, Validators.minLength(8), passwordValidator]],
       'confirmPassword': ['', [Validators.required]]
     }, {validator: matchingPasswords('password', 'confirmPassword')});
 
+    this.currentUser = this.userService.getCurrentUser();
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged(); // (re)set validation messages now
@@ -93,45 +116,73 @@ export class CreRegistrationFormComponent implements OnInit {
     }
   }
 
-  registerGalaxyAccount(email: string, password: string) {
+  registerGalaxyAccount(username: string, email: string, password: string) {
 
     const newUsername = email.replace(/\W+/g, '-').toLowerCase();
-    const user: GalaxyUser = {
-      username: newUsername,
-      password: password,
-      email: email,
-      token: this.credentialService.getUsername()
-    };
-    this.galaxyService.createUser(user).subscribe(
-      data => {
-        console.log(data);
-
-        if (!data['err_code']) {
+    const user: GalaxyUser = {username: newUsername, password: password, email: email};
+    try {
+      this.registering = true;
+      this.userService.createGalaxyAccount(this.currentUser.id, user).subscribe(
+        data => {
+          console.log("User data registered", data);
+          if (!data) {
+            console.warn("Server response is empty");
+            this.registering = false;
+            return this.processGalaxyAccountRegistrationFailure("No server response !!!");
+          }
           this._isFailed = false;
           this._isSuccess = true;
-        } else {
-          this._isFailed = true;
-          this._isSuccess = false;
+          this.currentUser.hasGalaxyAccount = true;
+          this.registering = false;
+          return false;
+        },
+        error => {
+          console.log(error);
+          if (error._body !== 'null') {
+            let error_info = JSON.parse(error._body);
+            console.log("The error object", error_info);
+            this._message = error_info.message;
+            if (error_info.code === 409) {
+              // Consider registration OK even if the user has an existent account with that email:
+              // in such a case an error message is shown
+              this._isFailed = false;
+              this._isSuccess = true;
+            }
+          } else {
+            this._message = "No server response !!!";
+            this._isFailed = true;
+            this._isSuccess = false;
+          }
+          this.registering = false;
+          return false;
         }
+      );
+    } catch (error) {
+      this.processGalaxyAccountRegistrationFailure(error);
+    }
+  }
 
-      },
-      error => {
-        console.log(error);
-        this._isFailed = true;
-        this._isSuccess = false;
-        this._message = error.json().err_msg;
-      }
-    );
+  private processGalaxyAccountRegistrationFailure(error) {
+    this._isFailed = true;
+    this._isSuccess = false;
+    this._message = error ? error.toString() : "Internal Server Error";
+    return false;
   }
 
   onSubmit() {
     if (this.cloudProvider.name === 'phenomenal') {
-      this.registerGalaxyAccount(this.form.value['email'], this.form.value['password']);
+      this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
     } else {
-      this.cloudProvider.credential.galaxy_admin_email = this.form.value['email'];
-      this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
-      this._isSuccess = true;
+      if(this.cloudProvider.isSelected === 2) {
+        this.cloudProvider.credential.galaxy_admin_email = this.currentUser.email;
+        this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
+        this.cloudProvider.isSelected = 3;
+        this._isSuccess = true;
+      }else {
+        let deployment = this.deployer.create(this.cloudProvider.credential);
+        deployment.start();
+        this.router.navigateByUrl('/cloud-research-environment-dashboard');
+      }
     }
   }
-
 }

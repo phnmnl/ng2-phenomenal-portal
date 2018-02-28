@@ -22,6 +22,7 @@ import { Ng2PhenomenalPortalRoutingModule } from './app-routing.module';
 import { JenkinsReportService } from './shared/service/jenkins-report/jenkins-report.service';
 import { ApplicationLibraryService } from './shared/service/application-library/application-library.service';
 import { LoginComponent } from './login/login.component';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import {
   AccountService,
   ApplicationService,
@@ -37,16 +38,15 @@ import {
 import { SetupCloudEnvironmentComponent } from './setup/setup-cloud-environment.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent, NgbdModalContentComponent } from './shared/component/modal/modal.component';
-import {
-  ProgressBarModalComponent,
-  ProgressBarModalContentComponent
-} from './shared/component/progress-bar-modal/progress-bar-modal.component';
+// import {
+//   ProgressBarModalComponent,
+//   ProgressBarModalContentComponent
+// } from './shared/component/progress-bar-modal/progress-bar-modal.component';
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
-import { GalaxyService } from './shared/service/galaxy/galaxy.service';
 import { UserService } from './shared/service/user/user.service';
 // import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
@@ -67,9 +67,19 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatInputModule,
-  MatOptionModule,
+  MatOptionModule, MatProgressSpinnerModule,
   MatSelectModule
 } from '@angular/material';
+
+import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
+import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
+import { TestCreComponent } from './static-page/test-cre/test-cre.component';
+import { DeployerService } from "./shared/service/deployer/deployer.service";
+import { LogMonitorComponent } from './log-monitor/log-monitor.component';
+import {
+  ModalDialogComponent,
+  ModalDialogContentComponent
+} from './shared/component/modal-dialog/modal-dialog.component';
 
 /**
  * To set the global environment variables
@@ -78,9 +88,7 @@ import {
  *
  */
 export function SSOConfigService(config: AppConfig) {
-
-  return new ConfigService(config.getConfig('tsi_portal_url'), 'https://api.aap.tsi.ebi.ac.uk/');
-
+  return new ConfigService(config.getConfig('tsi_portal_url'), config.getConfig('aap_url'));
 }
 
 export function initConfig(config: AppConfig) {
@@ -106,8 +114,8 @@ export function initConfig(config: AppConfig) {
     SetupCloudEnvironmentComponent,
     ModalComponent,
     NgbdModalContentComponent,
-    ProgressBarModalComponent,
-    ProgressBarModalContentComponent,
+    // ProgressBarModalComponent,
+    // ProgressBarModalContentComponent,
     ProgressBarComponent,
     CreDashboardComponent,
     CreRegistrationFormComponent,
@@ -116,7 +124,11 @@ export function initConfig(config: AppConfig) {
     GcpSetupComponent,
     CloudSetupComponent,
     FaqComponent,
-    TermAndConditionComponent
+    TermAndConditionComponent,
+    TestCreComponent,
+    LogMonitorComponent,
+    ModalDialogComponent,
+    ModalDialogContentComponent
   ],
   imports: [
     BrowserModule,
@@ -136,15 +148,20 @@ export function initConfig(config: AppConfig) {
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    BsDropdownModule.forRoot()
   ],
-  entryComponents: [NgbdModalContentComponent, ProgressBarModalContentComponent],
+  entryComponents: [NgbdModalContentComponent, ModalDialogContentComponent],
   providers: [
     BreadcrumbService,
     WikiService,
     JenkinsReportService,
     ApplicationLibraryService,
     UserService,
+    UserAuthenticatedGuard,
+    AcceptedTermsGuard,
+    DeployerService,
     // PhenomenalTokenService,
     ApplicationService,
     AuthService,
@@ -153,7 +170,6 @@ export function initConfig(config: AppConfig) {
     ErrorService,
     CredentialService,
     TokenService,
-    GalaxyService,
     AccountService,
     CloudProviderMetadataService,
     JwtHelper,

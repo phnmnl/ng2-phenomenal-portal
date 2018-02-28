@@ -1,55 +1,96 @@
-<div *ngIf="cloudProvider.isSelected === 2 && !_isSuccess">
-  <p>Please register for a Galaxy account on the PhenoMeNal Cloud</p>
+<div *ngIf="cloudProvider.isSelected === 2">
+
+  <h3 class="h3-responsive text-center cloud-setup-title">
+    Please choose a password for your CRE services:<br>
+  </h3>
+  <h6 class="h6-responsive text-center">
+    (username: <em>{{ currentUser.email }}</em>)
+  </h6>
+  <br>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-input-container class="input-width">
-      <input matInput placeholder="Galaxy Email" formControlName="email" required>
+      <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_password"
+             [type]="hidePassword ? 'password' : 'text'"
+             placeholder="Password" formControlName="password" required>
+      <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+        <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
     </mat-input-container>
     <mat-input-container class="input-width">
-      <input matInput placeholder="Galaxy Password" type="password" formControlName="password" required>
+      <input matInput [(ngModel)]="passwordConfirm" [type]="hidePasswordConfirm ? 'password' : 'text'"
+             placeholder="Confirm Password" formControlName="confirmPassword" required>
+      <mat-icon matSuffix (click)="hidePasswordConfirm = !hidePasswordConfirm">
+        <i class="fa {{ hidePasswordConfirm ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
     </mat-input-container>
-    <mat-input-container class="input-width">
-      <input matInput placeholder="Confirm Galaxy Password" type="password" formControlName="confirmPassword" required>
-    </mat-input-container>
-    <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword || _isFailed"
+    <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
          class="alert alert-warning">
       {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
     </div>
-    <div>
-      <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-      <button mat-raised-button *ngIf="cloudProvider.name === 'phenomenal'" [disabled]="!form.valid" color="warn">
-        Register
-      </button>
-      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">Next
+
+    <div *ngIf="registering" class="text-center">
+      <mat-progress-spinner mode="indeterminate" color="red">
+        Please wait...
+      </mat-progress-spinner>
+    </div>
+
+
+    <div class="mat-card-control-buttons"
+         *ngIf="cloudProvider.isSelected === 2 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
+      <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
+      <button mat-raised-button *ngIf="!registering" [disabled]="!form.valid || registering" color="warn">
+        Next
       </button>
     </div>
   </form>
 </div>
 <div *ngIf="_isSuccess && cloudProvider.name === 'phenomenal'">
   <p>Congratulations! Please login with your PhenoMeNal Galaxy account.</p>
-  <a href="{{this.galaxyService.galaxy_instance_url}}" target="_blank">
+  <a href="{{ galaxyInstanceUrl }}" target="_blank">
     <button mat-raised-button color="warn">Login</button>
   </a>
 </div>
-<div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal'">
-  <p>Please review your input data before deployment.</p>
-  <div *ngIf="cloudProvider.name === 'ostack'">
-    <p>Username: <b>{{cloudProvider.credential.username}}</b></p>
-    <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-    <p>Auth URL: <b>{{cloudProvider.credential.url}}</b></p>
-    <p>Galaxy Email: <b>{{cloudProvider.credential.galaxy_admin_email}}</b></p>
-  </div>
-  <div *ngIf="cloudProvider.name === 'aws'">
-    <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
-    <p>Access Key ID: <b>{{cloudProvider.credential.access_key_id}}</b></p>
-    <p>Galaxy Email: <b>{{cloudProvider.credential.galaxy_admin_email}}</b></p>
-  </div>
-  <div *ngIf="cloudProvider.name === 'gcp'">
-    <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
-    <p>Project ID: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-    <p>Galaxy Email: <b>{{cloudProvider.credential.galaxy_admin_email}}</b></p>
-  </div>
-  <ng-template ngbModalContainer></ng-template>
-  <ph-progress-bar-modal [credential]="cloudProvider.credential"
-                         [cloudProvider]="cloudProvider"></ph-progress-bar-modal>
+
+<!-- Display existent error messages -->
+<div *ngIf="message.length > 0">
+  <br>
+  <div class="alert alert-warning">{{ message}}</div>
+</div>
+
+<div *ngIf="_isSuccess && cloudProvider.name !== 'phenomenal' && cloudProvider.isSelected === 3">
+  <h3 class="h3-responsive text-center cloud-setup-title">
+    Please review your input data before deployment
+  </h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="review-details">
+      <div *ngIf="cloudProvider.name === 'ostack'">
+        <p>Username: <b>{{cloudProvider.credential.username}}</b></p>
+        <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
+        <p>Auth URL: <b>{{cloudProvider.credential.url}}</b></p>
+        <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
+      </div>
+      <div *ngIf="cloudProvider.name === 'aws'">
+        <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
+        <p>Access Key ID: <b>{{cloudProvider.credential.access_key_id}}</b></p>
+        <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
+      </div>
+      <div *ngIf="cloudProvider.name === 'gcp'">
+        <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
+        <p>Project ID: <b>{{cloudProvider.credential.tenant_name}}</b></p>
+        <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
+      </div>
+    </div>
+    <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
+         class="alert alert-warning">
+      {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
+    </div>
+    <div class="mat-card-control-buttons"
+         *ngIf="cloudProvider.isSelected === 3 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
+      <button mat-raised-button (click)="cloudProvider.isSelected=2;" color="accent">Back</button>
+      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">
+        Deploy
+      </button>
+    </div>
+  </form>
 </div>

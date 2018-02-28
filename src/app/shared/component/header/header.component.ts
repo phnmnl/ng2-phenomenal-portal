@@ -1,36 +1,62 @@
-import { Component, ElementRef, HostListener, isDevMode, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
+import { UserService } from "../../service/user/user.service";
+import { User } from "../../service/user/user";
 
 @Component({
   selector: 'ph-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  get logo(): string {
-    return this._logo;
-  }
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  public isCollapsed = false;
+  private subDomain;
+  private currentUser: User;
+  private removeMessageListener;
+  private isCollapsed = false;
   private _logo = 'assets/img/logo/phenomenal_4x.png';
-  private subdomain;
+
+  private lastChoice = true;
 
   constructor(private _eref: ElementRef,
-              private _router: Router,
-              public credentialService: CredentialService,
-              public tokenService: TokenService,) {
+              private router: Router,
+              private renderer: Renderer2,
+              private userService: UserService) {
     this.getSubdomain();
   }
 
   ngOnInit() {
-    if (isDevMode() || this.subdomain === 'portaldev') {
+    if (isDevMode() || this.subDomain === 'portaldev') {
       this._logo = 'assets/img/logo/phenomenal_4x_dev.png';
     }
+
+    this.userService.getObservableCurrentUser().subscribe(user => {
+      console.log("Updated user @ ", user);
+      this.currentUser = <User> user;
+    });
+    this.removeMessageListener = this.userService.registerTokenListener(this.renderer);
+  }
+
+  ngOnDestroy() {
+    if (this.removeMessageListener)
+      this.removeMessageListener();
+  }
+
+  get logo(): string {
+    return this._logo;
+  }
+
+  public createNewCre(){
+    this.lastChoice = !this.lastChoice;
+    this.router.navigate(['cloud-research-environment-setup'], {queryParams: {'state': this.lastChoice }});
   }
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  isActiveCREMenu(){
+    return this.router.url.includes("cloud-research-environment");
   }
 
   closeMenu() {
@@ -38,10 +64,9 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.credentialService.clearCredentials();
-    this.tokenService.clearToken();
+    this.userService.logout();
     this.isCollapsed = false;
-    this._router.navigateByUrl('/home');
+    this.router.navigateByUrl('/home');
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -55,9 +80,9 @@ export class HeaderComponent implements OnInit {
     const domain = window.location.hostname;
     if (domain.indexOf('.') < 0 ||
       domain.split('.')[0] === 'example' || domain.split('.')[0] === 'lvh' || domain.split('.')[0] === 'www') {
-      this.subdomain = '';
+      this.subDomain = '';
     } else {
-      this.subdomain = domain.split('.')[0];
+      this.subDomain = domain.split('.')[0];
     }
   }
 

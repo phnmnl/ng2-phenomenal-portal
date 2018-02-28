@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
+import { AppConfig } from "../../app.config";
 
 @Component({
   selector: 'ph-cloud-research-environment',
@@ -11,12 +12,18 @@ export class CloudResearchEnvironmentComponent {
 
   // carousel indicator
   private _noLoopIndicator = true;
-
+  // link to the public galaxy instance
+  public public_galaxy_instance_url;
   // Photos
   private slides: Array<any> = [];
-
+  // img
   private _img2 = 'assets/img/cloud-research-environment/img2.png';
   private _img3 = 'assets/img/cloud-research-environment/img3.png';
+
+  constructor(private config: AppConfig) {
+    this.addNewSlide();
+    this.public_galaxy_instance_url = this.config.getConfig('galaxy_url');
+  }
 
   get img2(): string {
     return this._img2;
@@ -42,14 +49,6 @@ export class CloudResearchEnvironmentComponent {
     return this._noLoopIndicator;
   }
 
-
-  constructor(// private _applicationService: ApplicationService,
-    //           public credentialService: CredentialService,
-    public tokenService: TokenService
-    // public errorService: ErrorService
-  ) {
-    this.addNewSlide();
-  }
 
   private addNewSlide() {
     this.slides.push(

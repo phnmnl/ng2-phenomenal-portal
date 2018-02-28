@@ -13,8 +13,8 @@ import { OpenstackConfig } from './openstack-config';
 export class CloudProviderMetadataService {
 
   private baseUrl: string;
-  private metadataUrl: string;
   private headUrl: string;
+  private metadataUrl = 'cloudprovidermetadata';
 
   constructor(private http: Http,
               private tokenService: TokenService,

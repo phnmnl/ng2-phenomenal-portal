@@ -3,7 +3,12 @@
     <input matInput placeholder="Username" formControlName="username" required>
   </mat-input-container>
   <mat-input-container class="input-width">
-    <input matInput placeholder="Password" type="password" formControlName="password" required>
+    <input matInput placeholder="Password"
+           [type]="hidePassword ? 'password' : 'text'"
+           formControlName="password" required>
+    <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+      <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+    </mat-icon>
   </mat-input-container>
   <mat-input-container class="input-width">
     <input matInput placeholder="Project Name" formControlName="tenantName" required>
@@ -46,16 +51,18 @@
        class="alert alert-warning">
     {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
   </div>
-  <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-  <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
-  <div *ngIf="!isVerify" style="display: inline-block">
-    <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
-            style="width: 88px; height: 36px; margin: 0">
-      Verify
-    </button>
-    <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
-            style="width: 88px; height: 36px; margin: 0">
-      Waiting
-    </button>
+  <div class="mat-card-control-buttons">
+    <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
+    <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
+    <div *ngIf="!isVerify" style="display: inline-block">
+      <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
+              style="width: 88px; height: 36px; margin: 0">
+        Verify
+      </button>
+      <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
+              style="width: 88px; height: 36px; margin: 0">
+        Waiting
+      </button>
+    </div>
   </div>
 </form>

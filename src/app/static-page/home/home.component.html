@@ -8,45 +8,50 @@
         <img [src]="img1" class="img-fluid" alt="">
         <br>
         <div class="text-xs-center">
-          Test drive our Cloud Research Environment
-          <br>
-          <a href="http://public.phenomenal-h2020.eu/" target="_blank">
-            <button mat-raised-button color="primary">Galaxy Workflow</button>
-          </a>
+          <div class="font-italic">
+            If you don’t have a cloud infrastructure on which to deploy your own CRE<br>
+            <a href="{{ public_galaxy_instance_url }}" class="btn btn-primary">
+              Try our free Public Instance
+            </a>
+          </div>
         </div>
-        <p class="text-xs-center">
-          <small>Note that this is a public instance accessible by everyone</small>
-        </p>
       </div>
 
       <!--Main information-->
       <div class="col-md-6">
-        <h3 class="h3-responsive text-xs-left">An easy to use, cloud based scalable software infrastructure for
-          metabolomic research</h3>
+        <h3 class="h3-responsive text-xs-left">
+          PhenoMeNal is an easy-to-use, cloud-based metabolomic research environment.
+        </h3>
         <hr>
-        <br>
 
-        <p class="text-xs-center">Want to give it a go?</p>
+        <p>
+          You can deploy <span class="font-weight-bold">PhenoMeNal</span> to any supported cloud platform
+          with the push of a button to create your own <span class="font-italic">private</span>
+          <span class="font-weight-bold">Cloud Research Environment (CRE)</span> that collects workflow engines
+          and community-supported data <span class="font-weight-bold">analysis tools</span> in a
+          <span class="font-italic">single</span>, <span class="font-italic">versioned</span> and
+          <span class="font-italic">shareable</span> platform.
+        </p>
 
-        <div *ngIf="tokenService.getToken()" class="text-xs-center">
-          <a [routerLink]="['/cloud-research-environment/setup']" class="btn btn-primary">Create <br> Cloud Research
-            Environment</a>
-        </div>
-
-        <div *ngIf="!tokenService.getToken()" class="text-xs-center">
-          <a [routerLink]="['/login']" class="btn btn-primary">Create <br> Cloud Research Environment</a>
-        </div>
-
-        <br>
         <br>
 
         <div class="text-xs-center">
-          <a [routerLink]="['/cloud-research-environment']" class="btn btn-primary-outline waves-effect">Find out
+          <div class="text-xs-center font-italic">Ready to use a real cloud infrastructure?</div>
+          <a [routerLink]="['/cloud-research-environment-setup']" class="btn btn-primary">
+            Create your<br> Cloud Research Environment
+          </a>
+        </div>
+
+        <br>
+
+        <div class="text-xs-center">
+          <a [routerLink]="['/cloud-research-environment-docs']" class="btn btn-primary-outline waves-effect">Find out
             more</a>
         </div>
       </div>
     </div>
     <!--/.First row-->
+
 
     <hr class="extra-margins">
 
@@ -57,8 +62,13 @@
         <h3 class="h3-responsive text-justify">The open-source App Library provides a service catalogue of free
           Metabolomic data analysis libraries available within the Cloud Research Environment</h3>
         <hr>
-        <p class="text-xs-center">With user feedback and ratings it is easier to choose the best software for your
-          analysis</p>
+        <p class="text-xs-center">
+          The App Library includes over <span class="font-weight-bold">50</span> widely used
+          <span class="font-weight-bold">metabolomics data analysis tools.</span>
+          With user feedback and ratings it is easier to choose the best software for your
+          analysis
+        </p>
+        <br>
         <div class="text-xs-center">
           <a [routerLink]="['/app-library']" class="btn btn-primary">Browse <br> App Library</a>
         </div>
@@ -86,12 +96,21 @@
         <ng-template ngbModalContainer></ng-template>
       </div>
 
-      <br>
-      <br>
       <!--Main information-->
       <div class="col-md-6">
-        <h3 class="h3-responsive text-xs-left">Access your Cloud Research Environment through standard scientific
-          open-source web environments, Galaxy Workflow tool and Jupyter coding environment</h3>
+        <h3 class="h3-responsive text-xs-left">
+          You can access your Cloud Research Environment through standard scientific
+          open-source web environments:
+        </h3>
+
+        <div class="text-xs-center" style="padding: 5%;">
+          <div style="margin-left: -25%;">
+            <img style="width: 230px;" alt="Galaxy Workflow Manager" [src]="galaxy_logo">
+          </div>
+          <div style="margin-left: 15%; margin-top: 5%;">
+            <img style="width: 230px;" alt="Jupyter Notebook" [src]="jupyter_logo">
+          </div>
+        </div>
       </div>
     </div>
     <!--/.First row-->
@@ -100,24 +119,58 @@
 
     <!--First row-->
     <div class="row">
+
+      <!--Main information-->
       <div class="col-md-6">
-        <h3 class="h3-responsive text-xs-ccenter">Online User Training</h3>
+        <h3 class="h3-responsive text-xs-left">
+          Deploy your own Cloud Research Environment
+          on the main cloud infrastructure providers
+        </h3>
         <hr>
-        <p class="text-xs-center">Tutorials on PhenoMeNal Software and Workflows</p>
         <div class="text-xs-center">
-          <a href="https://www.youtube.com/channel/UCXGAvsVNQk-aUpckjRC8Ang" target="_blank" class="btn btn-primary">More
-            <br>Tutorials</a>
+          <div class="font-italic">Don't know much about Cloud providers but want to use our CRE?</div>
+          <br><br>
+          <div class="">
+            Don't worry.<br>
+            Our default setup process is easy to <br>
+            use and will get you started in no time.
+          </div>
         </div>
-        <br>
       </div>
 
+      <div class="col-md-6">
+        <div class="text-xs-center" style="padding: 5%;">
+          <!--Featured image -->
+          <img [src]="providers_logo" class="img-fluid" alt="Cloud Providers">
+        </div>
+      </div>
+    </div>
+    <!--/.First row-->
+
+
+    <hr>
+
+    <!--First row-->
+    <div class="row">
       <div class="col-md-6">
         <div class="videoWrapper">
           <iframe src="https://www.youtube.com/embed/6aqcO7PeSdE" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
-
-
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-xs-ccenter">Online User Training</h3>
+        <hr>
+        <div class="text-xs-center">
+          <div class="text-xs-center">
+            More tutorials on PhenoMeNal Software and Workflows <br>are available on YouTube
+          </div>
+          <br><br>
+          <a href="https://www.youtube.com/channel/UCXGAvsVNQk-aUpckjRC8Ang" target="_blank" class="btn btn-primary">
+            See <br>Tutorials
+          </a>
+        </div>
+        <br>
+      </div>
     </div>
     <!--/.First row-->
 
@@ -125,10 +178,21 @@
 
     <!--First row-->
     <div class="row">
+      <!--Main information-->
+      <div class="col-md-6">
+        <h3 class="h3-responsive text-xs-left">
+          With world leading e-Infrastructure partners your Cloud Research
+          Environment is in safe hands
+        </h3>
+        <hr>
+        <p class="text-xs-center">Our focus on clinical metabolomics ensures we take the utmost care in securing your
+          environment and data</p>
+        <p class="text-xs-center">The Cloud Research Environment adheres to the strictest security measures. At no point
+          do we store any information related to your own cloud provider</p>
+      </div>
 
       <div class="col-md-6">
         <h3 class="h3-responsive text-xs-center">PhenoMeNal Cloud Hosts</h3>
-
         <br>
         <ph-carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides" [noControl]="noSlideControl">
           <ph-slide *ngFor="let slide of slides; let index=index"
@@ -155,21 +219,10 @@
             </div>
           </ph-slide>
         </ph-carousel>
-
       </div>
-
-      <!--Main information-->
-      <div class="col-md-6">
-        <h3 class="h3-responsive text-xs-left">With world leading e-Infrastructure partners your Cloud Research
-          Environment is in safe hands</h3>
-        <hr>
-        <p class="text-xs-center">Our focus on clinical metabolomics ensures we take the utmost care in securing your
-          environment and data</p>
-        <p class="text-xs-center">The Cloud Research Environment adheres to the strictest security measures. At no point
-          do we store any information related to your own cloud provider</p>
-      </div>
-
     </div>
+
+
     <!--/.First row-->
   </div>
   <!--/.Main layout-->

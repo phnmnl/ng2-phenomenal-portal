@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { TokenService } from 'ng2-cloud-portal-service-lib';
+import { AppConfig } from "../../app.config";
 
 @Component({
   selector: 'ph-home',
@@ -11,12 +11,22 @@ export class HomeComponent {
 
   // The time to show the next photo
   private _NextPhotoInterval = 5000;
+
   // Looping or not
   private _noLoopSlides = false;
   private _img1 = 'assets/img/home/img1.png';
   private _img2 = 'assets/img/home/img2.png';
   private _img3 = 'assets/img/home/img3.png';
   private _img3_title = 'Galaxy Workflow';
+  public galaxy_logo = 'assets/img/logo/galaxy_with_txt.png';
+  public jupyter_logo = 'assets/img/logo/jupyter_with_txt.png';
+  public providers_logo = 'assets/img/logo/providers_logo.png';
+  public public_galaxy_instance_url;
+
+  constructor(private config: AppConfig) {
+    this.addNewSlide();
+    this.public_galaxy_instance_url = this.config.getConfig('galaxy_url');
+  }
 
   get img3_title(): string {
     return this._img3_title;
@@ -50,13 +60,6 @@ export class HomeComponent {
     return this._img3;
   }
 
-  constructor(// private _applicationService: ApplicationService,
-    //           public credentialService: CredentialService,
-    public tokenService: TokenService
-    // public errorService: ErrorService
-  ) {
-    this.addNewSlide();
-  }
 
   private addNewSlide() {
     this.slides.push(
@@ -90,21 +93,4 @@ export class HomeComponent {
       }
     );
   }
-
-  // getAllApplication() {
-  //   this._applicationService.getAll(
-  //     this.credentialService.getUsername(),
-  //     this.tokenService.getToken()
-  //   ).subscribe(
-  //     deployment => {
-  //       console.log('[RepositoryComponent] getAll %O', deployment);
-  //     },
-  //     error => {
-  //       console.log('[RepositoryComponent] getAll error %O', error);
-  //       this.errorService.setCurrentError(error);
-  //       this.tokenService.clearToken();
-  //       this.credentialService.clearCredentials();
-  //     }
-  //   );
-  // }
 }

@@ -13,6 +13,7 @@ export class OstackSetupComponent implements OnInit {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
   form: FormGroup;
+  hidePassword: boolean = true;
   isVerify: boolean;
   flavors;
   networks;

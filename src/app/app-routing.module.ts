@@ -12,24 +12,36 @@ import { LoginComponent } from './login/login.component';
 import { SetupCloudEnvironmentComponent } from './setup/setup-cloud-environment.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
+import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
+import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
+import { TestCreComponent } from "./static-page/test-cre/test-cre.component";
+import { CreRegistrationFormComponent } from "./setup/cre-registration-form/cre-registration-form.component";
+import { CloudSetupComponent } from "./setup/cloud-setup/cloud-setup.component";
+import { LogMonitorComponent } from "./log-monitor/log-monitor.component";
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
-  {path: 'cloud-research-environment', component: CloudResearchEnvironmentComponent},
-  {
-    path: 'cloud-research-environment/local-installation',
-    component: CRELocalInstallationComponent
-  },
-  {
-    path: 'cloud-research-environment/instruction',
-    component: CRELocalInstallationInstructionComponent
-  },
   {path: 'help', component: HelpComponent},
   {path: 'help/faq', component: FaqComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'term-and-condition', component: TermAndConditionComponent},
-  {path: 'cloud-research-environment/setup', component: SetupCloudEnvironmentComponent},
+  {path: 'logs', component: LogMonitorComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
+  {path: 'term-and-condition', component: TermAndConditionComponent, canActivate: [UserAuthenticatedGuard]},
+  {path: 'cloud-research-environment-test', component: TestCreComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
+  {path: 'cloud-research-environment', component: CreDashboardComponent},
+  {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
+  {path: 'cloud-research-environment-registration', component: CreRegistrationFormComponent},
+  {
+    path: 'cloud-research-environment-setup',
+    component: SetupCloudEnvironmentComponent,
+    canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard],
+    pathMatch: 'full'
+  },
+  {path: 'cloud-research-environment-setup-new', redirectTo: 'cloud-research-environment-setup', pathMatch: 'full'},
+  {path: 'cloud-research-environment-docs', component: CloudResearchEnvironmentComponent, pathMatch: 'full'},
+  {path: 'cloud-research-environment/local-installation', component: CRELocalInstallationComponent},
+  {path: 'cloud-research-environment/instruction', component: CRELocalInstallationInstructionComponent},
+  {path: 'cloud-provider-setup', component: CloudSetupComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'cre-dashboard', component: CreDashboardComponent},
   {path: 'home', component: HomeComponent},
