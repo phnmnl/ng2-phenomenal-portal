@@ -6,3 +6,7 @@
 .item-offset {
   margin-top: 9px;
 }
+
+footer.page-footer a:hover{
+  background-color: #664F90;
+}
