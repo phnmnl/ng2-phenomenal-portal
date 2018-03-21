@@ -1,11 +1,13 @@
+import { CloudProvider } from "../../../setup/cloud-provider";
+
 export class ProviderRegistry {
 
   private static _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private static _aws_logo = 'assets/img/logo/aws_logo.png';
   private static _gce_logo = 'assets/img/logo/gce_logo.png';
 
-  public static getPhenomenalProvider() {
-    return {
+  public static getPhenomenalProvider(): CloudProvider {
+    return <CloudProvider>{
       title: 'PhenoMeNal Cloud',
       name: 'phenomenal',
       help: '/help/Deployment-Cloud-Research-Environment',
@@ -30,8 +32,8 @@ export class ProviderRegistry {
     };
   }
 
-  public static getAwsProvider() {
-    return {
+  public static getAwsProvider(): CloudProvider {
+    return <CloudProvider>{
       title: 'AWS',
       name: 'aws',
       help: '/help/How-to-obtain-AWS-credentials',
@@ -58,8 +60,8 @@ export class ProviderRegistry {
     };
   }
 
-  public static getOpenStackProvider() {
-    return {
+  public static getOpenStackProvider(): CloudProvider {
+    return <CloudProvider>{
       title: 'OpenStack',
       name: 'ostack',
       help: '/help/How-to-obtain-OpenStack-credentials',
@@ -83,8 +85,8 @@ export class ProviderRegistry {
     };
   }
 
-  public static getGooglProvider() {
-    return {
+  public static getGooglProvider(): CloudProvider {
+    return <CloudProvider>{
       title: 'Google Cloud Platform',
       name: 'gcp',
       help: '/help/How-to-obtain-GCE-credentials',
