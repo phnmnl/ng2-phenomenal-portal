@@ -142,6 +142,33 @@ export class OstackSetupComponent implements OnInit {
     this.cloudProvider.credential.flavor = this.form.value['flavor'];
     this.cloudProvider.credential.network = this.form.value['network'];
     this.cloudProvider.credential.ip_pool = this.form.value['ipPool'];
+  parseRcFile(rcFile: string) {
+    if (rcFile) {
+      // reset previous values
+      this.rcVersion = null;
+      this.authUrl = null;
+      this.projectName = "";
+      this.tenantName = "";
+      this.domainName = "";
+
+      // update RC file with the user password and set it as current RC file
+      // console.log("The current RC file...", rcFile);
+      this.cloudProvider.credential.rc_file = rcFile.replace(
+        /read.+/, "export OS_PASSWORD_INPUT=\"" + this.form.value['password'] + "\"");
+      console.log("Updated RC file", this.cloudProvider.credential.rc_file);
+
+      // extract all the required RC file fields required to query the TSI portal
+      this.cloudProvider.credential.username = this.extractPropertyValue("OS_USERNAME");
+      this.rcVersion = this.extractPropertyValue("OS_IDENTITY_API_VERSION");
+      this.authUrl = this.extractPropertyValue("OS_AUTH_URL");
+      if (this.rcVersion == "2") {
+        this.tenantName = this.extractPropertyValue("OS_TENANT_NAME");
+      } else if (this.rcVersion == "3") {
+        this.projectName = this.extractPropertyValue("OS_PROJECT_NAME");
+        this.domainName = this.extractPropertyValue("OS_USER_DOMAIN_NAME");
+      }
+    }
+  }
 
     this.cloudProviderChange.emit(this.cloudProvider);
   }
@@ -211,5 +238,18 @@ export class OstackSetupComponent implements OnInit {
         console.log(error);
         this.isWaiting = false;
       });
+  private extractPropertyValue(propertyName: string): string {
+    let match;
+    let result: string = null;
+    let pattern = new RegExp(propertyName + "=(.+)");
+
+    // extract property
+    if (this.cloudProvider.credential.rc_file) {
+      if ((match = pattern.exec(this.cloudProvider.credential.rc_file)) !== null) {
+        result = match[1].replace(/\"/g, "");
+        console.log(propertyName + ":", result);
+      }
+    }
+    return result;
   }
 }
