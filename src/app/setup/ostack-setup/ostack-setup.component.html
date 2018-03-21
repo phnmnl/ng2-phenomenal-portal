@@ -19,9 +19,14 @@
       </mat-icon>
     </mat-input-container>
   </div>
+
+  <div *ngIf="cloudProviderSettingsForm">
+    <h3 class="h3-responsive text-center cloud-setup-title">Please setup your Cloud Provider instances</h3>
+    <br>
     <mat-form-field class="input-width">
       <mat-select formControlName="flavor" placeholder="Select flavours"
-                  style="display: inline-block; text-align: left;" required>
+                  style="display: inline-block; text-align: left;" required
+                  [(ngModel)]="cloudProvider.credential.flavor">
         <mat-option *ngFor="let flavor of flavors" [value]="flavor.name">
           {{flavor.name}} ({{flavor.vcpus}}CPU, {{flavor.ram/1024}}GB RAM, {{flavor.disk}}GB Disk)
         </mat-option>
@@ -29,7 +34,8 @@
     </mat-form-field>
     <mat-form-field class="input-width">
       <mat-select formControlName="network" placeholder="Select network"
-                  style="display: inline-block; text-align: left;" required>
+                  style="display: inline-block; text-align: left;" required
+                  [(ngModel)]="cloudProvider.credential.network">
         <mat-option *ngFor="let network of networks" [value]="network['id']">
           {{network.name}}
         </mat-option>
@@ -37,7 +43,8 @@
     </mat-form-field>
     <mat-form-field class="input-width">
       <mat-select formControlName="ipPool" placeholder="Select IP pool name"
-                  style="display: inline-block; text-align: left;" required>
+                  style="display: inline-block; text-align: left;" required
+                  [(ngModel)]="cloudProvider.credential.ip_pool">
         <mat-option *ngFor="let ipPool of ipPools" [value]="ipPool">
           {{ipPool}}
         </mat-option>
@@ -49,17 +56,25 @@
        class="alert alert-warning">
     {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
   </div>
+
   <div class="mat-card-control-buttons">
-    <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-    <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
-    <div *ngIf="!isVerify" style="display: inline-block">
-      <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
+    <button mat-raised-button (click)="goBack()" class="btn btn-primary" color="primary">Back</button>
+    <div *ngIf="!cloudProviderSettingsForm" style="display: inline-block">
+      <button mat-raised-button
+              [ngClass]="{'btn': enableCloudProviderSettingsSelection(), 'btn-primary': enableCloudProviderSettingsSelection()}"
+              (click)="showCloudProviderSettings()" color="primary"
+              [disabled]="!enableCloudProviderSettingsSelection()"
               style="width: 88px; height: 36px; margin: 0">
-        Verify
+        Next
       </button>
-      <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
+    </div>
+    <div *ngIf="cloudProviderSettingsForm" style="display: inline-block">
+      <button mat-raised-button
+              [ngClass]="{'btn': cloudProviderSettingsSelected(), 'btn-primary': cloudProviderSettingsSelected()}"
+              (click)="submit()" color="primary"
+              [disabled]="!cloudProviderSettingsSelected()"
               style="width: 88px; height: 36px; margin: 0">
-        Waiting
+        Next
       </button>
     </div>
   </div>

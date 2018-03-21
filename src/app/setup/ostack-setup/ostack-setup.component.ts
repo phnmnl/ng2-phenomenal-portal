@@ -46,7 +46,8 @@ export class OstackSetupComponent implements OnInit {
     'flavor': '',
     'network': '',
     'ipPool': '',
-    'userDomainName': ''
+    'userDomainName': '',
+    'rcFile': ''
   };
 
   validationMessages = {
@@ -73,13 +74,14 @@ export class OstackSetupComponent implements OnInit {
     },
     'userDomainName': {
       'required': 'User Domain Name is required.'
+    },
+    'rcFile': {
+      'required': 'RC file is required.'
     }
   };
 
   constructor(private fb: FormBuilder,
               private cpm: CloudProviderMetadataService) {
-
-
   }
 
   ngOnInit() {
@@ -97,13 +99,22 @@ export class OstackSetupComponent implements OnInit {
     });
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.onValueChanged();
 
-    this.onValueChanged(); // (re)set validation messages now
+    if (this.cloudProvider.credential.password && this.cloudProvider.credential.rc_file) {
+      this.cloudProviderSettingsForm = true;
+      this.credentialsValidated = true;
+      this.showCloudProviderSettings();
+    }
   }
 
-  toggleVerify() {
-    this.isWaiting = true;
+  showCloudProviderSettings() {
+    this.getFlavors();
+    this.getNetworks();
     this.getIPPools();
+    this.previousSubForm = this.subforms.credentials;
+    this.cloudProviderSettingsForm = true;
+    this.showValidationSucceededMessage = false;
   }
 
   onValueChanged(data?: any) {
@@ -125,23 +136,17 @@ export class OstackSetupComponent implements OnInit {
       }
     }
 
-    if (this.form.value['authURL'].substring(this.form.value['authURL'].length - 2,
-        this.form.value['authURL'].length).toLocaleLowerCase() === 'v3') {
-      this.isUserDomainName = true;
-    } else {
-      this.isUserDomainName = false;
+    // parse the RC file to retrieve all the information required to connect to the TSI portal
+    this.parseRcFile(this.form.value["rcFile"] || this.cloudProvider.credential.rc_file);
+
+    // validate CloudProvider credentials
+    if (this.form.value["rcFile"]
+      && !this.cloudProviderSettingsForm
+      && this.previousSubForm !== this.subforms.settings) {
+      this.validateCloudProviderCredentials();
     }
   }
 
-  onSubmit() {
-    this.cloudProvider.isSelected = 2;
-    this.cloudProvider.credential.username = this.form.value['username'];
-    this.cloudProvider.credential.password = this.form.value['password'];
-    this.cloudProvider.credential.tenant_name = this.form.value['tenantName'];
-    this.cloudProvider.credential.url = this.form.value['authURL'];
-    this.cloudProvider.credential.flavor = this.form.value['flavor'];
-    this.cloudProvider.credential.network = this.form.value['network'];
-    this.cloudProvider.credential.ip_pool = this.form.value['ipPool'];
   parseRcFile(rcFile: string) {
     if (rcFile) {
       // reset previous values
@@ -194,10 +199,30 @@ export class OstackSetupComponent implements OnInit {
     }
   }
 
+  public enableCloudProviderSettingsSelection() {
+    let c = this.cloudProvider.credential;
+    return c.username && c.password && c.rc_file && this.credentialsValidated;
+  }
+
+  public cloudProviderSettingsSelected() {
+    let c = this.cloudProvider.credential;
+    return c.flavor && c.network && c.ip_pool;
+  }
+
+  submit() {
+    console.log("Submitting ....", this.cloudProvider);
+
+    this.cloudProvider.credential.url = this.authUrl;
+    this.cloudProvider.credential.tenant_name = this.tenantName || this.projectName;
+
+    this.cloudProvider.isSelected = 2;
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 
 
+  get isWaiting() {
+    return !this.flavors || !this.networks || !this.ipPools;
+  }
 
   getFlavors() {
     this.flavors = null;
@@ -243,6 +268,21 @@ export class OstackSetupComponent implements OnInit {
     console.log(error);
   };
 
+
+  public goBack() {
+    if (!this.cloudProviderSettingsForm) {
+      this.cloudProvider.isSelected = 0;
+      this.previousSubForm = this.subforms.credentials;
+    } else {
+      this.cloudProvider.isSelected = 1;
+      this.cloudProviderSettingsForm = false;
+      this.previousSubForm = this.subforms.settings;
+    }
+    // reset retrieved
+    this.ipPools = null;
+    this.networks = null;
+    this.flavors = null;
+  }
 
   private getOpenStackConfiguration(): OpenstackConfig {
     let credentials = this.cloudProvider.credential;
