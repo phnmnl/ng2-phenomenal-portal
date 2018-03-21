@@ -189,6 +189,7 @@ export class OstackSetupComponent implements OnInit {
           this.credentialsValidated = true;
           this.validatingCredentials = false;
           this.showValidationSucceededMessage = true;
+          this.formErrors["rcFile"] = "";
         },
         (error) => {
           console.log(error);
