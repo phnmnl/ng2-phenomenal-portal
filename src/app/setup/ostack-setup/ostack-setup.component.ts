@@ -166,11 +166,12 @@ export class OstackSetupComponent implements OnInit {
       this.cloudProvider.credential.username = this.extractPropertyValue("OS_USERNAME");
       this.rcVersion = this.extractPropertyValue("OS_IDENTITY_API_VERSION");
       this.authUrl = this.extractPropertyValue("OS_AUTH_URL");
-      if (this.rcVersion == "2") {
-        this.tenantName = this.extractPropertyValue("OS_TENANT_NAME");
-      } else if (this.rcVersion == "3") {
-        this.projectName = this.extractPropertyValue("OS_PROJECT_NAME");
-        this.domainName = this.extractPropertyValue("OS_USER_DOMAIN_NAME");
+      this.tenantName = this.extractPropertyValue("OS_TENANT_NAME");
+      this.projectName = this.extractPropertyValue("OS_PROJECT_NAME");
+      this.domainName = this.extractPropertyValue("OS_USER_DOMAIN_NAME");
+      // detect version from existing properties
+      if (!this.rcVersion) {
+        this.rcVersion = this.projectName ? "3" : "2";
       }
     }
   }
