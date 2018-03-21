@@ -197,71 +197,64 @@ export class OstackSetupComponent implements OnInit {
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 
+
+
   getFlavors() {
-
-    const openstackConfig = new OpenstackConfig(this.form.value['username'],
-      this.form.value['password'],
-      this.form.value['tenantName'],
-      this.form.value['userDomainName'],
-      this.form.value['authURL'],
-      this.isUserDomainName ? '3' : '2');
-
+    this.flavors = null;
+    const openstackConfig = this.getOpenStackConfiguration();
     this.cpm.getFlavors(
       openstackConfig
     ).subscribe(
       (data) => {
         this.flavors = data;
-        this.isVerify = true;
-        this.isWaiting = false;
       },
-      (error) => {
-        console.log(error);
-        this.isWaiting = false;
-      }
+      this.handleLoadingError
     );
   }
 
   getNetworks() {
-    const openstackConfig = new OpenstackConfig(this.form.value['username'],
-      this.form.value['password'],
-      this.form.value['tenantName'],
-      this.form.value['userDomainName'],
-      this.form.value['authURL'],
-      this.isUserDomainName ? '3' : '2');
+    this.networks = null;
+    const openstackConfig = this.getOpenStackConfiguration();
 
     this.cpm.getNetworks(
       openstackConfig
     ).subscribe(
       (data) => {
         this.networks = data;
-        this.getFlavors();
       },
-      (error) => {
-        console.log(error);
-        this.isWaiting = false;
-      }
+      this.handleLoadingError
     );
   }
 
   getIPPools() {
-    const openstackConfig = new OpenstackConfig(this.form.value['username'],
-      this.form.value['password'],
-      this.form.value['tenantName'],
-      this.form.value['userDomainName'],
-      this.form.value['authURL'],
-      this.isUserDomainName ? '3' : '2');
-
+    this.ipPools = null;
+    const openstackConfig = this.getOpenStackConfiguration();
     this.cpm.getIPPools(
       openstackConfig
     ).subscribe(
       (data) => {
         this.ipPools = data;
-        this.getNetworks();
       },
-      (error) => {
-        console.log(error);
-        this.isWaiting = false;
-      });
+      this.handleLoadingError
+    );
+  }
+
+  private handleLoadingError = (error) => {
+    console.log(error);
+  };
+
+
+  private getOpenStackConfiguration(): OpenstackConfig {
+    let credentials = this.cloudProvider.credential;
+    return new OpenstackConfig(
+      credentials.username,
+      credentials.password,
+      this.tenantName,
+      this.domainName,
+      this.authUrl,
+      this.rcVersion);
+  }
+
   private extractPropertyValue(propertyName: string): string {
     let match;
     let result: string = null;
