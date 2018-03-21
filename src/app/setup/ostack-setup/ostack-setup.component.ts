@@ -3,6 +3,7 @@ import { CloudProvider } from '../cloud-provider';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 import { OpenstackConfig } from '../../shared/service/cloud-provider-metadata/openstack-config';
+import { open } from "fs";
 
 @Component({
   selector: 'ph-ostack-setup',
@@ -12,14 +13,30 @@ import { OpenstackConfig } from '../../shared/service/cloud-provider-metadata/op
 export class OstackSetupComponent implements OnInit {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
-  form: FormGroup;
-  hidePassword: boolean = true;
-  isVerify: boolean;
-  flavors;
-  networks;
-  ipPools;
-  isWaiting = false;
-  isUserDomainName = false;
+
+  private subforms = {
+    "credentials": 1,
+    "settings": 2
+  };
+
+  private form: FormGroup;
+  private hidePassword: boolean = true;
+  private credentialsValidated: boolean = false;
+  private cloudProviderSettingsForm: boolean;
+  private showValidationSucceededMessage: boolean = false;
+  private previousSubForm = null;
+  private validatingCredentials: boolean = false;
+
+  // OStack properties
+  private authUrl: string;
+  private projectName: string;
+  private tenantName: string;
+  private rcVersion: string;
+  private domainName: string;
+  private flavors = null;
+  private networks = null;
+  private ipPools = null;
+
 
   formErrors = {
     'username': '',
