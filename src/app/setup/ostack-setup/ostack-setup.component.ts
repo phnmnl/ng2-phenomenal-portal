@@ -170,6 +170,30 @@ export class OstackSetupComponent implements OnInit {
     }
   }
 
+  public validateCloudProviderCredentials() {
+    let c = this.cloudProvider.credential;
+    if (c.password && c.rc_file) {
+      this.validatingCredentials = true;
+      const openstackConfig = this.getOpenStackConfiguration();
+      this.cpm.getIPPools(
+        openstackConfig
+      ).subscribe(
+        (data) => {
+          this.credentialsValidated = true;
+          this.validatingCredentials = false;
+          this.showValidationSucceededMessage = true;
+        },
+        (error) => {
+          console.log(error);
+          this.formErrors["rcFile"] = "Authentication error: RC file or password not correct!";
+          this.credentialsValidated = false;
+          this.validatingCredentials = false;
+          this.showValidationSucceededMessage = false;
+        }
+      );
+    }
+  }
+
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 
