@@ -102,9 +102,10 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     if(provider.name === "phenomenal")
       this.router.navigateByUrl('/cloud-research-environment-test');
     else {
-      this.selectedCloudProvider = provider;
+      console.log("Selected provider", provider);
+      this.selectedCloudProvider = CloudProvider.clone(provider);
       this.selectedCloudProvider.isSelected = 1;
-      console.log("Selected CloudProvider", provider);
+      console.log("Selected CloudProvider", this.selectedCloudProvider);
     }
   }
 }
