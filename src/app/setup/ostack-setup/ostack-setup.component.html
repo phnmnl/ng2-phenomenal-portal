@@ -52,10 +52,6 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="formErrors.username || formErrors.password ||  formErrors.tenantName || formErrors.authURL"
-       class="alert alert-warning">
-    {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
-  </div>
 
   <div class="mat-card-control-buttons">
     <button mat-raised-button (click)="goBack()" class="btn btn-primary" color="primary">Back</button>
@@ -76,6 +72,23 @@
               style="width: 88px; height: 36px; margin: 0">
         Next
       </button>
+    </div>
+  </div>
+
+  <div class="cloud-setup-message-panel">
+    <div
+      *ngIf="formErrors.password || formErrors.rcFile"
+      class="alert alert-warning">
+      {{ formErrors.password + ' ' + formErrors.rcFile}}
+    </div>
+    <div *ngIf="validatingCredentials && !cloudProviderSettingsForm" class="alert alert-info">
+      "Validating credentials..."
+    </div>
+    <div *ngIf="showValidationSucceededMessage" class="alert alert-success">
+      "Credentials validation succeeded !"
+    </div>
+    <div *ngIf="cloudProviderSettingsForm && isWaiting" class="alert alert-info">
+      "Loading flavours, networks, IP pools ... "
     </div>
   </div>
 </form>
