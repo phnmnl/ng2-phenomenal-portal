@@ -72,14 +72,11 @@ export class OstackSetupComponent implements OnInit {
   buildForm(): void {
 
     this.form = this.fb.group({
-      'username': ['', Validators.required],
       'password': ['', Validators.required],
-      'tenantName': ['', [Validators.required]],
-      'authURL': ['', [Validators.required]],
       'flavor': ['', [Validators.required]],
       'network': ['', [Validators.required]],
       'ipPool': ['', [Validators.required]],
-      'userDomainName': ['', [Validators.required]]
+      'rcFile': ['', Validators.required],
     });
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
