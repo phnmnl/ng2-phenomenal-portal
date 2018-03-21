@@ -179,6 +179,7 @@ export class OstackSetupComponent implements OnInit {
   public validateCloudProviderCredentials() {
     let c = this.cloudProvider.credential;
     if (c.password && c.rc_file) {
+      this.formErrors["rcFile"] = "";
       this.validatingCredentials = true;
       const openstackConfig = this.getOpenStackConfiguration();
       this.cpm.getIPPools(
