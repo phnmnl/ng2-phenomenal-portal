@@ -18,11 +18,13 @@
     <input matInput [(ngModel)]="cloudProvider.credential.tenant_name"
            placeholder="Project ID" formControlName="tenantName" required>
   </mat-input-container>
-  <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.tenantName" class="alert alert-warning">
-    {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.tenantName }}
-  </div>
   <div class="mat-card-control-buttons">
     <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
     <button mat-raised-button [disabled]="!form.valid" color="primary">Next</button>
+  </div>
+  <div class="cloud-setup-message-panel">
+    <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.tenantName" class="alert alert-warning">
+      {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.tenantName }}
+    </div>
   </div>
 </form>
