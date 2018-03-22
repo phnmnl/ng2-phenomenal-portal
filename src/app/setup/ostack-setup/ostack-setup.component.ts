@@ -163,7 +163,7 @@ export class OstackSetupComponent implements OnInit {
       rcFile = rcFile.replace(/(echo.+)\n/g, '');      // remove all echo commands
       rcFile = rcFile.replace(/(read -sr.+)\n/g, '');  // remove the read command
       rcFile = rcFile.replace(/(export OS_PASSWORD=)(.*)/,          // set the password
-        "$1" + this.cloudProvider.credential.password);
+        "$1" + '"' + this.cloudProvider.credential.password + '"');
       this.cloudProvider.credential.rc_file = rcFile;
 
       // extract all the required RC file fields required to query the TSI portal
