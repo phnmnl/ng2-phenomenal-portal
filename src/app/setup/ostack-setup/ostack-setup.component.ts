@@ -137,7 +137,8 @@ export class OstackSetupComponent implements OnInit {
     }
 
     // parse the RC file to retrieve all the information required to connect to the TSI portal
-    this.parseRcFile(this.form.value["rcFile"] || this.cloudProvider.credential.rc_file);
+    if (this.cloudProvider.credential.password)
+      this.parseRcFile(this.cloudProvider.credential.rc_file);
 
     // validate CloudProvider credentials
     if (this.form.value["rcFile"]
@@ -158,9 +159,12 @@ export class OstackSetupComponent implements OnInit {
 
       // update RC file with the user password and set it as current RC file
       // console.log("The current RC file...", rcFile);
-      this.cloudProvider.credential.rc_file = rcFile.replace(
-        /read.+/, "export OS_PASSWORD_INPUT=\"" + this.form.value['password'] + "\"");
-      console.log("Updated RC file", this.cloudProvider.credential.rc_file);
+      rcFile = rcFile.replace(/(#.*)\n/g, '');         // remove all comments
+      rcFile = rcFile.replace(/(echo.+)\n/g, '');      // remove all echo commands
+      rcFile = rcFile.replace(/(read -sr.+)\n/g, '');  // remove the read command
+      rcFile = rcFile.replace(/(export OS_PASSWORD=)(.*)/,          // set the password
+        "$1" + this.cloudProvider.credential.password);
+      this.cloudProvider.credential.rc_file = rcFile;
 
       // extract all the required RC file fields required to query the TSI portal
       this.cloudProvider.credential.username = this.extractPropertyValue("OS_USERNAME");
