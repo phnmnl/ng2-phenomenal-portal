@@ -58,7 +58,7 @@
     <div *ngIf="!cloudProviderSettingsForm" style="display: inline-block">
       <button mat-raised-button
               [ngClass]="{'btn': enableCloudProviderSettingsSelection(), 'btn-primary': enableCloudProviderSettingsSelection()}"
-              (click)="showCloudProviderSettings()" color="primary"
+              (click)="validateCredentialsAndShowCloudProviderSettings()" color="primary"
               [disabled]="!enableCloudProviderSettingsSelection()"
               style="width: 88px; height: 36px; margin: 0">
         Next
@@ -78,7 +78,7 @@
   <div class="cloud-setup-message-panel">
     <div
       *ngIf="formErrors.password || formErrors.rcFile"
-      class="alert alert-warning">
+      class="alert alert-danger">
       {{ formErrors.password + ' ' + formErrors.rcFile}}
     </div>
     <div *ngIf="validatingCredentials && !cloudProviderSettingsForm" class="alert alert-info">

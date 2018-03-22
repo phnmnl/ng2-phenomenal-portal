@@ -14,17 +14,11 @@ export class OstackSetupComponent implements OnInit {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
 
-  private subforms = {
-    "credentials": 1,
-    "settings": 2
-  };
-
   private form: FormGroup;
   private hidePassword: boolean = true;
   private credentialsValidated: boolean = false;
   private cloudProviderSettingsForm: boolean;
   private showValidationSucceededMessage: boolean = false;
-  private previousSubForm = null;
   private validatingCredentials: boolean = false;
 
   // OStack properties
@@ -108,13 +102,20 @@ export class OstackSetupComponent implements OnInit {
     }
   }
 
-  showCloudProviderSettings() {
+  validateCredentialsAndShowCloudProviderSettings() {
+    this.validateCloudProviderCredentials(() => {
+      this.showCloudProviderSettings(1000)
+    });
+  }
+
+  showCloudProviderSettings(timeout: number = 0) {
     this.getFlavors();
     this.getNetworks();
     this.getIPPools();
-    this.previousSubForm = this.subforms.credentials;
-    this.cloudProviderSettingsForm = true;
-    this.showValidationSucceededMessage = false;
+    setTimeout(() => {
+      this.cloudProviderSettingsForm = true;
+      this.showValidationSucceededMessage = false;
+    }, timeout);
   }
 
   onValueChanged(data?: any) {
@@ -139,13 +140,6 @@ export class OstackSetupComponent implements OnInit {
     // parse the RC file to retrieve all the information required to connect to the TSI portal
     if (this.cloudProvider.credential.password)
       this.parseRcFile(this.cloudProvider.credential.rc_file);
-
-    // validate CloudProvider credentials
-    if (this.form.value["rcFile"]
-      && !this.cloudProviderSettingsForm
-      && this.previousSubForm !== this.subforms.settings) {
-      this.validateCloudProviderCredentials();
-    }
   }
 
   parseRcFile(rcFile: string) {
@@ -180,7 +174,7 @@ export class OstackSetupComponent implements OnInit {
     }
   }
 
-  public validateCloudProviderCredentials() {
+  public validateCloudProviderCredentials(callback?) {
     let c = this.cloudProvider.credential;
     if (c.password && c.rc_file) {
       this.formErrors["rcFile"] = "";
@@ -194,6 +188,7 @@ export class OstackSetupComponent implements OnInit {
           this.validatingCredentials = false;
           this.showValidationSucceededMessage = true;
           this.formErrors["rcFile"] = "";
+          if (callback) callback();
         },
         (error) => {
           console.log(error);
@@ -208,7 +203,7 @@ export class OstackSetupComponent implements OnInit {
 
   public enableCloudProviderSettingsSelection() {
     let c = this.cloudProvider.credential;
-    return c.username && c.password && c.rc_file && this.credentialsValidated;
+    return c.password && c.rc_file;
   }
 
   public cloudProviderSettingsSelected() {
@@ -279,11 +274,9 @@ export class OstackSetupComponent implements OnInit {
   public goBack() {
     if (!this.cloudProviderSettingsForm) {
       this.cloudProvider.isSelected = 0;
-      this.previousSubForm = this.subforms.credentials;
     } else {
       this.cloudProvider.isSelected = 1;
       this.cloudProviderSettingsForm = false;
-      this.previousSubForm = this.subforms.settings;
     }
     // reset retrieved
     this.ipPools = null;
