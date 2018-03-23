@@ -153,10 +153,10 @@ export class OstackSetupComponent implements OnInit {
 
       // update RC file with the user password and set it as current RC file
       // console.log("The current RC file...", rcFile);
-      rcFile = rcFile.replace(/(#.*)\n/g, '');         // remove all comments
-      rcFile = rcFile.replace(/(echo.+)\n/g, '');      // remove all echo commands
-      rcFile = rcFile.replace(/(read -sr.+)\n/g, '');  // remove the read command
-      rcFile = rcFile.replace(/(export OS_PASSWORD=)(.*)/,          // set the password
+      rcFile = rcFile.replace(/#.*\n/g, '');         // remove all comments
+      rcFile = rcFile.replace(/\becho\b.+\n/g, '');      // remove all echo commands
+      rcFile = rcFile.replace(/\bread\b.+\n/g, '');  // remove the read command
+      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,          // set the password
         "$1" + '"' + this.cloudProvider.credential.password + '"');
       this.cloudProvider.credential.rc_file = rcFile;
 
