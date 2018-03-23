@@ -1,29 +1,32 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <mat-input-container class="input-width">
-    <input matInput placeholder="Username" formControlName="username" required>
-  </mat-input-container>
-  <mat-input-container class="input-width">
-    <input matInput placeholder="Password"
-           [type]="hidePassword ? 'password' : 'text'"
-           formControlName="password" required>
-    <mat-icon matSuffix (click)="hidePassword = !hidePassword">
-      <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
-    </mat-icon>
-  </mat-input-container>
-  <mat-input-container class="input-width">
-    <input matInput placeholder="Project Name" formControlName="tenantName" required>
-  </mat-input-container>
-  <mat-input-container class="input-width">
-    <input matInput placeholder="End Point" formControlName="authURL" required>
-  </mat-input-container>
-  <mat-input-container *ngIf="isUserDomainName" class="input-width">
-    <input matInput placeholder="User Domain Name" formControlName="userDomainName" required>
-  </mat-input-container>
+<form [formGroup]="form">
 
-  <div *ngIf="isVerify">
+  <div *ngIf="!cloudProviderSettingsForm">
+    <h3 class="h3-responsive text-center cloud-setup-title">Please insert your Cloud Provider credentials</h3>
+    <br>
+    <mat-input-container class="input-width">
+      <textarea matInput [(ngModel)]="cloudProvider.credential.rc_file"
+                placeholder="OpenStack RC file" formControlName="rcFile" required>
+      </textarea>
+    </mat-input-container>
+    <br>
+    <mat-input-container class="input-width">
+      <input matInput placeholder="Password"
+             [type]="hidePassword ? 'password' : 'text'"
+             formControlName="password" required
+             [(ngModel)]="cloudProvider.credential.password">
+      <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+        <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
+    </mat-input-container>
+  </div>
+
+  <div *ngIf="cloudProviderSettingsForm">
+    <h3 class="h3-responsive text-center cloud-setup-title">Please setup your Cloud Provider instances</h3>
+    <br>
     <mat-form-field class="input-width">
       <mat-select formControlName="flavor" placeholder="Select flavours"
-                  style="display: inline-block; text-align: left;" required>
+                  style="display: inline-block; text-align: left;" required
+                  [(ngModel)]="cloudProvider.credential.flavor">
         <mat-option *ngFor="let flavor of flavors" [value]="flavor.name">
           {{flavor.name}} ({{flavor.vcpus}}CPU, {{flavor.ram/1024}}GB RAM, {{flavor.disk}}GB Disk)
         </mat-option>
@@ -31,7 +34,8 @@
     </mat-form-field>
     <mat-form-field class="input-width">
       <mat-select formControlName="network" placeholder="Select network"
-                  style="display: inline-block; text-align: left;" required>
+                  style="display: inline-block; text-align: left;" required
+                  [(ngModel)]="cloudProvider.credential.network">
         <mat-option *ngFor="let network of networks" [value]="network['id']">
           {{network.name}}
         </mat-option>
@@ -39,7 +43,8 @@
     </mat-form-field>
     <mat-form-field class="input-width">
       <mat-select formControlName="ipPool" placeholder="Select IP pool name"
-                  style="display: inline-block; text-align: left;" required>
+                  style="display: inline-block; text-align: left;" required
+                  [(ngModel)]="cloudProvider.credential.ip_pool">
         <mat-option *ngFor="let ipPool of ipPools" [value]="ipPool">
           {{ipPool}}
         </mat-option>
@@ -47,22 +52,43 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="formErrors.username || formErrors.password ||  formErrors.tenantName || formErrors.authURL"
-       class="alert alert-warning">
-    {{ formErrors.username + ' ' + formErrors.password + ' ' + formErrors.tenantName + ' ' + formErrors.authURL}}
-  </div>
+
   <div class="mat-card-control-buttons">
-    <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-    <button mat-raised-button [hidden]="!isVerify" color="primary">Next</button>
-    <div *ngIf="!isVerify" style="display: inline-block">
-      <button mat-raised-button *ngIf="!isWaiting" class="btn btn-primary" (click)="toggleVerify()" color="primary"
+    <button mat-raised-button (click)="goBack()" class="btn btn-primary" color="primary">Back</button>
+    <div *ngIf="!cloudProviderSettingsForm" style="display: inline-block">
+      <button mat-raised-button
+              [ngClass]="{'btn': enableCloudProviderSettingsSelection(), 'btn-primary': enableCloudProviderSettingsSelection()}"
+              (click)="validateCredentialsAndShowCloudProviderSettings()" color="primary"
+              [disabled]="!enableCloudProviderSettingsSelection()"
               style="width: 88px; height: 36px; margin: 0">
-        Verify
+        Next
       </button>
-      <button mat-raised-button *ngIf="isWaiting" class="btn btn-primary disabled" color="primary"
+    </div>
+    <div *ngIf="cloudProviderSettingsForm" style="display: inline-block">
+      <button mat-raised-button
+              [ngClass]="{'btn': cloudProviderSettingsSelected(), 'btn-primary': cloudProviderSettingsSelected()}"
+              (click)="submit()" color="primary"
+              [disabled]="!cloudProviderSettingsSelected()"
               style="width: 88px; height: 36px; margin: 0">
-        Waiting
+        Next
       </button>
+    </div>
+  </div>
+
+  <div class="cloud-setup-message-panel">
+    <div
+      *ngIf="formErrors.password || formErrors.rcFile"
+      class="alert alert-danger">
+      {{ formErrors.password + ' ' + formErrors.rcFile}}
+    </div>
+    <div *ngIf="validatingCredentials && !cloudProviderSettingsForm" class="alert alert-info">
+      "Validating credentials..."
+    </div>
+    <div *ngIf="showValidationSucceededMessage" class="alert alert-success">
+      "Credentials validation succeeded !"
+    </div>
+    <div *ngIf="cloudProviderSettingsForm && isWaiting" class="alert alert-info">
+      "Loading flavours, networks, IP pools ... "
     </div>
   </div>
 </form>

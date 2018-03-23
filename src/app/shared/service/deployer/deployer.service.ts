@@ -339,11 +339,14 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'OS_AUTH_URL', 'value': credential.url},
           {'key': 'OS_PASSWORD', 'value': credential.password},
           {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
+          {'key': 'OS_RC_FILE', 'value': btoa(credential.rc_file)},
           {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
-          {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
+          {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_floating_ip_pool', 'value': credential.ip_pool},
+          {'key': 'TF_VAR_external_network_uuid', 'value': credential.network}
         ],
         sharedWithAccountEmails: [],
         sharedWithTeamNames: [],
@@ -358,11 +361,14 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'OS_AUTH_URL', 'value': credential.url},
           {'key': 'OS_PASSWORD', 'value': credential.password},
           {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
+          {'key': 'OS_RC_FILE', 'value': btoa(credential.rc_file)},
           {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
-          {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
+          {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password},
+          {'key': 'TF_VAR_floating_ip_pool', 'value': credential.ip_pool},
+          {'key': 'TF_VAR_external_network_uuid', 'value': credential.network}
         ]
       };
     }
@@ -953,11 +959,14 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'OS_AUTH_URL', 'value': credential.url},
         {'key': 'OS_PASSWORD', 'value': credential.password},
         {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
+        {'key': 'OS_RC_FILE', 'value': credential.rc_file},
         {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
-        {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
+        {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_floating_ip_pool', 'value': credential.ip_pool},
+        {'key': 'TF_VAR_external_network_uuid', 'value': credential.network}
       ],
       sharedWithAccountEmails: [],
       sharedWithTeamNames: [],
@@ -1010,11 +1019,14 @@ export class DeployerService implements OnInit, OnDestroy {
         {'key': 'OS_AUTH_URL', 'value': credential.url},
         {'key': 'OS_PASSWORD', 'value': credential.password},
         {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
+        {'key': 'OS_RC_FILE', 'value': btoa(credential.rc_file)},
         {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
         {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': credential.galaxy_admin_email},
-        {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password}
+        {'key': 'TF_VAR_dashboard_password', 'value': credential.galaxy_admin_password},
+        {'key': 'TF_VAR_floating_ip_pool', 'value': credential.ip_pool},
+        {'key': 'TF_VAR_external_network_uuid', 'value': credential.network}
       ]
     };
   }
