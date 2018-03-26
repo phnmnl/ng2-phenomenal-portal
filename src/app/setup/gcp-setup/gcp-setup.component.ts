@@ -62,6 +62,18 @@ export class GcpSetupComponent implements OnInit {
     this.onValueChanged(); // (re)set validation messages now
   }
 
+  onFileChanged(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.cloudProvider.credential.access_key_id = e.target.result;
+      };
+
+      reader.readAsText(fileInput.target.files[0]);
+    }
+  }
+
   onValueChanged(data?: any) {
     if (!this.form) {
       return;
