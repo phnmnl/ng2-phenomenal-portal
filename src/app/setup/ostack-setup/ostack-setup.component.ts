@@ -21,15 +21,12 @@ export class OstackSetupComponent implements OnInit {
   private showValidationSucceededMessage: boolean = false;
   private validatingCredentials: boolean = false;
 
-  // OStack properties
-  private authUrl: string;
-  private projectName: string;
-  private tenantName: string;
-  private rcVersion: string;
-  private domainName: string;
   private flavors = null;
   private networks = null;
   private ipPools = null;
+
+  // OpenStack credentials extracted from the RC file
+  private credentials: OpenStackCredentials;
 
 
   formErrors = {
@@ -184,8 +181,8 @@ export class OstackSetupComponent implements OnInit {
   submit() {
     console.log("Submitting ....", this.cloudProvider);
 
-    this.cloudProvider.credential.url = this.authUrl;
-    this.cloudProvider.credential.tenant_name = this.tenantName || this.projectName;
+    this.cloudProvider.credential.url = this.credentials.authUrl;
+    this.cloudProvider.credential.tenant_name = this.credentials.tenantName || this.credentials.projectName;
 
     this.cloudProvider.isSelected = 2;
     this.cloudProviderChange.emit(this.cloudProvider);
@@ -255,15 +252,13 @@ export class OstackSetupComponent implements OnInit {
   }
 
   private getOpenStackConfiguration(): OpenstackConfig {
-    let credentials = this.cloudProvider.credential;
     return new OpenstackConfig(
-      credentials.username,
-      credentials.password,
-      this.tenantName,
-      this.domainName,
-      this.authUrl,
-      this.rcVersion);
-  }
-
+      this.credentials.username,
+      this.credentials.password,
+      this.credentials.tenantName,
+      this.credentials.domainName,
+      this.credentials.authUrl,
+      this.credentials.rcVersion
+    );
   }
 }
