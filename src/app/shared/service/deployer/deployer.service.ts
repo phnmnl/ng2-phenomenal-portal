@@ -21,6 +21,8 @@ import { Observable } from "rxjs/Observable";
 import { DeploymentConfiguration } from "./deployementConfiguration";
 import { DeploymentInstance as CreDeployment } from "./deploymentInstance";
 import { ApplicationDeployer } from "ng2-cloud-portal-presentation-lib/dist";
+import { CloudProviderMetadataService } from "../cloud-provider-metadata/cloud-provider-metadata.service";
+import { OpenStackCredentials } from "../cloud-provider-metadata/OpenStackCredentials";
 
 
 @Injectable()
@@ -38,6 +40,7 @@ export class DeployerService implements OnInit, OnDestroy {
               private _tokenService: TokenService,
               public credentialService: CredentialService,
               public _accountService: AccountService,
+              public providerMetadataService: CloudProviderMetadataService,
               public configurationService: ConfigurationService,
               private config: AppConfig) {
     this.repoUrl = config.getConfig('deployment_repo_url');
@@ -153,8 +156,8 @@ export class DeployerService implements OnInit, OnDestroy {
       let protocol = this.use_https ? "https://" : "http://";
       if (deployment['assignedInputs'][i]['inputName'] === 'cluster_prefix') {
         deployment['galaxyUrl'] = protocol + 'galaxy' + separator + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
-        deployment['luigiUrl'] = protocol + 'luigi' +separator + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
-        deployment['jupyterUrl'] = protocol + 'notebook' + separator  + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
+        deployment['luigiUrl'] = protocol + 'luigi' + separator + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
+        deployment['jupyterUrl'] = protocol + 'notebook' + separator + deployment['assignedInputs'][i]['assignedValue'] + '.phenomenal.cloud';
       }
       if (deployment['assignedInputs'][i]['inputName'] === 'galaxy_admin_email') {
         deployment['galaxyAdminEmail'] = deployment['assignedInputs'][i]['assignedValue'];
@@ -302,6 +305,7 @@ export class DeployerService implements OnInit, OnDestroy {
         ]
       };
     } else {
+      let cc: OpenStackCredentials = this.providerMetadataService.parseRcFile(credential.rc_file, credential.password);
       applicationDeployer = <ApplicationDeployer> {
         name: 'Phenomenal VRE',
         accountUsername: username,
@@ -339,7 +343,7 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'OS_AUTH_URL', 'value': credential.url},
           {'key': 'OS_PASSWORD', 'value': credential.password},
           {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
-          {'key': 'OS_RC_FILE', 'value': btoa(credential.rc_file)},
+          {'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)},
           {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
@@ -361,7 +365,7 @@ export class DeployerService implements OnInit, OnDestroy {
           {'key': 'OS_AUTH_URL', 'value': credential.url},
           {'key': 'OS_PASSWORD', 'value': credential.password},
           {'key': 'OS_PROJECT_NAME', 'value': credential.tenant_name},
-          {'key': 'OS_RC_FILE', 'value': btoa(credential.rc_file)},
+          {'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)},
           {'key': 'TF_VAR_galaxy_admin_email', 'value': credential.galaxy_admin_email},
           {'key': 'TF_VAR_galaxy_admin_password', 'value': credential.galaxy_admin_password},
           {'key': 'TF_VAR_jupyter_password', 'value': credential.galaxy_admin_password},
@@ -609,7 +613,7 @@ export class DeployerService implements OnInit, OnDestroy {
                       }, 2000)
                     );
                   }, 2000);
-                }catch(e){
+                } catch (e) {
                   this.processError(deploymentInstance, e);
                 }
               }
@@ -1064,7 +1068,7 @@ export class DeployerService implements OnInit, OnDestroy {
     deployment['logsFeedSubscription'] = logsFeedSubscription;
   }
 
-  public sanitizeLogs(logs){
+  public sanitizeLogs(logs) {
     return logs.replace(new RegExp("FAILED - RETRYING", 'g'), " - RETRYING");
   }
 
