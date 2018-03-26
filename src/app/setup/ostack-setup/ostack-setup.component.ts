@@ -139,39 +139,9 @@ export class OstackSetupComponent implements OnInit {
 
     // parse the RC file to retrieve all the information required to connect to the TSI portal
     if (this.cloudProvider.credential.password)
-      this.parseRcFile(this.cloudProvider.credential.rc_file);
-  }
-
-  parseRcFile(rcFile: string) {
-    if (rcFile) {
-      // reset previous values
-      this.rcVersion = null;
-      this.authUrl = null;
-      this.projectName = "";
-      this.tenantName = "";
-      this.domainName = "";
-
-      // update RC file with the user password and set it as current RC file
-      // console.log("The current RC file...", rcFile);
-      rcFile = rcFile.replace(/#.*\n/g, '');         // remove all comments
-      rcFile = rcFile.replace(/\becho\b.+\n/g, '');      // remove all echo commands
-      rcFile = rcFile.replace(/\bread\b.+\n/g, '');  // remove the read command
-      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,          // set the password
-        "$1" + '"' + this.cloudProvider.credential.password + '"');
-      this.cloudProvider.credential.rc_file = rcFile;
-
-      // extract all the required RC file fields required to query the TSI portal
-      this.cloudProvider.credential.username = this.extractPropertyValue("OS_USERNAME");
-      this.rcVersion = this.extractPropertyValue("OS_IDENTITY_API_VERSION");
-      this.authUrl = this.extractPropertyValue("OS_AUTH_URL");
-      this.tenantName = this.extractPropertyValue("OS_TENANT_NAME");
-      this.projectName = this.extractPropertyValue("OS_PROJECT_NAME");
-      this.domainName = this.extractPropertyValue("OS_USER_DOMAIN_NAME");
-      // detect version from existing properties
-      if (!this.rcVersion) {
-        this.rcVersion = this.projectName ? "3" : "2";
-      }
-    }
+      this.credentials = this.cpm.parseRcFile(
+        this.cloudProvider.credential.rc_file, this.cloudProvider.credential.password
+      );
   }
 
   public validateCloudProviderCredentials(callback?) {
@@ -295,18 +265,5 @@ export class OstackSetupComponent implements OnInit {
       this.rcVersion);
   }
 
-  private extractPropertyValue(propertyName: string): string {
-    let match;
-    let result: string = null;
-    let pattern = new RegExp(propertyName + "=(.+)");
-
-    // extract property
-    if (this.cloudProvider.credential.rc_file) {
-      if ((match = pattern.exec(this.cloudProvider.credential.rc_file)) !== null) {
-        result = match[1].replace(/\"/g, "");
-        console.log(propertyName + ":", result);
-      }
-    }
-    return result;
   }
 }
