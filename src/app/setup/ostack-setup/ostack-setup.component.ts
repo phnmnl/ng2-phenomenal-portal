@@ -21,6 +21,7 @@ export class OstackSetupComponent implements OnInit {
   private showValidationSucceededMessage: boolean = false;
   private validatingCredentials: boolean = false;
 
+  // OStack resources
   private flavors = null;
   private networks = null;
   private ipPools = null;
@@ -113,6 +114,18 @@ export class OstackSetupComponent implements OnInit {
       this.cloudProviderSettingsForm = true;
       this.showValidationSucceededMessage = false;
     }, timeout);
+  }
+
+  onFileChanged(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.cloudProvider.credential.rc_file = e.target.result;
+      };
+
+      reader.readAsText(fileInput.target.files[0]);
+    }
   }
 
   onValueChanged(data?: any) {
