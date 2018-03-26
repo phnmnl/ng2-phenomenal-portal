@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 import { OpenstackConfig } from '../../shared/service/cloud-provider-metadata/openstack-config';
-import { open } from "fs";
+import { OpenStackCredentials } from "../../shared/service/cloud-provider-metadata/OpenStackCredentials";
+import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
 @Component({
   selector: 'ph-ostack-setup',
