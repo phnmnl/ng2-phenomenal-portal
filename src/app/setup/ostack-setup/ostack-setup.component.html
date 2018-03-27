@@ -4,9 +4,23 @@
     <h3 class="h3-responsive text-center cloud-setup-title">Please insert your Cloud Provider credentials</h3>
     <br>
     <mat-input-container class="input-width">
-      <textarea matInput [(ngModel)]="cloudProvider.credential.rc_file"
-                placeholder="OpenStack RC file" formControlName="rcFile" required>
-      </textarea>
+      <div class="row" style="display: flex;">
+        <div class="column" style="flex: 80%;">
+          <textarea matInput readonly [(ngModel)]="cloudProvider.credential.rc_file"
+                    style="height: 100px; padding: 20px;"
+                    placeholder="OpenStack RC file" formControlName="rcFile" required>
+          </textarea>
+        </div>
+        <div class="column" style="width: 10%; margin: auto auto 0; text-align: center;">
+          <a class="upload-link">
+            <mat-icon matSuffix (click)="credentialFileInput.click()">
+              <i class="fa fa-cloud-upload fa-2x" aria-hidden="true"></i>
+              <input hidden type="file" #credentialFileInput (change)="onFileChanged($event)" placeholder="RC file"/>
+            </mat-icon>
+            <div>Upload</div>
+          </a>
+        </div>
+      </div>
     </mat-input-container>
     <br>
     <mat-input-container class="input-width">

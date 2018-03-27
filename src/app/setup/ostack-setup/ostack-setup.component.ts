@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CloudProvider } from '../cloud-provider';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 import { OpenstackConfig } from '../../shared/service/cloud-provider-metadata/openstack-config';
-import { open } from "fs";
+import { OpenStackCredentials } from "../../shared/service/cloud-provider-metadata/OpenStackCredentials";
+import { CloudProviderMetadataService } from '../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
 @Component({
   selector: 'ph-ostack-setup',
@@ -21,15 +21,13 @@ export class OstackSetupComponent implements OnInit {
   private showValidationSucceededMessage: boolean = false;
   private validatingCredentials: boolean = false;
 
-  // OStack properties
-  private authUrl: string;
-  private projectName: string;
-  private tenantName: string;
-  private rcVersion: string;
-  private domainName: string;
+  // OStack resources
   private flavors = null;
   private networks = null;
   private ipPools = null;
+
+  // OpenStack credentials extracted from the RC file
+  private credentials: OpenStackCredentials;
 
 
   formErrors = {
@@ -118,6 +116,18 @@ export class OstackSetupComponent implements OnInit {
     }, timeout);
   }
 
+  onFileChanged(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.cloudProvider.credential.rc_file = e.target.result;
+      };
+
+      reader.readAsText(fileInput.target.files[0]);
+    }
+  }
+
   onValueChanged(data?: any) {
     if (!this.form) {
       return;
@@ -139,39 +149,9 @@ export class OstackSetupComponent implements OnInit {
 
     // parse the RC file to retrieve all the information required to connect to the TSI portal
     if (this.cloudProvider.credential.password)
-      this.parseRcFile(this.cloudProvider.credential.rc_file);
-  }
-
-  parseRcFile(rcFile: string) {
-    if (rcFile) {
-      // reset previous values
-      this.rcVersion = null;
-      this.authUrl = null;
-      this.projectName = "";
-      this.tenantName = "";
-      this.domainName = "";
-
-      // update RC file with the user password and set it as current RC file
-      // console.log("The current RC file...", rcFile);
-      rcFile = rcFile.replace(/#.*\n/g, '');         // remove all comments
-      rcFile = rcFile.replace(/\becho\b.+\n/g, '');      // remove all echo commands
-      rcFile = rcFile.replace(/\bread\b.+\n/g, '');  // remove the read command
-      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,          // set the password
-        "$1" + '"' + this.cloudProvider.credential.password + '"');
-      this.cloudProvider.credential.rc_file = rcFile;
-
-      // extract all the required RC file fields required to query the TSI portal
-      this.cloudProvider.credential.username = this.extractPropertyValue("OS_USERNAME");
-      this.rcVersion = this.extractPropertyValue("OS_IDENTITY_API_VERSION");
-      this.authUrl = this.extractPropertyValue("OS_AUTH_URL");
-      this.tenantName = this.extractPropertyValue("OS_TENANT_NAME");
-      this.projectName = this.extractPropertyValue("OS_PROJECT_NAME");
-      this.domainName = this.extractPropertyValue("OS_USER_DOMAIN_NAME");
-      // detect version from existing properties
-      if (!this.rcVersion) {
-        this.rcVersion = this.projectName ? "3" : "2";
-      }
-    }
+      this.credentials = this.cpm.parseRcFile(
+        this.cloudProvider.credential.rc_file, this.cloudProvider.credential.password
+      );
   }
 
   public validateCloudProviderCredentials(callback?) {
@@ -214,8 +194,8 @@ export class OstackSetupComponent implements OnInit {
   submit() {
     console.log("Submitting ....", this.cloudProvider);
 
-    this.cloudProvider.credential.url = this.authUrl;
-    this.cloudProvider.credential.tenant_name = this.tenantName || this.projectName;
+    this.cloudProvider.credential.url = this.credentials.authUrl;
+    this.cloudProvider.credential.tenant_name = this.credentials.tenantName || this.credentials.projectName;
 
     this.cloudProvider.isSelected = 2;
     this.cloudProviderChange.emit(this.cloudProvider);
@@ -285,28 +265,13 @@ export class OstackSetupComponent implements OnInit {
   }
 
   private getOpenStackConfiguration(): OpenstackConfig {
-    let credentials = this.cloudProvider.credential;
     return new OpenstackConfig(
-      credentials.username,
-      credentials.password,
-      this.tenantName,
-      this.domainName,
-      this.authUrl,
-      this.rcVersion);
-  }
-
-  private extractPropertyValue(propertyName: string): string {
-    let match;
-    let result: string = null;
-    let pattern = new RegExp(propertyName + "=(.+)");
-
-    // extract property
-    if (this.cloudProvider.credential.rc_file) {
-      if ((match = pattern.exec(this.cloudProvider.credential.rc_file)) !== null) {
-        result = match[1].replace(/\"/g, "");
-        console.log(propertyName + ":", result);
-      }
-    }
-    return result;
+      this.credentials.username,
+      this.credentials.password,
+      this.credentials.tenantName,
+      this.credentials.domainName,
+      this.credentials.authUrl,
+      this.credentials.rcVersion
+    );
   }
 }

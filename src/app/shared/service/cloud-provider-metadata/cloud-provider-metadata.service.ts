@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { AppConfig } from '../../../app.config';
 import { OpenstackConfig } from './openstack-config';
+import { OpenStackCredentials } from "./OpenStackCredentials";
 
 
 /**
@@ -78,4 +79,58 @@ export class CloudProviderMetadataService {
     return body;
   }
 
+
+  public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
+    if (rcFile) {
+
+
+      // update RC file with the user password and set it as current RC file
+      // console.log("The current RC file...", rcFile);
+      rcFile = rcFile.replace(/#.*\n/, '');         // remove all comments
+      rcFile = rcFile.replace(/\becho\b.+\n/, '');      // remove all echo commands
+      rcFile = rcFile.replace(/\bread\b.+\n/, '');  // remove the read command
+      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,          // set the password
+        "$1" + '"' + password + '"');
+
+
+      // extract all the required RC file fields required to query the TSI portal
+      let rcVersion = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
+      let username = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
+      let authUrl = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
+      let tenantName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
+      let projectName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
+      let domainName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
+
+      // detect version from existing properties
+      if (!rcVersion) {
+        rcVersion = projectName ? "3" : "2";
+      }
+
+      return <OpenStackCredentials>{
+        username: username,
+        password: password,
+        authUrl: authUrl,
+        tenantName: tenantName,
+        projectName: projectName,
+        domainName: domainName,
+        rcFile: rcFile,
+        rcVersion: rcVersion
+      };
+    }
+  }
+
+  private static extractPropertyValue(rcFile: string, propertyName: string): string {
+    let match;
+    let result: string = null;
+    let pattern = new RegExp(propertyName + "=(.+)");
+
+    // extract property
+    if (rcFile) {
+      if ((match = pattern.exec(rcFile)) !== null) {
+        result = match[1].replace(/\"/g, "");
+        console.log(propertyName + ":", result);
+      }
+    }
+    return result;
+  }
 }

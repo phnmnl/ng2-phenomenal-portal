@@ -23,6 +23,14 @@ a:focus, a:hover {
   color: #D3B569;
 }
 
+.upload-link {
+  color: #525991 !important;
+}
+
+.upload-link:focus, .upload-link:hover{
+  color: #664F90 !important;
+}
+
 input:focus {
   border-bottom-color: #525991 !important;
 }
