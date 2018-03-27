@@ -12,11 +12,13 @@
           </textarea>
         </div>
         <div class="column" style="width: 10%; margin: auto auto 0; text-align: center;">
-          <mat-icon matSuffix (click)="credentialFileInput.click()">
-            <i class="fa fa-cloud-upload fa-2x" aria-hidden="true" style="color: #664F90"></i>
-            <input hidden type="file" #credentialFileInput (change)="onFileChanged($event)" placeholder="RC file"/>
-          </mat-icon>
-          <div>Upload</div>
+          <a class="upload-link">
+            <mat-icon matSuffix (click)="credentialFileInput.click()">
+              <i class="fa fa-cloud-upload fa-2x" aria-hidden="true"></i>
+              <input hidden type="file" #credentialFileInput (change)="onFileChanged($event)" placeholder="RC file"/>
+            </mat-icon>
+            <div>Upload</div>
+          </a>
         </div>
       </div>
     </mat-input-container>
