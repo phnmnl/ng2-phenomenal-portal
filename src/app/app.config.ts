@@ -7,9 +7,10 @@ export class AppConfig {
 
   private config: Object = null;
   private env: Object = null;
+  private readonly _packageInfo: Object = null;
 
   constructor(private http: Http) {
-
+    this._packageInfo = require('../../package.json');
   }
 
   /**
@@ -24,6 +25,10 @@ export class AppConfig {
    */
   public getEnv(key: any) {
     return this.env[key];
+  }
+
+  public getPackageInfo() {
+    return this._packageInfo;
   }
 
   /**
@@ -77,7 +82,6 @@ export class AppConfig {
           resolve(true);
         }
       });
-
     });
   }
 }
