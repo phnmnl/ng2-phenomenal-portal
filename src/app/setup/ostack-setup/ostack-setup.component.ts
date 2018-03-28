@@ -268,7 +268,7 @@ export class OstackSetupComponent implements OnInit {
     return new OpenstackConfig(
       this.credentials.username,
       this.credentials.password,
-      this.credentials.tenantName,
+      this.credentials.rcVersion == "2" ? this.credentials.tenantName : this.credentials.projectName,
       this.credentials.domainName,
       this.credentials.authUrl,
       this.credentials.rcVersion
