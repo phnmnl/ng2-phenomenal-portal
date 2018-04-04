@@ -14,13 +14,6 @@ export class OstackSetupComponent implements OnInit {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
 
-  private form: FormGroup;
-  private hidePassword: boolean = true;
-  private credentialsValidated: boolean = false;
-  private cloudProviderSettingsForm: boolean;
-  private showValidationSucceededMessage: boolean = false;
-  private validatingCredentials: boolean = false;
-
   // OStack resources
   private flavors = null;
   private networks = null;
@@ -29,6 +22,13 @@ export class OstackSetupComponent implements OnInit {
   // OpenStack credentials extracted from the RC file
   private credentials: OpenStackCredentials;
 
+  // template properties
+  form: FormGroup;
+  cloudProviderSettingsForm: boolean;
+  showValidationSucceededMessage: boolean = false;
+  validatingCredentials: boolean = false;
+  credentialsValidated: boolean = false;
+  hidePassword: boolean = true;
 
   formErrors = {
     'username': '',
