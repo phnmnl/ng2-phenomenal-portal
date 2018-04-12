@@ -22,7 +22,6 @@ import { ProviderRegistry } from "../shared/service/deployer/provider-registry";
 })
 export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
-  private currentUser: User = new User({"username": "pino"});
   private _phenomenal_logo = 'assets/img/logo/default_app.png';
   private _openstack_logo = 'assets/img/logo/openstack_logo.png';
   private _aws_logo = 'assets/img/logo/aws_logo.png';
@@ -38,6 +37,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   private smallScreen;
   private onChangeScreenListener;
 
+  currentUser: User = new User({});
 
   constructor(private _applicationService: ApplicationService,
               public credentialService: CredentialService,

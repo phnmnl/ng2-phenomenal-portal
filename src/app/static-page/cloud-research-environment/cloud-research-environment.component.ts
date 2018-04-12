@@ -15,7 +15,7 @@ export class CloudResearchEnvironmentComponent {
   // link to the public galaxy instance
   public public_galaxy_instance_url;
   // Photos
-  private slides: Array<any> = [];
+  slides: Array<any> = [];
   // img
   private _img2 = 'assets/img/cloud-research-environment/img2.png';
   private _img3 = 'assets/img/cloud-research-environment/img3.png';

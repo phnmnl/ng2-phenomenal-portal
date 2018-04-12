@@ -11,12 +11,13 @@ import { User } from "../../service/user/user";
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private subDomain;
-  private currentUser: User;
   private removeMessageListener;
-  private isCollapsed = false;
-  private _logo = 'assets/img/logo/phenomenal_4x.png';
-
   private lastChoice = true;
+
+  // template properties
+  currentUser: User;
+  isCollapsed = false;
+  private _logo = 'assets/img/logo/phenomenal_4x.png';
 
   constructor(private _eref: ElementRef,
               private router: Router,
@@ -46,16 +47,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this._logo;
   }
 
-  public createNewCre(){
+  public createNewCre() {
     this.lastChoice = !this.lastChoice;
-    this.router.navigate(['cloud-research-environment-setup'], {queryParams: {'state': this.lastChoice }});
+    this.router.navigate(['cloud-research-environment-setup'], {queryParams: {'state': this.lastChoice}});
   }
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  isActiveCREMenu(){
+  isActiveCREMenu() {
     return this.router.url.includes("cloud-research-environment");
   }
 
