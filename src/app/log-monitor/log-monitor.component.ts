@@ -23,7 +23,6 @@ export class LogMonitorComponent implements OnInit {
 
   public toggleScrollDown() {
     this.autoScrollDown = !this.autoScrollDown;
-    console.log(this.autoScrollDown);
     if (this.autoScrollDown)
       this.scrollDown();
   }
@@ -34,28 +33,24 @@ export class LogMonitorComponent implements OnInit {
 
   ngOnInit() {
     let reference = this.route.snapshot.queryParams['id'];
-    console.log("Deployment parameter: ", reference);
-    this.deployerManager.getDeployment(reference, true).subscribe(
+    this.deployerManager.getDeployment(reference).subscribe(
       (data) => {
         this.deployment = data;
-        console.log("Found deployment info", this.deployment);
         this.deployerManager.getDeploymentLogs(reference).subscribe(
           (logs) => {
-            this.deployment["logs"] = this.deployerManager.sanitizeLogs(logs);
             let blob = new Blob([this.deployment["logs"]], {type: 'text/plain'});
             let url = window.URL.createObjectURL(blob);
             this.downloadLogsUri = this.sanitizer.bypassSecurityTrustUrl(url);
-
-            if (this.deployment["status"] === "STARTING") {
-              this.deployerManager.monitorDeploymentLogs(this.deployment, 1000, () => {
-                if (this.autoScrollDown)
-                  this.scrollDown();
-              });
-            }
-
+            this.deployment["logs"] = logs;
           }, (error) => {
             console.error(error);
-          })
+          });
+        if (this.deployment["status"] === "STARTING") {
+          this.deployerManager.monitorDeploymentLogs(this.deployment, 1000, () => {
+            if (this.autoScrollDown)
+              this.scrollDown();
+          });
+        }
       },
       (error) => {
         console.error(error);
