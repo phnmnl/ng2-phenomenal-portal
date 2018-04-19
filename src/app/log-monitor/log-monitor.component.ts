@@ -12,6 +12,7 @@ import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 })
 export class LogMonitorComponent implements OnInit {
 
+  autoScrollDown: boolean = false;
   public deployment: Deployment;
   public downloadLogsUri: SafeUrl;
 
@@ -20,27 +21,36 @@ export class LogMonitorComponent implements OnInit {
               private deployerManager: DeployerService) {
   }
 
+  public toggleScrollDown() {
+    this.autoScrollDown = !this.autoScrollDown;
+    if (this.autoScrollDown)
+      this.scrollDown();
+  }
+
+  public scrollDown() {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
   ngOnInit() {
     let reference = this.route.snapshot.queryParams['id'];
-    console.log("Deployment parameter: ", reference);
-    this.deployerManager.getDeployment(reference, true).subscribe(
+    this.deployerManager.getDeployment(reference).subscribe(
       (data) => {
         this.deployment = data;
-        console.log("Found deployment info", this.deployment);
         this.deployerManager.getDeploymentLogs(reference).subscribe(
           (logs) => {
-            this.deployment["logs"] = this.deployerManager.sanitizeLogs(logs);
-            let blob = new Blob([this.deployment["logs"]], { type: 'text/plain' });
-            let url= window.URL.createObjectURL(blob);
+            let blob = new Blob([this.deployment["logs"]], {type: 'text/plain'});
+            let url = window.URL.createObjectURL(blob);
             this.downloadLogsUri = this.sanitizer.bypassSecurityTrustUrl(url);
-
-            if(this.deployment["status"] === "STARTING"){
-              this.deployerManager.monitorDeploymentLogs(this.deployment, 1000);
-            }
-
+            this.deployment["logs"] = logs;
           }, (error) => {
             console.error(error);
-          })
+          });
+        if (this.deployment["status"] === "STARTING") {
+          this.deployerManager.monitorDeploymentLogs(this.deployment, 1000, () => {
+            if (this.autoScrollDown)
+              this.scrollDown();
+          });
+        }
       },
       (error) => {
         console.error(error);

@@ -69,24 +69,20 @@ export class DeployerService implements OnInit, OnDestroy {
     }
   }
 
-  public getDeployment(reference: string, status: boolean = false): Observable<CreDeployment> {
+  public getDeployment(reference: string): Observable<CreDeployment> {
     return this._deploymentService.get(
       this.credentialService.getUsername(), this._tokenService.getToken(),
       <Deployment>{reference: reference}
-    ).map((deployment) => {
-      if (status) {
-        this._deploymentService.getDeploymentStatus(
-          this.credentialService.getUsername(), this._tokenService.getToken(),
-          deployment
-        ).subscribe((res) => {
-          deployment['status'] = res.status;
-          deployment['status_info'] = res;
-        }, (error) => {
-          console.error(error);
-        });
-      }
-      return deployment;
-    }).catch(this.handleError);
+    ).switchMap(deployment =>
+      this._deploymentService.getDeploymentStatus(
+        this.credentialService.getUsername(), this._tokenService.getToken(),
+        deployment
+      ).map((res) => {
+        deployment['status'] = res.status;
+        deployment['status_info'] = res;
+        return deployment;
+      })
+    ).catch(this.handleError);
   }
 
   public getDeployments(): Observable<Deployment[]> {
@@ -377,12 +373,12 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     }
 
-    if (this.use_https){
+    if (this.use_https) {
       value.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
       selectedCloudProvider.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
     }
 
-    if(this.config.getConfig("enable_debug_key") == true){
+    if (this.config.getConfig("enable_debug_key") == true) {
       value.fields.push({'key': 'use_debug_key', 'value': true});
       selectedCloudProvider.fields.push({'key': 'use_debug_key', 'value': true});
     }
@@ -1050,13 +1046,15 @@ export class DeployerService implements OnInit, OnDestroy {
       <Deployment>{reference: deploymentReference});
   }
 
-  public monitorDeploymentLogs(deployment: Deployment, interval: number) {
+  public monitorDeploymentLogs(deployment: Deployment, interval: number, callback?) {
     const logsFeedSubscription = this._deploymentService.getDeploymentLogsFeed(
       this.credentialService.getUsername(),
       this._tokenService.getToken(),
       deployment, interval).subscribe(
       res => {
         deployment['logs'] = this.sanitizeLogs(res);
+        if (callback)
+          callback();
       },
       error => {
         logsFeedSubscription.unsubscribe();
@@ -1079,8 +1077,6 @@ export class DeployerService implements OnInit, OnDestroy {
       this._tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
-        console.log("Current log", deploymentInstance["logs"]);
-        console.log("Updated log", res);
         deploymentInstance["logs"] = res;
         if (deploymentInstance.status === 'RUNNING') {
           deploymentInstance["logsFeedSubscription"].unsubscribe();
