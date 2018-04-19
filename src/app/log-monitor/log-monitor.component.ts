@@ -20,6 +20,10 @@ export class LogMonitorComponent implements OnInit {
               private deployerManager: DeployerService) {
   }
 
+  public scrollDown(){
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
   ngOnInit() {
     let reference = this.route.snapshot.queryParams['id'];
     console.log("Deployment parameter: ", reference);
