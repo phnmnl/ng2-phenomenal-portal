@@ -2,10 +2,15 @@
 
   <mat-card>
 
-    <mat-card-header>
+    <mat-card-header style="position: fixed">
 
       <div class="logs-title">
         Deployment logs: {{ deployment.reference }}
+      </div>
+      <div class="logs-scroll-ctrl">
+        <a class="download-link" title="Scroll Down" (click)="scrollDown()">
+          <i class="fa fa-dot-circle-o fa-2x" aria-hidden="true"></i>
+        </a>
       </div>
       <div class="logs-download-ctrl">
         <a class="download-link" title="Download Logs" [href]="downloadLogsUri"
@@ -13,7 +18,6 @@
           <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
         </a>
       </div>
-
     </mat-card-header>
 
     <mat-card-content [style.overflow]="'auto'" class="row-fluid logs-container">
