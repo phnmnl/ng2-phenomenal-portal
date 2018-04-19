@@ -8,16 +8,19 @@
         Deployment logs: {{ deployment.reference }}
       </div>
       <div class="logs-scroll-ctrl">
-        <a class="download-link" title="Scroll Down" (click)="scrollDown()">
-          <i class="fa fa-dot-circle-o fa-2x" aria-hidden="true"></i>
+        <a class="ctrl-link" title="Auto Scroll to End of Logs" (click)="toggleScrollDown()">
+          <i [ngClass]="{'fa': true, 'fa-dot-circle-o': true,
+                         'fa-2x': true, 'ctrl-link-toggled': autoScrollDown}" aria-hidden="true"></i>
         </a>
       </div>
+
       <div class="logs-download-ctrl">
-        <a class="download-link" title="Download Logs" [href]="downloadLogsUri"
+        <a class="ctrl-link" title="Download Logs" [href]="downloadLogsUri"
            download="{{deployment.reference}}-deployment.log" style="color: white;">
           <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
         </a>
       </div>
+
     </mat-card-header>
 
     <mat-card-content [style.overflow]="'auto'" class="row-fluid logs-container">
