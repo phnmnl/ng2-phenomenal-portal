@@ -12,6 +12,7 @@ import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 })
 export class LogMonitorComponent implements OnInit {
 
+  autoScrollDown: boolean = false;
   public deployment: Deployment;
   public downloadLogsUri: SafeUrl;
 
@@ -20,7 +21,14 @@ export class LogMonitorComponent implements OnInit {
               private deployerManager: DeployerService) {
   }
 
-  public scrollDown(){
+  public toggleScrollDown() {
+    this.autoScrollDown = !this.autoScrollDown;
+    console.log(this.autoScrollDown);
+    if (this.autoScrollDown)
+      this.scrollDown();
+  }
+
+  public scrollDown() {
     window.scrollTo(0, document.body.scrollHeight);
   }
 
@@ -34,12 +42,15 @@ export class LogMonitorComponent implements OnInit {
         this.deployerManager.getDeploymentLogs(reference).subscribe(
           (logs) => {
             this.deployment["logs"] = this.deployerManager.sanitizeLogs(logs);
-            let blob = new Blob([this.deployment["logs"]], { type: 'text/plain' });
-            let url= window.URL.createObjectURL(blob);
+            let blob = new Blob([this.deployment["logs"]], {type: 'text/plain'});
+            let url = window.URL.createObjectURL(blob);
             this.downloadLogsUri = this.sanitizer.bypassSecurityTrustUrl(url);
 
-            if(this.deployment["status"] === "STARTING"){
-              this.deployerManager.monitorDeploymentLogs(this.deployment, 1000);
+            if (this.deployment["status"] === "STARTING") {
+              this.deployerManager.monitorDeploymentLogs(this.deployment, 1000, () => {
+                if (this.autoScrollDown)
+                  this.scrollDown();
+              });
             }
 
           }, (error) => {
