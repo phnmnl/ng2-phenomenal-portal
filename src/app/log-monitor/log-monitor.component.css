@@ -24,22 +24,30 @@ mat-card-content{
 
 .logs-title {
   font-size: 1.5em;
-  width: 92%;
+  width: 96%;
+  display: inline-block;
+  margin: 2px 0 0;
 }
 
 .logs-scroll-ctrl {
   width: 4%;
+  margin-top: 3px;
 }
 
 .logs-download-ctrl {
   width: 4%;
+  margin-top: 4px;
 }
 
-.download-link {
+.ctrl-link {
   color: white;
 }
 
-.download-link :hover {
+.ctrl-link :hover {
+  color: #a8b0ff;
+}
+
+.ctrl-link-toggled {
   color: #a8b0ff;
 }
 
