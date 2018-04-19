@@ -69,24 +69,20 @@ export class DeployerService implements OnInit, OnDestroy {
     }
   }
 
-  public getDeployment(reference: string, status: boolean = false): Observable<CreDeployment> {
+  public getDeployment(reference: string): Observable<CreDeployment> {
     return this._deploymentService.get(
       this.credentialService.getUsername(), this._tokenService.getToken(),
       <Deployment>{reference: reference}
-    ).map((deployment) => {
-      if (status) {
-        this._deploymentService.getDeploymentStatus(
-          this.credentialService.getUsername(), this._tokenService.getToken(),
-          deployment
-        ).subscribe((res) => {
-          deployment['status'] = res.status;
-          deployment['status_info'] = res;
-        }, (error) => {
-          console.error(error);
-        });
-      }
-      return deployment;
-    }).catch(this.handleError);
+    ).switchMap(deployment =>
+      this._deploymentService.getDeploymentStatus(
+        this.credentialService.getUsername(), this._tokenService.getToken(),
+        deployment
+      ).map((res) => {
+        deployment['status'] = res.status;
+        deployment['status_info'] = res;
+        return deployment;
+      })
+    ).catch(this.handleError);
   }
 
   public getDeployments(): Observable<Deployment[]> {
