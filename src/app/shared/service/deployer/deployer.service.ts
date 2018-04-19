@@ -377,12 +377,12 @@ export class DeployerService implements OnInit, OnDestroy {
       };
     }
 
-    if (this.use_https){
+    if (this.use_https) {
       value.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
       selectedCloudProvider.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
     }
 
-    if(this.config.getConfig("enable_debug_key") == true){
+    if (this.config.getConfig("enable_debug_key") == true) {
       value.fields.push({'key': 'use_debug_key', 'value': true});
       selectedCloudProvider.fields.push({'key': 'use_debug_key', 'value': true});
     }
@@ -1081,8 +1081,6 @@ export class DeployerService implements OnInit, OnDestroy {
       this._tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
-        console.log("Current log", deploymentInstance["logs"]);
-        console.log("Updated log", res);
         deploymentInstance["logs"] = res;
         if (deploymentInstance.status === 'RUNNING') {
           deploymentInstance["logsFeedSubscription"].unsubscribe();
