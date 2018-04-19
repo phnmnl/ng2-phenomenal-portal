@@ -1050,13 +1050,15 @@ export class DeployerService implements OnInit, OnDestroy {
       <Deployment>{reference: deploymentReference});
   }
 
-  public monitorDeploymentLogs(deployment: Deployment, interval: number) {
+  public monitorDeploymentLogs(deployment: Deployment, interval: number, callback?) {
     const logsFeedSubscription = this._deploymentService.getDeploymentLogsFeed(
       this.credentialService.getUsername(),
       this._tokenService.getToken(),
       deployment, interval).subscribe(
       res => {
         deployment['logs'] = this.sanitizeLogs(res);
+        if (callback)
+          callback();
       },
       error => {
         logsFeedSubscription.unsubscribe();
