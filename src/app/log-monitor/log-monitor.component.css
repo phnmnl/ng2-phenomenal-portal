@@ -13,17 +13,26 @@ mat-card {
 mat-card-header {
   background: #525991;
   padding: 10px;
-  width: 100%;
+  width: 95%;
+  position: fixed;
+  margin-top: -3px!important;
+}
+
+mat-card-content{
+  margin-top: 10px;
 }
 
 .logs-title {
   font-size: 1.5em;
-  width: 95%;
+  width: 92%;
+}
+
+.logs-scroll-ctrl {
+  width: 4%;
 }
 
 .logs-download-ctrl {
-  width: 5%;
-  margin-right: 10px;
+  width: 4%;
 }
 
 .download-link {
@@ -45,7 +54,7 @@ mat-card-header {
   background: #212121;
   color: white;
   border: none;
-  margin: 20px;
+  margin: 80px 20px 40px !important;
 }
 
 @media (max-width: 991px) {
