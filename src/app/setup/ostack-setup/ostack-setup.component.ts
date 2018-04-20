@@ -201,6 +201,17 @@ export class OstackSetupComponent implements OnInit {
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 
+  public onKeyPressed(event) {
+    if(event.keyCode == 13){
+      if(!this.cloudProviderSettingsForm && this.enableCloudProviderSettingsSelection()){
+        this.validateCredentialsAndShowCloudProviderSettings();
+      }
+      if(this.cloudProviderSettingsForm && this.cloudProviderSettingsSelected()){
+        this.submit();
+      }
+      return false;
+    }
+  }
 
   get isWaiting() {
     return !this.flavors || !this.networks || !this.ipPools;
