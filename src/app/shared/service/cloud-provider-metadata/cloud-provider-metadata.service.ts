@@ -128,7 +128,6 @@ export class CloudProviderMetadataService {
     if (rcFile) {
       if ((match = pattern.exec(rcFile)) !== null) {
         result = match[1].replace(/\"/g, "");
-        console.log(propertyName + ":", result);
       }
     }
     return result;
