@@ -121,4 +121,12 @@ export class AwsSetupComponent implements OnInit {
       });
     }
   }
+
+  public onKeyPressed(event) {
+    if(event.keyCode == 13){
+      if(this.form.valid)
+        this.onSubmit();
+      return false;
+    }
+  }
 }

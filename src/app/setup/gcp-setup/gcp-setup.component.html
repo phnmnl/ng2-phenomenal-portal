@@ -1,6 +1,6 @@
 <h3 class="h3-responsive text-center cloud-setup-title">Please insert your Cloud Provider credentials</h3>
 <br>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
   <mat-form-field class="input-width">
     <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
                 [(ngModel)]="cloudProvider.credential.default_region" required>
