@@ -8,7 +8,7 @@
   </h6>
   <br>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
     <mat-input-container class="input-width">
       <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_password"
              [type]="hidePassword ? 'password' : 'text'"
@@ -96,7 +96,7 @@
               class="btn btn-primary" color="primary">
         Back
       </button>
-      <button mat-raised-button
+      <button mat-raised-button autofocus
               *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid"
               class="btn btn-warning" color="warn">
         Deploy
