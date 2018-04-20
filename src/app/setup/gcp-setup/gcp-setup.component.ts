@@ -111,6 +111,14 @@ export class GcpSetupComponent implements OnInit {
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 
+  public onKeyPressed(event) {
+    if(event.keyCode == 13){
+      if(this.form.valid)
+        this.onSubmit();
+      return false;
+    }
+  }
+
   private extractProjectName(): string {
     let projectName = null;
     let credentialsText = this.form.value['accessKeyId'];
