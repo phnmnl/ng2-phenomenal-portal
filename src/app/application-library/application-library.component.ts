@@ -140,7 +140,7 @@ export class ApplicationLibraryComponent implements OnInit {
 
   }
 
-  triigerList() {
+  triggerList() {
     this.isList = !this.isList;
   }
 
