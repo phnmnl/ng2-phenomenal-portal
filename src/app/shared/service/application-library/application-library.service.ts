@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ApplicationLibraryService {
 
-  private baseUrl = window.location.protocol + '//';
+  private readonly baseUrl = window.location.protocol + '//';
   private metadataUrl = '/php-phenomenal-portal-app-library';
   private headUrl: string;
 
