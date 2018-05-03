@@ -15,17 +15,17 @@ import { AppLibraryCategories } from "../shared/service/application-library/cate
  */
 export class ApplicationLibraryComponent implements OnInit {
 
-  content: string;
-  public isList = false;
   apps;
   appSize;
+  content: string;
+  isList = false;
   previousQuery: string;
-
   functionality: Node[];
   approaches: Node[];
   instrument: Node[];
   private readonly appLibFilterKey = "AppLibraryFilter";
 
+  constructor(private appLibraryService: ApplicationLibraryService) {
   }
 
   ngOnInit() {
@@ -60,30 +60,28 @@ export class ApplicationLibraryComponent implements OnInit {
         data => {
           this.apps = data;
           this.appSize = data.length;
+          this.setAppListFilter(false);
         }
       );
     this.previousQuery = 'functionality=&approaches=&instrument=';
   }
 
   getAppsByFilter() {
-
+    // get filters
     const filter1 = this.traverseTree(this.functionality);
-
     const filter2 = this.traverseTree(this.approaches);
-
     const filter3 = this.traverseTree(this.instrument);
-
-    let query = 'functionality=' + this.transformFilter(filter1);
-
-    query += '&approaches=' + this.transformFilter(filter2);
-
-    query += '&instrument=' + this.transformFilter(filter3);
-
+    // build query
+    let query = 'functionality=' + ApplicationLibraryComponent.transformFilter(filter1)
+      + '&approaches=' + ApplicationLibraryComponent.transformFilter(filter2)
+      + '&instrument=' + ApplicationLibraryComponent.transformFilter(filter3);
+    // perform query
     if (query !== this.previousQuery) {
       this.appLibraryService.loadSomeApp(query)
         .subscribe(
           data => {
             this.apps = data;
+            this.setAppListFilter(true);
           }
         );
     }
@@ -120,24 +118,18 @@ export class ApplicationLibraryComponent implements OnInit {
     }
 
     filter.push.apply(filter, temp);
-
     return filter;
   }
 
-  private transformFilter(filter: string[]) {
-
+  private static transformFilter(filter: string[]) {
     let text = '';
     const plus = '+';
     for (let f of filter) {
-
       f = f.replace(/ /g, '_');
       f = f.toUpperCase();
       text += f;
       text += plus;
     }
-
     return text;
-
   }
-
 }
