@@ -24,6 +24,7 @@ export class ApplicationLibraryComponent implements OnInit {
   functionality: Node[];
   approaches: Node[];
   instrument: Node[];
+  private readonly appLibFilterKey = "AppLibraryFilter";
 
   }
 
@@ -33,9 +34,20 @@ export class ApplicationLibraryComponent implements OnInit {
     this.approaches = categories.approaches;
     this.instrument = categories.instrument;
 
+    if (this.isAppListFiltered()) {
+      this.getAppsByFilter();
+    } else {
+      this.getAllApp();
+    }
+  }
 
-    this.getAllApp();
 
+  private setAppListFilter(value: boolean) {
+    localStorage.setItem(this.appLibFilterKey, value ? "1" : "0");
+  }
+
+  private isAppListFiltered(): boolean {
+    return localStorage.getItem(this.appLibFilterKey) === "1";
   }
 
   triggerList() {
