@@ -1,6 +1,6 @@
 {
   "name": "ng2-phenomenal-portal",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -13,17 +13,17 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/schematics": "0.0.51",
-    "@angular/animations": "^4.4.4",
-    "@angular/common": "^4.4.4",
-    "@angular/compiler": "^4.4.4",
-    "@angular/core": "^4.4.4",
-    "@angular/forms": "^4.4.4",
-    "@angular/http": "^4.4.4",
+    "@angular-devkit/schematics": "^0.3.2",
+    "@angular/animations": "^4.4.7",
+    "@angular/common": "^4.4.7",
+    "@angular/compiler": "^4.4.7",
+    "@angular/core": "^4.4.7",
+    "@angular/forms": "^4.4.7",
+    "@angular/http": "^4.4.7",
     "@angular/material": "^2.0.0-beta.12",
-    "@angular/platform-browser": "^4.4.4",
-    "@angular/platform-browser-dynamic": "^4.4.4",
-    "@angular/router": "^4.4.4",
+    "@angular/platform-browser": "^4.4.7",
+    "@angular/platform-browser-dynamic": "^4.4.7",
+    "@angular/router": "^4.4.7",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.5",
     "angular2-jwt": "^0.2.0",
     "aws-sdk": "^2.186.0",
@@ -31,7 +31,7 @@
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
-    "ng-block-ui": "^1.0.0-beta.19",
+    "ng-block-ui": "^0.9.5",
     "ng2-cloud-portal-presentation-lib": "0.2.33",
     "ng2-cloud-portal-service-lib": "0.2.24",
     "ngx-bootstrap": "^1.8.0",
@@ -61,6 +61,6 @@
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "^2.3.4"
+    "typescript": ">=2.1.0 <2.4.0"
   }
 }
