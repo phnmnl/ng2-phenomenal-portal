@@ -62,8 +62,18 @@ export class WikiService {
    * @param id
    * @returns {Observable<{}>}
    */
-  loadPage(id) {
-    const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '&format=array&limit=3';
+  loadPageById(id) {
+    const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '.html&format=array&limit=3';
+    return this.http.get(url).map(this.extractData);
+  }
+
+  /**
+   * fetch the wiki page by id
+   * @param id
+   * @returns {Observable<{}>}
+   */
+  loadPageByFilename(filename) {
+    const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + filename + '&format=array&limit=3';
     return this.http.get(url).map(this.extractData);
   }
 

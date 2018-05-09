@@ -27,7 +27,7 @@ export class HelpTopicComponent implements OnInit {
   }
 
   getPage() {
-    this.wikiService.loadPage(this.id)
+    this.wikiService.loadPageById(this.id)
       .subscribe(
         data => {
           this.helpContent = this.process(data);
