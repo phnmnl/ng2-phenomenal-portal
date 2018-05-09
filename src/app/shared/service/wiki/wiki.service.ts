@@ -9,9 +9,9 @@ import { AppConfig } from '../../../app.config';
 @Injectable()
 export class WikiService {
   private gitRepoName = 'phenomenal-h2020.wiki';
-  private baseUrl = window.location.protocol + '//';
+  private readonly baseUrl = window.location.protocol + '//';
   private metadataUrl = '/php-phenomenal-portal-wiki';
-  private headUrl: string;
+  private readonly headUrl: string;
 
   constructor(private http: Http,
               private config: AppConfig) {
