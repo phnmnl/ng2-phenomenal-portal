@@ -4,7 +4,6 @@ import { CloudResearchEnvironmentComponent } from './static-page/cloud-research-
 import { CRELocalInstallationComponent } from './static-page/cre-local-installation/cre-local-installation.component';
 import { CRELocalInstallationInstructionComponent } from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
 import { HelpComponent } from './help/help.component';
-import { FaqComponent } from './help/faq/faq.component';
 import { HelpTopicComponent } from './help/help-topic/help-topic.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { HomeComponent } from './static-page/home/home.component';
@@ -22,7 +21,6 @@ import { LogMonitorComponent } from "./log-monitor/log-monitor.component";
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
   {path: 'help', component: HelpComponent},
-  {path: 'help/faq', component: FaqComponent},
   {path: 'help/:id', component: HelpTopicComponent},
   {path: 'login', component: LoginComponent},
   {path: 'logs', component: LogMonitorComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
