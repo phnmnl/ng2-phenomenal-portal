@@ -54,7 +54,6 @@ import { OstackSetupComponent } from './setup/ostack-setup/ostack-setup.componen
 import { AwsSetupComponent } from './setup/aws-setup/aws-setup.component';
 import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
 import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
-import { FaqComponent } from './help/faq/faq.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { CloudProviderMetadataService } from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 
@@ -123,7 +122,6 @@ export function initConfig(config: AppConfig) {
     AwsSetupComponent,
     GcpSetupComponent,
     CloudSetupComponent,
-    FaqComponent,
     TermAndConditionComponent,
     TestCreComponent,
     LogMonitorComponent,

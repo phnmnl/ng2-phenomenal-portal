@@ -9,9 +9,9 @@ import { AppConfig } from '../../../app.config';
 @Injectable()
 export class WikiService {
   private gitRepoName = 'phenomenal-h2020.wiki';
-  private baseUrl = window.location.protocol + '//';
+  private readonly baseUrl = window.location.protocol + '//';
   private metadataUrl = '/php-phenomenal-portal-wiki';
-  private headUrl: string;
+  private readonly headUrl: string;
 
   constructor(private http: Http,
               private config: AppConfig) {
@@ -35,7 +35,7 @@ export class WikiService {
    * @returns {Observable<string[]>}
    */
   loadUserDocumentationMenu(): Observable<string[]> {
-    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation&format=array&limit=100';
+    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation.html&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
@@ -44,7 +44,7 @@ export class WikiService {
    * @returns {Observable<string[]>}
    */
   loadDeveloperDocumentationMenu(): Observable<string[]> {
-    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation&format=array&limit=100';
+    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation.html&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
@@ -53,7 +53,7 @@ export class WikiService {
    * @returns {Observable<string[]>}
    */
   loadTutorialsMenu(): Observable<string[]> {
-    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials&format=array&limit=100';
+    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials.html&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
@@ -62,8 +62,18 @@ export class WikiService {
    * @param id
    * @returns {Observable<{}>}
    */
-  loadPage(id) {
-    const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '&format=array&limit=3';
+  loadPageById(id) {
+    const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + id + '.html&format=array&limit=3';
+    return this.http.get(url).map(this.extractData);
+  }
+
+  /**
+   * fetch the wiki page by id
+   * @param id
+   * @returns {Observable<{}>}
+   */
+  loadPageByFilename(filename) {
+    const url = this.headUrl + '/wiki/page.php?foldername=' + this.gitRepoName + '&filename=' + filename + '&format=array&limit=3';
     return this.http.get(url).map(this.extractData);
   }
 
