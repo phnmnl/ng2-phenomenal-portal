@@ -35,7 +35,7 @@ export class WikiService {
    * @returns {Observable<string[]>}
    */
   loadUserDocumentationMenu(): Observable<string[]> {
-    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation&format=array&limit=100';
+    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=User-Documentation.html&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
@@ -44,7 +44,7 @@ export class WikiService {
    * @returns {Observable<string[]>}
    */
   loadDeveloperDocumentationMenu(): Observable<string[]> {
-    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation&format=array&limit=100';
+    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Developer-Documentation.html&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
@@ -53,7 +53,7 @@ export class WikiService {
    * @returns {Observable<string[]>}
    */
   loadTutorialsMenu(): Observable<string[]> {
-    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials&format=array&limit=100';
+    const url = this.headUrl + '/wiki/menu.php?foldername=' + this.gitRepoName + '&filename=Tutorials.html&format=array&limit=100';
     return this.http.get(url).map(this.extractData);
   }
 
