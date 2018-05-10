@@ -3,19 +3,23 @@
   margin: 0 auto;
 }
 
+.header-container{
+  padding: 12px 0 10px;
+  position: fixed;
+}
+
 mat-card {
   background: #111111;
   color: white;
   padding: 0;
-  margin: -12px 0 -19px;
+  margin: -3px 0 -19px;
 }
 
 mat-card-header {
   background: #525991;
   padding: 10px;
-  width: 95%;
   position: fixed;
-  margin-top: -3px!important;
+  margin-top: -13px!important;
 }
 
 mat-card-content{
@@ -24,7 +28,7 @@ mat-card-content{
 
 .logs-title {
   font-size: 1.5em;
-  width: 96%;
+  width: 90%;
   display: inline-block;
   margin: 2px 0 0;
 }
