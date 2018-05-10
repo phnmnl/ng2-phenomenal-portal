@@ -106,7 +106,6 @@ export class GcpSetupComponent implements OnInit {
     this.cloudProvider.isSelected = 2;
     this.cloudProvider.credential.default_region = this.form.value['region'];
     this.cloudProvider.credential.access_key_id = this.form.value['accessKeyId'];
-    this.cloudProvider.credential.tenant_name = this.form.value['tenantName'];
 
     this.cloudProviderChange.emit(this.cloudProvider);
   }
