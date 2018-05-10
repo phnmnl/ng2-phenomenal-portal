@@ -110,6 +110,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     });
     modalRef.componentInstance.onConfirm = new EventEmitter();
     modalRef.componentInstance.onConfirm.subscribe((ok) => {
+      CreDashboardComponent.clearErrors(deployment);
       this.onDestroyEvent.emit(deployment);
       modalRef.close();
     });
@@ -146,6 +147,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.body = "Are you sure?";
     modalRef.componentInstance.onConfirm = new EventEmitter();
     modalRef.componentInstance.onConfirm.subscribe((ok) => {
+      CreDashboardComponent.clearErrors(deployment);
       modalRef.close();
       this.onDeleteEvent.emit(deployment);
     });
@@ -236,5 +238,10 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
         onError(error);
       }
     );
+  }
+
+  private static clearErrors(deployment: DeploymentInstance) {
+    deployment.isError = false;
+    deployment['error'] = null;
   }
 }
