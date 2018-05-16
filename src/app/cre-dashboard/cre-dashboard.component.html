@@ -55,7 +55,7 @@
 
               <div class="deployment-identifiers">
                 <mat-card-title class="deployment-name" title="Deployment Name">
-                  <h4 class="h4-responsive">{{ deployment.configurationName }}</h4>
+                  <h5 class="h5-responsive">{{ deployment.configurationName }}</h5>
                 </mat-card-title>
 
                 <div class="deployment-id" title="Deployment Identifier" *ngIf="deployment.reference">
@@ -150,7 +150,7 @@
                           </a>
                         </div>
                         <div class="col-xs-4">
-                          <a href="{{deployment['galaxyUrl']}}" target="_blank" (click)="enabledServices(deployment)">
+                          <a href="{{deployment['galaxyUrl']}}/user/login" target="_blank" (click)="enabledServices(deployment)">
                             <img style="width: 60px;" alt="Galaxy Workflow Manager" [src]="galaxy_logo">
                           </a>
                         </div>
@@ -178,15 +178,14 @@
                     </a>
                   </div>
 
-                  <div class="col-xs-6 destroy"
-                       *ngIf="deployment['status']!=='DESTROYED' && deployment['status']!=='STARTING'">
+                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED'">
                     <a (click)="destroyDeployment(deployment)">
                       <i class="fa fa-minus-circle fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">Stop</span>
                     </a>
                   </div>
 
-                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='DESTROYED'">
+                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='DESTROYED' || deployment['status']==='DESTROYING_FAILED'">
                     <a (click)="deleteDeployment(deployment)">
                       <i class="fa fa-minus-circle fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">Delete</span>

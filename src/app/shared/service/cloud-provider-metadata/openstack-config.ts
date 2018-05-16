@@ -6,7 +6,9 @@ export class OpenstackConfig {
   endpoint: string;
   version: string;
 
-  constructor(username: string, password: string, tenantName: string, domainName: string, endpoint: string, version: string) {
+  constructor(username: string, password: string,
+              tenantName: string, domainName: string,
+              endpoint: string, version: string) {
     this.username = username;
     this.password = password;
     this.tenantName = tenantName;

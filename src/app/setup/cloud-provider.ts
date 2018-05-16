@@ -11,5 +11,11 @@ export class CloudProvider {
   logo: string;
   isSelected: number;
   credential: Credential;
+
+  public static clone(origin: CloudProvider): CloudProvider {
+    let c: CloudProvider = Object.assign({}, origin);
+    c.credential = Object.assign({}, origin.credential);
+    return c;
+  }
 }
 

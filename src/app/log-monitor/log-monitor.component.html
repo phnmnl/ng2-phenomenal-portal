@@ -2,13 +2,20 @@
 
   <mat-card>
 
-    <mat-card-header>
+    <mat-card-header class="container header-container">
 
       <div class="logs-title">
         Deployment logs: {{ deployment.reference }}
       </div>
+      <div class="logs-scroll-ctrl">
+        <a class="ctrl-link" title="Auto Scroll to End of Logs" (click)="toggleScrollDown()">
+          <i [ngClass]="{'fa': true, 'fa-dot-circle-o': true,
+                         'fa-2x': true, 'ctrl-link-toggled': autoScrollDown}" aria-hidden="true"></i>
+        </a>
+      </div>
+
       <div class="logs-download-ctrl">
-        <a class="download-link" title="Download Logs" [href]="downloadLogsUri"
+        <a class="ctrl-link" title="Download Logs" [href]="downloadLogsUri"
            download="{{deployment.reference}}-deployment.log" style="color: white;">
           <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
         </a>

@@ -8,7 +8,7 @@
   </h6>
   <br>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
     <mat-input-container class="input-width">
       <input matInput [(ngModel)]="cloudProvider.credential.galaxy_admin_password"
              [type]="hidePassword ? 'password' : 'text'"
@@ -24,24 +24,30 @@
         <i class="fa {{ hidePasswordConfirm ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
       </mat-icon>
     </mat-input-container>
-    <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
-         class="alert alert-warning">
-      {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
+
+    <div class="mat-card-control-buttons"
+         *ngIf="cloudProvider.isSelected === 2 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
+      <button mat-raised-button (click)="cloudProvider.isSelected=1;"
+              class="btn btn-primary" color="primary">
+        Back
+      </button>
+      <button mat-raised-button *ngIf="!registering" [disabled]="!form.valid || registering"
+              [ngClass]="{'btn': form.valid, 'btn-primary': form.valid}" color="primary">
+        Next
+      </button>
+    </div>
+
+    <div class="cloud-setup-message-panel">
+      <div *ngIf="formErrors.email || formErrors.password || formErrors.confirmPassword"
+           class="alert alert-warning">
+        {{ formErrors.email + ' ' + formErrors.password + ' ' + formErrors.confirmPassword + ' ' + message}}
+      </div>
     </div>
 
     <div *ngIf="registering" class="text-center">
       <mat-progress-spinner mode="indeterminate" color="red">
         Please wait...
       </mat-progress-spinner>
-    </div>
-
-
-    <div class="mat-card-control-buttons"
-         *ngIf="cloudProvider.isSelected === 2 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
-      <button mat-raised-button (click)="cloudProvider.isSelected=1;" color="accent">Back</button>
-      <button mat-raised-button *ngIf="!registering" [disabled]="!form.valid || registering" color="warn">
-        Next
-      </button>
     </div>
   </form>
 </div>
@@ -53,7 +59,7 @@
 </div>
 
 <!-- Display existent error messages -->
-<div *ngIf="message.length > 0">
+<div *ngIf="message.length > 0" class="cloud-setup-message-panel">
   <br>
   <div class="alert alert-warning">{{ message}}</div>
 </div>
@@ -65,7 +71,6 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="review-details">
       <div *ngIf="cloudProvider.name === 'ostack'">
-        <p>Username: <b>{{cloudProvider.credential.username}}</b></p>
         <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
         <p>Auth URL: <b>{{cloudProvider.credential.url}}</b></p>
         <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
@@ -87,8 +92,13 @@
     </div>
     <div class="mat-card-control-buttons"
          *ngIf="cloudProvider.isSelected === 3 && (!_isSuccess || cloudProvider.name !== 'phenomenal')">
-      <button mat-raised-button (click)="cloudProvider.isSelected=2;" color="accent">Back</button>
-      <button mat-raised-button *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid" color="warn">
+      <button mat-raised-button (click)="cloudProvider.isSelected=2;"
+              class="btn btn-primary" color="primary">
+        Back
+      </button>
+      <button mat-raised-button autofocus
+              *ngIf="cloudProvider.name !== 'phenomenal'" [disabled]="!form.valid"
+              class="btn btn-warning" color="warn">
         Deploy
       </button>
     </div>

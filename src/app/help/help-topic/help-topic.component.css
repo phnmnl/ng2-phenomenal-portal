@@ -1,3 +1,7 @@
+.container{
+ padding: 20px;
+}
+
 :host >>> pre {
   padding: 16px;
   overflow: auto;

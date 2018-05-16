@@ -1,4 +1,6 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<h3 class="h3-responsive text-center cloud-setup-title">Please insert your Cloud Provider credentials</h3>
+<br>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
 
   <mat-form-field class="input-width">
     <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;" formControlName="region"
@@ -27,13 +29,15 @@
     </mat-icon>
   </mat-input-container>
 
-  <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.secretAccessKey" class="alert alert-warning">
-    {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.secretAccessKey }}
-  </div>
-
   <div class="mat-card-control-buttons">
     <button mat-raised-button (click)="cloudProvider.isSelected=0;" color="accent">Back</button>
-    <button mat-raised-button [disabled]="!form.valid" color="primary">Next</button>
+    <button mat-raised-button [disabled]="!form.valid" color="primary" autofocus>Next</button>
+  </div>
+
+  <div class="cloud-setup-message-panel">
+    <div *ngIf="formErrors.region || formErrors.accessKeyId || formErrors.secretAccessKey" class="alert alert-warning">
+      {{ formErrors.region + ' ' + formErrors.accessKeyId + ' ' + formErrors.secretAccessKey }}
+    </div>
   </div>
 
 </form>

@@ -53,13 +53,24 @@ export class GcpSetupComponent implements OnInit {
 
     this.form = this.fb.group({
       'region': ['', Validators.required],
-      'accessKeyId': ['', Validators.required],
-      'tenantName': ['', [Validators.required]]
+      'accessKeyId': ['', Validators.required]
     });
 
     this.form.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged(); // (re)set validation messages now
+  }
+
+  onFileChanged(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.cloudProvider.credential.access_key_id = e.target.result;
+      };
+
+      reader.readAsText(fileInput.target.files[0]);
+    }
   }
 
   onValueChanged(data?: any) {
@@ -79,6 +90,15 @@ export class GcpSetupComponent implements OnInit {
           this.formErrors[field] += messages[key] + ' ';
         }
       }
+
+      // extract project ID
+      try {
+        this.cloudProvider.credential.tenant_name = this.extractProjectName();
+      } catch (e) {
+        this.cloudProvider.credential.tenant_name = null;
+        this.formErrors["accessKeyId"] = "File not valid: " + e.message;
+        form.controls['accessKeyId'].setErrors({"invalid": true})
+      }
     }
   }
 
@@ -86,9 +106,28 @@ export class GcpSetupComponent implements OnInit {
     this.cloudProvider.isSelected = 2;
     this.cloudProvider.credential.default_region = this.form.value['region'];
     this.cloudProvider.credential.access_key_id = this.form.value['accessKeyId'];
-    this.cloudProvider.credential.tenant_name = this.form.value['tenantName'];
 
     this.cloudProviderChange.emit(this.cloudProvider);
+  }
+
+  public onKeyPressed(event) {
+    if(event.keyCode == 13){
+      if(this.form.valid)
+        this.onSubmit();
+      return false;
+    }
+  }
+
+  private extractProjectName(): string {
+    let projectName = null;
+    let credentialsText = this.form.value['accessKeyId'];
+    if (credentialsText) {
+      let credentials = JSON.parse(credentialsText);
+      if (credentials) {
+        projectName = credentials.project_id;
+      }
+    }
+    return projectName;
   }
 
 }

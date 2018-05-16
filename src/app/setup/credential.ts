@@ -14,4 +14,5 @@ export class Credential {
   flavor?: string;
   network?: string;
   ip_pool?: string;
+  rc_file?: string;
 }
