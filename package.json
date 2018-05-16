@@ -37,6 +37,7 @@
     "ngx-bootstrap": "^1.8.0",
     "ngx-clipboard": "^8.0.3",
     "popper.js": "^1.14.3",
+    "request": "^2.86.0",
     "rxjs": "^5.5.5",
     "webpack": "3.11.0",
     "zone.js": "^0.8.14"
