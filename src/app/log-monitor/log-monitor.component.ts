@@ -38,10 +38,10 @@ export class LogMonitorComponent implements OnInit {
         this.deployment = data;
         this.deployerManager.getDeploymentLogs(reference).subscribe(
           (logs) => {
+            this.deployment["logs"] = logs;
             let blob = new Blob([this.deployment["logs"]], {type: 'text/plain'});
             let url = window.URL.createObjectURL(blob);
             this.downloadLogsUri = this.sanitizer.bypassSecurityTrustUrl(url);
-            this.deployment["logs"] = logs;
           }, (error) => {
             console.error(error);
           });
