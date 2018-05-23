@@ -10,7 +10,20 @@
   <!-- Temporary fix for favicon-->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+  <!--<script>-->
+    <!--var localFrameworkVersion = 'other';-->
+    <!--var newDataProtectionNotificationBanner = document.createElement('script');-->
+    <!--newDataProtectionNotificationBanner.src = 'https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/ebi-global-includes/script/5_ebiFrameworkNotificationBanner.js?legacyRequest='+localFrameworkVersion;-->
+    <!--document.head.appendChild(newDataProtectionNotificationBanner);-->
+    <!--newDataProtectionNotificationBanner.onload = function() {-->
+      <!--ebiFrameworkRunDataProtectionBanner(); // invoke the banner-->
+    <!--};-->
+  <!--</script>-->
+
+  <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/ebi-global-includes/script/5_ebiFrameworkNotificationBanner.js?legacyRequest=other">
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
   <script>
     (function(w,d,s,g,js,fs){
       g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
@@ -19,9 +32,13 @@
       fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
     }(window,document,'script'));
   </script>
-
 </head>
-<body>
+
+<body onpageshow="ebiFrameworkRunDataProtectionBanner()">
+  <div id="data-protection-message-configuration"
+       data-message='This website requires cookies, and the limited processing of your personal data in order to function. <br>By using the site you are agreeing to this as outlined in our <a class="nav_link" target="_blank" href="https://www.ebi.ac.uk/data-protection/privacy-notice/phenomenal-vre-portal" class="white-color"><b>Privacy Notice<b></a>.'
+       data-service-id="phenomenal-vre-portal" data-data-protection-version="0.1">
+  </div>
   <ph-root>
     <div class="loader">Loading...</div>
   </ph-root>
