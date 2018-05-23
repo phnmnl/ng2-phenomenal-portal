@@ -169,6 +169,10 @@ input:focus {
   min-height: 120px;
 }
 
+.data-protection-banner{
+  padding: 20px 40px !important;
+}
+
 @-webkit-keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);
