@@ -119,13 +119,18 @@ export class CloudProviderMetadataService {
   private static extractPropertyValue(rcFile: string, propertyName: string): string {
     let match;
     let result: string = null;
-    let pattern = new RegExp(propertyName + "=(.+)");
+    let pattern = new RegExp(propertyName + "=(.+)", 'g');
 
     // extract property
     if (rcFile) {
-      if ((match = pattern.exec(rcFile)) !== null) {
-        result = match[1].replace(/\"/g, "");
-      }
+      // search for all matches and use only the last one
+      do  {
+        match = pattern.exec(rcFile);
+        if(match) {
+          // remove single and double quotes
+          result = match[1].replace(/['"]/g, "");
+        }
+      }while(match);
     }
     return result;
   }
