@@ -82,16 +82,13 @@ export class CloudProviderMetadataService {
 
   public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
     if (rcFile) {
-
-
       // update RC file with the user password and set it as current RC file
       // console.log("The current RC file...", rcFile);
-      rcFile = rcFile.replace(/#.*\n/, '');         // remove all comments
-      rcFile = rcFile.replace(/\becho\b.+\n/, '');      // remove all echo commands
-      rcFile = rcFile.replace(/\bread\b.+\n/, '');  // remove the read command
-      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,          // set the password
+      rcFile = rcFile.replace(/#.*\n/g, '');          // remove all comments
+      rcFile = rcFile.replace(/\becho\b.+/g, '');     // remove all echo commands
+      rcFile = rcFile.replace(/\bread\b.+/g, '');     // remove the read command
+      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,      // set the password
         "$1" + '"' + password + '"');
-
 
       // extract all the required RC file fields required to query the TSI portal
       let rcVersion = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
