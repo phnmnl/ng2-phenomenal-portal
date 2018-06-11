@@ -1,4 +1,4 @@
-export class Credential {
+export class DeploymentConfigurationParameters {
   username: string;
   password: string;
   tenant_name: string;
