@@ -167,8 +167,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
                 (done) => {
                   deployment['show-wheel'] = false;
                 }, (error) => {
-                  deployment.isError = true;
-                  deployment['error'] = error;
+                  deployment.errorCause = error;
                   deployment['show-wheel'] = false;
                 }
               );
@@ -177,8 +176,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
             if (error.status === 404)
               this.removeDeploymentFromList(deployment);
             else {
-              deployment.isError = true;
-              deployment['error'] = error;
+              deployment.errorCause = error;
             }
             deployment['show-wheel'] = false;
           });
@@ -188,8 +186,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       },
       error => {
         console.log('[Deployments] error %O', error);
-        deployment.isError = true;
-        deployment['error'] = error;
+        deployment.errorCause = error;
         deployment['show-wheel'] = false;
       }
     );
@@ -212,8 +209,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       this.tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
-        deploymentInstance.status = res.status;
-        deploymentInstance.status_info = res;
+        deploymentInstance.statusDetails = res;
         if (res.status === 'DESTROYED') {
           statusFeedSubscription.unsubscribe();
         }
@@ -241,7 +237,6 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   }
 
   private static clearErrors(deployment: PhnDeployment) {
-    deployment.isError = false;
-    deployment['error'] = null;
+    deployment.cleanErrors();
   }
 }

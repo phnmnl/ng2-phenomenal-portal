@@ -58,8 +58,7 @@ export class DeployementService implements OnInit, OnDestroy {
         return this._deploymentService.getDeploymentStatus(
           this.credentialService.getUsername(), this._tokenService.getToken(), data)
           .map((res) => {
-            data['status'] = res.status;
-            data['status_info'] = res;
+            data['statusDetails'] = res;
             return data;
           });
       }
@@ -140,15 +139,15 @@ export class DeployementService implements OnInit, OnDestroy {
   }
 
   public deploy(deployment: Deployment) {
-
     deployment.status = "STARTING";
     this.lastLoadedDeploymentList.push(deployment);
     this.updateDeployments();
-
     let pipeline: Pipeline = PhenoMeNalPipeline.getCompletePipeline(this, deployment);
-    pipeline.exec(deployment, () => {
-      console.log("Terminated deployment !!!", pipeline.description);
-    });
+    console.log("Deploying", deployment);
+
+    // pipeline.exec(deployment, () => {
+    //   console.log("Terminated deployment !!!", pipeline.description);
+    // });
   }
 
 
@@ -330,11 +329,7 @@ export class DeployementService implements OnInit, OnDestroy {
     ).subscribe(
       dep => {
         console.log('[RepositoryComponent] deployed %O', dep, deployment);
-        // this.setupDeploymentMonitoring(deployment);
-        // deployment = Deployment.getDeploymentFromData(this.config, dep);
-        deployment.id = dep['reference'];
-        deployment.reference = dep['reference'];
-        deployment.status = "STARTING";
+        deployment.update(dep);
         this.setupDeploymentMonitoring(deployment);
         callback(deployment);
       },
@@ -378,12 +373,10 @@ export class DeployementService implements OnInit, OnDestroy {
       this._tokenService.getToken(),
       deploymentInstance, interval).subscribe(
       res => {
-        deploymentInstance.status = res.status;
-        deploymentInstance.status_info = res;
+        deploymentInstance.statusDetails = res;
         if (res.status === 'STARTING') {
         }
         if (res.status === 'STARTING_FAILED') {
-          this.processError(deploymentInstance, res);
           statusFeedSubscription.unsubscribe();
         }
         if (res.status === 'RUNNING' || res.status === 'DESTROYED') {
@@ -471,8 +464,7 @@ export class DeployementService implements OnInit, OnDestroy {
       errMsg = message;
     }
     // set error info
-    deploymentInstance.isError = true;
-    deploymentInstance['error'] = errMsg;
+    deploymentInstance.errorCause = errMsg;
     // update deployment status
     if (deploymentInstance.reference) {
       this._deploymentService.getDeploymentStatus(
@@ -480,12 +472,11 @@ export class DeployementService implements OnInit, OnDestroy {
         this._tokenService.getToken(),
         deploymentInstance).subscribe(
         status => {
-          deploymentInstance.status = status.status;
-          deploymentInstance.status_info = status;
+          deploymentInstance.statusDetails = status;
         });
     } else {
       // update the status when the deployment has not been created yet
-      deploymentInstance.status = 'STARTING_FAILED';
+      // deploymentInstance.status = 'STARTING_FAILED';
     }
     return error;
   }

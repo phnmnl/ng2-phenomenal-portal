@@ -235,8 +235,7 @@ export class PhenoMeNalPipeline extends Pipeline {
       errMsg = message;
     }
     // set error info
-    deploymentInstance.isError = true;
-    deploymentInstance['error'] = errMsg;
+    deploymentInstance.errorCause = errMsg;
     return error;
   }
 }
