@@ -5,6 +5,7 @@ import { LogSearchPipelineStep } from "./log-search-pipeline-step";
 import { PipelineStep } from "./pipeline-step";
 import { DeployementService } from "./deployement.service";
 import { Response } from "@angular/http";
+import { pipeDef } from "@angular/core/src/view";
 
 export class PhenoMeNalPipeline extends Pipeline {
 
@@ -22,19 +23,22 @@ export class PhenoMeNalPipeline extends Pipeline {
     let deployment: PhnDeployment = pipeline.deployment;
     pipeline.setErrorHandler(pipeline.processError);
     pipeline.getDeploymentStatusAsObservable().subscribe((status: PipelineStatus) => {
-      let progress = pipeline.getProgress();
-      let step: PipelineStep = status.currentStep;
-      // let stepDescription: string = (step instanceof Pipeline) ? step.getCurrentStep().description : "";
-      deployment.progress = progress;
-      if(pipeline.getCurrentStep()) {
-        deployment.status_details = {
-          'task': pipeline.getCurrentStep().description,
-          'step': status.currentStep && status.currentStep.description !== pipeline.getCurrentStep().description ? status.currentStep.description : "",
-          'progress': progress
-        };
-        console.log("EstimatedTime", pipeline.getCurrentStep().estimatedTime);
-      }
-      console.log("Update progress", deployment.progress, deployment.status_details);
+      let progress = Math.round(pipeline.getProgress());
+      let step: PipelineStep = pipeline.getCurrentStep();
+      console.log(step, status, pipeline, progress);
+      deployment.statusTransition = {
+        'transition': deployment.status,
+        'task': pipeline.getCurrentStep().description,
+        'step': step && step.description !== step.description ? step.description : "",
+        'progress': progress,
+        'stepNumber': pipeline.getCurrentStepIndex()+1,
+        'numberOfSteps': pipeline.getSteps().length
+      };
+      console.log("EstimatedTime", step.estimatedTime);
+      console.log("Update progress", deployment.statusTransition);
+    });
+
+    deployment.getDeployLogsAsObservable().subscribe((logs)=>{
     });
   }
 
