@@ -73,7 +73,7 @@ import {
 import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
 import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from './static-page/test-cre/test-cre.component';
-import { DeployerService } from "./shared/service/deployer/deployer.service";
+import { DeployementService } from "./shared/service/deployer/deployement.service";
 import { LogMonitorComponent } from './log-monitor/log-monitor.component';
 import {
   ModalDialogComponent,
@@ -159,7 +159,7 @@ export function initConfig(config: AppConfig) {
     UserService,
     UserAuthenticatedGuard,
     AcceptedTermsGuard,
-    DeployerService,
+    DeployementService,
     // PhenomenalTokenService,
     ApplicationService,
     AuthService,

@@ -12,9 +12,9 @@ import { Http } from '@angular/http';
 import 'rxjs/Rx';
 import { UserService } from '../shared/service/user/user.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { DeploymentInstance } from "../shared/service/deployer/deploymentInstance";
+import { Deployment as PhnDeployment } from "../shared/service/deployer/deployment";
 
-import { DeployerService } from "../shared/service/deployer/deployer.service";
+import { DeployementService } from "../shared/service/deployer/deployement.service";
 import { ModalDialogContentComponent } from "../shared/component/modal-dialog/modal-dialog.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
@@ -39,8 +39,8 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   deploymentServerList: Deployment[];
   deploymentStatus: DeploymentStatus;
 
-  private onDestroyEvent = new EventEmitter<DeploymentInstance>();
-  private onDeleteEvent = new EventEmitter<DeploymentInstance>();
+  private onDestroyEvent = new EventEmitter<PhnDeployment>();
+  private onDeleteEvent = new EventEmitter<PhnDeployment>();
 
   get gce_logo(): string {
     return this._gce_logo;
@@ -63,20 +63,20 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
               public userService: UserService,
               private router: Router,
               private http: Http,
-              private deployementManager: DeployerService,
+              private deploymentManager: DeployementService,
               private cloudCredentialsService: CloudProviderParametersService) {
   }
 
 
   ngOnInit() {
-    this.deployementManager.getDeployments().subscribe((deployments) => {
+    this.deploymentManager.getDeployments().subscribe((deployments) => {
       this.deploymentServerList = deployments;
       console.log("Updated deployments", deployments);
     }, (error) => {
       console.error("The current error", error);
       this.userService.logout();
     });
-    this.deployementManager.updateDeployments();
+    this.deploymentManager.updateDeployments();
 
     this.onDestroyEvent.subscribe((deployment) => {
       this.processDestroyDeployment(deployment);
@@ -102,7 +102,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   }
 
 
-  destroyDeployment(deployment: DeploymentInstance) {
+  destroyDeployment(deployment: PhnDeployment) {
     let modalRef = this.modalService.open(ModalDialogContentComponent, {
       windowClass: 'progress-bar-modal',
       size: 'lg',
@@ -118,7 +118,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.body = "Are you sure?";
   }
 
-  private processDestroyDeployment(deployment: DeploymentInstance) {
+  private processDestroyDeployment(deployment: PhnDeployment) {
     deployment['show-wheel'] = true;
     deployment['status'] = 'DESTROYING';
     console.log("Destroying deployment...");
@@ -137,7 +137,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public deleteDeployment(deployment: DeploymentInstance) {
+  public deleteDeployment(deployment: PhnDeployment) {
     let modalRef = this.modalService.open(ModalDialogContentComponent, {
       windowClass: 'progress-bar-modal',
       size: 'lg',
@@ -153,7 +153,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public processDeleteDeployment(deployment: DeploymentInstance) {
+  public processDeleteDeployment(deployment: PhnDeployment) {
     deployment['show-wheel'] = true;
     console.log("Deleting deployment ...");
     this._deploymentService.delete(
@@ -161,7 +161,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       res1 => {
         this.removeDeploymentFromList(deployment);
         if (this.deploymentServerList.length == 0) {
-          this.deployementManager.getApplication(deployment.applicationName, (app) => {
+          this.deploymentManager.getApplication(deployment.applicationName, (app) => {
             if (app.name === deployment.applicationName) {
               this.removeApplication(app,
                 (done) => {
@@ -195,7 +195,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  private removeDeploymentFromList(deployment: DeploymentInstance) {
+  private removeDeploymentFromList(deployment: PhnDeployment) {
     let counter = 0;
     for (let d of this.deploymentServerList) {
       if (d.reference === deployment.reference) {
@@ -206,7 +206,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDeploymentStatusFeed(deploymentInstance: DeploymentInstance, interval: number, callback) {
+  getDeploymentStatusFeed(deploymentInstance: PhnDeployment, interval: number, callback) {
     const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
       this.credentialService.getUsername(),
       this.tokenService.getToken(),
@@ -240,7 +240,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  private static clearErrors(deployment: DeploymentInstance) {
+  private static clearErrors(deployment: PhnDeployment) {
     deployment.isError = false;
     deployment['error'] = null;
   }
