@@ -1,13 +1,25 @@
 <div *ngIf="deployment">
-  <ngb-progressbar type="{{deployment.status==='STARTING' ? 'success' : 'danger' }}"
-                   [value]="deployment.progress / 10" [striped]="true" [max]="10">
-  </ngb-progressbar>
-  <div *ngIf="deployment.progress <= 100">
-    <div *ngIf="deployment.status==='RUNNING' || deployment.status==='STARTING'">
-      <p class="font-weight-bold">{{status[deployment.progress / 10]}}</p>
-    </div>
-    <div *ngIf="deployment.status!=='RUNNING' && deployment.status!=='STARTING'">
-      <p style="color:red" class="font-weight-bold">{{status[deployment.progress / 10]}}</p>
+
+  <p class="font-weight-bold">{{task ? task : "Initialising"}}</p>
+
+  <ngb-progressbar type="{{deployment.isStarting() ? 'success' : 'danger' }}"  [animated]="true"
+                   [value]="progress" [striped]="true" [max]="100"><b>{{ progressDescription }}</b></ngb-progressbar>
+
+  <div *ngIf="progress <= 100">
+    <div *ngIf="deployment">
+
+      <!--<p class="font-weight-light step-description">{{deployment.status_details["step"]}}</p>-->
+
+      <p class="font-weight-light text-monospace small last-log-line">
+        {{lastLog}}
+      </p>
+
+      <div class="installing" *ngIf="deployment.isStarting()">
+        <mat-progress-spinner mode="indeterminate" [diameter]="70" [strokeWidth]="8">
+          Please wait...
+        </mat-progress-spinner>
+      </div>
+
     </div>
   </div>
 </div>
