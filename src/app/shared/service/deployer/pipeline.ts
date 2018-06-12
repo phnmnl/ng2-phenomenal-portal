@@ -11,7 +11,8 @@ export class Pipeline extends PipelineStep {
 
   protected steps: Array<PipelineStep> = [];
   protected toSkip: Array<string> = [];
-  protected currentStep: number = -1;
+  protected currentStepIndex: number = -1;
+  protected currentStep: PipelineStep;
   protected currentStatus: PipelineStatus = new PipelineStatus();
   protected deploymentStatus = new Subject<PipelineStatus>();
   private errorHandler = null;
@@ -82,7 +83,7 @@ export class Pipeline extends PipelineStep {
   }
 
   public getCurrentStep(): PipelineStep {
-    return this.steps[this.getCurrentStepIndex()];
+    return this.currentStep;
   }
 
   public hasMoreSteps(): boolean {
@@ -90,7 +91,7 @@ export class Pipeline extends PipelineStep {
   }
 
   public getLastStep(): PipelineStep {
-    return this.steps[this.steps.length - 1];
+    return this.steps.length > 0 ? this.steps[this.steps.length - 1] : null;
   }
 
   public getNextStep(): PipelineStep {
@@ -98,7 +99,7 @@ export class Pipeline extends PipelineStep {
   }
 
   public getCurrentStepIndex(): number {
-    return this.currentStep;
+    return this.currentStepIndex;
   }
 
   public getStepIndex(step: PipelineStep) {
@@ -125,6 +126,7 @@ export class Pipeline extends PipelineStep {
 
   protected updateStatus(step: PipelineStep) {
     if (step) {
+      this.currentStep = step;
       this.currentStatus.nextStep(step);
       this.deploymentStatus.next(this.currentStatus);
     }
@@ -138,11 +140,11 @@ export class Pipeline extends PipelineStep {
     console.log("Start seek function", this);
     let step: PipelineStep;
     let toSkip = false;
-    if (this.steps && this.steps.length > 0 && this.currentStep < this.steps.length - 1) {
+    if (this.steps && this.steps.length > 0 && this.currentStepIndex < this.steps.length - 1) {
       do {
-        this.currentStep++;
-        console.log("Checking step", this.currentStep);
-        step = this.steps[this.currentStep];
+        this.currentStepIndex++;
+        console.log("Checking step", this.currentStepIndex);
+        step = this.steps[this.currentStepIndex];
         toSkip = this.toSkip.indexOf(step.id) !== -1;
         if (toSkip) {
           console.log("Skipping step: ", step.id, step.description);
@@ -152,15 +154,14 @@ export class Pipeline extends PipelineStep {
           this.updateStatus(step);
           toSkip = true;
         }
-      } while (toSkip && this.currentStep < this.steps.length - 1);
+      } while (toSkip && this.currentStepIndex < this.steps.length - 1);
       if (step && !toSkip) {
         if (step instanceof Pipeline) {
           step.seek(deployment);
         }
         // notice that exec starts incrementing 'currentStep'
-        this.currentStep--;
-
         this.updateStatus(step);
+        this.currentStepIndex--;
       } else {
         this.setTerminated(null);
         this.updateStatus(step);
@@ -176,17 +177,18 @@ export class Pipeline extends PipelineStep {
     let step: PipelineStep;
     let toSkip = false;
     setTimeout(() => {
-      if (this.steps && this.steps.length > 0 && this.currentStep < this.steps.length - 1) {
+      this.setStarted();
+      if (this.steps && this.steps.length > 0 && this.currentStepIndex < this.steps.length - 1) {
         do {
-          this.currentStep++;
-          console.log("Checking step", this.currentStep);
-          step = this.steps[this.currentStep];
+          this.currentStepIndex++;
+          console.log("Checking step", this.currentStepIndex);
+          step = this.steps[this.currentStepIndex];
           toSkip = this.toSkip.indexOf(step.id) !== -1;
           console.log("To SKip", toSkip);
           if (toSkip) {
             console.log("Skipping step: ", step.id, step.description);
           }
-        } while (toSkip && this.currentStep < this.steps.length - 1);
+        } while (toSkip && this.currentStepIndex < this.steps.length - 1);
         if (step && !toSkip) {
           this.updateStatus(step);
           step.exec(deployment, (result: PipelineStepResult) => {
