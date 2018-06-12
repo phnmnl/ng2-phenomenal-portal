@@ -17,6 +17,8 @@ import { Observable } from "rxjs";
 import { AppConfig } from "../../../app.config";
 import { AwsDeploymentConfigurationParameters } from "./aws-deployment-configuration-parameters";
 import { DeploymentConfigurationParameters } from "../../../setup/deployment-configuration-parameters";
+import { DeploymentStatusTransition } from "./deployment-status-transition";
+import { DeploymentStatus } from "./deployment-status";
 
 export class Deployment implements BaseDeployment {
 
@@ -41,10 +43,16 @@ export class Deployment implements BaseDeployment {
   readonly use_https: boolean;
 
   // status and progress
-  status: string = "UNDEFINED";
-  status_info: any;
-  status_details: any;
-  progress: number = 0;
+  status: string;
+  private _status_details: any;
+  private _statusTransition: DeploymentStatusTransition;
+  private statusDetailsSubject = new Subject<DeploymentStatus>();
+
+  // time
+  private _startedTime: number;
+  private _deployedTime: number;
+  private _failedTime: number;
+  private _destroyedTime: number;
 
   // errors
   isError: boolean = false;
@@ -81,6 +89,79 @@ export class Deployment implements BaseDeployment {
 
   get name(): string {
     return this.configurationName;
+  }
+
+  public getDeploymentStatusAsObservable(): Observable<DeploymentStatus> {
+    return this.statusDetailsSubject.asObservable();
+  }
+
+  get deploymentStatus(): DeploymentStatus {
+    return <DeploymentStatus>{
+      startedTime: this._startedTime,
+      deployedTime: this._deployedTime,
+      failedTime: this._failedTime,
+      destroyedTime: this._destroyedTime,
+      transition: this.statusTransition
+    };
+  }
+
+  get statusTransition(): DeploymentStatusTransition {
+    return this._statusTransition;
+  }
+
+  set statusTransition(value: DeploymentStatusTransition) {
+    this._statusTransition = value;
+    console.log("Updating deploy status", this._statusTransition);
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get statusDetails(): object {
+    return this._status_details;
+  }
+
+  set statusDetails(status) {
+    if (status) {
+      this._status_details = status;
+      for (let key in status)
+        this[key] = status[key];
+      this.statusDetailsSubject.next(this.deploymentStatus);
+    }
+  }
+
+  get startedTime(): number {
+    return this._startedTime;
+  }
+
+  set startedTime(value: number) {
+    this._startedTime = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get deployedTime(): number {
+    return this._deployedTime;
+  }
+
+  set deployedTime(value: number) {
+    this._deployedTime = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get failedTime(): number {
+    return this._failedTime;
+  }
+
+  set failedTime(value: number) {
+    this._failedTime = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get destroyedTime(): number {
+    return this._destroyedTime;
+  }
+
+  set destroyedTime(value: number) {
+    this._destroyedTime = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
   }
 
   public isRunning(): boolean {
@@ -218,5 +299,4 @@ export class Deployment implements BaseDeployment {
     }
     return this;
   };
-
 }
