@@ -36,6 +36,8 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   public luigi_logo = 'assets/img/logo/luigi.png';
   public jupyter_logo = 'assets/img/logo/jupyter_square.png';
 
+  public error_icon = 'assets/img/error-icon.png';
+
   deploymentServerList: Deployment[];
   deploymentStatus: DeploymentStatus;
 

@@ -236,3 +236,18 @@ div.deployment-provider > img.provider-image {
   width: 100px;
 }
 
+.error-section{
+  padding-top: 10px;
+  margin: 20px auto 10px;
+}
+
+.error-section img{
+  text-align: center;
+  width: 80px;
+}
+
+.error-section .error-message{
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}

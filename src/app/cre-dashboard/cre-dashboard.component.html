@@ -105,16 +105,22 @@
                 </mat-card-subtitle>
               </div>
 
-              <div class="{{ deployment.isDestroyed() ? 'card-section-center-empty' : 'card-section-center'}}">
+              <div class="{{ (deployment.isDestroyed() || deployment.isFaulty()) ? 'card-section-center-empty' : 'card-section-center'}}">
 
-                <div *ngIf="deployment.isError">
-                  <div style="color:red" class="font-weight-bold">
-                    ERROR: <span class="font-italic">{{deployment.error.message || deployment.error }}</span>
+                <div class="error-section" *ngIf="deployment.isFaulty()">
+
+                  <div>
+                    <img src="{{ error_icon }}" />
+                  </div>
+
+                  <div *ngIf="deployment.errorCause" class="error-message">
+                    ERROR CAUSE: <span class="font-italic">{{deployment.errorCause }}</span><br>
+                    (see logs for more details)
                   </div>
                 </div>
 
                 <div class="deployment-progress-bar"
-                     *ngIf="deployment.isStarting() || deployment.isStartedFailed()">
+                     *ngIf="deployment.isStarting()">
                   <ph-progress-bar [progress]="deployment"></ph-progress-bar>
                 </div>
 
