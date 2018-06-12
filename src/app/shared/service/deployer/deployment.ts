@@ -19,6 +19,7 @@ import { AwsDeploymentConfigurationParameters } from "./aws-deployment-configura
 import { DeploymentConfigurationParameters } from "../../../setup/deployment-configuration-parameters";
 import { DeploymentStatusTransition } from "./deployment-status-transition";
 import { DeploymentStatus } from "./deployment-status";
+import { Response } from "@angular/http";
 
 export class Deployment implements BaseDeployment {
 
@@ -54,9 +55,15 @@ export class Deployment implements BaseDeployment {
   private _failedTime: number;
   private _destroyedTime: number;
 
+  //
+  private _instanceCount: number;
+  private _totalDiskGb: number;
+  private _totalRamGb: number;
+  private _totalRunningTime: number;
+  private _totalVcpus: number;
+
   // errors
-  isError: boolean = false;
-  errors = {};
+  private _errorCause: string;
 
   // logs
   private _lastLogLine: string;
@@ -101,7 +108,13 @@ export class Deployment implements BaseDeployment {
       deployedTime: this._deployedTime,
       failedTime: this._failedTime,
       destroyedTime: this._destroyedTime,
-      transition: this.statusTransition
+      transition: this.statusTransition,
+      errorCause: this.errorCause,
+      instanceCount: this.instanceCount,
+      totalDiskGb: this.totalDiskGb,
+      totalRamGb: this.totalRamGb,
+      totalRunningTime: this.totalRunningTime,
+      totalVcpus: this.totalVcpus
     };
   }
 
@@ -164,6 +177,66 @@ export class Deployment implements BaseDeployment {
     this.statusDetailsSubject.next(this.deploymentStatus);
   }
 
+
+  get instanceCount(): number {
+    return this._instanceCount;
+  }
+
+  set instanceCount(value: number) {
+    this._instanceCount = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get totalDiskGb(): number {
+    return this._totalDiskGb;
+  }
+
+  set totalDiskGb(value: number) {
+    this._totalDiskGb = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get totalRamGb(): number {
+    return this._totalRamGb;
+  }
+
+  set totalRamGb(value: number) {
+    this._totalRamGb = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get totalRunningTime(): number {
+    return this._totalRunningTime;
+  }
+
+  set totalRunningTime(value: number) {
+    this._totalRunningTime = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get totalVcpus(): number {
+    return this._totalVcpus;
+  }
+
+  set totalVcpus(value: number) {
+    this._totalVcpus = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  get errorCause(): string {
+    return this._errorCause;
+  }
+
+  set errorCause(value: string) {
+    this._errorCause = value;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
+  public cleanErrors() {
+    this._errorCause = null;
+    this.statusDetailsSubject.next(this.deploymentStatus);
+  }
+
   public isRunning(): boolean {
     return this.status === "RUNNING";
   }
@@ -182,6 +255,17 @@ export class Deployment implements BaseDeployment {
 
   public isStartedFailed(): boolean {
     return this.status === "STARTING_FAILED";
+  }
+
+  public isUsingResources(): boolean {
+    return this.totalVcpus !== 0
+      && this.totalRamGb !== 0
+      && this.totalDiskGb !== 0
+      && this.instanceCount !== 0;
+  }
+
+  public isFaulty(): boolean {
+    return this.isStartedFailed() || this.isDestroyFailed() || this._errorCause !== null;
   }
 
   public isDestroyFailed(): boolean {

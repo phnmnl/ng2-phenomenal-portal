@@ -7,4 +7,10 @@ export class DeploymentStatus {
   failedTime: number;
   destroyedTime: number;
   transition: DeploymentStatusTransition;
+  errorCause: string;
+  instanceCount: number;
+  totalDiskGb: number;
+  totalRamGb: number;
+  totalRunningTime: number;
+  totalVcpus: number;
 }
