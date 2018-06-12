@@ -93,6 +93,14 @@
                       <span class="state-value">{{deployment['deployedTime'] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
                     </div>
                   </div>
+                  <div *ngIf="deployment['failedTime']" class="row">
+                    <div class="col-xs-5 text-right">
+                      Failed:
+                    </div>
+                    <div class="col-xs-7 text-left">
+                      <span class="state-value">{{deployment['failedTime'] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
+                    </div>
+                  </div>
                   <div *ngIf="deployment['destroyedTime']" class="row">
                     <div class="col-xs-5 text-right">
                       Destroyed:
