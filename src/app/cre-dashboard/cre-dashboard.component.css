@@ -35,6 +35,10 @@
 }
 
 .card-section-center {
+  min-height: 125px;
+}
+
+.card-section-center-empty {
   min-height: 175px;
 }
 
@@ -107,18 +111,8 @@
 
 .deployment-progress-bar {
   padding-top: 10px;
-}
-
-.installing .mat-progress-spinner {
-  padding: 0;
-  margin-top: -10px;
-  margin-bottom: -10px;
-}
-
-.installing .mat-progress-spinner > svg > circle {
-  stroke: #5cb85c !important;
-  stroke-width: 5px;
-  r: 25px;
+  margin-top: -30px;
+  min-height: 208px;
 }
 
 .deleting .mat-progress-spinner > svg > circle {
@@ -180,6 +174,10 @@
 
 div.deployment-provider > img.provider-image {
   width: 100px !important;
+}
+
+.destroy-wheel {
+  max-height: 125px;
 }
 
 .disabled-controls {

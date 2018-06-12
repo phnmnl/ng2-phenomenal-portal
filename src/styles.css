@@ -173,6 +173,10 @@ input:focus {
   padding: 20px 40px !important;
 }
 
+.installing .mat-progress-spinner > svg > circle {
+  stroke: #5cb85c !important;
+}
+
 @-webkit-keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);
