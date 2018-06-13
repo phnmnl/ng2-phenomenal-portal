@@ -268,8 +268,8 @@ export class Deployment implements BaseDeployment {
     return this.isStartedFailed() || this.isDestroyFailed() || this._errorCause !== null;
   }
 
-  public isDestroyFailed(): boolean {
-    return this.status === "DESTROY_FAILED";
+  public isDestroyingFailed(): boolean {
+    return this.status === "DESTROYING_FAILED";
   }
 
   get cloudProviderName() {
