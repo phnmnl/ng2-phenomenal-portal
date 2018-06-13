@@ -381,6 +381,7 @@ export class Deployment implements BaseDeployment {
         this[key] = obj[key];
       }
     }
+    Deployment.setSerivcesinfo(this);
     return this;
   };
 }
