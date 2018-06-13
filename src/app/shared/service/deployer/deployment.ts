@@ -259,9 +259,9 @@ export class Deployment implements BaseDeployment {
 
   public isUsingResources(): boolean {
     return this.totalVcpus !== 0
-      && this.totalRamGb !== 0
-      && this.totalDiskGb !== 0
-      && this.instanceCount !== 0;
+      || this.totalRamGb !== 0
+      || this.totalDiskGb !== 0
+      || this.instanceCount !== 0;
   }
 
   public isFaulty(): boolean {
