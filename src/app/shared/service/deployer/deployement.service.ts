@@ -387,6 +387,85 @@ export class DeployementService implements OnInit, OnDestroy {
         }
       );
   }
+
+  private isPhenoMeNalConfigurationElement(name) {
+    let result: boolean = false;
+    if (name && name.match(/phn?.*-(AWS|OSTACK|GCP)/)) {
+      console.log("Found a PhenoMeNal configuration element", name);
+      result = true;
+    }
+    return result;
+  }
+
+  private static isActiveDeployment(name, deployments) {
+    console.log("Checking within deployments", deployments, deployments.length);
+    for (let deployment of deployments) {
+      console.log("Checking if in use", deployment);
+      if (deployment.configurationName === name) {
+        console.log("Found active deployment ", name);
+        return true;
+      }
+    }
+    console.log("Deployment not in use", name);
+    return false;
+  }
+
+  public checkForUnlinkedDeploymentConfigurations(deployments: Deployment[]) {
+    console.log("CHECKING UNLINKED DEPLOYEMENTS", deployments);
+    this.configurationService.getAll(
+      this.credentialService.getUsername(), this._tokenService.getToken())
+      .subscribe((configurations) => {
+          for (let configuration of configurations) {
+            if (this.isPhenoMeNalConfigurationElement(configuration.name)) {
+              if (!DeployementService.isActiveDeployment(configuration.name, deployments)) {
+                console.log("Found configuration to remove", configuration.name);
+                this.configurationService.delete(this._tokenService.getToken(), configuration).subscribe(
+                  (data) => {
+                    console.log("Deleted configuration: ", data);
+                  }
+                );
+              }
+            }
+          }
+        }
+      );
+    this.configurationService.getAllDeploymentParameters(
+      this.credentialService.getUsername(), this._tokenService.getToken()).subscribe(
+      (params) => {
+        for (let param of params) {
+          if (this.isPhenoMeNalConfigurationElement(param.name)) {
+            if (!DeployementService.isActiveDeployment(param.name, deployments)) {
+              console.log("Found deployment parameter to remove", param.name);
+              this.configurationService.deleteDeploymentParameters(this._tokenService.getToken(), param).subscribe(
+                (data) => {
+                  console.log("Delete DeploymentParameter", data);
+                }
+              );
+            }
+          }
+        }
+      }
+    );
+
+    this._cloudProviderParameterService.getAll(
+      this.credentialService.getUsername(), this._tokenService.getToken()).subscribe(
+      (params) => {
+        for (let param of params) {
+          if (this.isPhenoMeNalConfigurationElement(param.name)) {
+            if (!DeployementService.isActiveDeployment(param.name, deployments)) {
+              console.log("Found cloud provider parameter to remove", param.name);
+              this._cloudProviderParameterService.delete(this._tokenService.getToken(), param).subscribe(
+                (data) => {
+                  console.log("Delete CloudProviderParameter", data);
+                }
+              );
+            }
+          }
+        }
+      }
+    );
+  }
+
   setupDeploymentMonitoring(deployment: Deployment, callback?) {
     try {
       this.registerStatusFeed(deployment, 1000);
