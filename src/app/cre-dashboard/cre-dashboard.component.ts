@@ -1,14 +1,10 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {
-  ApplicationService, CloudProviderParametersService,
   CredentialService,
   Deployment,
-  DeploymentService,
-  DeploymentStatus,
   TokenService
 } from 'ng2-cloud-portal-service-lib';
 import { Router } from '@angular/router';
-import { Http } from '@angular/http';
 import 'rxjs/Rx';
 import { UserService } from '../shared/service/user/user.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -39,7 +35,6 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   public error_icon = 'assets/img/error-icon.png';
 
   deploymentServerList: Deployment[];
-  deploymentStatus: DeploymentStatus;
 
   private onDestroyEvent = new EventEmitter<PhnDeployment>();
   private onDeleteEvent = new EventEmitter<PhnDeployment>();
@@ -58,17 +53,12 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
 
 
   constructor(private modalService: NgbModal,
-              private _applicationService: ApplicationService,
-              private _deploymentService: DeploymentService,
               private tokenService: TokenService,
               public credentialService: CredentialService,
               public userService: UserService,
               private router: Router,
-              private http: Http,
-              private deploymentManager: DeployementService,
-              private cloudCredentialsService: CloudProviderParametersService) {
+              private deploymentManager: DeployementService) {
   }
-
 
   ngOnInit() {
     this.deploymentManager.getDeployments().subscribe((deployments) => {
@@ -78,7 +68,6 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       console.error("The current error", error);
       this.userService.logout();
     });
-    this.deploymentManager.updateDeployments();
 
     this.onDestroyEvent.subscribe((deployment) => {
       this.processDestroyDeployment(deployment);
@@ -88,6 +77,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       this.processDeleteDeployment(deployment);
     });
 
+    this.deploymentManager.updateDeployments();
   }
 
   ngOnDestroy() {
@@ -121,22 +111,8 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   }
 
   private processDestroyDeployment(deployment: PhnDeployment) {
-    deployment['show-wheel'] = true;
-    deployment['status'] = 'DESTROYING';
     console.log("Destroying deployment...");
-    this._deploymentService.stop(
-      this.credentialService.getUsername(), this.tokenService.getToken(),
-      <Deployment>{reference: deployment.reference}).subscribe(
-      res => {
-        console.log('[remove.stop] res %O', res);
-      });
-    this.getDeploymentStatusFeed(deployment, 3000, (result) => {
-      console.log('[remove.stop.feed] res %O', result);
-      this.deploymentStatus = result;
-      if (result.status === 'DESTROYED' || result.status === 'DESTROYING_FAILED') {
-        deployment['show-wheel'] = false;
-      }
-    });
+    this.deploymentManager.destroyDeployment(deployment);
   }
 
   public deleteDeployment(deployment: PhnDeployment) {
@@ -156,86 +132,8 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   }
 
   public processDeleteDeployment(deployment: PhnDeployment) {
-    deployment['show-wheel'] = true;
     console.log("Deleting deployment ...");
-    this._deploymentService.delete(
-      this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
-      res1 => {
-        this.removeDeploymentFromList(deployment);
-        if (this.deploymentServerList.length == 0) {
-          this.deploymentManager.getApplication(deployment.applicationName, (app) => {
-            if (app.name === deployment.applicationName) {
-              this.removeApplication(app,
-                (done) => {
-                  deployment['show-wheel'] = false;
-                }, (error) => {
-                  deployment.errorCause = error;
-                  deployment['show-wheel'] = false;
-                }
-              );
-            }
-          }, (error) => {
-            if (error.status === 404)
-              this.removeDeploymentFromList(deployment);
-            else {
-              deployment.errorCause = error;
-            }
-            deployment['show-wheel'] = false;
-          });
-        } else {
-          deployment['show-wheel'] = false;
-        }
-      },
-      error => {
-        console.log('[Deployments] error %O', error);
-        deployment.errorCause = error;
-        deployment['show-wheel'] = false;
-      }
-    );
-  }
-
-  private removeDeploymentFromList(deployment: PhnDeployment) {
-    let counter = 0;
-    for (let d of this.deploymentServerList) {
-      if (d.reference === deployment.reference) {
-        this.deploymentServerList.splice(counter, 1);
-        break;
-      }
-      counter++;
-    }
-  }
-
-  getDeploymentStatusFeed(deploymentInstance: PhnDeployment, interval: number, callback) {
-    const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken(),
-      deploymentInstance, interval).subscribe(
-      res => {
-        deploymentInstance.statusDetails = res;
-        if (res.status === 'DESTROYED') {
-          statusFeedSubscription.unsubscribe();
-        }
-        callback(res);
-      },
-      error => {
-        statusFeedSubscription.unsubscribe();
-        callback(error);
-      }
-    );
-  }
-
-  removeApplication(application, onSuccess, onError) {
-    this._applicationService.delete(this.credentialService.getUsername(),
-      this.tokenService.getToken(), application).subscribe(
-      res => {
-        console.log('[RepositoryComponent] got response %O', res);
-        onSuccess(res);
-      },
-      error => {
-        console.log('[RepositoryComponent] error %O', error);
-        onError(error);
-      }
-    );
+    this.deploymentManager.deleteDeploymentConfiguration(deployment);
   }
 
   private static clearErrors(deployment: PhnDeployment) {
