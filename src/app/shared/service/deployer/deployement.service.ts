@@ -360,6 +360,33 @@ export class DeployementService implements OnInit, OnDestroy {
   }
 
 
+  public destroyDeployment(deployment: Deployment) {
+    deployment.status = "DESTROYING";
+    setTimeout(this.setupDeploymentMonitoring(deployment), 5000);
+    return this._deploymentService.stop(
+      this.credentialService.getUsername(), this._tokenService.getToken(),
+      <Deployment>{reference: deployment.reference}).subscribe(
+      (result) => {
+        deployment.status = "DESTROYED";
+        return deployment;
+      }
+    );
+  }
+
+  public deleteDeploymentConfiguration(deployment: Deployment) {
+    if (!deployment) throw new Error("Undefined deployment");
+    deployment.status = "DESTROYING";
+    this._deploymentService.delete(
+      this.credentialService.getUsername(), this._tokenService.getToken(), deployment)
+      .subscribe(
+        (result) => {
+          console.log("Deployment destroyed", result);
+          this.removeDeployment(deployment);
+        }, (error) => {
+          this.handleError(error);
+        }
+      );
+  }
   setupDeploymentMonitoring(deployment: Deployment, callback?) {
     try {
       this.registerStatusFeed(deployment, 1000);
