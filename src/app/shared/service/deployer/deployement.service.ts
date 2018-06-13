@@ -30,7 +30,7 @@ export class DeployementService implements OnInit, OnDestroy {
   private observableDeploymentList = new Subject<Deployment[]>();
 
   constructor(private _applicationService: ApplicationService,
-              private _cloudCredentialsService: CloudProviderParametersService,
+              private _cloudProviderParameterService: CloudProviderParametersService,
               private _deploymentService: BaseDeploymentService,
               private _tokenService: TokenService,
               public credentialService: CredentialService,
@@ -38,16 +38,17 @@ export class DeployementService implements OnInit, OnDestroy {
               public providerMetadataService: CloudProviderMetadataService,
               public configurationService: ConfigurationService,
               private config: AppConfig) {
-    this.updateDeployments();
+
+    this.observableDeploymentList.asObservable().subscribe((deployments: Deployment[]) => {
+      this.checkForUnlinkedDeploymentConfigurations(deployments);
+    });
   }
 
   ngOnInit() {
-    this.updateDeployments();
   }
 
   ngOnDestroy() {
   }
-
 
   public getDeployment(reference: string, loadStatus: boolean = true, loadLogs: boolean = true): Observable<Deployment> {
     return this._deploymentService.get(
@@ -91,69 +92,87 @@ export class DeployementService implements OnInit, OnDestroy {
     }).catch(this.handleError);
   }
 
+  private addDeployment(deployment: Deployment) {
+    if(!this.lastLoadedDeploymentList)
+      this.lastLoadedDeploymentList = [];
+    this.lastLoadedDeploymentList.push(deployment);
+    this.observableDeploymentList.next(this.lastLoadedDeploymentList);
+  }
+
+  private removeDeployment(deployment: Deployment) {
+    let index = this.lastLoadedDeploymentList.indexOf(deployment);
+    if (index >= 0) {
+      this.lastLoadedDeploymentList.splice(index, 1);
+      this.observableDeploymentList.next(this.lastLoadedDeploymentList);
+    }
+  }
+
+  private updateDeploymentsList(deployments: Deployment[]) {
+    this.lastLoadedDeploymentList = deployments;
+    this.observableDeploymentList.next(deployments);
+  }
+
   public getDeployments(): Observable<Deployment[]> {
     return this.observableDeploymentList.asObservable();
   }
 
 
-  public loadDeployments(loadStatus: boolean = false, loadLogs: boolean = false): Observable<Deployment[]> {
-    return this._deploymentService.getAll(
+  private loadDeployments(loadStatus: boolean = false, loadLogs: boolean = false) {
+    this._deploymentService.getAll(
       this.credentialService.getUsername(), this._tokenService.getToken()
-    ).map(deploymentList => {
-      let result: Deployment[] = [];
-      for (const deploymentRef of deploymentList) {
-        this.getDeployment(deploymentRef.reference, loadStatus, loadLogs).subscribe((deployment: Deployment) => {
-          if (deployment.isStarting() || deployment.isRunning()) {
-            let pipeline = PhenoMeNalPipeline.getConfigurationPipeline(this, deployment);
-            pipeline.seek(deployment);
-            pipeline.exec(deployment, () => {
-              console.log("Deployment terminated!!!!");
-              console.log("Progress", pipeline.getProgress());
-            });
-          } else if (deployment.isDestroying()) {
-          }
+    ).subscribe(deployments => {
+      let result: Observable<Deployment>[] = [];
+      console.log("MAP", deployments);
+      deployments.forEach((deploymentData) => {
+        console.log("Deployment DATA", deploymentData);
+        result.push(this.getDeployment(deploymentData.reference, loadStatus, loadLogs)
+          .map((deployment: Deployment) => {
+            if (deployment.isStarting() || deployment.isRunning()) {
+              let pipeline = PhenoMeNalPipeline.getConfigurationPipeline(this, deployment);
+              pipeline.seek(deployment);
+              pipeline.exec(deployment, () => {
+                console.log("Deployment terminated!!!!");
+                console.log("Progress", pipeline.getProgress());
+              });
+            }
+            return deployment;
+          })
+        );
+      });
 
-          // add the deployment to the list
-          result.push(deployment);
-        }, error => {
-          console.error(error);
+      // update deployments list
+      if (result.length > 0)
+        Observable.forkJoin(result).subscribe(deploymentList => {
+          this.updateDeploymentsList(deploymentList);
         });
-      }
-      this.lastLoadedDeploymentList = result;
-      return result;
-    }).catch(this.handleError);
+      else this.updateDeploymentsList([]);
+    });
   }
 
-  public updateDeployments(reload: boolean = false) {
-    if (reload || !this.lastLoadedDeploymentList) {
-      this.loadDeployments(true, true).subscribe(
-        (deployments) => {
-          this.observableDeploymentList.next(deployments);
-        },
-        (error) => {
-          console.error(error);
-        });
+  public updateDeployments(forceReload: boolean = false) {
+    console.log("UPDATING DEPLOYMENTS infos.....", forceReload);
+    if (forceReload || !this.lastLoadedDeploymentList) {
+      this.loadDeployments(true, true);
     } else {
+      console.log("Notifying number of deployments", this.lastLoadedDeploymentList.length);
       this.observableDeploymentList.next(this.lastLoadedDeploymentList);
     }
   }
 
   public deploy(deployment: Deployment) {
     deployment.status = "STARTING";
-    this.lastLoadedDeploymentList.push(deployment);
-    this.updateDeployments();
+    this.addDeployment(deployment);
     let pipeline: Pipeline = PhenoMeNalPipeline.getCompletePipeline(this, deployment);
     console.log("Deploying", deployment);
-
-    // pipeline.exec(deployment, () => {
-    //   console.log("Terminated deployment !!!", pipeline.description);
-    // });
+    pipeline.exec(deployment, () => {
+      console.log("Terminated deployment !!!", pipeline.description);
+    });
   }
 
 
   registerCloudProviderParameters(deployment: Deployment, callback) {
     console.log("Inputs", deployment.configurationParameters.getInputs());
-    this._cloudCredentialsService.add(this._tokenService.getToken(), deployment.configurationParameters.getParameters())
+    this._cloudProviderParameterService.add(this._tokenService.getToken(), deployment.configurationParameters.getParameters())
       .subscribe(
         cloudProviderParameters => {
           console.log('[Profile] got response %O', cloudProviderParameters);
@@ -352,7 +371,7 @@ export class DeployementService implements OnInit, OnDestroy {
 
 
   getAllCloudCredential(onSuccess, onError) {
-    this._cloudCredentialsService.getAll(this.credentialService.getUsername(),
+    this._cloudProviderParameterService.getAll(this.credentialService.getUsername(),
       this._tokenService.getToken())
       .subscribe(
         cloudCredentials => {
@@ -424,7 +443,7 @@ export class DeployementService implements OnInit, OnDestroy {
           res => {
             if (deployment.isStarting()) {
               deployment.deployLogs = res;
-            }else deployment.destroyLogs = res;
+            } else deployment.destroyLogs = res;
             // de-register feed if the deployment status is changed
             if (deployment.status !== initialStatus) {
               console.log(deployment.status, initialStatus);
