@@ -265,7 +265,7 @@ export class Deployment implements BaseDeployment {
   }
 
   public isFaulty(): boolean {
-    return this.isStartedFailed() || this.isDestroyFailed() || this._errorCause !== null;
+    return this.isStartedFailed() || this.isDestroyingFailed() || this._errorCause && this._errorCause.length > 0;
   }
 
   public isDestroyingFailed(): boolean {
