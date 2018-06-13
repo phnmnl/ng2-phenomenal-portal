@@ -75,11 +75,6 @@
   padding: 2px 6px;
 }
 
-.deployment-controls {
-  margin-top: 25px;
-  padding: 0;
-}
-
 .deployment-controls > .row > .col-xs-4 {
   padding: 0;
   color: #664F90;
@@ -189,17 +184,6 @@ div.deployment-provider > img.provider-image {
   opacity: .6;
 }
 
-@media (min-width: 992px) {
-  /*.phenomenal-image {*/
-  /*height: 60px;*/
-  /*width: 90px;*/
-  /*}*/
-  .deployment-controls {
-    margin-top: 0;
-    padding: 0;
-  }
-}
-
 .mat-progress-spinner {
   margin: 40px auto;
 }
@@ -236,18 +220,36 @@ div.deployment-provider > img.provider-image {
   width: 100px;
 }
 
-.error-section{
+.error-section {
   padding-top: 10px;
   margin: 20px auto 10px;
 }
 
-.error-section img{
+.error-section img {
   text-align: center;
   width: 80px;
 }
 
-.error-section .error-message{
+.error-section .error-message {
   color: red;
   font-weight: bold;
   margin-top: 10px;
+}
+
+@media (max-width: 403px) {
+  .deployment-controls {
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 404px) {
+  .deployment-controls {
+    margin-top: 25px;
+  }
+}
+
+@media (min-width: 992px) {
+  .deployment-controls {
+    margin-top: 0;
+  }
 }
