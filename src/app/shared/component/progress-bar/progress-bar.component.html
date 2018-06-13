@@ -3,7 +3,8 @@
   <p class="font-weight-bold">{{task ? task : "Initialising"}}</p>
 
   <ngb-progressbar type="{{deployment.isStarting() ? 'success' : 'danger' }}"  [animated]="true"
-                   [value]="progress" [striped]="true" [max]="100"><b>{{ progressDescription }}</b></ngb-progressbar>
+                   [value]="progress" [striped]="true" [max]="100">
+  </ngb-progressbar>
 
   <div *ngIf="progress <= 100">
     <div *ngIf="deployment">
