@@ -20,6 +20,8 @@ import { DeploymentConfigurationParameters } from "../../../setup/deployment-con
 import { DeploymentStatusTransition } from "./deployment-status-transition";
 import { DeploymentStatus } from "./deployment-status";
 import { Response } from "@angular/http";
+import { GcpDeploymentConfigurationParameters } from "./gcp-deployment-configuration-parameters";
+import { OstackDeploymentConfigurationParameters } from "./ostack-deployment-configuration-parameters";
 
 export class Deployment implements BaseDeployment {
 
@@ -332,6 +334,10 @@ export class Deployment implements BaseDeployment {
     let use_https: boolean = config.getConfig('enable_https');
     if (parameters.provider === "AWS")
       return new AwsDeploymentConfigurationParameters(parameters, repoUrl);
+    else if (parameters.provider === "GCP")
+      return new GcpDeploymentConfigurationParameters(parameters, repoUrl);
+    else if(parameters.provider === "OSTACK")
+      return new OstackDeploymentConfigurationParameters(parameters, repoUrl);
     throw new Error("Invalid provider" + parameters.provider);
   }
 

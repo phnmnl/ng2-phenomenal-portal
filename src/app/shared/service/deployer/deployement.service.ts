@@ -93,7 +93,7 @@ export class DeployementService implements OnInit, OnDestroy {
   }
 
   private addDeployment(deployment: Deployment) {
-    if(!this.lastLoadedDeploymentList)
+    if (!this.lastLoadedDeploymentList)
       this.lastLoadedDeploymentList = [];
     this.lastLoadedDeploymentList.push(deployment);
     this.observableDeploymentList.next(this.lastLoadedDeploymentList);
