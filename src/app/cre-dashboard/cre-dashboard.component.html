@@ -113,10 +113,9 @@
                 </mat-card-subtitle>
               </div>
 
-              <div class="{{ (deployment.isDestroyed() || deployment.isFaulty()) ? 'card-section-center-empty' : 'card-section-center'}}">
+              <div class="{{ (deployment.isDestroyed() || deployment.isFaulty() && !deployment.isDestroying()) ? 'card-section-center-empty' : 'card-section-center'}}">
 
-                <div class="error-section" *ngIf="deployment.isFaulty()">
-
+                <div class="error-section" *ngIf="deployment.isFaulty() && !(deployment.isStarting() || deployment.isDestroying())">
                   <div>
                     <img src="{{ error_icon }}" />
                   </div>
