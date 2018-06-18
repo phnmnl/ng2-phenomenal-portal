@@ -21,6 +21,7 @@ import { Deployment } from "./deployment";
 import { PipelineStepResult } from "./pipeline-step-result";
 import { PhenoMeNalPipeline } from "./phenomenal-pipeline";
 import { Subscription } from "rxjs";
+import { ErrorService } from "../error/error.service";
 
 
 @Injectable()
@@ -37,7 +38,8 @@ export class DeployementService implements OnInit, OnDestroy {
               public _accountService: AccountService,
               public providerMetadataService: CloudProviderMetadataService,
               public configurationService: ConfigurationService,
-              private config: AppConfig) {
+              private config: AppConfig,
+              private errorService: ErrorService) {
 
     this.observableDeploymentList.asObservable().subscribe((deployments: Deployment[]) => {
       this.checkForUnlinkedDeploymentConfigurations(deployments);
@@ -506,12 +508,6 @@ export class DeployementService implements OnInit, OnDestroy {
         }
         if (res.status === 'RUNNING' || res.status === 'DESTROYED') {
           statusFeedSubscription.unsubscribe();
-          // Update info
-          // this.getDeployment(deploymentInstance.reference).subscribe((data) => {
-          //   if (typeof deploymentInstance.update === 'function') {
-          //     deploymentInstance.update(data);
-          //   }
-          // });
         }
         if (callback)
           callback(res);
@@ -524,13 +520,6 @@ export class DeployementService implements OnInit, OnDestroy {
     );
   }
 
-
-  private handleError(error: Response) {
-    console.log('[DeploymentService] error %O', error);
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
-    return Observable.throw(error.json ? <Error>error.json() : error);
-  }
 
   public registerLogsFeed(deployment: Deployment, interval: number, callback?) {
     let logsFeedSubscription: Subscription;
@@ -568,11 +557,18 @@ export class DeployementService implements OnInit, OnDestroy {
     }
   }
 
+  private handleError(error: Response) {
+    console.error('[DeploymentService] error %O', error);
+    let eObj = error.json ? error.json() : error;
+    this.errorService.notifyError(eObj.status, eObj.message, eObj);
+    return Observable.throw(error.json ? error.json() : error);
+  }
 
   private processError(deploymentInstance: Deployment, error) {
     let errMsg = error;
     let ej = error;
-    console.error(error);
+    console.error('[DeploymentService] error %O', error);
+    this.errorService.notifyError(error.status, error.message, error);
     if (error instanceof Response) {
       console.log("Response", error);
       ej = error.json();
@@ -599,9 +595,6 @@ export class DeployementService implements OnInit, OnDestroy {
         status => {
           deploymentInstance.statusDetails = status;
         });
-    } else {
-      // update the status when the deployment has not been created yet
-      // deploymentInstance.status = 'STARTING_FAILED';
     }
     return error;
   }
