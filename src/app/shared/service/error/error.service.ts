@@ -8,14 +8,6 @@ export class ErrorService {
   private errorSubject: Subject<Error> = new Subject<Error>();
 
   constructor() {
-
-    setTimeout(() => {
-      this.notifyError(401, "Authentication error", {});
-    }, 10000);
-
-    setTimeout(() => {
-      this.notifyError("401", "Authentication error", {});
-    }, 20000);
   }
 
   public getErrorAsObservable(): Observable<Error> {
