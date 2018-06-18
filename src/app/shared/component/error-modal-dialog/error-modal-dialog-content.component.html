@@ -1,0 +1,17 @@
+<div style="text-align: center">
+  <div class="modal-header">
+    <h4 class="modal-title text-center">{{title}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="error-icon">
+      <img src="{{ error_icon }}">
+    </div>
+    <div class="error-message">
+      {{body}}
+    </div>
+  </div>
+
+  <div class="modal-footer text-center">
+    <button type="button" class="btn btn-danger" (click)="confirm()">Continue</button>
+  </div>
+</div>
