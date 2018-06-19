@@ -130,7 +130,7 @@ export class DeployementService implements OnInit, OnDestroy {
         result.push(this.getDeployment(deploymentData.reference, loadStatus, loadLogs)
           .map((deployment: Deployment) => {
             if (deployment.isStarting() || deployment.isRunning()) {
-              let pipeline = PhenoMeNalPipeline.getConfigurationPipeline(this, deployment);
+              let pipeline = PhenoMeNalPipeline.buildPipeline(this, deployment);
               pipeline.seek(deployment);
               pipeline.exec(deployment, () => {
                 console.log("Deployment terminated!!!!");
@@ -162,9 +162,13 @@ export class DeployementService implements OnInit, OnDestroy {
   }
 
   public deploy(deployment: Deployment) {
+    // create deployment pipeline
+    let pipeline: Pipeline = PhenoMeNalPipeline.buildPipeline(this, deployment);
+    // manually update the deployment status
     deployment.status = "STARTING";
+    // add the deployment to the list
     this.addDeployment(deployment);
-    let pipeline: Pipeline = PhenoMeNalPipeline.getCompletePipeline(this, deployment);
+    // start deployment
     console.log("Deploying", deployment);
     pipeline.exec(deployment, () => {
       console.log("Terminated deployment !!!", pipeline.description);
