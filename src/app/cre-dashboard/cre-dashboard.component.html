@@ -124,7 +124,7 @@
                     FAILURE CAUSE: <span class="font-italic">{{deployment.errorCause }}</span><br>
                     (see logs for more details)
                     <div *ngIf="deployment.isDestroyingFailed()">
-                      Visit the <a href="https://portal.tsi.ebi.ac.uk/deployments/{{ deployment.reference }}">TSI Portal</a>
+                      Visit the <a href="https://portal.tsi.ebi.ac.uk/deployments/{{ deployment.reference }}" target="_blank">TSI Portal</a>
                       to try a forced destroy!
                     </div>
                   </div>
