@@ -336,7 +336,7 @@ export class Deployment implements BaseDeployment {
       return new AwsDeploymentConfigurationParameters(parameters, repoUrl);
     else if (parameters.provider === "GCP")
       return new GcpDeploymentConfigurationParameters(parameters, repoUrl);
-    else if(parameters.provider === "OSTACK")
+    else if (parameters.provider === "OSTACK")
       return new OstackDeploymentConfigurationParameters(parameters, repoUrl);
     throw new Error("Invalid provider" + parameters.provider);
   }
