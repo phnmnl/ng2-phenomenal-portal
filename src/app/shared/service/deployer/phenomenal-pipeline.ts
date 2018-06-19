@@ -31,33 +31,26 @@ export class PhenoMeNalPipeline extends Pipeline {
         'task': pipeline.getCurrentStep().description,
         'step': step && step.description !== step.description ? step.description : "",
         'progress': progress,
-        'stepNumber': pipeline.getCurrentStepIndex()+1,
+        'stepNumber': pipeline.getCurrentStepIndex() + 1,
         'numberOfSteps': pipeline.getSteps().length
       };
       console.log("EstimatedTime", step.estimatedTime);
       console.log("Update progress", deployment.statusTransition);
     });
 
-    deployment.getDeployLogsAsObservable().subscribe((logs)=>{
+    deployment.getDeployLogsAsObservable().subscribe((logs) => {
     });
   }
 
-  public static getCompletePipeline(
-    deployer: DeployementService, deployment: PhnDeployment, id?: string, description?: string): PhenoMeNalPipeline {
+  public static buildPipeline(deployer: DeployementService, deployment: PhnDeployment,
+                              id?: string, description?: string): PhenoMeNalPipeline {
     let pipeline: PhenoMeNalPipeline = new PhenoMeNalPipeline(deployer, deployment, id, description);
-    PhenoMeNalPipeline.addDeploymentCreationPipeline(pipeline);
+    PhenoMeNalPipeline.addDeploymentCreationPipeline(pipeline, deployment.status!== undefined);
     PhenoMeNalPipeline.addDeploymentConfigurationPipelines(pipeline);
     return pipeline;
   }
 
-  public static getConfigurationPipeline(
-    deployer: DeployementService, deployment: PhnDeployment, id?: string, description?: string): PhenoMeNalPipeline {
-    let pipeline: PhenoMeNalPipeline = new PhenoMeNalPipeline(deployer, deployment, id, description);
-    PhenoMeNalPipeline.addDeploymentConfigurationPipelines(pipeline);
-    return pipeline;
-  }
-
-  private static addDeploymentCreationPipeline(pipeline: PhenoMeNalPipeline) {
+  private static addDeploymentCreationPipeline(pipeline: PhenoMeNalPipeline, setTerminated: boolean = false) {
     let deployer: DeployementService = pipeline.deployer;
     pipeline.addStep(new PipelineStep("cpp",
       (deployment: PhnDeployment, callback) => deployer.registerCloudProviderParameters(deployment, callback),
@@ -83,6 +76,11 @@ export class PhenoMeNalPipeline extends Pipeline {
     pipeline.addStep(new PipelineStep("rd",
       (deployment: PhnDeployment, callback) => deployer.registerDeployment(deployment, callback),
       "Register Deployment", 2));
+    if (setTerminated) {
+      for (let s of pipeline.getSteps()) {
+        s.skip = true;
+      }
+    }
   }
 
   private static addDeploymentConfigurationPipelines(pipeline: PhenoMeNalPipeline) {
