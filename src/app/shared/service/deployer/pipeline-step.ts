@@ -10,6 +10,7 @@ export class PipelineStep {
   private _start: number;
   private _end: number;
   private _error: any;
+  private _skip: boolean = false;
 
   constructor(id: string, step, description?: string, estimatedTime?: number) {
     this._id = id;
@@ -54,6 +55,16 @@ export class PipelineStep {
     return this._error !== undefined;
   }
 
+  get skip(): boolean {
+    return this._skip;
+  }
+
+  set skip(value: boolean) {
+    this._skip = value;
+    if (this._skip)
+      this.setTerminated();
+  }
+
   protected setStarted() {
     this._start = Date.now();
     console.log("Started " + this._description + " @ " + this._start);
@@ -61,6 +72,8 @@ export class PipelineStep {
 
   protected setTerminated(result?, callback?) {
     this._end = Date.now();
+    if (!this._start)
+      this._start = this._end;
     console.log("Terminated " + this._description + " @ " + this._end);
     if (callback)
       callback(result);
@@ -69,9 +82,13 @@ export class PipelineStep {
   public exec(deployment: Deployment, callback) {
     if (!this.step)
       throw new TypeError();
-    this.setStarted();
-    this.step(deployment, (result: PipelineStepResult) => {
-      this.setTerminated(result, callback);
-    });
+    if (this.isTerminated())
+      console.warn("Step already executed!!!", this);
+    else {
+      this.setStarted();
+      this.step(deployment, (result: PipelineStepResult) => {
+        this.setTerminated(result, callback);
+      });
+    }
   }
 }
