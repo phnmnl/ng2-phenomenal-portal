@@ -80,6 +80,7 @@ import {
   ModalDialogContentComponent
 } from './shared/component/modal-dialog/modal-dialog.component';
 import { ErrorModalDialogComponent, ErrorModalDialogContentComponent } from './shared/component/error-modal-dialog/error-modal-dialog.component';
+import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
 
 /**
  * To set the global environment variables
@@ -162,6 +163,7 @@ export function initConfig(config: AppConfig) {
     UserService,
     UserAuthenticatedGuard,
     AcceptedTermsGuard,
+    CanDeactivateGuard,
     DeployementService,
     // PhenomenalTokenService,
     ApplicationService,
