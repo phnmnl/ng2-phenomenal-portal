@@ -1,18 +1,17 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   CredentialService,
-  Deployment,
   TokenService
 } from 'ng2-cloud-portal-service-lib';
 import { Router } from '@angular/router';
-import 'rxjs/Rx';
-import { UserService } from '../shared/service/user/user.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Deployment as PhnDeployment } from "../shared/service/deployer/deployment";
-
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { UserService } from '../shared/service/user/user.service';
+import { Deployment } from "../shared/service/deployer/deployment";
+import { CanComponentDeactivate } from "../shared/guard/CanDeactivateGuard";
 import { DeployementService } from "../shared/service/deployer/deployement.service";
 import { ModalDialogContentComponent } from "../shared/component/modal-dialog/modal-dialog.component";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -20,7 +19,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./cre-dashboard.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class CreDashboardComponent implements OnInit, OnDestroy {
+export class CreDashboardComponent extends CanComponentDeactivate implements OnInit, OnDestroy {
 
   @BlockUI() blockUI: NgBlockUI;
 
@@ -36,8 +35,8 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
 
   deploymentServerList: Deployment[];
 
-  private onDestroyEvent = new EventEmitter<PhnDeployment>();
-  private onDeleteEvent = new EventEmitter<PhnDeployment>();
+  private onDestroyEvent = new EventEmitter<Deployment>();
+  private onDeleteEvent = new EventEmitter<Deployment>();
 
   get gce_logo(): string {
     return this._gce_logo;
@@ -58,6 +57,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
               public userService: UserService,
               private router: Router,
               private deploymentManager: DeployementService) {
+    super();
   }
 
   ngOnInit() {
@@ -83,6 +83,24 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    console.log("Checking if it can be unloaded");
+    for(let d of this.deploymentServerList){
+      if(d.isStarting()){
+        let status = d.statusTransition;
+        if(status){
+          console.log(status);
+          if(status.stepNumber < 9) {
+            console.warn("You cannot deactivate the current window");
+            return false;
+          }
+        }
+      }
+    }
+    console.log("the current window can be deactivated!");
+    return true;
+  }
+
   logout() {
     this.tokenService.clearToken();
     this.credentialService.clearCredentials();
@@ -94,7 +112,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   }
 
 
-  destroyDeployment(deployment: PhnDeployment) {
+  destroyDeployment(deployment: Deployment) {
     let modalRef = this.modalService.open(ModalDialogContentComponent, {
       windowClass: 'progress-bar-modal',
       size: 'lg',
@@ -110,12 +128,12 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.body = "Are you sure?";
   }
 
-  private processDestroyDeployment(deployment: PhnDeployment) {
+  private processDestroyDeployment(deployment: Deployment) {
     console.log("Destroying deployment...");
     this.deploymentManager.destroyDeployment(deployment);
   }
 
-  public deleteDeployment(deployment: PhnDeployment) {
+  public deleteDeployment(deployment: Deployment) {
     let modalRef = this.modalService.open(ModalDialogContentComponent, {
       windowClass: 'progress-bar-modal',
       size: 'lg',
@@ -131,12 +149,12 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public processDeleteDeployment(deployment: PhnDeployment) {
+  public processDeleteDeployment(deployment: Deployment) {
     console.log("Deleting deployment ...");
     this.deploymentManager.deleteDeploymentConfiguration(deployment);
   }
 
-  private static clearErrors(deployment: PhnDeployment) {
+  private static clearErrors(deployment: Deployment) {
     deployment.cleanErrors();
   }
 }
