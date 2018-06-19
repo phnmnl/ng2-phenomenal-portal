@@ -369,7 +369,6 @@ export class DeployementService implements OnInit, OnDestroy {
       this.credentialService.getUsername(), this._tokenService.getToken(),
       <Deployment>{reference: deployment.reference}).subscribe(
       (result) => {
-        deployment.status = "DESTROYED";
         return deployment;
       }
     );
