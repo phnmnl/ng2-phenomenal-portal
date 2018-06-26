@@ -40,13 +40,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
     this._user = this.userService.getCurrentUser();
-    if (this._user) {
+    this.userService.getObservableCurrentUser().subscribe(() => {
       this.isAuthorized();
-    } else {
-      this.userService.getObservableCurrentUser().subscribe(user => {
-        this.isAuthorized();
-      });
-    }
+    });
     this.router.events
       .filter(event => event instanceof NavigationStart)
       .subscribe((event: NavigationStart) => {
@@ -59,22 +55,34 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private isAuthorized() {
+    console.log("Checking user authorization from login component...");
     this.userService.isUserAuthorized().subscribe(
       (user) => {
-        this._user = user;
-        if (user.hasAcceptedTermConditions) {
-          console.log("Already in terms & conditions");
-          if (!this.returnUrl || this.returnUrl.length <= 0) {
-            this.returnUrl = this.previousUrl ? this.previousUrl : '/home';
-          }
-          this.router.navigateByUrl(this.returnUrl);
-        } else {
-          this.router.navigateByUrl('term-and-condition');
-        }
+        console.log("User seems to be authorized", user);
+        this.updateUserAndFindNextRoute(user);
       },
       (user) => {
-        console.log("User not authenticated!!!");
+        console.log("User doesn't seem to be authorized", user);
+        this.updateUserAndFindNextRoute(user);
       });
+  }
+
+  private updateUserAndFindNextRoute(user: User) {
+    if (user) {
+      this._user = user;
+      if (user.hasAcceptedTermsConditions) {
+        console.log("Already in terms & conditions");
+        if (!this.returnUrl || this.returnUrl.length <= 0) {
+          this.returnUrl = this.previousUrl ? this.previousUrl : this.previousUrl !== '/home' ? '/home' : null;
+        }
+        if (this.returnUrl) {
+          console.log("Moving to " + this.returnUrl);
+          this.router.navigateByUrl(this.returnUrl);
+        }
+      } else {
+        this.router.navigateByUrl('term-and-condition');
+      }
+    }
   }
 
   public existsUser() {
