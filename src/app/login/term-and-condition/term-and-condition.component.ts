@@ -26,7 +26,7 @@ export class TermAndConditionComponent implements OnInit {
   }
 
   acceptTermCondition() {
-    this.userService.add(this.credentialService.getUsername()).subscribe(
+    this.userService.acceptTermsAndConditions(this.credentialService.getUsername()).subscribe(
       (res) => {
         console.log(res);
         this.router.navigateByUrl('cloud-research-environment');
