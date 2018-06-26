@@ -12,7 +12,7 @@ import {
 } from "ng2-cloud-portal-service-lib";
 import { AppConfig } from "../../../app.config";
 import { Subject } from "rxjs/Subject";
-import { Response } from "@angular/http";
+import { Headers, Http, RequestOptions, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { ApplicationDeployer } from "ng2-cloud-portal-presentation-lib/dist";
 import { CloudProviderMetadataService } from "../cloud-provider-metadata/cloud-provider-metadata.service";
@@ -22,6 +22,7 @@ import { PipelineStepResult } from "./pipeline-step-result";
 import { PhenoMeNalPipeline } from "./phenomenal-pipeline";
 import { Subscription } from "rxjs";
 import { ErrorService } from "../error/error.service";
+import { UserService } from "../user/user.service";
 
 
 @Injectable()
@@ -39,6 +40,7 @@ export class DeployementService implements OnInit, OnDestroy {
               public providerMetadataService: CloudProviderMetadataService,
               public configurationService: ConfigurationService,
               private config: AppConfig,
+              private http: Http,
               private errorService: ErrorService) {
 
     this.observableDeploymentList.asObservable().subscribe((deployments: Deployment[]) => {
@@ -356,6 +358,7 @@ export class DeployementService implements OnInit, OnDestroy {
         console.log('[RepositoryComponent] deployed %O', dep, deployment);
         deployment.update(dep);
         this.setupDeploymentMonitoring(deployment);
+        this.saveDeploymentData(deployment);
         callback(deployment);
       },
       error => {
@@ -373,6 +376,7 @@ export class DeployementService implements OnInit, OnDestroy {
       this.credentialService.getUsername(), this._tokenService.getToken(),
       <Deployment>{reference: deployment.reference}).subscribe(
       (result) => {
+        this.saveDeploymentData(deployment);
         return deployment;
       }
     );
@@ -506,11 +510,13 @@ export class DeployementService implements OnInit, OnDestroy {
         deploymentInstance.statusDetails = res;
         if (res.status === 'STARTING') {
         }
-        if (res.status === 'STARTING_FAILED') {
+        if (res.status === 'STARTING_FAILED' || res.status === 'DESTROYING_FAILED') {
           statusFeedSubscription.unsubscribe();
+          this.saveDeploymentData(deploymentInstance);
         }
         if (res.status === 'RUNNING' || res.status === 'DESTROYED') {
           statusFeedSubscription.unsubscribe();
+          this.saveDeploymentData(deploymentInstance);
         }
         if (callback)
           callback(res);
@@ -558,6 +564,40 @@ export class DeployementService implements OnInit, OnDestroy {
           }
         );
     }
+  }
+
+
+  private saveDeploymentData(deployment: Deployment) {
+    const url = '/api/v2/users/' + deployment.applicationAccountUsername + "/deployments/" + deployment.reference;
+    const headers = new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    const options = new RequestOptions({headers: headers});
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('user', deployment.applicationAccountUsername);
+    urlSearchParams.append('name', deployment.configurationName);
+    urlSearchParams.append('reference', deployment.reference);
+    urlSearchParams.append('provider', deployment.cloudProviderName);
+    // copy configuration
+    let configuration = {};
+    deployment.assignedInputs.forEach((input, index, inputs) => {
+      if (["galaxy_admin_email", "galaxy_admin_password"].indexOf(input.inputName) === -1)
+        configuration[input.inputName] = input.assignedValue;
+    });
+    urlSearchParams.append('configuration', JSON.stringify(configuration));
+    // copy status
+    const status = deployment.statusDetails;
+    for (let t of ["started", "deployed", "destroyed", "failed"]) {
+      let s = status[t + "Time"];
+      if (s) {
+        urlSearchParams.append(t === "started" ? 'created' : t, (s / 1000).toString());
+      }
+    }
+    return this.http.put(url, urlSearchParams.toString(), options)
+      .subscribe((data) => {
+          console.log(data);
+        }
+      );
   }
 
   private handleError(error: Response) {
