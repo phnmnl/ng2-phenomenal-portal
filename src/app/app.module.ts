@@ -56,7 +56,7 @@ import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
 import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { CloudProviderMetadataService } from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
-
+import {ErrorService as PhnErrorService } from './shared/service/error/error.service';
 import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtHelper } from 'angular2-jwt';
@@ -73,12 +73,14 @@ import {
 import {UserAuthenticatedGuard} from "./shared/guard/UserAuthenticatedGuard";
 import {AcceptedTermsGuard} from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from './static-page/test-cre/test-cre.component';
-import { DeployerService } from "./shared/service/deployer/deployer.service";
+import { DeployementService } from "./shared/service/deployer/deployement.service";
 import { LogMonitorComponent } from './log-monitor/log-monitor.component';
 import {
   ModalDialogComponent,
   ModalDialogContentComponent
 } from './shared/component/modal-dialog/modal-dialog.component';
+import { ErrorModalDialogComponent, ErrorModalDialogContentComponent } from './shared/component/error-modal-dialog/error-modal-dialog.component';
+import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
 
 /**
  * To set the global environment variables
@@ -126,7 +128,9 @@ export function initConfig(config: AppConfig) {
     TestCreComponent,
     LogMonitorComponent,
     ModalDialogComponent,
-    ModalDialogContentComponent
+    ModalDialogContentComponent,
+    ErrorModalDialogComponent,
+    ErrorModalDialogContentComponent
   ],
   imports: [
     BrowserModule,
@@ -150,7 +154,7 @@ export function initConfig(config: AppConfig) {
     MatProgressSpinnerModule,
     BsDropdownModule.forRoot()
   ],
-  entryComponents: [NgbdModalContentComponent, ModalDialogContentComponent],
+  entryComponents: [NgbdModalContentComponent, ModalDialogContentComponent, ErrorModalDialogContentComponent],
   providers: [
     BreadcrumbService,
     WikiService,
@@ -159,7 +163,8 @@ export function initConfig(config: AppConfig) {
     UserService,
     UserAuthenticatedGuard,
     AcceptedTermsGuard,
-    DeployerService,
+    CanDeactivateGuard,
+    DeployementService,
     // PhenomenalTokenService,
     ApplicationService,
     AuthService,
@@ -172,6 +177,7 @@ export function initConfig(config: AppConfig) {
     CloudProviderMetadataService,
     JwtHelper,
     ConfigurationService,
+    PhnErrorService,
     AppConfig,
     {
       provide: APP_INITIALIZER,

@@ -79,8 +79,11 @@ export class CloudProviderMetadataService {
     return body;
   }
 
-
   public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
+    return CloudProviderMetadataService.parseRcFile(rcFile, password);
+  }
+
+  public static parseRcFile(rcFile: string, password: string): OpenStackCredentials {
     if (rcFile) {
       // update RC file with the user password and set it as current RC file
       // console.log("The current RC file...", rcFile);
@@ -124,13 +127,13 @@ export class CloudProviderMetadataService {
     // extract property
     if (rcFile) {
       // search for all matches and use only the last one
-      do  {
+      do {
         match = pattern.exec(rcFile);
-        if(match) {
+        if (match) {
           // remove single and double quotes
           result = match[1].replace(/['"]/g, "");
         }
-      }while(match);
+      } while (match);
     }
     return result;
   }

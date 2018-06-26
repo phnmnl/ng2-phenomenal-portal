@@ -1,4 +1,4 @@
-import { Credential } from './credential';
+import { DeploymentConfigurationParameters } from './deployment-configuration-parameters';
 
 export class CloudProvider {
   title: string;
@@ -10,7 +10,7 @@ export class CloudProvider {
   locationDescription: string;
   logo: string;
   isSelected: number;
-  credential: Credential;
+  credential: DeploymentConfigurationParameters;
 
   public static clone(origin: CloudProvider): CloudProvider {
     let c: CloudProvider = Object.assign({}, origin);

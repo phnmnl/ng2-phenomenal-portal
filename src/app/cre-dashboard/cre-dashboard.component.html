@@ -44,12 +44,12 @@
             </div>
 
             <div>
-              <div class="deployment-provider" *ngIf="deployment.configuration && deployment.configuration.provider">
-                <img *ngIf="deployment.configuration.provider.cloudProvider === 'AWS'" mat-card-image
+              <div class="deployment-provider" *ngIf="deployment.cloudProviderName">
+                <img *ngIf="deployment.cloudProviderName === 'AWS'" mat-card-image
                      src="{{aws_logo}}" class="provider-image">
-                <img *ngIf="deployment.configuration.provider.cloudProvider === 'GCP'" mat-card-image
+                <img *ngIf="deployment.cloudProviderName === 'GCP'" mat-card-image
                      src="{{gce_logo}}" class="provider-image">
-                <img *ngIf="deployment.configuration.provider.cloudProvider === 'OSTACK'" mat-card-image
+                <img *ngIf="deployment.cloudProviderName === 'OSTACK'" mat-card-image
                      src="{{openstack_logo}}" class="provider-image">
               </div>
 
@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-xs-7 text-left">
                   <span
-                    [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">
+                    [ngClass]="{running: deployment.isRunning(), stop: !deployment.isRunning() }">
                   {{deployment['status']}}
                 </span>
                     </div>
@@ -93,6 +93,14 @@
                       <span class="state-value">{{deployment['deployedTime'] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
                     </div>
                   </div>
+                  <div *ngIf="deployment['failedTime']" class="row">
+                    <div class="col-xs-5 text-right">
+                      Failed:
+                    </div>
+                    <div class="col-xs-7 text-left">
+                      <span class="state-value">{{deployment['failedTime'] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
+                    </div>
+                  </div>
                   <div *ngIf="deployment['destroyedTime']" class="row">
                     <div class="col-xs-5 text-right">
                       Destroyed:
@@ -105,27 +113,35 @@
                 </mat-card-subtitle>
               </div>
 
-              <div class="card-section-center">
+              <div class="{{ (deployment.isDestroyed() || deployment.isFaulty() && !deployment.isDestroying()) ? 'card-section-center-empty' : 'card-section-center'}}">
 
-                <div *ngIf="deployment.isError">
-                  <div style="color:red" class="font-weight-bold">
-                    ERROR: <span class="font-italic">{{deployment.error.message || deployment.error }}</span>
+                <div class="error-section" *ngIf="deployment.isFaulty() && !(deployment.isStarting() || deployment.isDestroying())">
+                  <div>
+                    <img src="{{ error_icon }}" />
+                  </div>
+
+                  <div *ngIf="deployment.errorCause" class="error-message">
+                    FAILURE CAUSE: <span class="font-italic">{{deployment.errorCause }}</span><br>
+                    (see logs for more details)
+                    <div *ngIf="deployment.isDestroyingFailed()">
+                      Visit the <a href="https://portal.tsi.ebi.ac.uk/deployments/{{ deployment.reference }}" target="_blank">TSI Portal</a>
+                      to try a forced destroy!
+                    </div>
                   </div>
                 </div>
 
                 <div class="deployment-progress-bar"
-                  *ngIf="deployment['status']==='STARTING' || deployment['status']==='STARTING_FAILED'">
+                     *ngIf="deployment.isStarting()">
                   <ph-progress-bar [progress]="deployment"></ph-progress-bar>
                 </div>
 
-                <div class="{{deployment['status']==='STARTING' && deployment.isInstalling ? 'installing' : 'deleting' }}"
-                     *ngIf="deployment['status']==='DESTROYING' || deployment['status']==='STARTING' && deployment.isInstalling">
+                <div class="deleting destroy-wheel" *ngIf="deployment.isDestroying()">
                   <mat-progress-spinner mode="indeterminate" color="red">
                     Please wait...
                   </mat-progress-spinner>
                 </div>
 
-                <div *ngIf="deployment['status']==='RUNNING'">
+                <div *ngIf="deployment.isRunning()">
                   <div>
                     <div class="deployment-admin-credentials-container" title="Credentials to access to CRE services">
                       <h6 class="font-weight-bold deployment-admin-credentials">Admin credentials:</h6>
@@ -141,7 +157,7 @@
                     </div>
 
                     <div
-                      class="deployment-services-container {{deployment['status']==='RUNNING' ? '' : 'disabled disabled-controls'}}">
+                      class="deployment-services-container {{deployment.isRunning() ? '' : 'disabled disabled-controls'}}">
                       <h5 class="h5-responsive font-weight-bold deployment-services-header">CRE Services:</h5>
                       <div class="row">
                         <div class="col-xs-4">
@@ -150,7 +166,8 @@
                           </a>
                         </div>
                         <div class="col-xs-4">
-                          <a href="{{deployment['galaxyUrl']}}/user/login" target="_blank" (click)="enabledServices(deployment)">
+                          <a href="{{deployment['galaxyUrl']}}/user/login" target="_blank"
+                             (click)="enabledServices(deployment)">
                             <img style="width: 60px;" alt="Galaxy Workflow Manager" [src]="galaxy_logo">
                           </a>
                         </div>
@@ -166,26 +183,27 @@
               </div>
 
 
-              <div class="deployment-controls" *ngIf="deployment['status']!=='DESTROYING'">
+              <div class="deployment-controls">
                 <hr>
 
                 <div class="row">
                   <div *ngIf="deployment.reference"
-                       class="{{ deployment['status']!=='STARTING' ? 'col-xs-6' : 'col-xs-12'}} logs">
+                       class="{{ (deployment.isStarting() || deployment.isDestroying()) ? 'col-xs-12': 'col-xs-6'}} logs">
                     <a [routerLink]="['/logs']" [queryParams]="{id: deployment.reference}" target="_blank">
                       <i class="fa fa-align-justify fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">logs</span>
                     </a>
                   </div>
 
-                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED'">
+                  <div class="col-xs-6 destroy"
+                       *ngIf="(deployment.isRunning() || deployment.isStartedFailed())">
                     <a (click)="destroyDeployment(deployment)">
                       <i class="fa fa-minus-circle fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">Stop</span>
                     </a>
                   </div>
 
-                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='DESTROYED' || deployment['status']==='DESTROYING_FAILED'">
+                  <div class="col-xs-6 destroy" *ngIf="deployment.isDestroyed()">
                     <a (click)="deleteDeployment(deployment)">
                       <i class="fa fa-minus-circle fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">Delete</span>

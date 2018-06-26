@@ -1,0 +1,18 @@
+.modal-body {
+  text-align: justify;
+  padding: 25px 100px;
+}
+
+.modal-body .error-icon {
+  display: inline-block;
+}
+
+.modal-body .error-icon img {
+  width: 100px;
+}
+
+.modal-body .error-message {
+  display: inline-block;
+  margin-left: 10px;
+}
+

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { CanDeactivate, RouterModule, Routes } from '@angular/router';
 import { CloudResearchEnvironmentComponent } from './static-page/cloud-research-environment/cloud-research-environment.component';
 import { CRELocalInstallationComponent } from './static-page/cre-local-installation/cre-local-installation.component';
 import { CRELocalInstallationInstructionComponent } from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
@@ -17,6 +17,7 @@ import { TestCreComponent } from "./static-page/test-cre/test-cre.component";
 import { CreRegistrationFormComponent } from "./setup/cre-registration-form/cre-registration-form.component";
 import { CloudSetupComponent } from "./setup/cloud-setup/cloud-setup.component";
 import { LogMonitorComponent } from "./log-monitor/log-monitor.component";
+import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
@@ -27,7 +28,10 @@ const routes: Routes = [
   {path: 'term-and-condition', component: TermAndConditionComponent, canActivate: [UserAuthenticatedGuard]},
   {path: 'cloud-research-environment-test', component: TestCreComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
   {path: 'cloud-research-environment', component: CreDashboardComponent},
-  {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
+  {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent,
+    canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard],
+    canDeactivate: [CanDeactivateGuard]
+  },
   {path: 'cloud-research-environment-registration', component: CreRegistrationFormComponent},
   {
     path: 'cloud-research-environment-setup',

@@ -6,6 +6,7 @@ import { GalaxyUser } from "../galaxy/galaxy-user";
 import { ApplicationService, AuthService } from "ng2-cloud-portal-service-lib";
 import { Subject } from "rxjs/Subject";
 import { User } from "./user";
+import { ErrorService } from "../error/error.service";
 
 /**
  * Control user metadata
@@ -23,6 +24,7 @@ export class UserService {
   constructor(private http: Http,
               private authService: AuthService,
               private config: AppConfig,
+              private errorService: ErrorService,
               private applicationService: ApplicationService) {
     this.baseUrl += config.getConfig('host') ? config.getConfig('host') : window.location.hostname;
     this.baseUrl += ':' + (config.getConfig('port') ? config.getConfig('port') : window.location.port);
@@ -83,6 +85,7 @@ export class UserService {
       })
       .catch((error) => {
         console.error("Error when trying to get apps", error);
+        this.errorService.notifyError(error.status, error.message, error);
         return Observable.throw(this.getCurrentUser());
       });
   }

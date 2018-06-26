@@ -6,8 +6,10 @@ import { emailValidator, matchingPasswords, passwordValidator } from '../validat
 import { UserService } from "../../shared/service/user/user.service";
 import { AppConfig } from "../../app.config";
 import { User } from "../../shared/service/user/user";
-import { DeployerService } from "../../shared/service/deployer/deployer.service";
+import { DeployementService } from "../../shared/service/deployer/deployement.service";
 import { Router } from "@angular/router";
+import { Deployment } from "../../shared/service/deployer/deployment";
+import { CredentialService } from "ng2-cloud-portal-service-lib";
 
 
 @Component({
@@ -59,7 +61,8 @@ export class CreRegistrationFormComponent implements OnInit {
               private appConfig: AppConfig,
               private router: Router,
               private userService: UserService,
-              private deployer: DeployerService) {
+              private credentialsService: CredentialService,
+              private deployementService: DeployementService) {
   }
 
   ngOnInit() {
@@ -179,8 +182,9 @@ export class CreRegistrationFormComponent implements OnInit {
         this.cloudProvider.isSelected = 3;
         this._isSuccess = true;
       } else {
-        let deployment = this.deployer.create(this.cloudProvider.credential);
-        deployment.start();
+        this.cloudProvider.credential.username = this.credentialsService.getUsername();
+        let deployment = Deployment.buildFromConfigurationParameters(this.appConfig, this.cloudProvider.credential);
+        this.deployementService.deploy(deployment);
         this.router.navigateByUrl('/cloud-research-environment-dashboard');
       }
     }

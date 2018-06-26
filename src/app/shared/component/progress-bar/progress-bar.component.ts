@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DeploymentInstance } from "../../service/deployer/deploymentInstance";
-import {NgbProgressbarConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Deployment } from "../../service/deployer/deployment";
+import { DeploymentStatus } from "../../service/deployer/deployment-status";
 
 @Component({
   selector: 'ph-progress-bar',
@@ -10,8 +11,7 @@ import {NgbProgressbarConfig} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ProgressBarComponent implements OnInit {
 
-  @Input("progress") deployment: DeploymentInstance;
-
+  @Input("progress") deployment: Deployment;
 
   status: string[] = [
     'Initialising ...',
@@ -27,6 +27,13 @@ export class ProgressBarComponent implements OnInit {
     'Cloud Research Environment is Ready for Use!',
   ];
 
+  progressDescription = "";
+  progress: number = 0;
+  step: string = "";
+  task: string = "";
+  lastLog: string = "";
+
+
   constructor(config: NgbProgressbarConfig) {
     // customize default values of progress bars used by this component tree
     config.max = 1000;
@@ -36,6 +43,15 @@ export class ProgressBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.deployment.getDeploymentStatusAsObservable().subscribe((status: DeploymentStatus) => {
+      if (status && status.transition) {
+        let transition = status.transition;
+        this.progress = transition.progress;
+        this.step = transition.step;
+        this.task = transition.task;
+        this.lastLog = this.deployment.lastLogLine;
+        this.progressDescription = status.transition.stepNumber + " of " + status.transition.numberOfSteps;
+      }
+    });
   }
-
 }

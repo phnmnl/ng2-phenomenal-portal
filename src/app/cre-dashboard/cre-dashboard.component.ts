@@ -1,22 +1,17 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import {
-  ApplicationService, CloudProviderParametersService,
   CredentialService,
-  Deployment,
-  DeploymentService,
-  DeploymentStatus,
   TokenService
 } from 'ng2-cloud-portal-service-lib';
 import { Router } from '@angular/router';
-import { Http } from '@angular/http';
-import 'rxjs/Rx';
-import { UserService } from '../shared/service/user/user.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { DeploymentInstance } from "../shared/service/deployer/deploymentInstance";
-
-import { DeployerService } from "../shared/service/deployer/deployer.service";
-import { ModalDialogContentComponent } from "../shared/component/modal-dialog/modal-dialog.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { UserService } from '../shared/service/user/user.service';
+import { Deployment } from "../shared/service/deployer/deployment";
+import { CanComponentDeactivate } from "../shared/guard/CanDeactivateGuard";
+import { DeployementService } from "../shared/service/deployer/deployement.service";
+import { ModalDialogContentComponent } from "../shared/component/modal-dialog/modal-dialog.component";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -24,7 +19,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./cre-dashboard.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class CreDashboardComponent implements OnInit, OnDestroy {
+export class CreDashboardComponent extends CanComponentDeactivate implements OnInit, OnDestroy {
 
   @BlockUI() blockUI: NgBlockUI;
 
@@ -36,11 +31,12 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   public luigi_logo = 'assets/img/logo/luigi.png';
   public jupyter_logo = 'assets/img/logo/jupyter_square.png';
 
-  deploymentServerList: Deployment[];
-  deploymentStatus: DeploymentStatus;
+  public error_icon = 'assets/img/error-icon.png';
 
-  private onDestroyEvent = new EventEmitter<DeploymentInstance>();
-  private onDeleteEvent = new EventEmitter<DeploymentInstance>();
+  deploymentServerList: Deployment[];
+
+  private onDestroyEvent = new EventEmitter<Deployment>();
+  private onDeleteEvent = new EventEmitter<Deployment>();
 
   get gce_logo(): string {
     return this._gce_logo;
@@ -56,27 +52,22 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
 
 
   constructor(private modalService: NgbModal,
-              private _applicationService: ApplicationService,
-              private _deploymentService: DeploymentService,
               private tokenService: TokenService,
               public credentialService: CredentialService,
               public userService: UserService,
               private router: Router,
-              private http: Http,
-              private deployementManager: DeployerService,
-              private cloudCredentialsService: CloudProviderParametersService) {
+              private deploymentManager: DeployementService) {
+    super();
   }
 
-
   ngOnInit() {
-    this.deployementManager.getDeployments().subscribe((deployments) => {
+    this.deploymentManager.getDeployments().subscribe((deployments) => {
       this.deploymentServerList = deployments;
       console.log("Updated deployments", deployments);
     }, (error) => {
       console.error("The current error", error);
       this.userService.logout();
     });
-    this.deployementManager.updateDeployments();
 
     this.onDestroyEvent.subscribe((deployment) => {
       this.processDestroyDeployment(deployment);
@@ -86,9 +77,28 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
       this.processDeleteDeployment(deployment);
     });
 
+    this.deploymentManager.updateDeployments();
   }
 
   ngOnDestroy() {
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    console.log("Checking if it can be unloaded");
+    for(let d of this.deploymentServerList){
+      if(d.isStarting()){
+        let status = d.statusTransition;
+        if(status){
+          console.log(status);
+          if(status.stepNumber < 9) {
+            console.warn("You cannot deactivate the current window");
+            return false;
+          }
+        }
+      }
+    }
+    console.log("the current window can be deactivated!");
+    return true;
   }
 
   logout() {
@@ -102,7 +112,7 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
   }
 
 
-  destroyDeployment(deployment: DeploymentInstance) {
+  destroyDeployment(deployment: Deployment) {
     let modalRef = this.modalService.open(ModalDialogContentComponent, {
       windowClass: 'progress-bar-modal',
       size: 'lg',
@@ -118,26 +128,12 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.body = "Are you sure?";
   }
 
-  private processDestroyDeployment(deployment: DeploymentInstance) {
-    deployment['show-wheel'] = true;
-    deployment['status'] = 'DESTROYING';
+  private processDestroyDeployment(deployment: Deployment) {
     console.log("Destroying deployment...");
-    this._deploymentService.stop(
-      this.credentialService.getUsername(), this.tokenService.getToken(),
-      <Deployment>{reference: deployment.reference}).subscribe(
-      res => {
-        console.log('[remove.stop] res %O', res);
-      });
-    this.getDeploymentStatusFeed(deployment, 3000, (result) => {
-      console.log('[remove.stop.feed] res %O', result);
-      this.deploymentStatus = result;
-      if (result.status === 'DESTROYED' || result.status === 'DESTROYING_FAILED') {
-        deployment['show-wheel'] = false;
-      }
-    });
+    this.deploymentManager.destroyDeployment(deployment);
   }
 
-  public deleteDeployment(deployment: DeploymentInstance) {
+  public deleteDeployment(deployment: Deployment) {
     let modalRef = this.modalService.open(ModalDialogContentComponent, {
       windowClass: 'progress-bar-modal',
       size: 'lg',
@@ -153,95 +149,12 @@ export class CreDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public processDeleteDeployment(deployment: DeploymentInstance) {
-    deployment['show-wheel'] = true;
+  public processDeleteDeployment(deployment: Deployment) {
     console.log("Deleting deployment ...");
-    this._deploymentService.delete(
-      this.credentialService.getUsername(), this.tokenService.getToken(), deployment).subscribe(
-      res1 => {
-        this.removeDeploymentFromList(deployment);
-        if (this.deploymentServerList.length == 0) {
-          this.deployementManager.getApplication(deployment.applicationName, (app) => {
-            if (app.name === deployment.applicationName) {
-              this.removeApplication(app,
-                (done) => {
-                  deployment['show-wheel'] = false;
-                }, (error) => {
-                  deployment.isError = true;
-                  deployment['error'] = error;
-                  deployment['show-wheel'] = false;
-                }
-              );
-            }
-          }, (error) => {
-            if (error.status === 404)
-              this.removeDeploymentFromList(deployment);
-            else {
-              deployment.isError = true;
-              deployment['error'] = error;
-            }
-            deployment['show-wheel'] = false;
-          });
-        } else {
-          deployment['show-wheel'] = false;
-        }
-      },
-      error => {
-        console.log('[Deployments] error %O', error);
-        deployment.isError = true;
-        deployment['error'] = error;
-        deployment['show-wheel'] = false;
-      }
-    );
+    this.deploymentManager.deleteDeploymentConfiguration(deployment);
   }
 
-  private removeDeploymentFromList(deployment: DeploymentInstance) {
-    let counter = 0;
-    for (let d of this.deploymentServerList) {
-      if (d.reference === deployment.reference) {
-        this.deploymentServerList.splice(counter, 1);
-        break;
-      }
-      counter++;
-    }
-  }
-
-  getDeploymentStatusFeed(deploymentInstance: DeploymentInstance, interval: number, callback) {
-    const statusFeedSubscription = this._deploymentService.getDeploymentStatusFeed(
-      this.credentialService.getUsername(),
-      this.tokenService.getToken(),
-      deploymentInstance, interval).subscribe(
-      res => {
-        deploymentInstance.status = res.status;
-        deploymentInstance.status_info = res;
-        if (res.status === 'DESTROYED') {
-          statusFeedSubscription.unsubscribe();
-        }
-        callback(res);
-      },
-      error => {
-        statusFeedSubscription.unsubscribe();
-        callback(error);
-      }
-    );
-  }
-
-  removeApplication(application, onSuccess, onError) {
-    this._applicationService.delete(this.credentialService.getUsername(),
-      this.tokenService.getToken(), application).subscribe(
-      res => {
-        console.log('[RepositoryComponent] got response %O', res);
-        onSuccess(res);
-      },
-      error => {
-        console.log('[RepositoryComponent] error %O', error);
-        onError(error);
-      }
-    );
-  }
-
-  private static clearErrors(deployment: DeploymentInstance) {
-    deployment.isError = false;
-    deployment['error'] = null;
+  private static clearErrors(deployment: Deployment) {
+    deployment.cleanErrors();
   }
 }
