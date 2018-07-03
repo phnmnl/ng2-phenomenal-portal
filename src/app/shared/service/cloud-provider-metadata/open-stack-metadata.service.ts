@@ -25,6 +25,42 @@ export class CloudProviderMetadataService {
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
+
+  public authenticate(config): Observable<object> {
+    config = {
+      "auth": {
+        "identity": {
+          "methods": [
+            "password"
+          ],
+          "password": {
+            "user": {
+              "domain": {
+                "name": "Default"
+              },
+              "name": "pireddu@crs4.it",
+              "password": "kikko e luca crs4"
+            }
+          }
+        },
+        "scope": {
+          "project": {
+            "domain": {
+              "name": "Default"
+            },
+            "name": "PhenoMeNal"
+          }
+        }
+      }
+    };
+    const body = this.getBody(config);
+    const options = new RequestOptions({headers: this.getHeader()});
+
+    return this.http.post("https://extcloud05.ebi.ac.uk:13000/v2.0"
+      + '/auth/tokens?catalog', body, options);
+  }
+
+
   /**
    * Fetch all available flavors from OpenStack
    * @param {OpenstackConfig} config
