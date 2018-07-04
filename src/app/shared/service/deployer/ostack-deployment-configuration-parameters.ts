@@ -1,6 +1,6 @@
 import { BaseDeploymentConfigurationParameters } from "./base-deployment-configuration-parameters";
 import { DeploymentConfigurationParameters } from "../../../setup/deployment-configuration-parameters";
-import { CloudProviderMetadataService } from "../cloud-provider-metadata/cloud-provider-metadata.service";
+import { OpenStackMetadataService } from "../cloud-provider-metadata/open-stack-metadata.service";
 import { OpenStackCredentials } from "../cloud-provider-metadata/OpenStackCredentials";
 
 export class OstackDeploymentConfigurationParameters extends BaseDeploymentConfigurationParameters {
@@ -31,16 +31,21 @@ export class OstackDeploymentConfigurationParameters extends BaseDeploymentConfi
       cluster_prefix: this.getClusterPrefix(),
       floating_ip_pool: parameters.ip_pool,
       external_network_uuid: parameters.network,
-      master_flavor: parameters.flavor,
-      node_flavor: parameters.flavor,
-      glusternode_flavor: parameters.flavor,
+      master_as_edge: parameters.master_as_edge,
+      master_flavor: parameters.master_instance_type,
+      node_flavor: parameters.node_instance_type,
+      node_count: parameters.node_count,
+      glusternode_flavor: parameters.gluster_instance_type,
+      glusternode_count: parameters.gluster_count,
+      glusternode_extra_disk_size: parameters.gluster_extra_disk_size,
+      phenomenal_pvc_size: parameters.pvc_size + "Gi",
       galaxy_admin_email: parameters.galaxy_admin_email,
       galaxy_admin_password: parameters.galaxy_admin_password
-    }, this.getDefaultInputs());
+    });
   }
 
   protected initParameters(parameters: DeploymentConfigurationParameters) {
-    let cc: OpenStackCredentials = CloudProviderMetadataService.parseRcFile(parameters.rc_file, parameters.password);
+    let cc: OpenStackCredentials = OpenStackMetadataService.parseRcFile(parameters.rc_file, parameters.password);
     this._parameters = {
       'name': this.getDeploymentName(),
       'cloudProvider': parameters.provider,
