@@ -10,8 +10,8 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="review-details">
     <div *ngIf="cloudProvider.name === 'ostack'">
+      <p>OpenStack Endpoint: <b>{{cloudProvider.credential.url}}</b></p>
       <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-      <p>Auth URL: <b>{{cloudProvider.credential.url}}</b></p>
       <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
     </div>
     <div *ngIf="cloudProvider.name === 'aws'">

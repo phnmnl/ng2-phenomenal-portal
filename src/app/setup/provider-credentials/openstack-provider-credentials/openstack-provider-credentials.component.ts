@@ -63,6 +63,8 @@ export class OpenstackProviderCredentialsComponent extends BaseProviderCredentia
 
       reader.onload = (e: any) => {
         this.cloudProvider.credential.rc_file = e.target.result;
+        this.cloudProvider.credential.tenant_name = this.cpm.getTenantOrProjectName(this.cloudProvider);
+        this.cloudProvider.credential.url = this.cpm.getAuthorizationEndPoint(this.cloudProvider);
       };
 
       reader.readAsText(fileInput.target.files[0]);

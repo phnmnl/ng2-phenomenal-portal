@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { AppConfig } from '../../../app.config';
 import { OpenstackConfig } from './openstack-config';
 import { OpenStackCredentials } from "./OpenStackCredentials";
 import { ICloudProviderMetadataService } from "./cloud-provider-metadata-service";
 import { CloudProvider } from "../../../setup/cloud-provider";
 import { Subject } from "rxjs";
-import { AwsMetadataService } from "./aws-metadata.service";
 
 
 /**
@@ -17,21 +15,14 @@ import { AwsMetadataService } from "./aws-metadata.service";
 @Injectable()
 export class OpenStackMetadataService implements ICloudProviderMetadataService {
 
-  private baseUrl: string;
-  private headUrl: string;
   private URL: string = "/api/v2/providers/openstack";
-  private metadataUrl = 'cloudprovidermetadata';
   private regionsSubject = new Subject<any>();
   private flavorsSubject = new Subject<any>();
   private externalNetworks = new Subject<any>();
   private floatingIpPools = new Subject<any>();
 
   constructor(private http: Http,
-              private tokenService: TokenService,
               private config: AppConfig) {
-    this.baseUrl = config.getConfig('tsi_portal_url');
-    this.metadataUrl = 'cloudprovidermetadata';
-    this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
   public authenticate(cloudProvider: CloudProvider): Observable<object> {
@@ -96,7 +87,6 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
       });
   }
 
-
   private loadFloatingIpPools(credentials) {
     this.http.post(this.URL + "/ip-pools", credentials).subscribe(
       (data) => {
@@ -110,46 +100,17 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
       });
   }
 
-  /**
-   * Fetch all available networks from OpenStack
-   * @param {OpenstackConfig} config
-   * @returns {Observable<string[]>}
-   */
-  getNetworks(config: OpenstackConfig): Observable<string[]> {
-
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
-
-    return this.http.post(this.headUrl + '/networks', body, options).map(res => res.json());
+  public getTenantOrProjectName(cloudProvider: CloudProvider) {
+    let rcFile = cloudProvider.credential.rc_file;
+    let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
+    if (!tenantName || tenantName.length === 0)
+      return OpenStackMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
   }
 
-  /**
-   * Fetch all available IP pools from OpenStack
-   * @param {OpenstackConfig} config
-   * @returns {Observable<string[]>}
-   */
-  getIPPools(config: OpenstackConfig): Observable<string[]> {
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
-
-    return this.http.post(this.headUrl + '/ippools', body, options).map(res => res.json());
+  public getAuthorizationEndPoint(cloudProvider: CloudProvider) {
+    return OpenStackMetadataService.extractPropertyValue(cloudProvider.credential.rc_file, "OS_AUTH_URL");
   }
 
-  private getHeader() {
-
-    const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + this.tokenService.getToken().token);
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-    return headers;
-  }
-
-  private getBody(config: OpenstackConfig) {
-    const body = JSON.stringify('{"username": "' + config.username + '", "password": "' + config.password
-      + '", "tenantName": "' + config.tenantName + '", "domainName": "' + config.domainName + '", "endpoint": "'
-      + config.endpoint + '", "version": "' + config.version + '"}');
-    return body;
-  }
 
   public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
     return OpenStackMetadataService.parseRcFile(rcFile, password);
@@ -190,8 +151,7 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
     }
   }
 
-  private static extractPropertyValue(rcFile: string, propertyName: string):
-    string {
+  private static extractPropertyValue(rcFile: string, propertyName: string): string {
     let match;
     let result: string = null;
     let pattern = new RegExp(propertyName + "=(.+)", 'g');
