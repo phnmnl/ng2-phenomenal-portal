@@ -194,8 +194,8 @@
                         style="display: inline-block; text-align: left;"
                         [formControl]="formControls['phenomenal_version']"
                         required [(ngModel)]="cloudProvider.credential.phenomenal_version">
-              <mat-option *ngFor="let region of phenVersions" [value]="region.value">
-                {{region.displayValue}}
+              <mat-option *ngFor="let version of phenVersions" [value]="version.value">
+                {{version.displayValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>

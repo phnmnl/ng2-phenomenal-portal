@@ -69,7 +69,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
               private cdRef: ChangeDetectorRef,
               private cloudProviderMetadataService: CloudProviderMetadataService) {
     this.phenVersions = [
-      {value: 'latest', displayValue: 'Cerebellin'}
+      {value: 'v18.01-dalcotidine', displayValue: 'v18.01 Dalcotidine'}
     ];
   }
 
@@ -93,6 +93,9 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     for (let s of this.serviceSubscriptions)
       s.unsubscribe();
     this.serviceSubscriptions.splice(0, this.serviceSubscriptions.length);
+
+    // set the latest PhenoMeNal version as default
+    this.cloudProvider.credential.phenomenal_version="v18.01-dalcotidine";
 
     // update settings and subscriptions
     this.showNetworkSettings = this.cloudProvider.name === "ostack";
