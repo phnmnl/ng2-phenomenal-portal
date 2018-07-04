@@ -126,6 +126,9 @@ export class ProviderSelectorComponent implements OnInit {
     this.validateAllFormFields(this.form);
   }
 
+  onSubmit() {
+  }
+
   validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);
