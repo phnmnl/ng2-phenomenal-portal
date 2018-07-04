@@ -5,17 +5,26 @@ import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { AppConfig } from '../../../app.config';
 import { OpenstackConfig } from './openstack-config';
 import { OpenStackCredentials } from "./OpenStackCredentials";
+import { ICloudProviderMetadataService } from "./cloud-provider-metadata-service";
+import { CloudProvider } from "../../../setup/cloud-provider";
+import { Subject } from "rxjs";
+import { AwsMetadataService } from "./aws-metadata.service";
 
 
 /**
  * Fetch OpenStack metadata from TSI portal API
  */
 @Injectable()
-export class CloudProviderMetadataService {
+export class OpenStackMetadataService implements ICloudProviderMetadataService {
 
   private baseUrl: string;
   private headUrl: string;
+  private URL: string = "/api/v2/providers/openstack";
   private metadataUrl = 'cloudprovidermetadata';
+  private regionsSubject = new Subject<any>();
+  private flavorsSubject = new Subject<any>();
+  private externalNetworks = new Subject<any>();
+  private floatingIpPools = new Subject<any>();
 
   constructor(private http: Http,
               private tokenService: TokenService,
@@ -25,53 +34,80 @@ export class CloudProviderMetadataService {
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
-
-  public authenticate(config): Observable<object> {
-    config = {
-      "auth": {
-        "identity": {
-          "methods": [
-            "password"
-          ],
-          "password": {
-            "user": {
-              "domain": {
-                "name": "Default"
-              },
-              "name": "pireddu@crs4.it",
-              "password": "kikko e luca crs4"
-            }
-          }
-        },
-        "scope": {
-          "project": {
-            "domain": {
-              "name": "Default"
-            },
-            "name": "PhenoMeNal"
-          }
-        }
-      }
-    };
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
-
-    return this.http.post("https://extcloud05.ebi.ac.uk:13000/v2.0"
-      + '/auth/tokens?catalog', body, options);
+  public authenticate(cloudProvider: CloudProvider): Observable<object> {
+    let credentials: OpenStackCredentials =
+      OpenStackMetadataService.parseRcFile(cloudProvider.credential.rc_file, cloudProvider.credential.password);
+    let jsonCredentials = credentials.toJSON();
+    console.log("Credentials object", credentials);
+    return this.http.post(this.URL + "/authenticate", jsonCredentials)
+      .map((res) => {
+        this.loadFlavors(jsonCredentials);
+        this.loadExternalNetworks(jsonCredentials);
+        this.loadFloatingIpPools(jsonCredentials);
+        return res.json();
+      }).catch(res => Observable.throw(res.json()));
   }
 
+  getRegions(): Observable<any[]> {
+    return this.regionsSubject.asObservable();
+  }
 
   /**
    * Fetch all available flavors from OpenStack
    * @param {OpenstackConfig} config
    * @returns {Observable<string[]>}
    */
-  getFlavors(config: OpenstackConfig): Observable<string[]> {
+  getFlavors(): Observable<any[]> {
+    return this.flavorsSubject.asObservable();
+  }
 
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
+  getExternalNeworks(): Observable<any[]> {
+    return this.externalNetworks.asObservable();
+  }
 
-    return this.http.post(this.headUrl + '/flavors', body, options).map(res => res.json());
+  getFloaingIpPools(): Observable<any[]> {
+    return this.floatingIpPools.asObservable();
+  }
+
+
+  private loadFlavors(credentials) {
+    this.http.post(this.URL + "/flavors", credentials).subscribe(
+      (data) => {
+        console.log(data);
+        let flavors = data.json()["data"];
+        console.log("Flavors", flavors);
+        this.flavorsSubject.next(flavors['flavors']);
+      },
+      (error) => {
+        console.error(error);
+      });
+  }
+
+  private loadExternalNetworks(credentials) {
+    this.http.post(this.URL + "/external-networks", credentials).subscribe(
+      (data) => {
+        console.log(data);
+        let networks = data.json()["data"];
+        console.log("Networks", networks);
+        this.externalNetworks.next(networks['networks']);
+      },
+      (error) => {
+        console.error(error);
+      });
+  }
+
+
+  private loadFloatingIpPools(credentials) {
+    this.http.post(this.URL + "/ip-pools", credentials).subscribe(
+      (data) => {
+        console.log(data);
+        let ipPools = data.json()["data"];
+        console.log("floating_ip_pools", ipPools);
+        this.floatingIpPools.next(ipPools['floating_ip_pools']);
+      },
+      (error) => {
+        console.error(error);
+      });
   }
 
   /**
@@ -116,7 +152,7 @@ export class CloudProviderMetadataService {
   }
 
   public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
-    return CloudProviderMetadataService.parseRcFile(rcFile, password);
+    return OpenStackMetadataService.parseRcFile(rcFile, password);
   }
 
   public static parseRcFile(rcFile: string, password: string): OpenStackCredentials {
@@ -130,32 +166,32 @@ export class CloudProviderMetadataService {
         "$1" + '"' + password + '"');
 
       // extract all the required RC file fields required to query the TSI portal
-      let rcVersion = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
-      let username = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
-      let authUrl = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
-      let tenantName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
-      let projectName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
-      let domainName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
+      let rcVersion = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
+      let username = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
+      let authUrl = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
+      let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
+      let tenantId = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_ID");
+      let projectName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
+      let domainName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
 
       // detect version from existing properties
       if (!rcVersion) {
         rcVersion = projectName ? "3" : "2";
       }
 
-      return <OpenStackCredentials>{
-        username: username,
-        password: password,
-        authUrl: authUrl,
-        tenantName: tenantName,
-        projectName: projectName,
-        domainName: domainName,
-        rcFile: rcFile,
-        rcVersion: rcVersion
-      };
+      return new OpenStackCredentials(
+        username, password,
+        authUrl,
+        tenantId, tenantName,
+        projectName, domainName,
+        rcFile,
+        rcVersion ? rcVersion : (projectName ? "3" : "2")
+      );
     }
   }
 
-  private static extractPropertyValue(rcFile: string, propertyName: string): string {
+  private static extractPropertyValue(rcFile: string, propertyName: string):
+    string {
     let match;
     let result: string = null;
     let pattern = new RegExp(propertyName + "=(.+)", 'g');
