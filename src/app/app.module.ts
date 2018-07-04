@@ -50,7 +50,6 @@ import { RouterModule } from '@angular/router';
 import { UserService } from './shared/service/user/user.service';
 // import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
-import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
 import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { CloudProviderMetadataService } from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
@@ -121,7 +120,6 @@ export function initConfig(config: AppConfig) {
     ProgressBarComponent,
     CreDashboardComponent,
     CreRegistrationFormComponent,
-    GcpSetupComponent,
     CloudSetupComponent,
     TermAndConditionComponent,
     TestCreComponent,
