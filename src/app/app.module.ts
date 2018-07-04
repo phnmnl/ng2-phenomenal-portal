@@ -45,7 +45,9 @@ import 'hammerjs';
 import { RouterModule } from '@angular/router';
 import { UserService } from './shared/service/user/user.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
+
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
+import { OpenStackMetadataService } from './shared/service/cloud-provider-metadata/open-stack-metadata.service';
 import { ErrorService as PhnErrorService } from './shared/service/error/error.service';
 import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -74,6 +76,20 @@ import {
   ErrorModalDialogContentComponent
 } from './shared/component/error-modal-dialog/error-modal-dialog.component';
 import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
+import { ProviderSelectorComponent } from './setup/provider-selector/provider-selector.component';
+import { ProviderCredentialsComponent } from './setup/provider-credentials/provider-credentials.component';
+import { ProviderInfoComponent } from './setup/provider-info/provider-info.component';
+import { ProviderParametersComponent } from './setup/provider-parameters/provider-parameters.component';
+// import { BaseProviderCredentialsComponent } from './setup/provider-credentials/base-provider-credentials/base-provider-credentials.component';
+import { AwsProviderCredentialsComponent } from './setup/provider-credentials/aws-provider-credentials/aws-provider-credentials.component';
+import { SetupErrorComponent } from './setup/setup-error/setup-error.component';
+import { CloudProviderMetadataService } from "./shared/service/cloud-provider-metadata/cloud-provider-metadata.service";
+import { AwsMetadataService } from "./shared/service/cloud-provider-metadata/aws-metadata.service";
+import { ServicesCredentialsComponent } from './setup/services-credentials/services-credentials.component';
+import { DeployConfirmComponent } from './setup/deploy-confirm/deploy-confirm.component';
+import { OpenstackProviderCredentialsComponent } from './setup/provider-credentials/openstack-provider-credentials/openstack-provider-credentials.component';
+import { GcpProviderCredentialsComponent } from './setup/provider-credentials/gcp-provider-credentials/gcp-provider-credentials.component';
+import { GcpMetadataService } from "./shared/service/cloud-provider-metadata/gcp-metadata.service";
 
 /**
  * To set the global environment variables
@@ -117,6 +133,17 @@ export function initConfig(config: AppConfig) {
     ModalDialogComponent,
     ModalDialogContentComponent,
     ErrorModalDialogComponent,
+    ErrorModalDialogContentComponent,
+    ProviderSelectorComponent,
+    ProviderCredentialsComponent,
+    ProviderInfoComponent,
+    ProviderParametersComponent,
+    AwsProviderCredentialsComponent,
+    SetupErrorComponent,
+    ServicesCredentialsComponent,
+    DeployConfirmComponent,
+    OpenstackProviderCredentialsComponent,
+    GcpProviderCredentialsComponent,
   ],
   imports: [
     BrowserModule,
@@ -165,6 +192,9 @@ export function initConfig(config: AppConfig) {
     TokenService,
     AccountService,
     CloudProviderMetadataService,
+    AwsMetadataService,
+    OpenStackMetadataService,
+    GcpMetadataService,
     JwtHelper,
     ConfigurationService,
     PhnErrorService,
