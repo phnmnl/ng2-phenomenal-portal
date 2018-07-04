@@ -27,13 +27,21 @@ export class AwsDeploymentConfigurationParameters extends BaseDeploymentConfigur
   }
 
   protected initInputs(parameters: DeploymentConfigurationParameters) {
-    console.log("Default inputs", this.getDefaultInputs());
+    console.log("Default inputs", this.getDefaultInputs(), parameters);
     this._inputs = Object.assign({}, {
       cluster_prefix: this.getClusterPrefix(),
-      availability_zone: parameters.default_region + 'b',
+      availability_zone: parameters.default_region + 'b', // TODO: check availability zones
+      master_as_edge: parameters.master_as_edge,
+      master_instance_type: parameters.master_instance_type,
+      node_instance_type: parameters.node_instance_type,
+      node_count: parameters.node_count,
+      glusternode_instance_type: parameters.gluster_instance_type,
+      glusternode_count: parameters.gluster_count,
+      glusternode_extra_disk_size: parameters.gluster_extra_disk_size,
+      phenomenal_pvc_size: parameters.pvc_size + "Gi",
       galaxy_admin_email: parameters.galaxy_admin_email,
       galaxy_admin_password: parameters.galaxy_admin_password
-    }, this.getDefaultInputs());
+    });
   }
 
   protected initParameters(parameters: DeploymentConfigurationParameters) {

@@ -5,6 +5,12 @@ import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { AppConfig } from '../../../app.config';
 import { OpenstackConfig } from './openstack-config';
 import { OpenStackCredentials } from "./OpenStackCredentials";
+import { CloudProvider } from "../../../setup/cloud-provider";
+import { OpenStackMetadataService } from "./open-stack-metadata.service";
+import { ICloudProviderMetadataService } from "./cloud-provider-metadata-service";
+import { AwsMetadataService } from "./aws-metadata.service";
+import { UnimplementedException } from "@angular-devkit/schematics";
+import { GcpMetadataService } from "./gcp-metadata.service";
 
 
 /**
@@ -17,124 +23,55 @@ export class CloudProviderMetadataService {
   private headUrl: string;
   private metadataUrl = 'cloudprovidermetadata';
 
+
+  private concreteMetadataService: ICloudProviderMetadataService;
+
+
   constructor(private http: Http,
               private tokenService: TokenService,
-              private config: AppConfig) {
+              private config: AppConfig,
+              private openStackMetadataService: OpenStackMetadataService,
+              private awsMetadataService: AwsMetadataService,
+              private gcpMetadataService: GcpMetadataService
+  ) {
     this.baseUrl = config.getConfig('tsi_portal_url');
     this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
 
-  /**
-   * Fetch all available flavors from OpenStack
-   * @param {OpenstackConfig} config
-   * @returns {Observable<string[]>}
-   */
-  getFlavors(config: OpenstackConfig): Observable<string[]> {
 
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
-
-    return this.http.post(this.headUrl + '/flavors', body, options).map(res => res.json());
+  private getConcreteMetadataService(cloudProvider: CloudProvider): ICloudProviderMetadataService {
+    if (cloudProvider.name === "aws")
+      return this.awsMetadataService;
+    else if (cloudProvider.name === "gcp")
+      return this.gcpMetadataService;
+    // default option
+    return this.openStackMetadataService;
   }
 
-  /**
-   * Fetch all available networks from OpenStack
-   * @param {OpenstackConfig} config
-   * @returns {Observable<string[]>}
-   */
-  getNetworks(config: OpenstackConfig): Observable<string[]> {
 
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
-
-    return this.http.post(this.headUrl + '/networks', body, options).map(res => res.json());
+  public authenticate(cloudProvider: CloudProvider): Observable<object> {
+    return this.getConcreteMetadataService(cloudProvider).authenticate(cloudProvider);
   }
 
-  /**
-   * Fetch all available IP pools from OpenStack
-   * @param {OpenstackConfig} config
-   * @returns {Observable<string[]>}
-   */
-  getIPPools(config: OpenstackConfig): Observable<string[]> {
-    const body = this.getBody(config);
-    const options = new RequestOptions({headers: this.getHeader()});
-
-    return this.http.post(this.headUrl + '/ippools', body, options).map(res => res.json());
+  public getRegions(cloudProvider: CloudProvider): Observable<any[]> {
+    return this.getConcreteMetadataService(cloudProvider).getRegions();
   }
 
-  private getHeader() {
 
-    const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + this.tokenService.getToken().token);
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-    return headers;
+  public getFlavors(cloudProvider: CloudProvider): Observable<any[]> {
+    return this.getConcreteMetadataService(cloudProvider).getFlavors();
   }
 
-  private getBody(config: OpenstackConfig) {
-    const body = JSON.stringify('{"username": "' + config.username + '", "password": "' + config.password
-      + '", "tenantName": "' + config.tenantName + '", "domainName": "' + config.domainName + '", "endpoint": "'
-      + config.endpoint + '", "version": "' + config.version + '"}');
-    return body;
+  public getExternalNetworks(cloudProvider: CloudProvider): Observable<any[]> {
+    if (cloudProvider.name !== "ostack")
+      return Observable.empty();
+    return this.openStackMetadataService.getExternalNeworks();
   }
 
-  public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
-    return CloudProviderMetadataService.parseRcFile(rcFile, password);
-  }
-
-  public static parseRcFile(rcFile: string, password: string): OpenStackCredentials {
-    if (rcFile) {
-      // update RC file with the user password and set it as current RC file
-      // console.log("The current RC file...", rcFile);
-      rcFile = rcFile.replace(/#.*\n/g, '');          // remove all comments
-      rcFile = rcFile.replace(/\becho\b.+/g, '');     // remove all echo commands
-      rcFile = rcFile.replace(/\bread\b.+/g, '');     // remove the read command
-      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,      // set the password
-        "$1" + '"' + password + '"');
-
-      // extract all the required RC file fields required to query the TSI portal
-      let rcVersion = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
-      let username = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
-      let authUrl = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
-      let tenantName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
-      let projectName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
-      let domainName = CloudProviderMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
-
-      // detect version from existing properties
-      if (!rcVersion) {
-        rcVersion = projectName ? "3" : "2";
-      }
-
-      return <OpenStackCredentials>{
-        username: username,
-        password: password,
-        authUrl: authUrl,
-        tenantName: tenantName,
-        projectName: projectName,
-        domainName: domainName,
-        rcFile: rcFile,
-        rcVersion: rcVersion
-      };
-    }
-  }
-
-  private static extractPropertyValue(rcFile: string, propertyName: string): string {
-    let match;
-    let result: string = null;
-    let pattern = new RegExp(propertyName + "=(.+)", 'g');
-
-    // extract property
-    if (rcFile) {
-      // search for all matches and use only the last one
-      do {
-        match = pattern.exec(rcFile);
-        if (match) {
-          // remove single and double quotes
-          result = match[1].replace(/['"]/g, "");
-        }
-      } while (match);
-    }
-    return result;
+  public getFloatingIpPools(cloudProvider: CloudProvider): Observable<any[]> {
+    if (cloudProvider.name !== "ostack")
+      return Observable.empty();
+    return this.openStackMetadataService.getFloaingIpPools();
   }
 }

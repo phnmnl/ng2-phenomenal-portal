@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import {
-  AccountService, Application,
+  Application,
   ApplicationService,
   CloudProviderParametersService,
   Configuration,
@@ -15,14 +15,12 @@ import { Subject } from "rxjs/Subject";
 import { Headers, Http, RequestOptions, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { ApplicationDeployer } from "ng2-cloud-portal-presentation-lib/dist";
-import { CloudProviderMetadataService } from "../cloud-provider-metadata/cloud-provider-metadata.service";
 import { Pipeline } from "./pipeline";
 import { Deployment } from "./deployment";
 import { PipelineStepResult } from "./pipeline-step-result";
 import { PhenoMeNalPipeline } from "./phenomenal-pipeline";
 import { Subscription } from "rxjs";
 import { ErrorService } from "../error/error.service";
-import { UserService } from "../user/user.service";
 
 
 @Injectable()
@@ -36,8 +34,6 @@ export class DeployementService implements OnInit, OnDestroy {
               private _deploymentService: BaseDeploymentService,
               private _tokenService: TokenService,
               public credentialService: CredentialService,
-              public _accountService: AccountService,
-              public providerMetadataService: CloudProviderMetadataService,
               public configurationService: ConfigurationService,
               private config: AppConfig,
               private http: Http,
@@ -587,10 +583,12 @@ export class DeployementService implements OnInit, OnDestroy {
     urlSearchParams.append('configuration', JSON.stringify(configuration));
     // copy status
     const status = deployment.statusDetails;
-    for (let t of ["started", "deployed", "destroyed", "failed"]) {
-      let s = status[t + "Time"];
-      if (s) {
-        urlSearchParams.append(t === "started" ? 'created' : t, (s / 1000).toString());
+    if(status) {
+      for (let t of ["started", "deployed", "destroyed", "failed"]) {
+        let s = status[t + "Time"];
+        if (s) {
+          urlSearchParams.append(t === "started" ? 'created' : t, (s / 1000).toString());
+        }
       }
     }
     return this.http.put(url, urlSearchParams.toString(), options)

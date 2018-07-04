@@ -14,7 +14,7 @@ export class CloudProvider {
 
   public static clone(origin: CloudProvider): CloudProvider {
     let c: CloudProvider = Object.assign({}, origin);
-    c.credential = Object.assign({}, origin.credential);
+    c.credential = Object.assign(new DeploymentConfigurationParameters(), origin.credential);
     return c;
   }
 }

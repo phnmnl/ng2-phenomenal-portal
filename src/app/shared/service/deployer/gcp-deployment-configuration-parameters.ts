@@ -32,9 +32,17 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
       cluster_prefix: this.getClusterPrefix(),
       gce_project: parameters.tenant_name,
       gce_zone: parameters.default_region,
+      master_as_edge: parameters.master_as_edge,
+      master_flavor: parameters.master_instance_type,
+      node_flavor: parameters.node_instance_type,
+      node_count: parameters.node_count,
+      glusternode_flavor: parameters.gluster_instance_type,
+      glusternode_count: parameters.gluster_count,
+      glusternode_extra_disk_size: parameters.gluster_extra_disk_size,
+      phenomenal_pvc_size: parameters.pvc_size + "Gi",
       galaxy_admin_email: parameters.galaxy_admin_email,
       galaxy_admin_password: parameters.galaxy_admin_password
-    }, this.getDefaultInputs());
+    });
   }
 
   protected initParameters(parameters: DeploymentConfigurationParameters) {
@@ -42,7 +50,7 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
       'name': this.getDeploymentName(),
       'cloudProvider': parameters.provider,
       'fields': [
-        {'key': 'GOOGLE_CREDENTIALS', 'value': parameters.access_key_id.replace(/\\n/g, '\\n')},
+        {'key': 'GOOGLE_CREDENTIALS', 'value': parameters.rc_file.replace(/\\n/g, '\\n')},
         {'key': 'GCE_PROJECT', 'value': parameters.tenant_name},
         {'key': 'GCE_ZONE', 'value': parameters.default_region},
         {'key': 'TF_VAR_galaxy_admin_email', 'value': parameters.galaxy_admin_email},

@@ -38,24 +38,16 @@ import {
 import { SetupCloudEnvironmentComponent } from './setup/setup-cloud-environment.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent, NgbdModalContentComponent } from './shared/component/modal/modal.component';
-// import {
-//   ProgressBarModalComponent,
-//   ProgressBarModalContentComponent
-// } from './shared/component/progress-bar-modal/progress-bar-modal.component';
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
 import { UserService } from './shared/service/user/user.service';
-// import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
-import { OstackSetupComponent } from './setup/ostack-setup/ostack-setup.component';
-import { AwsSetupComponent } from './setup/aws-setup/aws-setup.component';
-import { GcpSetupComponent } from './setup/gcp-setup/gcp-setup.component';
-import { CloudSetupComponent } from './setup/cloud-setup/cloud-setup.component';
+
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
-import { CloudProviderMetadataService } from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
+import { OpenStackMetadataService } from './shared/service/cloud-provider-metadata/open-stack-metadata.service';
 import { ErrorService as PhnErrorService } from './shared/service/error/error.service';
 import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -64,10 +56,10 @@ import { BlockUIModule } from 'ng-block-ui';
 import {
   MatButtonModule,
   MatCardModule,
-  MatCheckboxModule,
+  MatCheckboxModule, MatGridListModule,
   MatInputModule,
   MatOptionModule, MatProgressSpinnerModule,
-  MatSelectModule
+  MatSelectModule, MatSliderModule, MatSlideToggleModule, MatStepperModule
 } from '@angular/material';
 
 import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
@@ -84,6 +76,20 @@ import {
   ErrorModalDialogContentComponent
 } from './shared/component/error-modal-dialog/error-modal-dialog.component';
 import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
+import { ProviderSelectorComponent } from './setup/provider-selector/provider-selector.component';
+import { ProviderCredentialsComponent } from './setup/provider-credentials/provider-credentials.component';
+import { ProviderInfoComponent } from './setup/provider-info/provider-info.component';
+import { ProviderParametersComponent } from './setup/provider-parameters/provider-parameters.component';
+// import { BaseProviderCredentialsComponent } from './setup/provider-credentials/base-provider-credentials/base-provider-credentials.component';
+import { AwsProviderCredentialsComponent } from './setup/provider-credentials/aws-provider-credentials/aws-provider-credentials.component';
+import { SetupErrorComponent } from './setup/setup-error/setup-error.component';
+import { CloudProviderMetadataService } from "./shared/service/cloud-provider-metadata/cloud-provider-metadata.service";
+import { AwsMetadataService } from "./shared/service/cloud-provider-metadata/aws-metadata.service";
+import { ServicesCredentialsComponent } from './setup/services-credentials/services-credentials.component';
+import { DeployConfirmComponent } from './setup/deploy-confirm/deploy-confirm.component';
+import { OpenstackProviderCredentialsComponent } from './setup/provider-credentials/openstack-provider-credentials/openstack-provider-credentials.component';
+import { GcpProviderCredentialsComponent } from './setup/provider-credentials/gcp-provider-credentials/gcp-provider-credentials.component';
+import { GcpMetadataService } from "./shared/service/cloud-provider-metadata/gcp-metadata.service";
 
 /**
  * To set the global environment variables
@@ -118,22 +124,26 @@ export function initConfig(config: AppConfig) {
     SetupCloudEnvironmentComponent,
     ModalComponent,
     NgbdModalContentComponent,
-    // ProgressBarModalComponent,
-    // ProgressBarModalContentComponent,
     ProgressBarComponent,
     CreDashboardComponent,
     CreRegistrationFormComponent,
-    OstackSetupComponent,
-    AwsSetupComponent,
-    GcpSetupComponent,
-    CloudSetupComponent,
     TermAndConditionComponent,
     TestCreComponent,
     LogMonitorComponent,
     ModalDialogComponent,
     ModalDialogContentComponent,
     ErrorModalDialogComponent,
-    ErrorModalDialogContentComponent
+    ErrorModalDialogContentComponent,
+    ProviderSelectorComponent,
+    ProviderCredentialsComponent,
+    ProviderInfoComponent,
+    ProviderParametersComponent,
+    AwsProviderCredentialsComponent,
+    SetupErrorComponent,
+    ServicesCredentialsComponent,
+    DeployConfirmComponent,
+    OpenstackProviderCredentialsComponent,
+    GcpProviderCredentialsComponent,
   ],
   imports: [
     BrowserModule,
@@ -154,6 +164,10 @@ export function initConfig(config: AppConfig) {
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatSliderModule,
+    MatSlideToggleModule,
     MatProgressSpinnerModule,
     BsDropdownModule.forRoot()
   ],
@@ -178,6 +192,9 @@ export function initConfig(config: AppConfig) {
     TokenService,
     AccountService,
     CloudProviderMetadataService,
+    AwsMetadataService,
+    OpenStackMetadataService,
+    GcpMetadataService,
     JwtHelper,
     ConfigurationService,
     PhnErrorService,

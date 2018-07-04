@@ -1,5 +1,6 @@
-.provider-logo-container{
+.provider-selector-container{
   margin-top: 50px;
+  margin-right: 5px;
 }
 
 .input-width {
@@ -26,8 +27,8 @@
   margin-top: 0;
 }
 
-.mat-card-control-buttons{
-  margin-top: 50px;
+.mat-card:hover{
+  background: #DFDFDF;
 }
 
 .phenomenal-image {
@@ -46,22 +47,22 @@
 
 @media (min-width: 992px) {
   .mat-card {
-    /*height: 400px;*/
+    height: 400px;
   }
 }
 
 @media (max-width: 991px) and (min-width: 404px) {
   .card-property {
-    /*height: 500px;*/
+    height: 500px;
   }
 
   .card-row{
-    /*margin-bottom: 30px;*/
+    margin-bottom: 30px;
   }
 }
 
 @media (max-width: 403px) {
   .card-property {
-    /*margin-bottom: 30px;*/
+    margin-bottom: 30px;
   }
 }

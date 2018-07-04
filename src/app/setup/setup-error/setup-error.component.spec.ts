@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OstackSetupComponent } from './ostack-setup.component';
+import { SetupErrorComponent } from './setup-error.component';
 
-describe('OstackSetupComponent', () => {
-  let component: OstackSetupComponent;
-  let fixture: ComponentFixture<OstackSetupComponent>;
+describe('SetupErrorComponent', () => {
+  let component: SetupErrorComponent;
+  let fixture: ComponentFixture<SetupErrorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OstackSetupComponent]
+      declarations: [ SetupErrorComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OstackSetupComponent);
+    fixture = TestBed.createComponent(SetupErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

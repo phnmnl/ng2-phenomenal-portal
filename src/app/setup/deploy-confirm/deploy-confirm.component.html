@@ -1,0 +1,31 @@
+<div *ngIf="message.length > 0" class="cloud-setup-message-panel">
+  <br>
+  <div class="alert alert-warning">{{ message}}</div>
+</div>
+
+<h3 class="h3-responsive text-center cloud-setup-title">
+  Please review your input data before deployment
+</h3>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="review-details">
+    <div *ngIf="cloudProvider.name === 'ostack'">
+      <p>OpenStack Endpoint: <b>{{cloudProvider.credential.url}}</b></p>
+      <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
+      <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
+    </div>
+    <div *ngIf="cloudProvider.name === 'aws'">
+      <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
+      <p>Access Key ID: <b>{{cloudProvider.credential.access_key_id}}</b></p>
+      <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
+    </div>
+    <div *ngIf="cloudProvider.name === 'gcp'">
+      <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
+      <p>Project ID: <b>{{cloudProvider.credential.tenant_name}}</b></p>
+      <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
+    </div>
+  </div>
+
+  <ph-setup-error [errors]="errors"></ph-setup-error>
+
+</form>

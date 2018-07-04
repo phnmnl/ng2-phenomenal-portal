@@ -15,7 +15,6 @@ import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
 import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
 import { TestCreComponent } from "./static-page/test-cre/test-cre.component";
 import { CreRegistrationFormComponent } from "./setup/cre-registration-form/cre-registration-form.component";
-import { CloudSetupComponent } from "./setup/cloud-setup/cloud-setup.component";
 import { LogMonitorComponent } from "./log-monitor/log-monitor.component";
 import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
 
@@ -43,7 +42,6 @@ const routes: Routes = [
   {path: 'cloud-research-environment-docs', component: CloudResearchEnvironmentComponent, pathMatch: 'full'},
   {path: 'cloud-research-environment/local-installation', component: CRELocalInstallationComponent},
   {path: 'cloud-research-environment/instruction', component: CRELocalInstallationInstructionComponent},
-  {path: 'cloud-provider-setup', component: CloudSetupComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'cre-dashboard', component: CreDashboardComponent},
   {path: 'home', component: HomeComponent},

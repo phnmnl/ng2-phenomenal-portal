@@ -1,0 +1,9 @@
+<div class="error-component-container">
+  <div class="alert alert-danger " role="alert" *ngIf="errors && errors.length>0">
+    <ul>
+      <li *ngFor="let error of errors; let i = index" [attr.data-index]="i">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ error }}
+      </li>
+    </ul>
+  </div>
+</div>
