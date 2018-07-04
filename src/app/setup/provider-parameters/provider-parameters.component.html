@@ -1,0 +1,209 @@
+<h2 class="h3-responsive cloud-setup-title">Setup your Cloud instances</h2>
+
+<!--<h5 *ngIf="showAdvancedSettings"> &#45;&#45; Advanced Settings &#45;&#45; </h5>-->
+
+<br>
+
+<div class="pull-xs-right adv-settings-btn">
+  <mat-slide-toggle value="left"
+                    [checked]="showAdvancedSettings" (change)="updateAdvancedSettingsSelection($event)">
+    Advanced Settings
+  </mat-slide-toggle>
+</div>
+
+
+<form [formGroup]="networkForm" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
+  <div *ngIf="showNetworkSettings">
+    <div class="cloud-settings-container">
+
+      <!--<mat-grid-list cols="3" rowHeight="3:1">-->
+
+        <!--<mat-grid-tile [colspan]="3">-->
+          <mat-form-field class="input-width-x">
+            <mat-select placeholder="Select an External Network"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="externalNetworkControl"
+                        required [(ngModel)]="cloudProvider.credential.network" (change)="onChangeExternalNetwork()">
+              <mat-option *ngFor="let i of externalNetworks" [value]="i.value">
+                {{i.displayValue}}
+              </mat-option>
+              <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+              <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
+              <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
+              <!--Your selection is invalid-->
+              <!--</mat-error>-->
+            </mat-select>
+          </mat-form-field>
+        <!--</mat-grid-tile>-->
+
+        <!--<mat-grid-tile [colspan]="3">-->
+          <mat-form-field class="input-width-x">
+            <mat-select placeholder="Select an Floating IP Pool"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="ipPoolControl"
+                        required [(ngModel)]="cloudProvider.credential.ip_pool">
+              <mat-option *ngFor="let i of floatingIpPools" [value]="i.value">
+                {{i.displayValue}}
+              </mat-option>
+              <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+              <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
+              <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
+              <!--Your selection is invalid-->
+              <!--</mat-error>-->
+            </mat-select>
+          </mat-form-field>
+        <!--</mat-grid-tile>-->
+      <!--</mat-grid-list>-->
+    </div>
+  </div>
+</form>
+
+
+<form [formGroup]="simplifiedForm" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
+
+  <div class="cloud-settings-container">
+
+    <div *ngIf="!showAdvancedSettings">
+      <mat-grid-list cols="3" rowHeight="2:1">
+        <mat-grid-tile [colspan]="3">
+          <mat-form-field class="input-width-x">
+            <mat-select placeholder="Select an instance type for your nodes"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="sharedInstanceFormControl"
+                        required [(ngModel)]="shared_instance_type" (change)="onChangeSharedInstanceType()">
+              <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
+                {{i.displayValue}}
+              </mat-option>
+              <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+              <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
+              <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
+              <!--Your selection is invalid-->
+              <!--</mat-error>-->
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
+</form>
+
+<form [formGroup]="formAdvancedSettings" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
+  <div class="cloud-settings-container">
+    <div *ngIf="showAdvancedSettings">
+
+      <mat-grid-list cols="4" rowHeight="2:1">
+
+
+        <mat-grid-tile [colspan]="3">
+          <mat-form-field class="input-width">
+            <mat-select placeholder="Select an instance type for your master node"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="formControls['master_instance_type']"
+                        required [(ngModel)]="cloudProvider.credential.master_instance_type">
+              <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
+                {{i.displayValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1">
+          <mat-checkbox [checked]="cloudProvider.credential.master_as_edge"
+                        [formControl]="formControls['master_as_edge']">Master as Edge
+          </mat-checkbox>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="3">
+          <mat-form-field class="input-width">
+            <mat-select placeholder="Select an instance type for your worker nodes"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="formControls['node_instance_type']"
+                        required [(ngModel)]="cloudProvider.credential.node_instance_type">
+              <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
+                {{i.displayValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1">
+          <mat-slider aria-label="Number of worker nodes" #slider3
+                      [(ngModel)]="cloudProvider.credential.node_count"
+                      [formControl]="formControls['node_count']"
+                      thumbLabel tickInterval="1" min="2" max="100"></mat-slider>
+          {{ slider3.value }} workers
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="3">
+          <mat-form-field class="input-width">
+            <mat-select placeholder="Select an instance type for your GlusterFS nodes"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="formControls['gluster_instance_type']"
+                        required [(ngModel)]="cloudProvider.credential.gluster_instance_type">
+              <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
+                {{i.displayValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="1">
+          <mat-slider aria-label="Number of GlusterFS nodes" #slider4
+                      [(ngModel)]="cloudProvider.credential.gluster_count"
+                      [formControl]="formControls['gluster_count']"
+                      thumbLabel tickInterval="1" min="1" max="100"></mat-slider>
+          {{ slider4.value }} nodes
+        </mat-grid-tile>
+
+
+        <mat-grid-tile [colspan]="2" class="input-width">
+          <span class="font-weight-bold" style="width: 200px;">GlusterFS Disk Size:</span>
+          <mat-slider aria-label="GlusterFS Disk Size" #slider1
+                      [formControl]="formControls['gluster_extra_disk_size']"
+                      [(ngModel)]="cloudProvider.credential.gluster_extra_disk_size"
+                      thumbLabel tickInterval="2" min="100" max="1000"></mat-slider>
+          {{ slider1.value }} GB
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" class="input-width">
+          <span class="font-weight-bold" style="width: 80px;">PVC Size:</span>
+          <mat-slider aria-label="PVC Size" #slider2
+                      [(ngModel)]="cloudProvider.credential.pvc_size"
+                      [formControl]="formControls['pvc_size']"
+                      thumbLabel tickInterval="2" min="100" max="1000"></mat-slider>
+          {{ slider2.value }} GB
+        </mat-grid-tile>
+
+        <mat-grid-tile *ngIf="showRegions" [colspan]="4">
+          <mat-form-field class="input-width-x">
+            <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;"
+                        [formControl]="formControls['region']"
+                        required [(ngModel)]="cloudProvider.credential.default_region">
+              <mat-option *ngFor="let region of regions" [value]="region.value">
+                {{region.displayValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="4">
+          <mat-form-field class="input-width-x">
+            <mat-select placeholder="Select the PhenoMeNal version to install"
+                        style="display: inline-block; text-align: left;"
+                        [formControl]="formControls['phenomenal_version']"
+                        required [(ngModel)]="cloudProvider.credential.phenomenal_version">
+              <mat-option *ngFor="let region of phenVersions" [value]="region.value">
+                {{region.displayValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="1">
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
+</form>
