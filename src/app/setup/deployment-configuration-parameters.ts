@@ -15,4 +15,13 @@ export class DeploymentConfigurationParameters {
   network?: string;
   ip_pool?: string;
   rc_file?: string;
+  master_as_edge: boolean = true;
+  master_instance_type: string;
+  node_count: number = 2;
+  node_instance_type: string;
+  gluster_count: number = 1;
+  gluster_instance_type: string;
+  gluster_extra_disk_size: number = 100;
+  pvc_size: number = 100;
+  phenomenal_version: string = "latest";
 }
