@@ -38,20 +38,14 @@ import {
 import { SetupCloudEnvironmentComponent } from './setup/setup-cloud-environment.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent, NgbdModalContentComponent } from './shared/component/modal/modal.component';
-// import {
-//   ProgressBarModalComponent,
-//   ProgressBarModalContentComponent
-// } from './shared/component/progress-bar-modal/progress-bar-modal.component';
 import { ProgressBarComponent } from './shared/component/progress-bar/progress-bar.component';
 import { CreDashboardComponent } from './cre-dashboard/cre-dashboard.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
 import { UserService } from './shared/service/user/user.service';
-// import { PhenomenalTokenService } from './shared/service/phenomenal-token/phenomenal-token.service';
 import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
-import { CloudProviderMetadataService } from './shared/service/cloud-provider-metadata/cloud-provider-metadata.service';
 import { ErrorService as PhnErrorService } from './shared/service/error/error.service';
 import { AppConfig } from './app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -114,8 +108,6 @@ export function initConfig(config: AppConfig) {
     SetupCloudEnvironmentComponent,
     ModalComponent,
     NgbdModalContentComponent,
-    // ProgressBarModalComponent,
-    // ProgressBarModalContentComponent,
     ProgressBarComponent,
     CreDashboardComponent,
     CreRegistrationFormComponent,
@@ -125,7 +117,6 @@ export function initConfig(config: AppConfig) {
     ModalDialogComponent,
     ModalDialogContentComponent,
     ErrorModalDialogComponent,
-    ErrorModalDialogContentComponent
   ],
   imports: [
     BrowserModule,
