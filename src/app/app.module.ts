@@ -54,10 +54,10 @@ import { BlockUIModule } from 'ng-block-ui';
 import {
   MatButtonModule,
   MatCardModule,
-  MatCheckboxModule,
+  MatCheckboxModule, MatGridListModule,
   MatInputModule,
   MatOptionModule, MatProgressSpinnerModule,
-  MatSelectModule
+  MatSelectModule, MatSliderModule, MatSlideToggleModule, MatStepperModule
 } from '@angular/material';
 
 import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
@@ -137,6 +137,10 @@ export function initConfig(config: AppConfig) {
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatSliderModule,
+    MatSlideToggleModule,
     MatProgressSpinnerModule,
     BsDropdownModule.forRoot()
   ],
