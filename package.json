@@ -1,6 +1,6 @@
 {
   "name": "ng2-phenomenal-portal",
-  "version": "3.0rc1",
+  "version": "3.0.0-rc1",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
