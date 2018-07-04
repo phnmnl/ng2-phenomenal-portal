@@ -5,7 +5,7 @@ import {
   HostListener,
   NgZone,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   Provider, ViewChild
 } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
@@ -40,11 +40,6 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   @ViewChild(DeployConfirmComponent) stepFiveComponent: DeployConfirmComponent;
 
 
-  private _phenomenal_logo = 'assets/img/logo/default_app.png';
-  private _openstack_logo = 'assets/img/logo/openstack_logo.png';
-  private _aws_logo = 'assets/img/logo/aws_logo.png';
-  private _gce_logo = 'assets/img/logo/gce_logo.png';
-
   private static cloudProviderLogo = {
     'aws': 'assets/img/logo/aws_logo.png',
     'gcp': 'assets/img/logo/gce_logo.png',
@@ -55,7 +50,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   errors = [];
 
   private _cloudProviderCollection: CloudProvider[];
-  private selectedCloudProvider: CloudProvider = null;
+  @Output() cloudProvider: CloudProvider = null;
 
   // Listener of query param changes
   private _queryParamChangeListener;
@@ -64,11 +59,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
 
   private smallScreen;
-  private onChangeScreenListener;
 
-  //
-  // firstFormGroup: FormGroup;
-  // secondFormGroup: FormGroup;
 
   currentUser: User = new User({});
 
@@ -107,9 +98,9 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     return this.stepFiveComponent ? this.stepFiveComponent.form : null;
   }
 
-  get cloudProvider(): CloudProvider {
-    return this.selectedCloudProvider;
-  }
+  // get cloudProvider(): CloudProvider {
+  //   return this.selectedCloudProvider;
+  // }
 
   ngOnInit() {
     // subscribe to query params
@@ -117,10 +108,10 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
       .queryParams
       .subscribe(params => {
         console.log("Component params", params);
-        this.selectedCloudProvider = null;
+        this.cloudProvider = null;
         // reset state
         this.initializeProviders();
-        this.selectedCloudProvider = null;
+        this.cloudProvider = null;
       });
     // subscribe to user updates
     this.userService.getObservableCurrentUser().subscribe(user => {
@@ -172,7 +163,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   }
 
   public isCloudProviderSelected() {
-    return this.selectedCloudProvider && this.selectedCloudProvider.isSelected > 0;
+    return this.cloudProvider && this.cloudProvider.isSelected > 0;
   }
 
   get cloudProviderLogo(): string {
@@ -185,10 +176,10 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('/cloud-research-environment-test');
     else {
       console.log("Selected provider", provider);
-      this.selectedCloudProvider = CloudProvider.clone(provider);
-      this.selectedCloudProvider.isSelected = 1;
-      console.log("[Stepper] Selected CloudProvider ", this.selectedCloudProvider);
-      console.log("Is Valid: ", this.formOne.valid);
+      this.cloudProvider = CloudProvider.clone(provider);
+      this.cloudProvider.isSelected = 1;
+      console.log("[Stepper] Selected CloudProvider ", this.cloudProvider);
+      this.router.navigated = false;
       this.cleanErrors();
       this.ngAfterViewChecked();
       this.stepper.next();

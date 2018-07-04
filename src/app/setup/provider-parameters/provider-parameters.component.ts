@@ -1,6 +1,6 @@
 import { CloudProvider } from "../cloud-provider";
 import { ErrorStateMatcher, MatButtonToggleChange } from "@angular/material";
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from "@angular/forms";
 import { CloudProviderMetadataService } from "../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service";
 
@@ -18,7 +18,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './provider-parameters.component.html',
   styleUrls: ['./provider-parameters.component.scss']
 })
-export class ProviderParametersComponent implements OnInit {
+export class ProviderParametersComponent implements OnInit, OnChanges {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
 
@@ -60,6 +60,10 @@ export class ProviderParametersComponent implements OnInit {
   externalNetworks = [];
   floatingIpPools = [];
 
+  // Auxiliary state info
+  private previousCloudProvider = null;
+  private serviceSubscriptions = [];
+
 
   constructor(private _formBuilder: FormBuilder,
               private cdRef: ChangeDetectorRef,
@@ -71,57 +75,81 @@ export class ProviderParametersComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.updateSubscriptions();
+  }
+
+
+  ngOnChanges() {
+    console.log("Updated provider", this.previousCloudProvider, this.cloudProvider);
+    if (this.previousCloudProvider != this.cloudProvider) {
+      this.previousCloudProvider = this.cloudProvider;
+      this.updateSubscriptions();
+    }
+  }
+
+  private updateSubscriptions() {
+
+    // clean old subscriptions
+    for (let s of this.serviceSubscriptions)
+      s.unsubscribe();
+    this.serviceSubscriptions.splice(0, this.serviceSubscriptions.length);
+
+    // update settings and subscriptions
     this.showNetworkSettings = this.cloudProvider.name === "ostack";
-
-
-    this.cloudProviderMetadataService.getRegions(this.cloudProvider).subscribe(
-      (data) => {
-        // console.log("Flavors****", data);
-        console.log("Trying to set REGIONS!!!");
-        this.regions.splice(0, this.flavorTypes.length);
-        this.regions = this.formatRegions(data);
-      },
-      (error) => {
-        console.error(error);
-      }
+    this.serviceSubscriptions.push(
+      this.cloudProviderMetadataService.getRegions(this.cloudProvider).subscribe(
+        (data) => {
+          // console.log("Flavors****", data);
+          console.log("Trying to set REGIONS!!!");
+          this.regions.splice(0, this.flavorTypes.length);
+          this.regions = this.formatRegions(data);
+        },
+        (error) => {
+          console.error(error);
+        }
+      )
     );
 
-
-    this.cloudProviderMetadataService.getFlavors(this.cloudProvider).subscribe(
-      (data) => {
-        // console.log("Flavors****", data);
-        console.log("Trying to set FLAVORS!!!");
-        this.flavorTypes.splice(0, this.flavorTypes.length);
-        this.flavorTypes = this.formatFlavors(data);
-      },
-      (error) => {
-        console.error(error);
-      }
+    this.serviceSubscriptions.push(
+      this.cloudProviderMetadataService.getFlavors(this.cloudProvider).subscribe(
+        (data) => {
+          // console.log("Flavors****", data);
+          console.log("Trying to set FLAVORS!!!");
+          this.flavorTypes.splice(0, this.flavorTypes.length);
+          this.flavorTypes = this.formatFlavors(data);
+        },
+        (error) => {
+          console.error(error);
+        }
+      )
     );
-
 
     if (this.cloudProvider.name === 'ostack') {
-      this.cloudProviderMetadataService.getExternalNetworks(this.cloudProvider).subscribe(
-        (data) => {
-          // console.log("Flavors****", data);
-          console.log("Trying to set Networks!!!");
-          this.externalNetworks.splice(0, this.flavorTypes.length);
-          this.externalNetworks = this.formatExternalNetworks(data);
-        },
-        (error) => {
-          console.error(error);
-        }
+      this.serviceSubscriptions.push(
+        this.cloudProviderMetadataService.getExternalNetworks(this.cloudProvider).subscribe(
+          (data) => {
+            // console.log("Flavors****", data);
+            console.log("Trying to set Networks!!!");
+            this.externalNetworks.splice(0, this.flavorTypes.length);
+            this.externalNetworks = this.formatExternalNetworks(data);
+          },
+          (error) => {
+            console.error(error);
+          }
+        )
       );
-      this.cloudProviderMetadataService.getFloatingIpPools(this.cloudProvider).subscribe(
-        (data) => {
-          // console.log("Flavors****", data);
-          console.log("Trying to set FloatingIpPools !!!");
-          this.floatingIpPools.splice(0, this.flavorTypes.length);
-          this.floatingIpPools = this.formatFloatingIpPools(data);
-        },
-        (error) => {
-          console.error(error);
-        }
+      this.serviceSubscriptions.push(
+        this.cloudProviderMetadataService.getFloatingIpPools(this.cloudProvider).subscribe(
+          (data) => {
+            // console.log("Flavors****", data);
+            console.log("Trying to set FloatingIpPools !!!");
+            this.floatingIpPools.splice(0, this.flavorTypes.length);
+            this.floatingIpPools = this.formatFloatingIpPools(data);
+          },
+          (error) => {
+            console.error(error);
+          }
+        )
       );
       this.showNetworkSettings = true;
       this.showRegions = false;
@@ -158,7 +186,7 @@ export class ProviderParametersComponent implements OnInit {
   buildForm(): void {
     let configControls = {};
     for (let f of Object.keys(this.formFields)) {
-      if(this.cloudProvider.name === 'ostack' && f === "region") continue;
+      if (this.cloudProvider.name === 'ostack' && f === "region") continue;
       configControls[f] = new FormControl(this.cloudProvider.credential[f], [Validators.required]);
     }
     this.formControls = configControls;
