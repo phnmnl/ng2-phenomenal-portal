@@ -45,11 +45,11 @@
 
             <div>
               <div class="deployment-provider" *ngIf="deployment.cloudProviderName">
-                <img *ngIf="deployment.cloudProviderName === 'AWS'" mat-card-image
+                <img *ngIf="deployment.useAwsProvider()" mat-card-image
                      src="{{aws_logo}}" class="provider-image">
-                <img *ngIf="deployment.cloudProviderName === 'GCP'" mat-card-image
+                <img *ngIf="deployment.useGcpProvider()" mat-card-image
                      src="{{gce_logo}}" class="provider-image">
-                <img *ngIf="deployment.cloudProviderName === 'OSTACK'" mat-card-image
+                <img *ngIf="deployment.useOStackProvider()" mat-card-image
                      src="{{openstack_logo}}" class="provider-image">
               </div>
 
