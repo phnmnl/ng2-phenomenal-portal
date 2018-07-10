@@ -44,8 +44,6 @@ import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
 import { UserService } from './shared/service/user/user.service';
-import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
-
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { OpenStackMetadataService } from './shared/service/cloud-provider-metadata/open-stack-metadata.service';
 import { ErrorService as PhnErrorService } from './shared/service/error/error.service';
@@ -64,7 +62,6 @@ import {
 
 import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
 import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
-import { TestCreComponent } from './static-page/test-cre/test-cre.component';
 import { DeployementService } from "./shared/service/deployer/deployement.service";
 import { LogMonitorComponent } from './log-monitor/log-monitor.component';
 import {
@@ -126,9 +123,7 @@ export function initConfig(config: AppConfig) {
     NgbdModalContentComponent,
     ProgressBarComponent,
     CreDashboardComponent,
-    CreRegistrationFormComponent,
     TermAndConditionComponent,
-    TestCreComponent,
     LogMonitorComponent,
     ModalDialogComponent,
     ModalDialogContentComponent,
