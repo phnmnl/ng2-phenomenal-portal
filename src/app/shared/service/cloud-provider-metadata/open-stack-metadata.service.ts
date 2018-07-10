@@ -5,7 +5,7 @@ import { AppConfig } from '../../../app.config';
 import { OpenstackConfig } from './openstack-config';
 import { OpenStackCredentials } from "./OpenStackCredentials";
 import { ICloudProviderMetadataService } from "./cloud-provider-metadata-service";
-import { CloudProvider } from "../../../setup/cloud-provider";
+import { CloudProvider } from "../deployer/cloud-provider";
 import { Subject } from "rxjs";
 
 

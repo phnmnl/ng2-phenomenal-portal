@@ -1,4 +1,4 @@
-import { CloudProvider } from "../../../setup/cloud-provider";
+import { CloudProvider } from "./cloud-provider";
 
 export class ProviderRegistry {
 

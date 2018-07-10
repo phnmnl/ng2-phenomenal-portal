@@ -5,7 +5,7 @@ import { TokenService } from 'ng2-cloud-portal-service-lib';
 import { AppConfig } from '../../../app.config';
 import { OpenstackConfig } from './openstack-config';
 import { OpenStackCredentials } from "./OpenStackCredentials";
-import { CloudProvider } from "../../../setup/cloud-provider";
+import { CloudProvider } from "../deployer/cloud-provider";
 import { OpenStackMetadataService } from "./open-stack-metadata.service";
 import { ICloudProviderMetadataService } from "./cloud-provider-metadata-service";
 import { AwsMetadataService } from "./aws-metadata.service";

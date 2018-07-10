@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { OpenStackCredentials } from "../../../shared/service/cloud-provider-metadata/OpenStackCredentials";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OpenStackMetadataService } from "../../../shared/service/cloud-provider-metadata/open-stack-metadata.service";
-import { CloudProvider } from "../../cloud-provider";
+import { CloudProvider } from "../../../shared/service/deployer/cloud-provider";
 import { OpenstackConfig } from "../../../shared/service/cloud-provider-metadata/openstack-config";
 import { passwordValidator } from "../../validator";
 import { BaseProviderCredentialsComponent } from "../base-provider-credentials/base-provider-credentials.component";

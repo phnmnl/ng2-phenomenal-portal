@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { CloudProvider } from "../../cloud-provider";
 import { AWSError } from "aws-sdk/lib/error";
 import { DeploymentConfigurationParameters } from "../../deployment-configuration-parameters";
+import { CloudProvider } from "../../../shared/service/deployer/cloud-provider";
 import { Observable, Subject } from "rxjs";
 
 // @Component({

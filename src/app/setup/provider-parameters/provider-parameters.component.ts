@@ -1,4 +1,4 @@
-import { CloudProvider } from "../cloud-provider";
+import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
 import { ErrorStateMatcher, MatButtonToggleChange } from "@angular/material";
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from "@angular/forms";

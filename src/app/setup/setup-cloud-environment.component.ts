@@ -9,7 +9,7 @@ import {
   Provider, ViewChild
 } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
-import { CloudProvider } from './cloud-provider';
+import { CloudProvider } from '../shared/service/deployer/cloud-provider';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from "../shared/service/user/user";

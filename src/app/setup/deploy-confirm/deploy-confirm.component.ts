@@ -3,7 +3,7 @@ import { User } from "../../shared/service/user/user";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Deployment } from "../../shared/service/deployer/deployment";
 import { matchingPasswords, passwordValidator } from "../validator";
-import { CloudProvider } from "../cloud-provider";
+import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
 import { AppConfig } from "../../app.config";
 import { DeployementService } from "../../shared/service/deployer/deployement.service";
 import { GalaxyUser } from "../../shared/service/galaxy/galaxy-user";

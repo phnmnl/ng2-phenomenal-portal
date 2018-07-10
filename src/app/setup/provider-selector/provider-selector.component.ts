@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, HostListener, NgZone, OnIni
 import { User } from "../../shared/service/user/user";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProviderRegistry } from "../../shared/service/deployer/provider-registry";
-import { CloudProvider } from "../cloud-provider";
+import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
 import { ApplicationService, CredentialService, TokenService } from "ng2-cloud-portal-service-lib";
 import { UserService } from "../../shared/service/user/user.service";
 import { ActivatedRoute, Router } from "@angular/router";

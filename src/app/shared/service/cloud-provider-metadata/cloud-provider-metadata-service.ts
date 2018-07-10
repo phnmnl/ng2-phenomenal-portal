@@ -1,4 +1,4 @@
-import { CloudProvider } from "../../../setup/cloud-provider";
+import { CloudProvider } from "../deployer/cloud-provider";
 import { Observable } from "rxjs";
 
 export interface ICloudProviderMetadataService {
