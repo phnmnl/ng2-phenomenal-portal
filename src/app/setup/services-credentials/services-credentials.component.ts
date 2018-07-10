@@ -68,7 +68,9 @@ export class ServicesCredentialsComponent implements OnInit {
       this.currentUser = <User> user;
       if (user) {
         console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
-        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser)
+        console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser);
+        // set the email of the Galaxy user
+        this.cloudProvider.credential.galaxy_admin_email = this.userService.getCurrentUser().email;
       }
     });
   }
