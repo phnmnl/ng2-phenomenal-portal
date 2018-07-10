@@ -87,6 +87,8 @@ import { DeployConfirmComponent } from './setup/deploy-confirm/deploy-confirm.co
 import { OpenstackProviderCredentialsComponent } from './setup/provider-credentials/openstack-provider-credentials/openstack-provider-credentials.component';
 import { GcpProviderCredentialsComponent } from './setup/provider-credentials/gcp-provider-credentials/gcp-provider-credentials.component';
 import { GcpMetadataService } from "./shared/service/cloud-provider-metadata/gcp-metadata.service";
+import { PublicGalaxyInstanceComponent } from './public-galaxy-instance/public-galaxy-instance.component';
+import { GalaxyPublicInstanceRegistrationComponent } from './public-galaxy-instance/galaxy-public-instance-registration/galaxy-public-instance-registration.component';
 
 /**
  * To set the global environment variables
@@ -139,6 +141,8 @@ export function initConfig(config: AppConfig) {
     DeployConfirmComponent,
     OpenstackProviderCredentialsComponent,
     GcpProviderCredentialsComponent,
+    PublicGalaxyInstanceComponent,
+    GalaxyPublicInstanceRegistrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -177,7 +181,6 @@ export function initConfig(config: AppConfig) {
     AcceptedTermsGuard,
     CanDeactivateGuard,
     DeployementService,
-    // PhenomenalTokenService,
     ApplicationService,
     AuthService,
     CloudProviderParametersService,

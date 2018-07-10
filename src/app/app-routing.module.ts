@@ -15,6 +15,7 @@ import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
 import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
 import { LogMonitorComponent } from "./log-monitor/log-monitor.component";
 import { CanDeactivateGuard } from "./shared/guard/CanDeactivateGuard";
+import { PublicGalaxyInstanceComponent } from "./public-galaxy-instance/public-galaxy-instance.component";
 
 const routes: Routes = [
   {path: 'app-library', loadChildren: 'app/application-library/application-library.module#ApplicationLibraryModule'},
@@ -23,11 +24,13 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'logs', component: LogMonitorComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
   {path: 'term-and-condition', component: TermAndConditionComponent, canActivate: [UserAuthenticatedGuard]},
+  {path: 'cloud-research-environment-test', component: PublicGalaxyInstanceComponent, canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard]},
   {path: 'cloud-research-environment', component: CreDashboardComponent},
   {path: 'cloud-research-environment-dashboard', component: CreDashboardComponent,
     canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard],
     canDeactivate: [CanDeactivateGuard]
   },
+  // {path: 'cloud-research-environment-registration', component: PublicGalaxyInstanceComponent},
   {
     path: 'cloud-research-environment-setup',
     component: SetupCloudEnvironmentComponent,

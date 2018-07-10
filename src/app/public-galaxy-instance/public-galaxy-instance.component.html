@@ -1,0 +1,62 @@
+<div class="container text-xs-center">
+  <div class="row">
+    <h3 class="h3-responsive">
+      Galaxy Workflow Manager <br>
+      on our Public Cloud Research Environment
+    </h3>
+    <br>
+
+    <div class="col-lg-12">
+      <mat-card>
+        <img mat-card-image src="{{publicProvider.logo}}" class="card-image">
+        <mat-card-content>
+          <h5 class="card-title">
+            <strong>{{publicProvider.title}}</strong>
+            <a href="{{publicProvider.help}}" target="_blank">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+            </a>
+          </h5>
+
+          <div>
+            <p>{{publicProvider.description}}</p>
+            <p><strong>{{publicProvider.paymentDescription}}</strong></p>
+            <p>Cloud location: <strong>{{publicProvider.locationDescription}}</strong></p>
+            <p>Providers: <strong>{{publicProvider.providerDescription}}</strong></p>
+
+            <div *ngIf="user && !user.hasGalaxyAccount">
+              <ph-galaxy-public-instance-registration [cloudProvider]="provider">
+              </ph-galaxy-public-instance-registration>
+            </div>
+
+            <div *ngIf="user && user.hasGalaxyAccount" class="galaxy-instance-login-message-container">
+              <h6>
+                Your email <span class="font-weight-bold font-italic">{{ user.email }}</span> already exists
+                in the Galaxy instance of the Public Cloud Research Environment.
+              </h6>
+              <br>
+              <br>
+              <h5>
+                You can access to the PhenoMeNal Galaxy instance <br>
+                by pressing the <span class="font-weight-bold">Login</span> button.
+              </h5>
+            </div>
+
+            <div class="mat-card-control-buttons">
+              <div *ngIf="user && user.hasGalaxyAccount">
+                <a href="{{galaxy_instance_url}}" target="_blank">
+                  <button mat-raised-button color="warn">Login</button>
+                </a>
+              </div>
+              <div *ngIf="form && user && !user.hasGalaxyAccount">
+                <button mat-raised-button [disabled]="!form.valid || registering"
+                        (click)="registerGalaxyAccount()" color="primary">Register
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
