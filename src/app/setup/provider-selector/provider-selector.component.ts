@@ -103,11 +103,7 @@ export class ProviderSelectorComponent implements OnInit {
   get cloudProviderCollection(): CloudProvider[] {
     return this._cloudProviderCollection;
   }
-
-  public isCloudProviderSelected() {
-    return this.selectedCloudProvider && this.selectedCloudProvider.isSelected > 0;
-  }
-
+  
   selectCloudProvider(provider: CloudProvider) {
     if (provider.name === "phenomenal")
       this.router.navigateByUrl('/cloud-research-environment-test');
