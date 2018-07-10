@@ -162,10 +162,6 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     return this._cloudProviderCollection;
   }
 
-  public isCloudProviderSelected() {
-    return this.cloudProvider && this.cloudProvider.isSelected > 0;
-  }
-
   get cloudProviderLogo(): string {
     return !this.cloudProvider ? "" : SetupCloudEnvironmentComponent.cloudProviderLogo[this.cloudProvider.name];
   }
@@ -177,7 +173,6 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     else {
       console.log("Selected provider", provider);
       this.cloudProvider = CloudProvider.clone(provider);
-      this.cloudProvider.isSelected = 1;
       console.log("[Stepper] Selected CloudProvider ", this.cloudProvider);
       this.router.navigated = false;
       this.cleanErrors();

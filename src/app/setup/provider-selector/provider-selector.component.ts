@@ -114,8 +114,6 @@ export class ProviderSelectorComponent implements OnInit {
     else {
       console.log("Selected provider", provider);
       this.selectedCloudProvider = CloudProvider.clone(provider);
-      this.selectedCloudProvider.isSelected = 1;
-      console.log("Selected CloudProvider", this.selectedCloudProvider);
       this.cloudProviderName = provider.name;
       console.log("Event emitted!");
     }

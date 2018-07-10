@@ -1,15 +1,8 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AWSError } from "aws-sdk/lib/error";
-import { DeploymentConfigurationParameters } from "../../deployment-configuration-parameters";
+import { ChangeDetectorRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { CloudProvider } from "../../../shared/service/deployer/cloud-provider";
 import { Observable, Subject } from "rxjs";
 
-// @Component({
-//   selector: 'ph-base-provider-credentials',
-//   templateUrl: './base-provider-credentials.component.html',
-//   styleUrls: ['./base-provider-credentials.component.scss']
-// })
 export abstract class BaseProviderCredentialsComponent implements OnInit {
 
   @Input() cloudProvider: CloudProvider;
@@ -78,7 +71,6 @@ export abstract class BaseProviderCredentialsComponent implements OnInit {
 
   onSubmit() {
     console.log("Submitting form");
-    // Validate AWS credentials before continuing
     let credentials = this.cloudProvider.credential;
     if (credentials.default_region && credentials.access_key_id && credentials.secret_access_key) {
       this.validateCredentials();

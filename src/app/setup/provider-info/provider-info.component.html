@@ -7,13 +7,4 @@
 <div>
   <p>{{cloudProvider.description}}</p>
   <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-
-  <div *ngIf="cloudProvider.name === 'phenomenal'">
-    <a href="{{galaxy_instance_url}}" target="_blank">
-      <button mat-raised-button color="warn">Login</button>
-    </a>
-    <button *ngIf="user && !user.hasGalaxyAccount" mat-raised-button (click)="cloudProvider.isSelected=2;"
-            color="primary">Register
-    </button>
-  </div>
 </div>
