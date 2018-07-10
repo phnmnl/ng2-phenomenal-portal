@@ -1,27 +1,19 @@
-import { Subscription } from "rxjs/Subscription";
-import { DeployementService } from "./deployement.service";
-import { DeploymentConfiguration } from "./deployementConfiguration";
 import {
   Application,
-  CloudProviderParameters, Configuration, ConfigurationService,
+  CloudProviderParameters, Configuration, ConfigurationDeploymentParameter, ConfigurationService,
   Deployment as BaseDeployment,
   DeploymentAssignedInput,
   DeploymentAssignedParameter,
   DeploymentAttachedVolume, DeploymentGeneratedOutput
 } from "ng2-cloud-portal-service-lib";
 import { CloudProviderParametersCopy } from "ng2-cloud-portal-service-lib/dist/services/cloud-provider-parameters/cloud-provider-parameters-copy";
-import { BaseDeploymentConfigurationParameters } from "./base-deployment-configuration-parameters";
-import { PipelineStatus } from "./pipeline-status";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs";
 import { AppConfig } from "../../../app.config";
-import { AwsDeploymentConfigurationParameters } from "./aws-deployment-configuration-parameters";
-import { DeploymentConfigurationParameters } from "../../../setup/deployment-configuration-parameters";
+import { BaseDeploymentConfigurationParameters } from "./base-deployment-configuration-parameters";
 import { DeploymentStatusTransition } from "./deployment-status-transition";
 import { DeploymentStatus } from "./deployment-status";
-import { Response } from "@angular/http";
-import { GcpDeploymentConfigurationParameters } from "./gcp-deployment-configuration-parameters";
-import { OstackDeploymentConfigurationParameters } from "./ostack-deployment-configuration-parameters";
+
 
 export class Deployment implements BaseDeployment {
 
@@ -79,16 +71,18 @@ export class Deployment implements BaseDeployment {
   // configuration
   private config: AppConfig;
 
+
   // Aux references
   application: Application;
-  cloudProviderParameters: object;
-  deploymentParameters: object;
+  cloudProviderParameters: CloudProviderParameters;
+  deploymentParameters: ConfigurationDeploymentParameter;
 
 
   constructor(config: AppConfig, configurationParameters?: BaseDeploymentConfigurationParameters) {
     this.config = config;
+    console.log("Configuration parameters", this.config, configurationParameters);
     if (configurationParameters) {
-      this.configurationName = configurationParameters.getDeploymentName();
+      this.configurationName = configurationParameters.deploymentName;
       this.configurationParameters = configurationParameters;
     }
     this.repoUrl = config.getConfig('deployment_repo_url');
@@ -277,8 +271,21 @@ export class Deployment implements BaseDeployment {
   get cloudProviderName() {
     return this.cloudProviderParametersCopy ?
       this.cloudProviderParametersCopy.cloudProvider :
-      this.configurationParameters ? this.configurationParameters.getProviderName() : "";
+      this.configurationParameters ? this.configurationParameters.provider : "";
   }
+
+  public useAwsProvider(){
+    return this.cloudProviderName.toLowerCase() === "aws";
+  }
+
+  public useOStackProvider(){
+    return this.cloudProviderName.toLowerCase() === "ostack";
+  }
+
+  public useGcpProvider(){
+    return this.cloudProviderName.toLowerCase() === "gcp";
+  }
+
 
   public getConfiguration() {
     return this.configuration;
@@ -329,22 +336,8 @@ export class Deployment implements BaseDeployment {
     return deployment;
   }
 
-  public static getDeploymentConfiguration(config: AppConfig, parameters: DeploymentConfigurationParameters) {
-    let repoUrl: string = config.getConfig('deployment_repo_url');
-    let use_https: boolean = config.getConfig('enable_https');
-    if (parameters.provider === "AWS")
-      return new AwsDeploymentConfigurationParameters(parameters, repoUrl);
-    else if (parameters.provider === "GCP")
-      return new GcpDeploymentConfigurationParameters(parameters, repoUrl);
-    else if (parameters.provider === "OSTACK")
-      return new OstackDeploymentConfigurationParameters(parameters, repoUrl);
-    throw new Error("Invalid provider" + parameters.provider);
-  }
-
-  public static buildFromConfigurationParameters(config: AppConfig, parameters: DeploymentConfigurationParameters): Deployment {
-    // TODO: fix the username
-    // parameters.username = this.credentialService.getUsername();
-    return new Deployment(config, Deployment.getDeploymentConfiguration(config, parameters));
+  public static buildFromConfigurationParameters(config: AppConfig, parameters: BaseDeploymentConfigurationParameters): Deployment {
+    return new Deployment(config, parameters);
   }
 
   private static setSerivcesinfo(deployment: Deployment) {
