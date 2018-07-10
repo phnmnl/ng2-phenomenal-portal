@@ -45,10 +45,10 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     'master_instance_type': "Instance type of the Master Node",
     'node_instance_type': "Instance type of Worker Nodes",
     'node_count': "Number of worker nodes",
-    'gluster_instance_type': "Instance type of GlusterFS nodes",
-    'gluster_count': "Number of GlusterFS nodes",
-    'gluster_extra_disk_size': "Disk size of the GlusterFS",
-    'pvc_size': "Disk size of your CRE",
+    'glusternode_instance_type': "Instance type of GlusterFS nodes",
+    'glusternode_count': "Number of GlusterFS nodes",
+    'glusternode_extra_disk_size': "Disk size of the GlusterFS",
+    'phenomenal_pvc_size': "Disk size of your CRE",
     'phenomenal_version': "PhenoMeNal Version",
   };
 
