@@ -58,6 +58,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   @ViewChild(MatStepper) stepper: MatStepper;
 
 
+  private disableDeployButton: boolean = false;
   private smallScreen;
 
 
@@ -193,9 +194,15 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   }
 
   deploy() {
+    // disable deploy button
+    this.disableDeployButton = true;
+    // start to deploy a CRE
+    console.log("Starting new deployment using the cloud provider", this.cloudProvider);
     this.cloudProvider.credential.username = this.credentialsService.getUsername();
     let deployment = Deployment.buildFromConfigurationParameters(this.appConfig, this.cloudProvider.credential);
     this.deploymentService.deploy(deployment);
+    // enable deploy button
+    this.disableDeployButton = false;
     this.router.navigateByUrl('/cloud-research-environment-dashboard');
   }
 
