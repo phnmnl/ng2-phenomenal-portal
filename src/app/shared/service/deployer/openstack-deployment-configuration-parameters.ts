@@ -1,9 +1,9 @@
-import { BaseDeploymentConfigurationParameters } from "./base-deployment-configuration-parameters";
 import { OpenStackCredentials } from "../cloud-provider-metadata/OpenStackCredentials";
 import { OpenStackMetadataService } from "../cloud-provider-metadata/open-stack-metadata.service";
+import { BaseDeploymentConfigurationParameters } from "./base-deployment-configuration-parameters";
 
 
-export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigurationParameters {
+export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentConfigurationParameters {
 
   private static DEFAULT_INPUTS = {
     master_as_edge: 'true',
@@ -14,11 +14,11 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
   };
 
   constructor(config?: object) {
-    super(Object.assign(GcpDeploymentConfigurationParameters.defaults, config ? config : {}));
+    super(Object.assign(OpenstackDeploymentConfigurationParameters.defaults, config ? config : {}));
   }
 
   public get provider(): string {
-    return "GCP";
+    return "OSTACK";
   }
 
   public static get defaults(): object {
@@ -28,8 +28,8 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
   public get inputs() {
     return {
       cluster_prefix: this.clusterPrefix,
-      gce_project: this.tenant_name,
-      gce_zone: this.default_region,
+      floating_ip_pool: this.ip_pool,
+      external_network_uuid: this.network,
       master_as_edge: this.master_as_edge,
       master_flavor: this.master_instance_type,
       node_flavor: this.node_instance_type,
@@ -44,20 +44,24 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
   }
 
   public get parameters() {
+    let cc: OpenStackCredentials = OpenStackMetadataService.parseRcFile(this.rc_file, this.password);
     return {
       'name': this.deploymentName,
       'cloudProvider': this.provider,
       'fields': [
         {'key': 'OS_USERNAME', 'value': this.username},
         {'key': 'OS_TENANT_NAME', 'value': this.tenant_name},
+        {'key': 'OS_AUTH_URL', 'value': this.url},
+        {'key': 'OS_PASSWORD', 'value': this.password},
         {'key': 'OS_PROJECT_NAME', 'value': this.tenant_name},
-        {'key': 'GOOGLE_CREDENTIALS', 'value': this.rc_file.replace(/\\n/g, '\\n')},
-        {'key': 'GCE_ZONE', 'value': this.default_region},
+        {'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)},
         {'key': 'TF_VAR_galaxy_admin_email', 'value': this.galaxy_admin_email},
         {'key': 'TF_VAR_galaxy_admin_password', 'value': this.galaxy_admin_password},
         {'key': 'TF_VAR_jupyter_password', 'value': this.galaxy_admin_password},
         {'key': 'TF_VAR_dashboard_username', 'value': this.galaxy_admin_email},
         {'key': 'TF_VAR_dashboard_password', 'value': this.galaxy_admin_password},
+        {'key': 'TF_VAR_floating_ip_pool', 'value': this.ip_pool},
+        {'key': 'TF_VAR_external_network_uuid', 'value': this.network}
       ]
     }
   }
