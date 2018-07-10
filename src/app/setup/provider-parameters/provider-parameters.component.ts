@@ -3,6 +3,7 @@ import { ErrorStateMatcher, MatButtonToggleChange } from "@angular/material";
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from "@angular/forms";
 import { CloudProviderMetadataService } from "../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service";
+import { AppConfig } from "../../app.config";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -67,9 +68,10 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
 
   constructor(private _formBuilder: FormBuilder,
               private cdRef: ChangeDetectorRef,
+              private appConfig: AppConfig,
               private cloudProviderMetadataService: CloudProviderMetadataService) {
     this.phenVersions = [
-      {value: 'v18.01-dalcotidine', displayValue: 'v18.01 Dalcotidine'}
+      {value: this.appConfig.getConfig('deployment_repo_url'), displayValue: 'v18.01 Dalcotidine'}
     ];
   }
 
@@ -95,7 +97,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.serviceSubscriptions.splice(0, this.serviceSubscriptions.length);
 
     // set the latest PhenoMeNal version as default
-    this.cloudProvider.credential.phenomenal_version="v18.01-dalcotidine";
+    this.cloudProvider.credential.phenomenal_version = this.appConfig.getConfig('deployment_repo_url');
 
     // update settings and subscriptions
     this.showNetworkSettings = this.cloudProvider.name === "ostack";
@@ -106,6 +108,8 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
           console.log("Trying to set REGIONS!!!");
           this.regions.splice(0, this.flavorTypes.length);
           this.regions = this.formatRegions(data);
+          if (this.regions.length > 0)
+            this.cloudProvider.credential.default_region = this.regions[0].value;
         },
         (error) => {
           console.error(error);
@@ -120,6 +124,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
           console.log("Trying to set FLAVORS!!!");
           this.flavorTypes.splice(0, this.flavorTypes.length);
           this.flavorTypes = this.formatFlavors(data);
+          this.shared_instance_type = this.cloudProvider.credential.master_instance_type;
         },
         (error) => {
           console.error(error);
@@ -165,7 +170,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     // propagate the change to the specific node types
     this.cloudProvider.credential.master_instance_type = this.shared_instance_type;
     this.cloudProvider.credential.node_instance_type = this.shared_instance_type;
-    this.cloudProvider.credential.gluster_instance_type = this.shared_instance_type;
+    this.cloudProvider.credential.glusternode_instance_type = this.shared_instance_type;
     this.ngAfterViewChecked();
   }
 
