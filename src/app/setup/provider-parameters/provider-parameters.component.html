@@ -139,8 +139,8 @@
           <mat-form-field class="input-width">
             <mat-select placeholder="Select an instance type for your GlusterFS nodes"
                         style="display: inline-block; text-align: left;"
-                        [formControl]="formControls['gluster_instance_type']"
-                        required [(ngModel)]="cloudProvider.credential.gluster_instance_type">
+                        [formControl]="formControls['glusternode_instance_type']"
+                        required [(ngModel)]="cloudProvider.credential.glusternode_instance_type">
               <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
                 {{i.displayValue}}
               </mat-option>
@@ -151,8 +151,8 @@
 
         <mat-grid-tile [colspan]="1">
           <mat-slider aria-label="Number of GlusterFS nodes" #slider4
-                      [(ngModel)]="cloudProvider.credential.gluster_count"
-                      [formControl]="formControls['gluster_count']"
+                      [(ngModel)]="cloudProvider.credential.glusternode_count"
+                      [formControl]="formControls['glusternode_count']"
                       thumbLabel tickInterval="1" min="1" max="100"></mat-slider>
           {{ slider4.value }} nodes
         </mat-grid-tile>
@@ -161,8 +161,8 @@
         <mat-grid-tile [colspan]="2" class="input-width">
           <span class="font-weight-bold" style="width: 200px;">GlusterFS Disk Size:</span>
           <mat-slider aria-label="GlusterFS Disk Size" #slider1
-                      [formControl]="formControls['gluster_extra_disk_size']"
-                      [(ngModel)]="cloudProvider.credential.gluster_extra_disk_size"
+                      [formControl]="formControls['glusternode_extra_disk_size']"
+                      [(ngModel)]="cloudProvider.credential.glusternode_extra_disk_size"
                       thumbLabel tickInterval="2" min="100" max="1000"></mat-slider>
           {{ slider1.value }} GB
         </mat-grid-tile>
@@ -170,8 +170,8 @@
         <mat-grid-tile [colspan]="2" class="input-width">
           <span class="font-weight-bold" style="width: 80px;">PVC Size:</span>
           <mat-slider aria-label="PVC Size" #slider2
-                      [(ngModel)]="cloudProvider.credential.pvc_size"
-                      [formControl]="formControls['pvc_size']"
+                      [(ngModel)]="cloudProvider.credential.phenomenal_pvc_size"
+                      [formControl]="formControls['phenomenal_pvc_size']"
                       thumbLabel tickInterval="2" min="100" max="1000"></mat-slider>
           {{ slider2.value }} GB
         </mat-grid-tile>

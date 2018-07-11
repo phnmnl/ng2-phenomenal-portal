@@ -44,8 +44,6 @@ import { ClipboardModule } from 'ngx-clipboard';
 import 'hammerjs';
 import { RouterModule } from '@angular/router';
 import { UserService } from './shared/service/user/user.service';
-import { CreRegistrationFormComponent } from './setup/cre-registration-form/cre-registration-form.component';
-
 import { TermAndConditionComponent } from './login/term-and-condition/term-and-condition.component';
 import { OpenStackMetadataService } from './shared/service/cloud-provider-metadata/open-stack-metadata.service';
 import { ErrorService as PhnErrorService } from './shared/service/error/error.service';
@@ -64,7 +62,6 @@ import {
 
 import { UserAuthenticatedGuard } from "./shared/guard/UserAuthenticatedGuard";
 import { AcceptedTermsGuard } from "./shared/guard/AcceptedTermsGuard";
-import { TestCreComponent } from './static-page/test-cre/test-cre.component';
 import { DeployementService } from "./shared/service/deployer/deployement.service";
 import { LogMonitorComponent } from './log-monitor/log-monitor.component';
 import {
@@ -90,6 +87,8 @@ import { DeployConfirmComponent } from './setup/deploy-confirm/deploy-confirm.co
 import { OpenstackProviderCredentialsComponent } from './setup/provider-credentials/openstack-provider-credentials/openstack-provider-credentials.component';
 import { GcpProviderCredentialsComponent } from './setup/provider-credentials/gcp-provider-credentials/gcp-provider-credentials.component';
 import { GcpMetadataService } from "./shared/service/cloud-provider-metadata/gcp-metadata.service";
+import { PublicGalaxyInstanceComponent } from './public-galaxy-instance/public-galaxy-instance.component';
+import { GalaxyPublicInstanceRegistrationComponent } from './public-galaxy-instance/galaxy-public-instance-registration/galaxy-public-instance-registration.component';
 
 /**
  * To set the global environment variables
@@ -126,9 +125,7 @@ export function initConfig(config: AppConfig) {
     NgbdModalContentComponent,
     ProgressBarComponent,
     CreDashboardComponent,
-    CreRegistrationFormComponent,
     TermAndConditionComponent,
-    TestCreComponent,
     LogMonitorComponent,
     ModalDialogComponent,
     ModalDialogContentComponent,
@@ -144,6 +141,8 @@ export function initConfig(config: AppConfig) {
     DeployConfirmComponent,
     OpenstackProviderCredentialsComponent,
     GcpProviderCredentialsComponent,
+    PublicGalaxyInstanceComponent,
+    GalaxyPublicInstanceRegistrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -182,7 +181,6 @@ export function initConfig(config: AppConfig) {
     AcceptedTermsGuard,
     CanDeactivateGuard,
     DeployementService,
-    // PhenomenalTokenService,
     ApplicationService,
     AuthService,
     CloudProviderParametersService,

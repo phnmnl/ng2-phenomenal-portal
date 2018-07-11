@@ -9,7 +9,7 @@ import {
   Provider, ViewChild
 } from '@angular/core';
 import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
-import { CloudProvider } from './cloud-provider';
+import { CloudProvider } from '../shared/service/deployer/cloud-provider';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from "../shared/service/user/user";
@@ -58,6 +58,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   @ViewChild(MatStepper) stepper: MatStepper;
 
 
+  private disableDeployButton: boolean = false;
   private smallScreen;
 
 
@@ -162,10 +163,6 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     return this._cloudProviderCollection;
   }
 
-  public isCloudProviderSelected() {
-    return this.cloudProvider && this.cloudProvider.isSelected > 0;
-  }
-
   get cloudProviderLogo(): string {
     return !this.cloudProvider ? "" : SetupCloudEnvironmentComponent.cloudProviderLogo[this.cloudProvider.name];
   }
@@ -177,7 +174,6 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     else {
       console.log("Selected provider", provider);
       this.cloudProvider = CloudProvider.clone(provider);
-      this.cloudProvider.isSelected = 1;
       console.log("[Stepper] Selected CloudProvider ", this.cloudProvider);
       this.router.navigated = false;
       this.cleanErrors();
@@ -198,9 +194,15 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   }
 
   deploy() {
+    // disable deploy button
+    this.disableDeployButton = true;
+    // start to deploy a CRE
+    console.log("Starting new deployment using the cloud provider", this.cloudProvider);
     this.cloudProvider.credential.username = this.credentialsService.getUsername();
     let deployment = Deployment.buildFromConfigurationParameters(this.appConfig, this.cloudProvider.credential);
     this.deploymentService.deploy(deployment);
+    // enable deploy button
+    this.disableDeployButton = false;
     this.router.navigateByUrl('/cloud-research-environment-dashboard');
   }
 

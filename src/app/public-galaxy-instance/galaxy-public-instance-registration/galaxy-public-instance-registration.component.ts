@@ -1,31 +1,37 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CloudProvider } from '../cloud-provider';
-import { GalaxyUser } from '../../shared/service/galaxy/galaxy-user';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { emailValidator, matchingPasswords, passwordValidator } from '../validator';
-import { UserService } from "../../shared/service/user/user.service";
-import { AppConfig } from "../../app.config";
+import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
 import { User } from "../../shared/service/user/user";
-import { DeployementService } from "../../shared/service/deployer/deployement.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AppConfig } from "../../app.config";
 import { Router } from "@angular/router";
-import { Deployment } from "../../shared/service/deployer/deployment";
+import { UserService } from "../../shared/service/user/user.service";
 import { CredentialService } from "ng2-cloud-portal-service-lib";
-
+import { DeployementService } from "../../shared/service/deployer/deployement.service";
+import { matchingPasswords, passwordValidator } from "../../setup/validator";
+import { GalaxyUser } from "../../shared/service/galaxy/galaxy-user";
+import { Deployment } from "../../shared/service/deployer/deployment";
 
 @Component({
-  selector: 'ph-cre-registration-form',
-  templateUrl: './cre-registration-form.component.html',
-  styleUrls: ['./cre-registration-form.component.scss']
+  selector: 'ph-galaxy-public-instance-registration',
+  templateUrl: './galaxy-public-instance-registration.component.html',
+  styleUrls: ['./galaxy-public-instance-registration.component.scss']
 })
-export class CreRegistrationFormComponent implements OnInit {
+export class GalaxyPublicInstanceRegistrationComponent implements OnInit {
 
   @Input() cloudProvider: CloudProvider;
-  private _isFailed = false;
-  _isSuccess = false;
-  private _message = '';
+
+
   public currentUser: User;
-  passwordConfirm = '';
+
+  // form controls
   form: FormGroup;
+  _isFailed = false;
+  _isSuccess = false;
+
+  errors = [];
+
+  password = '';
+  passwordConfirm = '';
 
   registering: boolean = false;
   hidePassword: boolean = true;
@@ -53,9 +59,6 @@ export class CreRegistrationFormComponent implements OnInit {
     }
   };
 
-  get message(): string {
-    return this._message;
-  }
 
   constructor(private fb: FormBuilder,
               private appConfig: AppConfig,
@@ -99,7 +102,7 @@ export class CreRegistrationFormComponent implements OnInit {
       return;
     }
     const form = this.form;
-
+    this.cleanErrors();
     for (const field of Object.keys(this.formErrors)) {
       // clear previous error message (if any)
       this.formErrors[field] = '';
@@ -108,7 +111,8 @@ export class CreRegistrationFormComponent implements OnInit {
       if (control && control.dirty && !control.valid) {
         const messages = this.validationMessages[field];
         for (const key of Object.keys(control.errors)) {
-          this.formErrors[field] += messages[key] + ' ';
+          // this.formErrors[field] += messages[key] + ' ';
+          this.addError(messages[key]);
         }
       }
     }
@@ -116,6 +120,7 @@ export class CreRegistrationFormComponent implements OnInit {
     if (form.getError('mismatchedPasswords')) {
       const messages = this.validationMessages['confirmPassword'];
       this.formErrors['confirmPassword'] += messages['mismatchedPasswords'] + ' ';
+      this.addError(messages['mismatchedPasswords']);
     }
   }
 
@@ -144,15 +149,16 @@ export class CreRegistrationFormComponent implements OnInit {
           if (error._body !== 'null') {
             let error_info = JSON.parse(error._body);
             console.log("The error object", error_info);
-            this._message = error_info.message;
+            this.errors.push(error_info.message);
             if (error_info.code === 409) {
               // Consider registration OK even if the user has an existent account with that email:
               // in such a case an error message is shown
+              this.currentUser.hasGalaxyAccount = true;
               this._isFailed = false;
               this._isSuccess = true;
             }
           } else {
-            this._message = "No server response !!!";
+            this.errors.push("No server response !!!");
             this._isFailed = true;
             this._isSuccess = false;
           }
@@ -168,26 +174,12 @@ export class CreRegistrationFormComponent implements OnInit {
   private processGalaxyAccountRegistrationFailure(error) {
     this._isFailed = true;
     this._isSuccess = false;
-    this._message = error ? error.toString() : "Internal Server Error";
+    this.errors.push(error ? error.toString() : "Internal Server Error");
     return false;
   }
 
   onSubmit() {
-    if (this.cloudProvider.name === 'phenomenal') {
-      this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
-    } else {
-      if (this.cloudProvider.isSelected === 2) {
-        this.cloudProvider.credential.galaxy_admin_email = this.currentUser.email;
-        this.cloudProvider.credential.galaxy_admin_password = this.form.value['password'];
-        this.cloudProvider.isSelected = 3;
-        this._isSuccess = true;
-      } else {
-        this.cloudProvider.credential.username = this.credentialsService.getUsername();
-        let deployment = Deployment.buildFromConfigurationParameters(this.appConfig, this.cloudProvider.credential);
-        this.deployementService.deploy(deployment);
-        this.router.navigateByUrl('/cloud-research-environment-dashboard');
-      }
-    }
+    this.registerGalaxyAccount(this.currentUser.email, this.currentUser.email, this.form.value['password']);
   }
 
   onKeyPressed(event) {
@@ -196,5 +188,13 @@ export class CreRegistrationFormComponent implements OnInit {
         this.onSubmit();
       return false;
     }
+  }
+
+  private cleanErrors() {
+    this.errors.splice(0, this.errors.length);
+  }
+
+  private addError(error: string) {
+    this.errors.push(error);
   }
 }

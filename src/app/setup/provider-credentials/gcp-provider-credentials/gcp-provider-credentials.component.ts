@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AwsRegion } from "../../aws-region";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { CloudProvider } from "../../cloud-provider";
+import { CloudProvider } from "../../../shared/service/deployer/cloud-provider";
 import { BaseProviderCredentialsComponent } from "../base-provider-credentials/base-provider-credentials.component";
 import { GcpMetadataService } from "../../../shared/service/cloud-provider-metadata/gcp-metadata.service";
 

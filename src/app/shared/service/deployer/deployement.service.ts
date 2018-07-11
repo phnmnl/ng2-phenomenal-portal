@@ -175,8 +175,8 @@ export class DeployementService implements OnInit, OnDestroy {
 
 
   registerCloudProviderParameters(deployment: Deployment, callback) {
-    console.log("Inputs", deployment.configurationParameters.getInputs());
-    this._cloudProviderParameterService.add(this._tokenService.getToken(), deployment.configurationParameters.getParameters())
+    this._cloudProviderParameterService.add(
+      this._tokenService.getToken(), deployment.configurationParameters.parameters)
       .subscribe(
         cloudProviderParameters => {
           console.log('[Profile] got response %O', cloudProviderParameters);
@@ -196,7 +196,7 @@ export class DeployementService implements OnInit, OnDestroy {
     this.configurationService.addDeploymentParameters(this._tokenService.getToken(),
       <ConfigurationDeploymentParameters>{
         name: deployment.name,
-        accountUsername: deployment.configurationParameters.getUsername(),
+        accountUsername: deployment.configurationParameters.username,
         fields: [],
         sharedWithTeamNames: []
       }).subscribe(
@@ -215,7 +215,7 @@ export class DeployementService implements OnInit, OnDestroy {
     this.configurationService.add(this._tokenService.getToken(),
       <Configuration>{
         name: deployment.name,
-        accountUsername: deployment.configurationParameters.getUsername(),
+        accountUsername: deployment.configurationParameters.username,
         sshKey: 'thisisnotused',
         sharedWithTeamNames: [],
         obsolete: false,
@@ -286,7 +286,8 @@ export class DeployementService implements OnInit, OnDestroy {
 
 
   registerApplication(deployment: Deployment, callback) {
-    this._applicationService.add(deployment.configurationParameters.getUsername(),
+    console.log("Trying to register the application", deployment.configurationParameters.getApplication());
+    this._applicationService.add(deployment.configurationParameters.username,
       this._tokenService.getToken(), deployment.configurationParameters.getApplication().repoUri)
       .subscribe(
         application => {
@@ -344,7 +345,7 @@ export class DeployementService implements OnInit, OnDestroy {
       this.credentialService.getUsername(),
       this._tokenService.getToken(),
       application,
-      deployment.configurationParameters.getProviderName(),
+      deployment.cloudProviderParameters,
       application.attachedVolumes,
       application.assignedInputs,
       application.assignedParameters,
@@ -583,7 +584,7 @@ export class DeployementService implements OnInit, OnDestroy {
     urlSearchParams.append('configuration', JSON.stringify(configuration));
     // copy status
     const status = deployment.statusDetails;
-    if(status) {
+    if (status) {
       for (let t of ["started", "deployed", "destroyed", "failed"]) {
         let s = status[t + "Time"];
         if (s) {

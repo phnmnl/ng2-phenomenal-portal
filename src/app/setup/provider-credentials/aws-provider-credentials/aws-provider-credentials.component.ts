@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DeploymentConfigurationParameters } from "../../deployment-configuration-parameters";
+import { BaseDeploymentConfigurationParameters } from "../../../shared/service/deployer/base-deployment-configuration-parameters";
 import { BaseProviderCredentialsComponent } from "../base-provider-credentials/base-provider-credentials.component";
 
 import AWS = require('aws-sdk');

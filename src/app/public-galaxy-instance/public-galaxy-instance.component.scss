@@ -23,6 +23,15 @@
   width: 200px;
 }
 
+.mat-card-control-buttons{
+  margin: 0 auto 40px;
+}
+
+.galaxy-instance-login-message-container {
+  padding: 40px;
+  min-height: 200px;
+}
+
 @media (max-width: 991px) and (min-width: 404px) {
   .card-property {
     height: 500px;

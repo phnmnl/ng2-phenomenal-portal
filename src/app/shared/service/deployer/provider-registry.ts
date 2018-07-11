@@ -1,4 +1,4 @@
-import { CloudProvider } from "../../../setup/cloud-provider";
+import { CloudProvider } from "./cloud-provider";
 
 export class ProviderRegistry {
 
@@ -7,7 +7,7 @@ export class ProviderRegistry {
   private static _gce_logo = 'assets/img/logo/gce_logo.png';
 
   public static getPhenomenalProvider(): CloudProvider {
-    return <CloudProvider>{
+    return new CloudProvider({
       title: 'PhenoMeNal Cloud',
       name: 'phenomenal',
       help: '/help/Deployment-Cloud-Research-Environment',
@@ -16,24 +16,12 @@ export class ProviderRegistry {
       paymentDescription: 'Free',
       providerDescription: 'EMBL-EBI, Uppsala Uni',
       locationDescription: 'Europe',
-      logo: 'assets/img/logo/default_app.png',
-      isSelected: 0,
-      credential: {
-        username: '',
-        password: '',
-        tenant_name: '',
-        url: '',
-        provider: '',
-        galaxy_admin_username: '',
-        galaxy_admin_email: '',
-        galaxy_admin_password: '',
-        jupyter_password: ''
-      }
-    };
+      logo: 'assets/img/logo/default_app.png'
+    });
   }
 
   public static getAwsProvider(): CloudProvider {
-    return <CloudProvider>{
+    return new CloudProvider({
       title: 'AWS',
       name: 'aws',
       help: '/help/How-to-obtain-AWS-credentials',
@@ -42,26 +30,12 @@ export class ProviderRegistry {
       providerDescription: 'Amazon AWS',
       locationDescription: 'Worldwide',
       logo: this._aws_logo,
-      isSelected: 0,
-      credential: {
-        username: '',
-        password: '',
-        tenant_name: '',
-        url: '',
-        provider: 'AWS',
-        galaxy_admin_username: '',
-        galaxy_admin_email: '',
-        galaxy_admin_password: '',
-        jupyter_password: '',
-        access_key_id: '',
-        secret_access_key: '',
-        default_region: ''
-      }
-    };
+      credential: { 'default_region': "eu-west-1"}
+    });
   }
 
   public static getOpenStackProvider(): CloudProvider {
-    return <CloudProvider>{
+    return new CloudProvider({
       title: 'OpenStack',
       name: 'ostack',
       help: '/help/How-to-obtain-OpenStack-credentials',
@@ -69,24 +43,12 @@ export class ProviderRegistry {
       paymentDescription: 'Commercial or Free',
       providerDescription: 'N/a',
       locationDescription: 'N/a',
-      logo: this._openstack_logo,
-      isSelected: 0,
-      credential: {
-        username: '',
-        password: '',
-        tenant_name: '',
-        url: '',
-        provider: 'OSTACK',
-        galaxy_admin_username: '',
-        galaxy_admin_email: '',
-        galaxy_admin_password: '',
-        jupyter_password: ''
-      }
-    };
+      logo: this._openstack_logo
+    });
   }
 
-  public static getGooglProvider(): CloudProvider {
-    return <CloudProvider>{
+  public static getGcpProvider(): CloudProvider {
+    return new CloudProvider({
       title: 'Google Cloud Platform',
       name: 'gcp',
       help: '/help/How-to-obtain-GCE-credentials',
@@ -94,29 +56,15 @@ export class ProviderRegistry {
       paymentDescription: 'Commercial',
       providerDescription: 'Google Cloud',
       locationDescription: 'Worldwide',
-      logo: this._gce_logo,
-      isSelected: 0,
-      credential: {
-        username: '',
-        password: '',
-        tenant_name: '',
-        url: '',
-        provider: 'GCP',
-        galaxy_admin_username: '',
-        galaxy_admin_email: '',
-        galaxy_admin_password: '',
-        jupyter_password: '',
-        access_key_id: '',
-        default_region: ''
-      }
-    };
+      logo: this._gce_logo
+    });
   }
 
   public static getProviders() {
     return [
       this.getPhenomenalProvider(),
       this.getAwsProvider(),
-      this.getGooglProvider(),
+      this.getGcpProvider(),
       this.getOpenStackProvider()
     ];
   }

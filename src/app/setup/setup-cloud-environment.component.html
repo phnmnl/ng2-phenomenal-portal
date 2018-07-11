@@ -96,7 +96,7 @@
         <div class="mat-card-control-buttons">
           <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
           <button mat-button type="button" class="btn btn-warning" color="warn" (click)="deploy()"
-                  mat-raised-button [disabled]="!formFive || !formFive.valid" autofocus>Deploy
+                  mat-raised-button [disabled]="!formFive || !formFive.valid || disableDeployButton" autofocus>Deploy
           </button>
         </div>
       </mat-step>

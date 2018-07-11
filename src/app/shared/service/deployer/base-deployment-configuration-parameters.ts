@@ -1,68 +1,72 @@
 import { ApplicationDeployer } from "ng2-cloud-portal-presentation-lib/dist";
-import { DeploymentConfigurationParameters } from "../../../setup/deployment-configuration-parameters";
 
 export abstract class BaseDeploymentConfigurationParameters {
+  username: string;
+  password: string;
+  _clusterPrefix: string;
+  tenant_name: string;
+  url: string;
+  private _provider: string;
+  galaxy_admin_username: string;
+  galaxy_admin_email: string;
+  galaxy_admin_password: string;
+  jupyter_password: string;
+  access_key_id?: string;
+  secret_access_key?: string;
+  default_region?: string;
+  network?: string;
+  ip_pool?: string;
+  rc_file?: string;
 
-  protected readonly username;
-  protected readonly providerName;
-  protected readonly clusterPrefix;
-  protected readonly deploymentName;
-  protected readonly applicationRepoUrl;
-  protected readonly application: ApplicationDeployer;
+  master_as_edge: boolean = true;
+  master_instance_type: string;
+  node_count: number = 2;
+  node_instance_type: string;
+  glusternode_count: number = 1;
+  glusternode_instance_type: string;
+  glusternode_extra_disk_size: number = 100;
+  phenomenal_pvc_size: number = 100;
+  phenomenal_version: string = "latest";
 
 
-  constructor(parameters: DeploymentConfigurationParameters, applicationRepoUrl) {
-    this.username = parameters.username;
-    this.providerName = parameters.provider;
-    this.applicationRepoUrl = applicationRepoUrl;
-    this.clusterPrefix = BaseDeploymentConfigurationParameters.generateName();
-    this.deploymentName = this.clusterPrefix + "-" + parameters.provider;
-    this.initInputs(parameters);
-    this.initParameters(parameters);
-    this.application = this.initApplication(parameters);
+  protected constructor(config?: object) {
+    if (config)
+      for (let p of Object.keys(config)) {
+        this[p] = config[p];
+      }
   }
 
-  public getUsername(){
-    return this.username;
+  public get clusterPrefix(): string {
+    if(!this._clusterPrefix)
+      this._clusterPrefix =  BaseDeploymentConfigurationParameters.generateName();
+    return this._clusterPrefix;
   }
 
-  public getProviderName() {
-    return this.providerName;
+
+  public get provider(): string {
+    return this._provider;
   }
 
-  public getClusterPrefix() {
-    return this.clusterPrefix;
+  public get deploymentName(): string{
+    return this.clusterPrefix + "-" + this.provider;
   }
 
-  public getDeploymentName() {
-    return this.deploymentName;
-  }
-
-  public abstract getInputs();
-
-  public abstract getParameters();
-
+  private application: ApplicationDeployer;
   public getApplication(): ApplicationDeployer {
+    if(!this.application) {
+      let app = <ApplicationDeployer> {
+        name: 'Phenomenal VRE',
+        accountUsername: this.username,
+        repoUri: this.phenomenal_version,
+        selectedCloudProvider: this.provider
+      };
+      app.attachedVolumes = {};
+      app.assignedInputs = this.inputs;
+      app.assignedParameters = {};
+      app.configurations = [];
+      this.application = app;
+    }
     return this.application;
-  }
-
-  protected abstract initInputs(params: DeploymentConfigurationParameters);
-
-  protected abstract initParameters(params: DeploymentConfigurationParameters);
-
-
-  private initApplication(parameters: DeploymentConfigurationParameters): ApplicationDeployer {
-    let app = <ApplicationDeployer> {
-      name: 'Phenomenal VRE',
-      accountUsername: parameters.username,
-      repoUri: this.applicationRepoUrl,
-      selectedCloudProvider: parameters.provider
-    };
-    app.attachedVolumes = {};
-    app.assignedInputs = this.getInputs();
-    app.assignedParameters = {};
-    app.configurations = [];
-    return app;
   }
 
   private static generateUIDNotMoreThan1million() {
@@ -77,4 +81,7 @@ export abstract class BaseDeploymentConfigurationParameters {
     return Object.assign({}, obj);
   }
 
+  public abstract get inputs();
+
+  public abstract get parameters();
 }

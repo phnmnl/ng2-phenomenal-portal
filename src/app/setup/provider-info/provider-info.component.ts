@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CloudProvider } from "../cloud-provider";
+import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
 
 @Component({
   selector: 'ph-provider-info',
