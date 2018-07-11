@@ -3,10 +3,12 @@
     <p class="card-text" style="color: red; font-weight: bolder; text-align: center">{{ announcement }}</p>
   </div>
 
-  <ul class="breadcrumb">
-    <li *ngFor="let url of _urls; let last = last" [ngClass]="{'active': last}"> <!-- disable link of last item -->
-      <a role="button" *ngIf="!last" (click)="navigateTo(url)">{{friendlyName(url)}}</a>
-      <span *ngIf="last">{{friendlyName(url)}}</span>
-    </li>
-  </ul>
+  <div class="breadcrumb-container">
+    <ul class="breadcrumb">
+      <li *ngFor="let url of _urls; let last = last" [ngClass]="{'active': last}"> <!-- disable link of last item -->
+        <a role="button" *ngIf="!last" (click)="navigateTo(url)">{{friendlyName(url)}}</a>
+        <span *ngIf="last">{{friendlyName(url)}}</span>
+      </li>
+    </ul>
+  </div>
 </div>

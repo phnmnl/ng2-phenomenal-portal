@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CanDeactivate, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { CloudResearchEnvironmentComponent } from './static-page/cloud-research-environment/cloud-research-environment.component';
 import { CRELocalInstallationComponent } from './static-page/cre-local-installation/cre-local-installation.component';
 import { CRELocalInstallationInstructionComponent } from './static-page/cre-local-installation-instruction/cre-local-installation-instruction.component';
@@ -30,7 +30,6 @@ const routes: Routes = [
     canActivate: [UserAuthenticatedGuard, AcceptedTermsGuard],
     canDeactivate: [CanDeactivateGuard]
   },
-  // {path: 'cloud-research-environment-registration', component: PublicGalaxyInstanceComponent},
   {
     path: 'cloud-research-environment-setup',
     component: SetupCloudEnvironmentComponent,

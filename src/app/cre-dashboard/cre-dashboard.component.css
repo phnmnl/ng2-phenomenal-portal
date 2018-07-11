@@ -127,6 +127,10 @@
   width: 300px;
 }
 
+.plus-button-container{
+  margin-top: 10px;
+}
+
 .plus-button {
   opacity: 0.5;
 }
