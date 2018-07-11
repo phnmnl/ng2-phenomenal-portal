@@ -5,6 +5,7 @@ import { ErrorService } from "../../service/error/error.service";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgbModalRef } from "@ng-bootstrap/ng-bootstrap/modal/modal-ref";
 import { Component, EventEmitter, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { UserService } from "../../service/user/user.service";
 
 
 @Component({
@@ -50,12 +51,14 @@ export class ErrorModalDialogComponent implements OnInit {
       'title': "Authentication Error",
       'message': "User session expired! Please click on 'Continue' to re-authenticate!!!",
       'callback': () => {
-        this.router.navigate(['/login']);
+        this.userService.logout();
       }
     }
   };
 
-  constructor(private config: AppConfig, private router: Router,
+  constructor(private router: Router,
+              private config: AppConfig,
+              private userService: UserService,
               private modalService: NgbModal, private errorService: ErrorService) {
   }
 
