@@ -20,28 +20,27 @@ export class PublicGalaxyInstanceComponent implements OnInit {
   @ViewChild(GalaxyPublicInstanceRegistrationComponent) registrationComponent: GalaxyPublicInstanceRegistrationComponent;
 
   // UI Data
-  private user: User;
+  private _user: User;
   private _publicProvider = ProviderRegistry.getPhenomenalProvider();
 
   // UI control
-  showRegistrationForm: boolean = false;
   @Input() previousRoute: string = "";
 
   constructor(public userService: UserService,
               private config: AppConfig,
               private router: Router,
               private cdRef: ChangeDetectorRef,) {
-    this.user = this.userService.getCurrentUser();
-    console.log("Current user: ", this.user);
+    this._user = this.userService.getCurrentUser();
+    console.log("Current user: ", this._user);
   }
 
   ngOnInit() {
     this.userService.getObservableCurrentUser().subscribe(user => {
-      this.user = <User> user;
+      this._user = <User> user;
       if (user) {
-        console.log("*** Has Galaxy account: " + this.user.hasGalaxyAccount);
+        console.log("*** Has Galaxy account: " + this._user.hasGalaxyAccount);
       }
-      console.log("Updated user @ CloudSetupComponent", user, this.user)
+      console.log("Updated user @ CloudSetupComponent", user, this._user)
     });
   }
 
@@ -49,6 +48,10 @@ export class PublicGalaxyInstanceComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
+
+  get user(): User {
+    return this._user;
+  }
 
   get form(): FormGroup {
     return this.registrationComponent ? this.registrationComponent.form : null;

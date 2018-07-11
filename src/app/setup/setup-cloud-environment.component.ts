@@ -58,8 +58,8 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
   @ViewChild(MatStepper) stepper: MatStepper;
 
 
-  private disableDeployButton: boolean = false;
   private smallScreen;
+  disableDeployButton: boolean = false;
 
 
   currentUser: User = new User({});
