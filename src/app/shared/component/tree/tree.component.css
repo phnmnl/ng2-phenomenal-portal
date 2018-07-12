@@ -42,9 +42,21 @@ li {
 }
 
 li > ph-tree > ul > li {
-  margin-left: 15px;
+  margin-left: 30px;
+}
+
+li > ph-tree > ul > li > i {
+  margin-left: -12.5px;
+}
+
+li > ph-tree > ul > li > label {
+  font-size: 70%;
+}
+
+li > ph-tree > ul > li > ph-tree > ul > li {
+  margin-left: 18px;
 }
 
 li > ph-tree > ul > li > ph-tree > ul > li > label {
-  font-size: 59%;
+  font-size: 60%;
 }
