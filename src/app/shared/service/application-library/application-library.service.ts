@@ -83,7 +83,6 @@ export class ApplicationLibraryService {
       {id: '3', name: 'Post-processing', parent: '#', children: [], isCheck: false},
       {id: '4', name: 'Statistical Analysis', parent: '#', children: [], isCheck: false},
       {id: '5', name: 'Workflows', parent: '#', children: [], isCheck: false},
-      {id: '6', name: 'Other Tools', parent: '#', children: [], isCheck: false},
       {
         id: '7d', name: 'Data Management', parent: '#', children: [
           {id: '71', name: 'study metadata creation from study design', parent: '7d', children: [], isCheck: false},
