@@ -79,11 +79,6 @@ export class ProviderSelectorComponent implements OnInit {
     this.form = this._formBuilder.group({
       cloudProvider: ['', Validators.required]
     });
-    this.form.valueChanges.subscribe(value => {
-      console.log("Value changed -->", value);
-      console.log("Cloud provider from form valueChange", this.selectedCloudProvider);
-      this.cloudProvider.emit(this.selectedCloudProvider);
-    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -111,6 +106,7 @@ export class ProviderSelectorComponent implements OnInit {
       console.log("Selected provider", provider);
       this.selectedCloudProvider = CloudProvider.clone(provider);
       this.cloudProviderName = provider.name;
+      this.cloudProvider.emit(this.selectedCloudProvider);
       console.log("Event emitted!");
     }
   }
