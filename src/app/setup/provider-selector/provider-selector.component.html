@@ -11,7 +11,7 @@
 
     <div *ngFor="let cloudProvider of cloudProviderCollection; let i = index" [attr.data-index]="i">
 
-      <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }">
+      <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }" style="cursor: pointer;">
 
         <div [ngClass]="{'col-lg-6': true, 'card-size': true}">
           <mat-card (click)="selectCloudProvider(cloudProvider)">
