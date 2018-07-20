@@ -22,6 +22,7 @@ import { DeployConfirmComponent } from "./deploy-confirm/deploy-confirm.componen
 import { Deployment } from "../shared/service/deployer/deployment";
 import { DeployementService } from "../shared/service/deployer/deployement.service";
 import { AppConfig } from "../app.config";
+import { CloudProviderCatalogService } from "../shared/service/cloud-provider-catalog/cloud-provider-catalog.service";
 
 
 @Component({
@@ -73,7 +74,8 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private cdRef: ChangeDetectorRef,
               private credentialsService: CredentialService,
-              private deploymentService: DeployementService) {
+              private deploymentService: DeployementService,
+              private cloudProvidersCatalog: CloudProviderCatalogService) {
   }
 
 
@@ -146,7 +148,7 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
 
   initializeProviders() {
     console.log("Generating providers...");
-    this._cloudProviderCollection = ProviderRegistry.getProviders();
+    this._cloudProviderCollection = this.cloudProvidersCatalog.getProviders();
   }
 
   private cleanErrors() {
