@@ -30,6 +30,8 @@ export class CloudProvider {
   locationDescription: string;
   logo: string;
   credential: BaseDeploymentConfigurationParameters;
+  preconfigured: boolean = false;
+  preset: string = null;
 
 
   constructor(config?: {}) {
@@ -46,8 +48,12 @@ export class CloudProvider {
       if (this.name.toLowerCase() !== "phenomenal") {
         if (Object.keys(CloudProvider.PROVIDER_TYPE).indexOf(this.name) < 0) {
           console.error("Not valid provider", this.name);
-        } else
+        } else {
+          credentialsConfig = credentialsConfig || {};
+          credentialsConfig['preconfigured'] = this.preconfigured;
+          credentialsConfig['preset'] = this.preset;
           this.credential = new CloudProvider.PROVIDER_TYPE[this.name].configClass(credentialsConfig);
+        }
       }
     }
   }
