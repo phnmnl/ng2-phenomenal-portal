@@ -90,6 +90,7 @@ import { GcpMetadataService } from "./shared/service/cloud-provider-metadata/gcp
 import { PublicGalaxyInstanceComponent } from './public-galaxy-instance/public-galaxy-instance.component';
 import { GalaxyPublicInstanceRegistrationComponent } from './public-galaxy-instance/galaxy-public-instance-registration/galaxy-public-instance-registration.component';
 import { CloudProviderCatalogService } from "./shared/service/cloud-provider-catalog/cloud-provider-catalog.service";
+import { PreconfiguredOpenstackProviderCredentialsComponent } from './setup/provider-credentials/preconfigured-openstack-provider-credentials/preconfigured-openstack-provider-credentials.component';
 
 /**
  * To set the global environment variables
@@ -144,6 +145,7 @@ export function initConfig(config: AppConfig) {
     GcpProviderCredentialsComponent,
     PublicGalaxyInstanceComponent,
     GalaxyPublicInstanceRegistrationComponent,
+    PreconfiguredOpenstackProviderCredentialsComponent,
   ],
   imports: [
     BrowserModule,
