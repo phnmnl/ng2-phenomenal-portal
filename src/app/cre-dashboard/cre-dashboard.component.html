@@ -238,16 +238,28 @@
         </a>
       </div>
 
+      <div *ngIf="isBoxOnLastColumn()">
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-4">
+        </div>
+      </div>
+
       <div class="row hidden-md-down">
         <div class="col-lg-4">
           <mat-card-content>
             <div style="margin: 0 auto;">
-              <div style=" margin-top: 65%;">
+              <div *ngIf="isBoxOnLastColumn()"
+                   style="display: block; margin-top: 20px; margin-left: -25px;">
+                <i style="color: #525991; font-size: 5em;"
+                   class="fa fa-arrow-up" aria-hidden="true"></i>
+              </div>
+              <div [ngStyle]="{'margin-top': isBoxOnLastColumn() ? '10%' : '65%'}">
                 <div class="h4-responsive" style="display: block;">
                   Click on the <i style="color: #525991" class="fa fa-plus-circle" aria-hidden="true"></i>
                   button to create a new Cloud Research Environment (CRE)
                 </div>
-                <div style="display: block; margin-top: 20px; margin-left: -25px;">
+                <div *ngIf="!isBoxOnLastColumn()" style="display: block; margin-top: 20px; margin-left: -25px;">
                   <i style="color: #525991; font-size: 5em;"
                      class="fa fa-arrow-left" aria-hidden="true"></i>
                 </div>

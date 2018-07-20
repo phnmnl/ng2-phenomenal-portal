@@ -157,6 +157,9 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
     this.deploymentManager.deleteDeploymentConfiguration(deployment);
   }
 
+  public isBoxOnLastColumn() {
+    return (this.deploymentServerList.length + 1) % 3 === 0;
+  }
 
   public getProviderLogo(deployment: Deployment) {
     if (!deployment.usePreset()) {
