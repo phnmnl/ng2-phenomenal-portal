@@ -111,44 +111,69 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
     return OpenStackMetadataService.extractPropertyValue(cloudProvider.credential.rc_file, "OS_AUTH_URL");
   }
 
-
-  public parseRcFile(rcFile: string, password: string): OpenStackCredentials {
-    return OpenStackMetadataService.parseRcFile(rcFile, password);
+  public updateRcFile(cloudProvider: CloudProvider, username?: string, password?: string) {
+    if (!cloudProvider)
+      throw new Error("Undefined Provider");
+    if (!cloudProvider.credential || !cloudProvider.credential.rc_file)
+      throw new Error("Unable to find credential file");
+    let rcFile = cloudProvider.credential.rc_file;
+    if (username) {
+      // set the username
+      rcFile = rcFile.replace(/(\bexport OS_USERNAME=)(.*)/, "$1" + '"' + username + '"');
+    }
+    if (password) {
+      // set the password
+      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/, "$1" + '"' + password + '"');
+    }
+    cloudProvider.credential.rc_file = rcFile;
   }
 
-  public static parseRcFile(rcFile: string, password: string): OpenStackCredentials {
-    if (rcFile) {
-      // update RC file with the user password and set it as current RC file
-      // console.log("The current RC file...", rcFile);
-      rcFile = rcFile.replace(/#.*\n/g, '');          // remove all comments
-      rcFile = rcFile.replace(/\becho\b.+/g, '');     // remove all echo commands
-      rcFile = rcFile.replace(/\bread\b.+/g, '');     // remove the read command
-      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,      // set the password
-        "$1" + '"' + password + '"');
+  public parseRcFile(rcFile: string, password: string, username?: string): OpenStackCredentials {
+    return OpenStackMetadataService.parseRcFile(rcFile, password, username);
+  }
 
-      // extract all the required RC file fields required to query the TSI portal
-      let rcVersion = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
-      let username = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
-      let authUrl = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
-      let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
-      let tenantId = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_ID");
-      let projectName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
-      let domainName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
+  public static parseRcFile(rcFile: string, password: string, username?: string): OpenStackCredentials {
+    if (!rcFile)
+      throw new Error("Undefined RC file");
 
-      // detect version from existing properties
-      if (!rcVersion) {
-        rcVersion = projectName ? "3" : "2";
-      }
+    // update RC file with the user password and set it as current RC file
+    // console.log("The current RC file...", rcFile);
+    rcFile = rcFile.replace(/#.*\n/g, '');          // remove all comments
+    rcFile = rcFile.replace(/\becho\b.+/g, '');     // remove all echo commands
+    rcFile = rcFile.replace(/\bread\b.+/g, '');     // remove the read command
+    rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,      // set the password
+      "$1" + '"' + password + '"');
 
-      return new OpenStackCredentials(
-        username, password,
-        authUrl,
-        tenantId, tenantName,
-        projectName, domainName,
-        rcFile,
-        rcVersion ? rcVersion : (projectName ? "3" : "2")
-      );
+    // set the username if provided
+    if (username) {
+      rcFile = rcFile.replace(/(\bexport OS_USERNAME=)(.*)/,     // set the username
+        "$1" + '"' + username + '"');
+    } else {
+      username = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
     }
+
+    // extract all the required RC file fields required to query the TSI portal
+    let rcVersion = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
+    let authUrl = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
+    let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
+    let tenantId = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_ID");
+    let projectName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
+    let domainName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
+
+    // detect version from existing properties
+    if (!rcVersion) {
+      rcVersion = projectName ? "3" : "2";
+    }
+
+    return new OpenStackCredentials(
+      username, password,
+      authUrl,
+      tenantId, tenantName,
+      projectName, domainName,
+      rcFile,
+      rcVersion ? rcVersion : (projectName ? "3" : "2")
+    );
+
   }
 
   private static extractPropertyValue(rcFile: string, propertyName: string): string {
