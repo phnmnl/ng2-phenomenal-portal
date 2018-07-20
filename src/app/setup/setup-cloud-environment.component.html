@@ -6,7 +6,7 @@
       <div class="loader">Loading...</div>
     </div>
 
-    <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-horizontal-stepper [linear]="true" #stepper style="overflow:visible;">
 
       <!-- Step 1: Cloud Provider Selection -->
       <mat-step [stepControl]="formOne">
@@ -25,7 +25,8 @@
         <ng-template matStepLabel>Cloud Credentials</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -46,7 +47,8 @@
         <ng-template matStepLabel>Cloud Parameters</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -66,7 +68,8 @@
         <ng-template matStepLabel>Services Credentials</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -86,7 +89,8 @@
         <ng-template matStepLabel>Deploy</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
