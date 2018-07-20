@@ -120,6 +120,8 @@ export class ServicesCredentialsComponent implements OnInit {
       this.formErrors['confirmPassword'] += messages['mismatchedPasswords'] + ' ';
       this.errors.push(messages['mismatchedPasswords'] + ' ');
     }
+
+    this.cloudProvider.credential.galaxy_admin_email = this.userService.getCurrentUser().email;
   }
 
   onSubmit() {
