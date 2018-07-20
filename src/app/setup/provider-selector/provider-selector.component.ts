@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, HostListener, NgZone, OnInit, Output } from '@angular/core';
 import { User } from "../../shared/service/user/user";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ProviderRegistry } from "../../shared/service/deployer/provider-registry";
-import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
-import { ApplicationService, CredentialService, TokenService } from "ng2-cloud-portal-service-lib";
-import { UserService } from "../../shared/service/user/user.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { UserService } from "../../shared/service/user/user.service";
+import { CloudProvider } from "../../shared/service/deployer/cloud-provider";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ApplicationService, CredentialService, TokenService } from "ng2-cloud-portal-service-lib";
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, NgZone, OnInit, Output } from '@angular/core';
+import { CloudProviderCatalogService } from "../../shared/service/cloud-provider-catalog/cloud-provider-catalog.service";
 
 
 @Component({
@@ -15,12 +15,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class ProviderSelectorComponent implements OnInit {
 
-  private _phenomenal_logo = 'assets/img/logo/default_app.png';
-  private _openstack_logo = 'assets/img/logo/openstack_logo.png';
-  private _aws_logo = 'assets/img/logo/aws_logo.png';
-  private _gce_logo = 'assets/img/logo/gce_logo.png';
-
   private _cloudProviderCollection: CloudProvider[];
+  private _preconfiguredCloudProviderCollection: CloudProvider[];
   selectedCloudProvider: CloudProvider = null;
 
   @Output() cloudProvider = new EventEmitter<CloudProvider>();
@@ -40,11 +36,12 @@ export class ProviderSelectorComponent implements OnInit {
   currentUser: User = new User({});
 
   constructor(private _applicationService: ApplicationService,
-              public credentialService: CredentialService,
-              public tokenService: TokenService,
+              private credentialService: CredentialService,
+              private catalogService: CloudProviderCatalogService,
+              private tokenService: TokenService,
               private route: ActivatedRoute,
               private router: Router,
-              public userService: UserService,
+              private userService: UserService,
               private ref: ChangeDetectorRef,
               private zone: NgZone,
               private _formBuilder: FormBuilder) {
@@ -92,13 +89,22 @@ export class ProviderSelectorComponent implements OnInit {
 
   initializeProviders() {
     console.log("Generating providers...");
-    this._cloudProviderCollection = ProviderRegistry.getProviders();
+    this._cloudProviderCollection = this.catalogService.getProviders();
+    console.log("Public Providers", this._cloudProviderCollection);
+    this.catalogService.getPreconfiguredProviders().subscribe((providers) => {
+      this._preconfiguredCloudProviderCollection = providers;
+      console.log("Preconfigured providers", providers);
+    });
   }
 
   get cloudProviderCollection(): CloudProvider[] {
     return this._cloudProviderCollection;
   }
-  
+
+  get preconfiguredCloudProviderCollection(): CloudProvider[] {
+    return this._preconfiguredCloudProviderCollection;
+  }
+
   selectCloudProvider(provider: CloudProvider) {
     if (provider.name === "phenomenal")
       this.router.navigateByUrl('/cloud-research-environment-test');
