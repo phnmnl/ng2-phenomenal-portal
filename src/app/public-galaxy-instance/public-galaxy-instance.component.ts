@@ -4,8 +4,6 @@ import { User } from "../shared/service/user/user";
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from "../shared/service/user/user.service";
 import { CloudProvider } from "../shared/service/deployer/cloud-provider";
-import { ProviderRegistry } from "../shared/service/deployer/provider-registry";
-import { ProviderSelectorComponent } from "../setup/provider-selector/provider-selector.component";
 import { GalaxyPublicInstanceRegistrationComponent } from "./galaxy-public-instance-registration/galaxy-public-instance-registration.component";
 import { FormGroup } from "@angular/forms";
 

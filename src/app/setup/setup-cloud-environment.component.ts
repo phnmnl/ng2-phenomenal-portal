@@ -1,20 +1,18 @@
 import {
-  ApplicationRef,
   ChangeDetectorRef,
   Component,
   HostListener,
   NgZone,
   OnDestroy,
   OnInit, Output,
-  Provider, ViewChild
+  ViewChild
 } from '@angular/core';
-import { ApplicationService, CredentialService, TokenService } from 'ng2-cloud-portal-service-lib';
+import { ApplicationService, CredentialService } from 'ng2-cloud-portal-service-lib';
 import { CloudProvider } from '../shared/service/deployer/cloud-provider';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../shared/service/user/user.service';
 import { User } from "../shared/service/user/user";
-import { ProviderRegistry } from "../shared/service/deployer/provider-registry";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { ProviderSelectorComponent } from "./provider-selector/provider-selector.component";
 import { MatStepper } from "@angular/material";
 import { ProviderCredentialsComponent } from "./provider-credentials/provider-credentials.component";
