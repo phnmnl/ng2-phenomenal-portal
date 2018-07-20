@@ -26,7 +26,7 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
   }
 
   public get inputs() {
-    return {
+    let inputs = {
       cluster_prefix: this.clusterPrefix,
       floating_ip_pool: this.ip_pool,
       external_network_uuid: this.network,
@@ -39,8 +39,12 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
       glusternode_extra_disk_size: this.glusternode_extra_disk_size,
       phenomenal_pvc_size: this.phenomenal_pvc_size + "Gi",
       galaxy_admin_email: this.galaxy_admin_email,
-      galaxy_admin_password: this.galaxy_admin_password
-    }
+      galaxy_admin_password: this.galaxy_admin_password,
+      preconfigured: this.preconfigured
+    };
+    if (this.preconfigured)
+      inputs["preset"] = this.preset;
+    return inputs;
   }
 
   public get parameters() {
