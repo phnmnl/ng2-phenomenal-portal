@@ -52,17 +52,12 @@
 
             <div>
               <div class="deployment-provider" *ngIf="deployment.cloudProviderName">
-                <img *ngIf="deployment.useAwsProvider()" mat-card-image
-                     src="{{aws_logo}}" class="provider-image">
-                <img *ngIf="deployment.useGcpProvider()" mat-card-image
-                     src="{{gce_logo}}" class="provider-image">
-                <img *ngIf="deployment.useOStackProvider()" mat-card-image
-                     src="{{openstack_logo}}" class="provider-image">
+                <img mat-card-image src="{{getProviderLogo(deployment)}}" class="provider-image">
               </div>
 
               <div class="deployment-identifiers">
                 <mat-card-title class="deployment-name" title="Deployment Name">
-                  <h5 class="h5-responsive">{{ deployment.configurationName }}</h5>
+                  <h5 class="h5-responsive font-weight-bold">{{ deployment.configurationName }}</h5>
                 </mat-card-title>
 
                 <div class="deployment-id" title="Deployment Identifier" *ngIf="deployment.reference">
