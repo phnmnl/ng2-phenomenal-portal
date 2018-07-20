@@ -37,7 +37,8 @@
   </div>
 
 
-  <div class="national-providers-container">
+  <div *ngIf="preconfiguredCloudProviderCollection && preconfiguredCloudProviderCollection.length>0"
+       class="national-providers-container">
     <h3 class="h3-responsive text-center cloud-setup-title">
       Partners Providers
     </h3>
