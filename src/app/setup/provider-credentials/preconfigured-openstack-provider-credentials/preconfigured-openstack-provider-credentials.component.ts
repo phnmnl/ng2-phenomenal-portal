@@ -15,6 +15,8 @@ export class PreconfiguredOpenstackProviderCredentialsComponent extends BaseProv
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
 
   username: string = "";
+  domainName: string = "";
+  projectName: string = "";
   hidePassword: boolean = true;
 
   constructor(protected fb: FormBuilder, protected cdRef: ChangeDetectorRef,
@@ -23,16 +25,22 @@ export class PreconfiguredOpenstackProviderCredentialsComponent extends BaseProv
   }
 
   buildForm(): FormGroup {
+    this.domainName = this.providerMetadataService.getDomainName(this.cloudProvider);
+    this.projectName = this.providerMetadataService.getTenantOrProjectName(this.cloudProvider);
     return this.fb.group({
       'username': ['', Validators.required],
-      'password': ['', [Validators.required]]
+      'password': ['', [Validators.required]],
+      'domainName': ['', [Validators.required]],
+      'projectName': ['', [Validators.required]]
     });
   }
 
   get formErrors(): {} {
     return {
       'username': '',
-      'password': ''
+      'password': '',
+      'domainName': '',
+      'projectName': ''
     };
   }
 
@@ -44,7 +52,11 @@ export class PreconfiguredOpenstackProviderCredentialsComponent extends BaseProv
     this.cloudProvider.credential.url = this.providerMetadataService.getAuthorizationEndPoint(this.cloudProvider);
 
     // update rcFile with username
-    this.providerMetadataService.updateRcFile(this.cloudProvider, this.username);
+    this.providerMetadataService.updateRcFile(this.cloudProvider, {
+      username: this.username,
+      domainName: this.domainName,
+      projectName: this.projectName
+    });
     this.cloudProvider.credential.username = this.username;
   }
 
@@ -64,6 +76,12 @@ export class PreconfiguredOpenstackProviderCredentialsComponent extends BaseProv
       },
       'password': {
         'required': 'Password is required.'
+      },
+      'domainName': {
+        'required': 'The name of the project is required.'
+      },
+      'projectName': {
+        'required': 'The name of the project is required.'
       }
     };
   }

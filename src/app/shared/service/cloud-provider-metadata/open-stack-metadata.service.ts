@@ -100,6 +100,11 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
       });
   }
 
+  public getDomainName(cloudProvider: CloudProvider) {
+    let rcFile = cloudProvider.credential.rc_file;
+    return OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
+  }
+
   public getTenantOrProjectName(cloudProvider: CloudProvider) {
     let rcFile = cloudProvider.credential.rc_file;
     let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
@@ -111,19 +116,34 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
     return OpenStackMetadataService.extractPropertyValue(cloudProvider.credential.rc_file, "OS_AUTH_URL");
   }
 
-  public updateRcFile(cloudProvider: CloudProvider, username?: string, password?: string) {
+  public updateRcFile(cloudProvider: CloudProvider, config: object) {
     if (!cloudProvider)
       throw new Error("Undefined Provider");
     if (!cloudProvider.credential || !cloudProvider.credential.rc_file)
       throw new Error("Unable to find credential file");
     let rcFile = cloudProvider.credential.rc_file;
-    if (username) {
-      // set the username
-      rcFile = rcFile.replace(/(\bexport OS_USERNAME=)(.*)/, "$1" + '"' + username + '"');
-    }
-    if (password) {
-      // set the password
-      rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/, "$1" + '"' + password + '"');
+
+
+    if (config) {
+      for (let key of Object.keys(config)) {
+        // set the username
+        if (key === "username")
+          rcFile = rcFile.replace(/(\bexport OS_USERNAME=)(.*)/, "$1" + '"' + config['username'] + '"');
+
+        // set the password
+        if (key === "password")
+          rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/, "$1" + '"' + config['password'] + '"');
+
+        // set the password
+        if (key === "domainName")
+          rcFile = rcFile.replace(/(\bexport OS_USER_DOMAIN_NAME=)(.*)/, "$1" + '"' + config['domainName'] + '"');
+
+        // set the projectName
+        if (key === "projectName") {
+          rcFile = rcFile.replace(/(\bexport OS_TENANT_NAME=)(.*)/, "$1" + '"' + config['projectName'] + '"');
+          rcFile = rcFile.replace(/(\bexport OS_PROJECT_NAME=)(.*)/, "$1" + '"' + config['projectName'] + '"');
+        }
+      }
     }
     cloudProvider.credential.rc_file = rcFile;
   }
