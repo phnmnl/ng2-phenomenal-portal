@@ -51,8 +51,10 @@
 
           <div [ngClass]="{'col-lg-6': true, 'card-size': true}">
             <mat-card (click)="selectCloudProvider(cloudProvider)">
-              <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
-                   [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height, 'padding': '10px'}">
+              <div class="card-image-container">
+                <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                     [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height, 'padding': '15px'}">
+              </div>
               <mat-card-content>
                 <div style="float: right;">
                   <a href="{{cloudProvider.help}}" target="_blank">

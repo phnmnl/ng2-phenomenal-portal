@@ -11,13 +11,7 @@
       <!-- Step 1: Cloud Provider Selection -->
       <mat-step [stepControl]="formOne">
         <ng-template matStepLabel>Cloud Provider</ng-template>
-
         <ph-provider-selector #stepOneComponent (cloudProvider)="selectCloudProvider($event)"></ph-provider-selector>
-        <!--<div class="mat-card-control-buttons">-->
-        <!--<button mat-button matStepperNext type="button"-->
-        <!--mat-raised-button [disabled]="!formOne || !formOne.valid" color="primary" autofocus>Next-->
-        <!--</button>-->
-        <!--</div>-->
       </mat-step>
 
       <!-- Step 2: Setup Cloud Provider Credentials -->
@@ -26,7 +20,7 @@
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
             <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
-                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -35,7 +29,7 @@
         </div>
         <div class="mat-card-control-buttons">
           <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
-          <button mat-button type="button" (click)="validateCredentials()"
+          <button mat-button type="submit" (click)="validateCredentials()"
                   mat-raised-button [disabled]="!formTwo || !formTwo.valid" color="primary" autofocus>Next
           </button>
         </div>
@@ -48,7 +42,7 @@
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
             <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
-                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -69,7 +63,7 @@
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
             <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
-                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -90,7 +84,7 @@
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
             <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
-                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
