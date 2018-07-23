@@ -8,6 +8,7 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
   private static DEFAULT_INPUTS = {
     master_as_edge: 'true',
     node_count: '2',
+    edgenode_count: '2',
     glusternode_count: '1',
     glusternode_extra_disk_size: '100',
     phenomenal_pvc_size: '90'
@@ -34,6 +35,8 @@ export class GcpDeploymentConfigurationParameters extends BaseDeploymentConfigur
       master_flavor: this.master_instance_type,
       node_flavor: this.node_instance_type,
       node_count: this.node_count,
+      edge_count: this.edgenode_count,
+      edge_flavor: this.edgenode_instance_type,
       glusternode_flavor: this.glusternode_instance_type,
       glusternode_count: this.glusternode_count,
       glusternode_extra_disk_size: this.glusternode_extra_disk_size,

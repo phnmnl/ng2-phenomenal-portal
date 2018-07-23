@@ -25,6 +25,8 @@ export abstract class BaseDeploymentConfigurationParameters {
   node_count: number = 2;
   node_instance_type: string;
   glusternode_count: number = 1;
+  edgenode_count: number = 2;
+  edgenode_instance_type: string;
   glusternode_instance_type: string;
   glusternode_extra_disk_size: number = 100;
   phenomenal_pvc_size: number = 100;
