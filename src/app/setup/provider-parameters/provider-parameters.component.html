@@ -18,41 +18,41 @@
 
       <!--<mat-grid-list cols="3" rowHeight="3:1">-->
 
-        <!--<mat-grid-tile [colspan]="3">-->
-          <mat-form-field class="input-width-x">
-            <mat-select placeholder="Select an External Network"
-                        style="display: inline-block; text-align: left;"
-                        [formControl]="externalNetworkControl"
-                        required [(ngModel)]="cloudProvider.credential.network" (change)="onChangeExternalNetwork()">
-              <mat-option *ngFor="let i of externalNetworks" [value]="i.value">
-                {{i.displayValue}}
-              </mat-option>
-              <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-              <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
-              <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
-              <!--Your selection is invalid-->
-              <!--</mat-error>-->
-            </mat-select>
-          </mat-form-field>
-        <!--</mat-grid-tile>-->
+      <!--<mat-grid-tile [colspan]="3">-->
+      <mat-form-field class="input-width-x">
+        <mat-select placeholder="Select an External Network"
+                    style="display: inline-block; text-align: left;"
+                    [formControl]="externalNetworkControl"
+                    required [(ngModel)]="cloudProvider.credential.network" (change)="onChangeExternalNetwork()">
+          <mat-option *ngFor="let i of externalNetworks" [value]="i.value">
+            {{i.displayValue}}
+          </mat-option>
+          <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+          <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
+          <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
+          <!--Your selection is invalid-->
+          <!--</mat-error>-->
+        </mat-select>
+      </mat-form-field>
+      <!--</mat-grid-tile>-->
 
-        <!--<mat-grid-tile [colspan]="3">-->
-          <mat-form-field class="input-width-x">
-            <mat-select placeholder="Select an Floating IP Pool"
-                        style="display: inline-block; text-align: left;"
-                        [formControl]="ipPoolControl"
-                        required [(ngModel)]="cloudProvider.credential.ip_pool">
-              <mat-option *ngFor="let i of floatingIpPools" [value]="i.value">
-                {{i.displayValue}}
-              </mat-option>
-              <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-              <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
-              <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
-              <!--Your selection is invalid-->
-              <!--</mat-error>-->
-            </mat-select>
-          </mat-form-field>
-        <!--</mat-grid-tile>-->
+      <!--<mat-grid-tile [colspan]="3">-->
+      <mat-form-field class="input-width-x">
+        <mat-select placeholder="Select an Floating IP Pool"
+                    style="display: inline-block; text-align: left;"
+                    [formControl]="ipPoolControl"
+                    required [(ngModel)]="cloudProvider.credential.ip_pool">
+          <mat-option *ngFor="let i of floatingIpPools" [value]="i.value">
+            {{i.displayValue}}
+          </mat-option>
+          <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+          <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
+          <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
+          <!--Your selection is invalid-->
+          <!--</mat-error>-->
+        </mat-select>
+      </mat-form-field>
+      <!--</mat-grid-tile>-->
       <!--</mat-grid-list>-->
     </div>
   </div>
@@ -108,7 +108,8 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1">
-          <mat-checkbox [checked]="cloudProvider.credential.master_as_edge"
+          <mat-checkbox [(ngModel)]="cloudProvider.credential.master_as_edge"
+                        [checked]="cloudProvider.credential.master_as_edge"
                         [formControl]="formControls['master_as_edge']">Master as Edge
           </mat-checkbox>
         </mat-grid-tile>
@@ -134,6 +135,31 @@
                       thumbLabel tickInterval="1" min="2" max="100"></mat-slider>
           {{ slider3.value }} workers
         </mat-grid-tile>
+
+        <div *ngIf="!cloudProvider.credential.master_as_edge">
+          <mat-grid-tile [colspan]="3">
+            <mat-form-field class="input-width">
+              <mat-select placeholder="Select an instance type for your Edge nodes"
+                          style="display: inline-block; text-align: left;"
+                          [formControl]="formControls['edgenode_instance_type']"
+                          required [(ngModel)]="cloudProvider.credential.edgenode_instance_type">
+                <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
+                  {{i.displayValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile [colspan]="1">
+            <mat-slider aria-label="Number of Edge nodes" #slider8
+                        [(ngModel)]="cloudProvider.credential.edgenode_count"
+                        [formControl]="formControls['edgenode_count']"
+                        thumbLabel tickInterval="1" min="1" max="100"></mat-slider>
+            {{ slider8.value }} nodes
+          </mat-grid-tile>
+        </div>
+
 
         <mat-grid-tile [colspan]="3">
           <mat-form-field class="input-width">
