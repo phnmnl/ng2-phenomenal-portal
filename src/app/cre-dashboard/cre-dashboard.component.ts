@@ -27,7 +27,7 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
   public openstack_logo = 'assets/img/logo/openstack_logo.png';
   public aws_logo = 'assets/img/logo/aws_logo.png';
   public gce_logo = 'assets/img/logo/gce_logo.png';
-  public generic_cloud_logo = "assers/img/logo/generic_cloud_logo.png";
+  public generic_cloud_logo = "assets/img/logo/generic_cloud_logo.png";
 
   public galaxy_logo = 'assets/img/logo/galaxy_square.png';
   public luigi_logo = 'assets/img/logo/luigi.png';
