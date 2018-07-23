@@ -46,6 +46,8 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     'master_instance_type': "Instance type of the Master Node",
     'node_instance_type': "Instance type of Worker Nodes",
     'node_count': "Number of worker nodes",
+    'edgenode_instance_type': "Instance type of Edge Nodes",
+    'edgenode_count': "Number of the Edge nodes",
     'glusternode_instance_type': "Instance type of GlusterFS nodes",
     'glusternode_count': "Number of GlusterFS nodes",
     'glusternode_extra_disk_size': "Disk size of the GlusterFS",
@@ -169,6 +171,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     console.log("Changed instance type", this.shared_instance_type);
     // propagate the change to the specific node types
     this.cloudProvider.credential.master_instance_type = this.shared_instance_type;
+    this.cloudProvider.credential.edgenode_instance_type = this.shared_instance_type;
     this.cloudProvider.credential.node_instance_type = this.shared_instance_type;
     this.cloudProvider.credential.glusternode_instance_type = this.shared_instance_type;
     this.ngAfterViewChecked();
