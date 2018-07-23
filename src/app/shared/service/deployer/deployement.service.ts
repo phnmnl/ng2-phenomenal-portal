@@ -175,8 +175,11 @@ export class DeployementService implements OnInit, OnDestroy {
 
 
   registerCloudProviderParameters(deployment: Deployment, callback) {
+    let parameters = deployment.configurationParameters.parameters;
+    if (deployment.use_https)
+      parameters.fields.push({'key': 'TF_VAR_cloudflare_proxied', 'value': true});
     this._cloudProviderParameterService.add(
-      this._tokenService.getToken(), deployment.configurationParameters.parameters)
+      this._tokenService.getToken(), parameters)
       .subscribe(
         cloudProviderParameters => {
           console.log('[Profile] got response %O', cloudProviderParameters);
