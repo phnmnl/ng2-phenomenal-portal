@@ -42,6 +42,14 @@
   min-height: 175px;
 }
 
+div.deployment-identifiers > mat-card-title {
+  max-height: 33px;
+}
+
+div.deployment-identifiers > mat-card-title > h5 {
+   font-size: 100%;
+}
+
 .deployment-state > mat-card-subtitle > .row > .col-xs-5 {
   padding: 0 3px;
 }
@@ -127,7 +135,7 @@
   width: 300px;
 }
 
-.plus-button-container{
+.plus-button-container {
   margin-top: 10px;
 }
 
@@ -168,11 +176,19 @@
 }
 
 .deployment-provider {
-  margin-bottom: -10px;
+  margin: -20px 0 -5px;
+  padding: 20px;
+  height: 72px;
+}
+
+mat-card > mat-card-content > div > div.deployment-provider > img {
+  margin-top: 0 !important;
 }
 
 div.deployment-provider > img.provider-image {
-  width: 100px !important;
+  width: auto;
+  margin: auto;
+  height: 100%;
 }
 
 .destroy-wheel {

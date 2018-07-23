@@ -12,6 +12,7 @@ import { CanComponentDeactivate } from "../shared/guard/CanDeactivateGuard";
 import { DeployementService } from "../shared/service/deployer/deployement.service";
 import { ModalDialogContentComponent } from "../shared/component/modal-dialog/modal-dialog.component";
 import { Observable } from "rxjs";
+import { CloudProviderCatalogService } from "../shared/service/cloud-provider-catalog/cloud-provider-catalog.service";
 
 @Component({
   selector: 'ph-cre-dashboard',
@@ -23,37 +24,30 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
 
   @BlockUI() blockUI: NgBlockUI;
 
-  private _openstack_logo = 'assets/img/logo/openstack_logo.png';
-  private _aws_logo = 'assets/img/logo/aws_logo.png';
-  private _gce_logo = 'assets/img/logo/gce_logo.png';
+  public openstack_logo = 'assets/img/logo/openstack_logo.png';
+  public aws_logo = 'assets/img/logo/aws_logo.png';
+  public gce_logo = 'assets/img/logo/gce_logo.png';
+  public generic_cloud_logo = "assers/img/logo/generic_cloud_logo.png";
 
   public galaxy_logo = 'assets/img/logo/galaxy_square.png';
   public luigi_logo = 'assets/img/logo/luigi.png';
   public jupyter_logo = 'assets/img/logo/jupyter_square.png';
 
+  private preconfigured_provider_logos = [];
+
   public error_icon = 'assets/img/error-icon.png';
 
   deploymentServerList: Deployment[];
+  private _preconfiguredCloudProviderCollection: null;
 
   private onDestroyEvent = new EventEmitter<Deployment>();
   private onDeleteEvent = new EventEmitter<Deployment>();
-
-  get gce_logo(): string {
-    return this._gce_logo;
-  }
-
-  get openstack_logo(): string {
-    return this._openstack_logo;
-  }
-
-  get aws_logo(): string {
-    return this._aws_logo;
-  }
 
 
   constructor(private modalService: NgbModal,
               private tokenService: TokenService,
               public credentialService: CredentialService,
+              private catalogService: CloudProviderCatalogService,
               public userService: UserService,
               private router: Router,
               private deploymentManager: DeployementService) {
@@ -67,6 +61,14 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
     }, (error) => {
       console.error("The current error", error);
       this.userService.logout();
+    });
+
+    this.catalogService.getPreconfiguredProviders().subscribe((providers) => {
+      this._preconfiguredCloudProviderCollection = providers;
+      for (let p of providers) {
+        this.preconfigured_provider_logos[p.preset] = p.logo.path;
+      }
+      console.log("Preconfigured Provider logos", this.preconfigured_provider_logos, providers);
     });
 
     this.onDestroyEvent.subscribe((deployment) => {
@@ -85,12 +87,12 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
     console.log("Checking if it can be unloaded");
-    for(let d of this.deploymentServerList){
-      if(d.isStarting()){
+    for (let d of this.deploymentServerList) {
+      if (d.isStarting()) {
         let status = d.statusTransition;
-        if(status){
+        if (status) {
           console.log(status);
-          if(status.stepNumber < 9) {
+          if (status.stepNumber < 9) {
             console.warn("You cannot deactivate the current window");
             return false;
           }
@@ -106,6 +108,7 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
     this.credentialService.clearCredentials();
     this.router.navigateByUrl('/login');
   }
+
 
   enabledServices(deployment: Deployment) {
     return deployment && deployment["status"] === "RUNNING"
@@ -152,6 +155,25 @@ export class CreDashboardComponent extends CanComponentDeactivate implements OnI
   public processDeleteDeployment(deployment: Deployment) {
     console.log("Deleting deployment ...");
     this.deploymentManager.deleteDeploymentConfiguration(deployment);
+  }
+
+  public isBoxOnLastColumn() {
+    return (this.deploymentServerList.length + 1) % 3 === 0;
+  }
+
+  public getProviderLogo(deployment: Deployment) {
+    if (!deployment.usePreset()) {
+      if (deployment.useAwsProvider())
+        return this.aws_logo;
+      if (deployment.useOStackProvider())
+        return this.openstack_logo;
+      if (deployment.useGcpProvider())
+        return this.gce_logo;
+    } else {
+      if (deployment.preset in this.preconfigured_provider_logos)
+        return this.preconfigured_provider_logos[deployment.preset];
+      return this.generic_cloud_logo;
+    }
   }
 
   private static clearErrors(deployment: Deployment) {

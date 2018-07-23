@@ -4,10 +4,9 @@ import { User } from "../shared/service/user/user";
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from "../shared/service/user/user.service";
 import { CloudProvider } from "../shared/service/deployer/cloud-provider";
-import { ProviderRegistry } from "../shared/service/deployer/provider-registry";
-import { ProviderSelectorComponent } from "../setup/provider-selector/provider-selector.component";
 import { GalaxyPublicInstanceRegistrationComponent } from "./galaxy-public-instance-registration/galaxy-public-instance-registration.component";
 import { FormGroup } from "@angular/forms";
+import { CloudProviderCatalogService } from "../shared/service/cloud-provider-catalog/cloud-provider-catalog.service";
 
 @Component({
   selector: 'ph-public-galaxy-instance',
@@ -21,7 +20,7 @@ export class PublicGalaxyInstanceComponent implements OnInit {
 
   // UI Data
   private _user: User;
-  private _publicProvider = ProviderRegistry.getPhenomenalProvider();
+  private readonly _publicProvider = null;
 
   // UI control
   @Input() previousRoute: string = "";
@@ -29,9 +28,10 @@ export class PublicGalaxyInstanceComponent implements OnInit {
   constructor(public userService: UserService,
               private config: AppConfig,
               private router: Router,
-              private cdRef: ChangeDetectorRef,) {
+              private cdRef: ChangeDetectorRef,
+              private providerCatalog: CloudProviderCatalogService) {
     this._user = this.userService.getCurrentUser();
-    console.log("Current user: ", this._user);
+    this._publicProvider = this.providerCatalog.getPhenomenalProvider();
   }
 
   ngOnInit() {

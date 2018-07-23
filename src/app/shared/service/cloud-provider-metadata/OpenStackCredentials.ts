@@ -26,6 +26,10 @@ export class OpenStackCredentials {
     this.rcVersion = rcVersion;
   }
 
+  get projectOrTenantName(): string {
+    return this.projectName ? this.projectName : this.tenantName;
+  }
+
   public isV2(): boolean {
     return this.rcVersion === "2";
   }

@@ -274,18 +274,39 @@ export class Deployment implements BaseDeployment {
       this.configurationParameters ? this.configurationParameters.provider : "";
   }
 
-  public useAwsProvider(){
+  public useAwsProvider() {
     return this.cloudProviderName.toLowerCase() === "aws";
   }
 
-  public useOStackProvider(){
+  public useOStackProvider() {
     return this.cloudProviderName.toLowerCase() === "ostack";
   }
 
-  public useGcpProvider(){
+  public useGcpProvider() {
     return this.cloudProviderName.toLowerCase() === "gcp";
   }
 
+  public usePreset(): boolean {
+    if (this.assignedInputs) {
+      for (let i of this.assignedInputs) {
+        if (i.inputName === "preset")
+          return i.assignedValue && i.assignedValue.length > 0;
+      }
+    } else if (this.configurationParameters)
+      return this.configurationParameters.preconfigured;
+    return false;
+  }
+
+  public get preset(): string {
+    if (this.assignedInputs) {
+      for (let i of this.assignedInputs) {
+        if (i.inputName === "preset")
+          return i.assignedValue;
+      }
+    } else if (this.configurationParameters)
+      return this.configurationParameters.preset;
+    return "";
+  }
 
   public getConfiguration() {
     return this.configuration;
@@ -377,7 +398,9 @@ export class Deployment implements BaseDeployment {
     for (const obj of args) {
       for (const key in obj) {
         //copy all the fields
+        console.log("Updating field", key, obj[key]);
         this[key] = obj[key];
+        console.log("Updated object", this);
       }
     }
     Deployment.setSerivcesinfo(this);

@@ -6,18 +6,12 @@
       <div class="loader">Loading...</div>
     </div>
 
-    <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-horizontal-stepper [linear]="true" #stepper style="overflow:visible;">
 
       <!-- Step 1: Cloud Provider Selection -->
       <mat-step [stepControl]="formOne">
         <ng-template matStepLabel>Cloud Provider</ng-template>
-
         <ph-provider-selector #stepOneComponent (cloudProvider)="selectCloudProvider($event)"></ph-provider-selector>
-        <!--<div class="mat-card-control-buttons">-->
-        <!--<button mat-button matStepperNext type="button"-->
-        <!--mat-raised-button [disabled]="!formOne || !formOne.valid" color="primary" autofocus>Next-->
-        <!--</button>-->
-        <!--</div>-->
       </mat-step>
 
       <!-- Step 2: Setup Cloud Provider Credentials -->
@@ -25,7 +19,8 @@
         <ng-template matStepLabel>Cloud Credentials</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -34,7 +29,7 @@
         </div>
         <div class="mat-card-control-buttons">
           <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
-          <button mat-button type="button" (click)="validateCredentials()"
+          <button mat-button type="submit" (click)="validateCredentials()"
                   mat-raised-button [disabled]="!formTwo || !formTwo.valid" color="primary" autofocus>Next
           </button>
         </div>
@@ -46,7 +41,8 @@
         <ng-template matStepLabel>Cloud Parameters</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -66,7 +62,8 @@
         <ng-template matStepLabel>Services Credentials</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
@@ -86,7 +83,8 @@
         <ng-template matStepLabel>Deploy</ng-template>
         <div *ngIf="cloudProvider">
           <div class="provider-logo-container">
-            <img mat-card-image src="{{cloudProviderLogo}}" class="card-image">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
           <mat-card-content>
             <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>

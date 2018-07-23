@@ -17,6 +17,8 @@ export abstract class BaseDeploymentConfigurationParameters {
   network?: string;
   ip_pool?: string;
   rc_file?: string;
+  preconfigured?: boolean = false;
+  preset?: string = null;
 
   master_as_edge: boolean = true;
   master_instance_type: string;
@@ -37,8 +39,8 @@ export abstract class BaseDeploymentConfigurationParameters {
   }
 
   public get clusterPrefix(): string {
-    if(!this._clusterPrefix)
-      this._clusterPrefix =  BaseDeploymentConfigurationParameters.generateName();
+    if (!this._clusterPrefix)
+      this._clusterPrefix = BaseDeploymentConfigurationParameters.generateName();
     return this._clusterPrefix;
   }
 
@@ -47,13 +49,14 @@ export abstract class BaseDeploymentConfigurationParameters {
     return this._provider;
   }
 
-  public get deploymentName(): string{
+  public get deploymentName(): string {
     return this.clusterPrefix + "-" + this.provider;
   }
 
   private application: ApplicationDeployer;
+
   public getApplication(): ApplicationDeployer {
-    if(!this.application) {
+    if (!this.application) {
       let app = <ApplicationDeployer> {
         name: 'Phenomenal VRE',
         accountUsername: this.username,

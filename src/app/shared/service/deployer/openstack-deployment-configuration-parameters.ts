@@ -26,7 +26,7 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
   }
 
   public get inputs() {
-    return {
+    let inputs = {
       cluster_prefix: this.clusterPrefix,
       floating_ip_pool: this.ip_pool,
       external_network_uuid: this.network,
@@ -39,8 +39,12 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
       glusternode_extra_disk_size: this.glusternode_extra_disk_size,
       phenomenal_pvc_size: this.phenomenal_pvc_size + "Gi",
       galaxy_admin_email: this.galaxy_admin_email,
-      galaxy_admin_password: this.galaxy_admin_password
-    }
+      galaxy_admin_password: this.galaxy_admin_password,
+      preconfigured: this.preconfigured
+    };
+    if (this.preconfigured)
+      inputs["preset"] = this.preset;
+    return inputs;
   }
 
   public get parameters() {
@@ -49,11 +53,11 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
       'name': this.deploymentName,
       'cloudProvider': this.provider,
       'fields': [
-        {'key': 'OS_USERNAME', 'value': this.username},
-        {'key': 'OS_TENANT_NAME', 'value': this.tenant_name},
-        {'key': 'OS_AUTH_URL', 'value': this.url},
-        {'key': 'OS_PASSWORD', 'value': this.password},
-        {'key': 'OS_PROJECT_NAME', 'value': this.tenant_name},
+        {'key': 'OS_USERNAME', 'value': cc.username},
+        {'key': 'OS_TENANT_NAME', 'value': cc.projectOrTenantName},
+        {'key': 'OS_AUTH_URL', 'value': cc.authUrl},
+        {'key': 'OS_PASSWORD', 'value': cc.password},
+        {'key': 'OS_PROJECT_NAME', 'value': cc.projectOrTenantName},
         {'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)},
         {'key': 'TF_VAR_galaxy_admin_email', 'value': this.galaxy_admin_email},
         {'key': 'TF_VAR_galaxy_admin_password', 'value': this.galaxy_admin_password},

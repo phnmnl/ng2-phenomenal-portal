@@ -18,6 +18,7 @@ import { BaseProviderCredentialsComponent } from "./base-provider-credentials/ba
 import { CloudProviderMetadataService } from "../../shared/service/cloud-provider-metadata/cloud-provider-metadata.service";
 import { OpenstackProviderCredentialsComponent } from "./openstack-provider-credentials/openstack-provider-credentials.component";
 import { GcpProviderCredentialsComponent } from "./gcp-provider-credentials/gcp-provider-credentials.component";
+import { PreconfiguredOpenstackProviderCredentialsComponent } from "./preconfigured-openstack-provider-credentials/preconfigured-openstack-provider-credentials.component";
 
 @Component({
   selector: 'ph-provider-credentials',
@@ -28,8 +29,9 @@ export class ProviderCredentialsComponent implements OnInit, OnChanges, OnDestro
 
   @Input() cloudProvider: CloudProvider;
   @ViewChild(AwsProviderCredentialsComponent) awsSetup: AwsProviderCredentialsComponent;
-  @ViewChild(OpenstackProviderCredentialsComponent) ostackSetup: OpenstackProviderCredentialsComponent;
   @ViewChild(GcpProviderCredentialsComponent) gcpSetup: GcpProviderCredentialsComponent;
+  @ViewChild(OpenstackProviderCredentialsComponent) ostackSetup: OpenstackProviderCredentialsComponent;
+  @ViewChild(PreconfiguredOpenstackProviderCredentialsComponent) preconfiguredOstackSetup: PreconfiguredOpenstackProviderCredentialsComponent;
 
   private user: User;
   isLinear = false;
@@ -75,7 +77,9 @@ export class ProviderCredentialsComponent implements OnInit, OnChanges, OnDestro
 
 
   get providerCredentialsComponent(): BaseProviderCredentialsComponent {
-    return this[this.cloudProvider.name + "Setup"];
+    return this[(this.cloudProvider.preconfigured
+      ? "preconfigured" + ProviderCredentialsComponent.capitalizeFirstLetter(this.cloudProvider.name)
+      : this.cloudProvider.name) + "Setup"];
   }
 
   get form(): FormGroup {
@@ -108,5 +112,9 @@ export class ProviderCredentialsComponent implements OnInit, OnChanges, OnDestro
   get galaxy_instance_url(): string {
     console.debug("Galaxy instance URL:", this.config.getConfig("galaxy_url"));
     return this.config.getConfig("galaxy_url") + "/user/login";
+  }
+
+  private static capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }

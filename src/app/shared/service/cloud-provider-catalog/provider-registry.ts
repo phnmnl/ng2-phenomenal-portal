@@ -1,4 +1,4 @@
-import { CloudProvider } from "./cloud-provider";
+import { CloudProvider } from "../deployer/cloud-provider";
 
 export class ProviderRegistry {
 
@@ -12,11 +12,15 @@ export class ProviderRegistry {
       name: 'phenomenal',
       help: '/help/Deployment-Cloud-Research-Environment',
       description: 'Note that this is a public instance accessible by everyone. Your data will be stored on the PhenoMeNal Cloud with computing power by PhenoMeNal partners. ' +
-      'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
+        'This is not suitable for sensitive or private data. Uploaded data will be kept for a limited amount of time only.',
       paymentDescription: 'Free',
       providerDescription: 'EMBL-EBI, Uppsala Uni',
       locationDescription: 'Europe',
-      logo: 'assets/img/logo/default_app.png'
+      logo: {
+        'path': 'assets/img/logo/default_app.png',
+        'width': "200px",
+        'height': "125px"
+      }
     });
   }
 
@@ -29,8 +33,12 @@ export class ProviderRegistry {
       paymentDescription: 'Commercial',
       providerDescription: 'Amazon AWS',
       locationDescription: 'Worldwide',
-      logo: this._aws_logo,
-      credential: { 'default_region': "eu-west-1"}
+      logo: {
+        "path": this._aws_logo,
+        'width': "200px",
+        'height': "125px"
+      },
+      credential: {'default_region': "eu-west-1"}
     });
   }
 
@@ -43,7 +51,11 @@ export class ProviderRegistry {
       paymentDescription: 'Commercial or Free',
       providerDescription: 'N/a',
       locationDescription: 'N/a',
-      logo: this._openstack_logo
+      logo: {
+        'path': this._openstack_logo,
+        'width': "200px",
+        'height': "125px"
+      }
     });
   }
 
@@ -56,8 +68,16 @@ export class ProviderRegistry {
       paymentDescription: 'Commercial',
       providerDescription: 'Google Cloud',
       locationDescription: 'Worldwide',
-      logo: this._gce_logo
+      logo: {
+        path: this._gce_logo,
+        width: "200px",
+        height: "125px"
+      }
     });
+  }
+
+  public static getOpenStackProviders(): CloudProvider[] {
+    return null;
   }
 
   public static getProviders() {
