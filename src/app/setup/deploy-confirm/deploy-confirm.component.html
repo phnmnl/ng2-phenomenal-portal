@@ -12,18 +12,40 @@
     <div *ngIf="cloudProvider.name === 'ostack'">
       <p>OpenStack Endpoint: <b>{{cloudProvider.credential.url}}</b></p>
       <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-      <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
     </div>
     <div *ngIf="cloudProvider.name === 'aws'">
       <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
-      <p>Access Key ID: <b>{{cloudProvider.credential.access_key_id}}</b></p>
-      <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
     </div>
     <div *ngIf="cloudProvider.name === 'gcp'">
       <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
       <p>Project ID: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-      <p>Galaxy Email: <b>{{currentUser.email}}</b></p>
     </div>
+
+    <div>
+      <p>Master Node instance type: <b>{{cloudProvider.credential.master_instance_type}}</b></p>
+      <p>Worker Node instance type:
+        <b>{{cloudProvider.credential.node_instance_type}}</b>
+        <em>({{nodeString(cloudProvider.credential.node_count)}})</em>
+      </p>
+      <div *ngIf="!cloudProvider.credential.master_as_edge">
+        <p>Edge Node instance type:
+          <b>{{cloudProvider.credential.edgenode_instance_type}}</b>
+          <em>({{nodeString(cloudProvider.credential.edgenode_instance_type)}})</em>
+        </p>
+      </div>
+
+      <p>GlusterFS Node instance type:
+        <b>{{cloudProvider.credential.glusternode_instance_type}}</b>
+        <em>({{nodeString(cloudProvider.credential.glusternode_count)}})</em>
+      </p>
+      <p>GlusterFS Disk Size: <b>{{cloudProvider.credential.glusternode_extra_disk_size}} GB</b></p>
+
+      <p>PVC Disk Size: <b>{{cloudProvider.credential.phenomenal_pvc_size}} GB</b></p>
+
+      <p>Username of CRE Services: <b>{{currentUser.email}}</b></p>
+      <p>PhenoMeNal Deployment Repository: <b>{{cloudProvider.credential.phenomenal_version}}</b></p>
+    </div>
+
   </div>
 
   <ph-setup-error [errors]="errors"></ph-setup-error>
