@@ -219,9 +219,11 @@
             <mat-select placeholder="Select the PhenoMeNal version to install"
                         style="display: inline-block; text-align: left;"
                         [formControl]="formControls['phenomenal_version']"
-                        required [(ngModel)]="cloudProvider.credential.phenomenal_version">
-              <mat-option *ngFor="let version of phenVersions" [value]="version.value">
-                {{version.displayValue}}
+                        required>
+              <mat-option *ngFor="let version of phenVersions"
+                          (onSelectionChange)="onChangePhenoMeNalVersion($event)"
+                          [value]="version">
+                {{version.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

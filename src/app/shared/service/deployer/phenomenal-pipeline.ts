@@ -66,7 +66,7 @@ export class PhenoMeNalPipeline extends Pipeline {
       "Checking Existing Applications", 2));
     pipeline.addStep(new PipelineStep("ced",
       (deployment: PhnDeployment, callback) => deployer.checkExistingDeployments(deployment, callback, pipeline),
-      "Checking Existing Applications", 2));
+      "Checking Existing Deployments", 2));
     pipeline.addStep(new PipelineStep("rea",
       (deployment: PhnDeployment, callback) => deployer.deRegisterApplication(deployment, callback),
       "Remove Existing Application", 2));

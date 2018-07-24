@@ -30,7 +30,11 @@ export abstract class BaseDeploymentConfigurationParameters {
   glusternode_instance_type: string;
   glusternode_extra_disk_size: number = 100;
   phenomenal_pvc_size: number = 100;
-  phenomenal_version: string = "latest";
+  phenomenal_version = {
+    id: "",
+    name: "",
+    url: ""
+  };
 
 
   protected constructor(config?: object) {
@@ -62,7 +66,7 @@ export abstract class BaseDeploymentConfigurationParameters {
       let app = <ApplicationDeployer> {
         name: 'Phenomenal VRE',
         accountUsername: this.username,
-        repoUri: this.phenomenal_version,
+        repoUri: this.phenomenal_version.url,
         selectedCloudProvider: this.provider
       };
       app.attachedVolumes = {};

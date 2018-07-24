@@ -107,6 +107,10 @@ export class DeployConfirmComponent implements OnInit {
     return false;
   }
 
+  nodeString(count): string {
+    return count + " " + (count > 1 ? "nodes" : "node");
+  }
+
   onSubmit() {
     console.log("Submitting");
   }

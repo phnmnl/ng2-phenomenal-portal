@@ -73,7 +73,16 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
               private appConfig: AppConfig,
               private cloudProviderMetadataService: CloudProviderMetadataService) {
     this.phenVersions = [
-      {value: this.appConfig.getConfig('deployment_repo_url'), displayValue: 'v18.01 Dalcotidine'}
+      {
+        id: "2.0-Cerebellin-20180523",
+        name: 'v17.09 Cerebellin',
+        url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin.git"
+      },
+      {
+        id: "2.0-Cerebellin-20180628",
+        name: 'v18.01 Dalcotidine',
+        url: "https://github.com/phnmnl/cloud-deploy-kubenow-dalcotidine.git"
+      },
     ];
   }
 
@@ -99,7 +108,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.serviceSubscriptions.splice(0, this.serviceSubscriptions.length);
 
     // set the latest PhenoMeNal version as default
-    this.cloudProvider.credential.phenomenal_version = this.appConfig.getConfig('deployment_repo_url');
+    this.cloudProvider.credential.phenomenal_version = this.phenVersions[this.phenVersions.length - 1];
 
     // update settings and subscriptions
     this.showNetworkSettings = this.cloudProvider.name === "ostack";
@@ -188,6 +197,13 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     }
     console.log("Update deployment parameters", this.cloudProvider.credential);
     this.ngAfterViewChecked();
+  }
+
+  onChangePhenoMeNalVersion(event) {
+    console.log("Event", event);
+    console.log("Changed version: ", this.cloudProvider.credential.phenomenal_version);
+    this.cloudProvider.credential.phenomenal_version = event.source.value;
+    console.log("PhenVer", this.cloudProvider.credential.phenomenal_version);
   }
 
   ngAfterViewChecked() {
