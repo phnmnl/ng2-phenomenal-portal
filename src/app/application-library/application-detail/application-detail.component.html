@@ -20,14 +20,14 @@
         </div>
         <!--<hr>-->
         <br>
+        <br>
+        <br>
         <!--Avatar-->
         <div class="col-lg-6">
-          <img src="{{ application.logo_large }}" class="img-fluid img-rounded z-depth-2 logo">
+          <img src="{{ application.logo_large }}" class="img-fluid img-rounded logo">
         </div>
-        <br>
         <!--Author Data-->
-        <div class="col-lg-6 text-sm-center small table-flow">
-
+        <div class="col-lg-6 small table-flow repository-details">
           <table class="table">
             <tbody>
             <tr *ngIf="application.website.length > 0">
@@ -45,16 +45,15 @@
             <tr *ngIf="application.git_repo.length > 0">
               <th scope="row">Git Repository</th>
               <td>
-                <a href="{{application.git_repo[0]}}" target="_blank">{{application.git_repo}}</a>
+                <a href="{{application.git_repo[0]}}" target="_blank" style="word-break: break-word;">{{application.git_repo}}</a>
               </td>
             </tr>
             </tbody>
           </table>
-
         </div>
       </div>
 
-      <div class="col-md-12">
+      <div class="col-md-12" style="margin-top: 40px;">
         <br>
         <div class="row" *ngIf="application.key_features.length > 0">
           <!--Header-->
@@ -62,11 +61,13 @@
             <p><strong>Features</strong></p>
           </div>
 
-          <!--Infor-->
+          <!--Info-->
           <div class="col-md-10">
-
-            <ul class="list-group" *ngFor="let feature of application.key_features">
-              <li class="list-group-item">{{ feature }}</li>
+            <ul class="features-list">
+              <li *ngFor="let feature of application.key_features" class="font-italic features-list-item" >
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                {{ feature }}
+              </li>
             </ul>
           </div>
         </div>
