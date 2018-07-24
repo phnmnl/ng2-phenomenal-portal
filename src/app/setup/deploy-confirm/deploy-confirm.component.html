@@ -3,48 +3,124 @@
   <div class="alert alert-warning">{{ message}}</div>
 </div>
 
-<h3 class="h3-responsive text-center cloud-setup-title">
-  Please review your input data before deployment
-</h3>
-
+<h4 class="h4-responsive text-center cloud-setup-title">
+  Please review your deployment properties before proceeding
+</h4>
+<br>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="review-details">
-    <div *ngIf="cloudProvider.name === 'ostack'">
-      <p>OpenStack Endpoint: <b>{{cloudProvider.credential.url}}</b></p>
-      <p>Tenant Name: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-    </div>
-    <div *ngIf="cloudProvider.name === 'aws'">
-      <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
-    </div>
-    <div *ngIf="cloudProvider.name === 'gcp'">
-      <p>Region: <b>{{cloudProvider.credential.default_region}}</b></p>
-      <p>Project ID: <b>{{cloudProvider.credential.tenant_name}}</b></p>
-    </div>
 
-    <div>
-      <p>Master Node instance type: <b>{{cloudProvider.credential.master_instance_type}}</b></p>
-      <p>Worker Node instance type:
-        <b>{{cloudProvider.credential.node_instance_type}}</b>
-        <em>({{nodeString(cloudProvider.credential.node_count)}})</em>
-      </p>
-      <div *ngIf="!cloudProvider.credential.master_as_edge">
-        <p>Edge Node instance type:
-          <b>{{cloudProvider.credential.edgenode_instance_type}}</b>
-          <em>({{nodeString(cloudProvider.credential.edgenode_instance_type)}})</em>
-        </p>
-      </div>
+    <!-- Services Properties -->
+    <div class="h4-responsive" style="margin: 40px;">CRE Services Properties</div>
+    <table class="table">
+      <tbody>
+      <tr>
+        <th scope="row">Username</th>
+        <td>
+          {{cloudProvider.credential.galaxy_admin_email}}
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">PhenoMeNal Version</th>
+        <td>
+          {{cloudProvider.credential.phenomenal_version.name}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-      <p>GlusterFS Node instance type:
-        <b>{{cloudProvider.credential.glusternode_instance_type}}</b>
-        <em>({{nodeString(cloudProvider.credential.glusternode_count)}})</em>
-      </p>
-      <p>GlusterFS Disk Size: <b>{{cloudProvider.credential.glusternode_extra_disk_size}} GB</b></p>
+    <!-- Instances Properties -->
+    <div class="h4-responsive" style="margin: 40px;">CRE Instances</div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Instance Type</th>
+        <th># of instances</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">Master Node</th>
+        <td>
+          {{cloudProvider.credential.master_instance_type}}
+        </td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <th scope="row">Worker Nodes</th>
+        <td>
+          {{cloudProvider.credential.node_instance_type}} GB
+        </td>
+        <td>
+          {{cloudProvider.credential.node_count}}
+        </td>
+      </tr>
+      <tr *ngIf="!cloudProvider.credential.master_as_edge">
+        <th scope="row">Edge Nodes</th>
+        <td>
+          {{cloudProvider.credential.edgenode_instance_type}} GB
+        </td>
+        <td>
+          {{cloudProvider.credential.edgenode_count}}
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">GlusterFS Nodes</th>
+        <td>
+          {{cloudProvider.credential.glusternode_instance_type}} GB
+        </td>
+        <td>
+          {{cloudProvider.credential.glusternode_count}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-      <p>PVC Disk Size: <b>{{cloudProvider.credential.phenomenal_pvc_size}} GB</b></p>
-
-      <p>Username of CRE Services: <b>{{currentUser.email}}</b></p>
-      <p>PhenoMeNal Deployment Repository: <b>{{cloudProvider.credential.phenomenal_version}}</b></p>
-    </div>
+    <div class="h4-responsive" style="margin: 40px;">CRE Global Properties</div>
+    <table class="table">
+      <tbody>
+      <!-- OPENSTACK -->
+      <tr *ngIf="cloudProvider.isOstack()">
+        <th scope="row">OAuth Endpoint</th>
+        <td>
+          {{cloudProvider.credential.url}}
+        </td>
+      </tr>
+      <tr *ngIf="cloudProvider.isOstack()">
+        <th scope="row">Tenant/Project Name</th>
+        <td>
+          {{cloudProvider.credential.tenant_name}}
+        </td>
+      </tr>
+      <!-- AWS -->
+      <tr *ngIf="cloudProvider.isGpc()">
+        <th scope="row">Project ID</th>
+        <td>
+          {{cloudProvider.credential.tenant_name}}
+        </td>
+      </tr>
+      <!-- COMMON -->
+      <tr>
+        <th scope="row">Region</th>
+        <td>
+          {{cloudProvider.credential.default_region}}
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">GlusterFS Disk Size</th>
+        <td>
+          {{cloudProvider.credential.glusternode_extra_disk_size}} GB
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">PVC Disk Size</th>
+        <td>
+          {{cloudProvider.credential.phenomenal_pvc_size}} GB
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
   </div>
 
