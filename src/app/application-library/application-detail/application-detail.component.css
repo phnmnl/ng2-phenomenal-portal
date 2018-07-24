@@ -2,6 +2,10 @@
   overflow-x: auto;
 }
 
+.table a {
+  margin-left: 0;
+}
+
 :host >>> pre {
   padding: 16px;
   overflow: auto;
@@ -15,7 +19,47 @@
 }
 
 .logo {
-  max-height: 200px;
+  max-height: 140px;
   display: block;
   margin: 0 auto;
+}
+
+.repository-details {
+}
+
+.repository-details .table {
+  margin: 0;
+}
+
+.details-container {
+  margin-top: 40px;
+}
+
+.features-list {
+  margin-left: 0.9em;
+}
+
+.features-list-item {
+  margin: 0;
+  text-indent: -0.5em;
+}
+
+@media (max-width: 767px) {
+  .repository-details {
+    margin-top: 50px;
+  }
+}
+
+@media (min-width: 768px) {
+  .repository-details {
+    margin-top: 50px;
+  }
+}
+
+@media (min-width: 992px) {
+  .repository-details {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 }
