@@ -20,7 +20,7 @@ export class PublicGalaxyInstanceComponent implements OnInit {
 
   // UI Data
   private _user: User;
-  private readonly _publicProvider = null;
+  private readonly _publicProvider: CloudProvider = null;
 
   // UI control
   @Input() previousRoute: string = "";
