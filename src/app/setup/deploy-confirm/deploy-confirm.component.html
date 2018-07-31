@@ -50,7 +50,7 @@
       <tr>
         <th scope="row">Worker Nodes</th>
         <td>
-          {{cloudProvider.credential.node_instance_type}} GB
+          {{cloudProvider.credential.node_instance_type}}
         </td>
         <td>
           {{cloudProvider.credential.node_count}}
@@ -59,7 +59,7 @@
       <tr *ngIf="!cloudProvider.credential.master_as_edge">
         <th scope="row">Edge Nodes</th>
         <td>
-          {{cloudProvider.credential.edgenode_instance_type}} GB
+          {{cloudProvider.credential.edgenode_instance_type}}
         </td>
         <td>
           {{cloudProvider.credential.edgenode_count}}
@@ -68,7 +68,7 @@
       <tr>
         <th scope="row">GlusterFS Nodes</th>
         <td>
-          {{cloudProvider.credential.glusternode_instance_type}} GB
+          {{cloudProvider.credential.glusternode_instance_type}}
         </td>
         <td>
           {{cloudProvider.credential.glusternode_count}}
