@@ -17,12 +17,19 @@
               <div class="col-lg-9">
                 <p class="text-left"></p>
               </div>
-              <div class="col-lg-3 text-center plus-button">
+              <div class="h4-responsive" style="display: block;">
+                Click on the <i style="color: #525991" class="fa fa-plus-circle" aria-hidden="true"></i>
+                button to create <br>a new Cloud Research Environment (CRE)
+              </div>
+              <div>
+                <i style="color: #525991; margin-top: 15px;"
+                   class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
+              </div>
+              <div class="col-lg-3 text-center plus-button plus-button-container">
                 <a class="dropdown-item nav-link" title="Create new CRE"
                    [routerLink]="['/cloud-research-environment-setup']">
                   <i style="color: #525991" class="fa fa-plus-circle fa-4x" aria-hidden="true"></i>
                 </a>
-                <!--<div class="font-weight-bold">Create new CRE</div>-->
               </div>
             </div>
           </div>
@@ -44,18 +51,13 @@
             </div>
 
             <div>
-              <div class="deployment-provider" *ngIf="deployment.configuration && deployment.configuration.provider">
-                <img *ngIf="deployment.configuration.provider.cloudProvider === 'AWS'" mat-card-image
-                     src="{{aws_logo}}" class="provider-image">
-                <img *ngIf="deployment.configuration.provider.cloudProvider === 'GCP'" mat-card-image
-                     src="{{gce_logo}}" class="provider-image">
-                <img *ngIf="deployment.configuration.provider.cloudProvider === 'OSTACK'" mat-card-image
-                     src="{{openstack_logo}}" class="provider-image">
+              <div class="deployment-provider" *ngIf="deployment.cloudProviderName">
+                <img mat-card-image src="{{getProviderLogo(deployment)}}" class="provider-image">
               </div>
 
               <div class="deployment-identifiers">
                 <mat-card-title class="deployment-name" title="Deployment Name">
-                  <h5 class="h5-responsive">{{ deployment.configurationName }}</h5>
+                  <h5 class="h5-responsive font-weight-bold">{{ deployment.configurationName }}</h5>
                 </mat-card-title>
 
                 <div class="deployment-id" title="Deployment Identifier" *ngIf="deployment.reference">
@@ -72,7 +74,7 @@
                     </div>
                     <div class="col-xs-7 text-left">
                   <span
-                    [ngClass]="{running: deployment['status']==='RUNNING', stop: deployment['status']!=='RUNNING' }">
+                    [ngClass]="{running: deployment.isRunning(), stop: !deployment.isRunning() }">
                   {{deployment['status']}}
                 </span>
                     </div>
@@ -93,6 +95,14 @@
                       <span class="state-value">{{deployment['deployedTime'] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
                     </div>
                   </div>
+                  <div *ngIf="deployment['failedTime']" class="row">
+                    <div class="col-xs-5 text-right">
+                      Failed:
+                    </div>
+                    <div class="col-xs-7 text-left">
+                      <span class="state-value">{{deployment['failedTime'] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
+                    </div>
+                  </div>
                   <div *ngIf="deployment['destroyedTime']" class="row">
                     <div class="col-xs-5 text-right">
                       Destroyed:
@@ -105,27 +115,38 @@
                 </mat-card-subtitle>
               </div>
 
-              <div class="card-section-center">
+              <div
+                class="{{ (deployment.isDestroyed() || deployment.isFaulty() && !deployment.isDestroying()) ? 'card-section-center-empty' : 'card-section-center'}}">
 
-                <div *ngIf="deployment.isError">
-                  <div style="color:red" class="font-weight-bold">
-                    ERROR: <span class="font-italic">{{deployment.error.message || deployment.error }}</span>
+                <div class="error-section"
+                     *ngIf="deployment.isFaulty() && !(deployment.isStarting() || deployment.isDestroying())">
+                  <div>
+                    <img src="{{ error_icon }}"/>
+                  </div>
+
+                  <div *ngIf="deployment.errorCause" class="error-message">
+                    FAILURE CAUSE: <span class="font-italic">{{deployment.errorCause }}</span><br>
+                    (see logs for more details)
+                    <div *ngIf="deployment.isDestroyingFailed()">
+                      Visit the <a href="https://portal.tsi.ebi.ac.uk/deployments/{{ deployment.reference }}"
+                                   target="_blank">TSI Portal</a>
+                      to try a forced destroy!
+                    </div>
                   </div>
                 </div>
 
                 <div class="deployment-progress-bar"
-                  *ngIf="deployment['status']==='STARTING' || deployment['status']==='STARTING_FAILED'">
+                     *ngIf="deployment.isStarting()">
                   <ph-progress-bar [progress]="deployment"></ph-progress-bar>
                 </div>
 
-                <div class="{{deployment['status']==='STARTING' && deployment.isInstalling ? 'installing' : 'deleting' }}"
-                     *ngIf="deployment['status']==='DESTROYING' || deployment['status']==='STARTING' && deployment.isInstalling">
+                <div class="deleting destroy-wheel" *ngIf="deployment.isDestroying()">
                   <mat-progress-spinner mode="indeterminate" color="red">
                     Please wait...
                   </mat-progress-spinner>
                 </div>
 
-                <div *ngIf="deployment['status']==='RUNNING'">
+                <div *ngIf="deployment.isRunning()">
                   <div>
                     <div class="deployment-admin-credentials-container" title="Credentials to access to CRE services">
                       <h6 class="font-weight-bold deployment-admin-credentials">Admin credentials:</h6>
@@ -141,7 +162,7 @@
                     </div>
 
                     <div
-                      class="deployment-services-container {{deployment['status']==='RUNNING' ? '' : 'disabled disabled-controls'}}">
+                      class="deployment-services-container {{deployment.isRunning() ? '' : 'disabled disabled-controls'}}">
                       <h5 class="h5-responsive font-weight-bold deployment-services-header">CRE Services:</h5>
                       <div class="row">
                         <div class="col-xs-4">
@@ -150,7 +171,8 @@
                           </a>
                         </div>
                         <div class="col-xs-4">
-                          <a href="{{deployment['galaxyUrl']}}/user/login" target="_blank" (click)="enabledServices(deployment)">
+                          <a href="{{deployment['galaxyUrl']}}/user/login" target="_blank"
+                             (click)="enabledServices(deployment)">
                             <img style="width: 60px;" alt="Galaxy Workflow Manager" [src]="galaxy_logo">
                           </a>
                         </div>
@@ -166,26 +188,27 @@
               </div>
 
 
-              <div class="deployment-controls" *ngIf="deployment['status']!=='DESTROYING'">
+              <div class="deployment-controls">
                 <hr>
 
                 <div class="row">
                   <div *ngIf="deployment.reference"
-                       class="{{ deployment['status']!=='STARTING' ? 'col-xs-6' : 'col-xs-12'}} logs">
+                       class="{{ (deployment.isStarting() || deployment.isDestroying()) ? 'col-xs-12': 'col-xs-6'}} logs">
                     <a [routerLink]="['/logs']" [queryParams]="{id: deployment.reference}" target="_blank">
                       <i class="fa fa-align-justify fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">logs</span>
                     </a>
                   </div>
 
-                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='RUNNING' || deployment['status']==='STARTING_FAILED'">
+                  <div class="col-xs-6 destroy"
+                       *ngIf="(deployment.isRunning() || deployment.isStartedFailed())">
                     <a (click)="destroyDeployment(deployment)">
                       <i class="fa fa-minus-circle fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">Stop</span>
                     </a>
                   </div>
 
-                  <div class="col-xs-6 destroy" *ngIf="deployment['status']==='DESTROYED' || deployment['status']==='DESTROYING_FAILED'">
+                  <div class="col-xs-6 destroy" *ngIf="deployment.isDeletionAllowed()">
                     <a (click)="deleteDeployment(deployment)">
                       <i class="fa fa-minus-circle fa-1x" aria-hidden="true"></i>
                       <span style="margin-left: 2px;">Delete</span>
@@ -207,21 +230,43 @@
            [routerLink]="['/cloud-research-environment-setup']">
           <mat-card class="card-property hidden-md-down card-plus">
             <mat-card-content>
-              <!--<div class="row text-center" style="padding: 0; margin: 5% auto 5%;">-->
-              <!--<img src="{{providers_logo}}" style="width: 100%;">-->
-              <!--</div>-->
-
               <div style="margin: 0 auto;">
                 <i style="color: #525991" class="fa fa-plus-circle card-plus-button-icon" aria-hidden="true"></i>
               </div>
-
-              <!--<div class="row text-center" style="margin: 20% auto 0;">-->
-              <!--<mat-card-title><strong>Create new CRE</strong></mat-card-title>-->
-              <!--</div>-->
-
             </mat-card-content>
           </mat-card>
         </a>
+      </div>
+
+      <div *ngIf="isBoxOnLastColumn()">
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-4">
+        </div>
+      </div>
+
+      <div class="row hidden-md-down">
+        <div class="col-lg-4">
+          <mat-card-content>
+            <div style="margin: 0 auto;">
+              <div *ngIf="isBoxOnLastColumn()"
+                   style="display: block; margin-top: 20px; margin-left: -25px;">
+                <i style="color: #525991; font-size: 5em;"
+                   class="fa fa-arrow-up" aria-hidden="true"></i>
+              </div>
+              <div [ngStyle]="{'margin-top': isBoxOnLastColumn() ? '10%' : '65%'}">
+                <div class="h4-responsive" style="display: block;">
+                  Click on the <i style="color: #525991" class="fa fa-plus-circle" aria-hidden="true"></i>
+                  button to create a new Cloud Research Environment (CRE)
+                </div>
+                <div *ngIf="!isBoxOnLastColumn()" style="display: block; margin-top: 20px; margin-left: -25px;">
+                  <i style="color: #525991; font-size: 5em;"
+                     class="fa fa-arrow-left" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
       </div>
     </div>
   </div>

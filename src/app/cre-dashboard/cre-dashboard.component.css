@@ -35,7 +35,19 @@
 }
 
 .card-section-center {
+  min-height: 125px;
+}
+
+.card-section-center-empty {
   min-height: 175px;
+}
+
+div.deployment-identifiers > mat-card-title {
+  max-height: 33px;
+}
+
+div.deployment-identifiers > mat-card-title > h5 {
+   font-size: 100%;
 }
 
 .deployment-state > mat-card-subtitle > .row > .col-xs-5 {
@@ -71,11 +83,6 @@
   padding: 2px 6px;
 }
 
-.deployment-controls {
-  margin-top: 25px;
-  padding: 0;
-}
-
 .deployment-controls > .row > .col-xs-4 {
   padding: 0;
   color: #664F90;
@@ -107,18 +114,8 @@
 
 .deployment-progress-bar {
   padding-top: 10px;
-}
-
-.installing .mat-progress-spinner {
-  padding: 0;
-  margin-top: -10px;
-  margin-bottom: -10px;
-}
-
-.installing .mat-progress-spinner > svg > circle {
-  stroke: #5cb85c !important;
-  stroke-width: 5px;
-  r: 25px;
+  margin-top: -30px;
+  min-height: 208px;
 }
 
 .deleting .mat-progress-spinner > svg > circle {
@@ -136,6 +133,10 @@
 .phenomenal-image {
   height: 187.5px;
   width: 300px;
+}
+
+.plus-button-container {
+  margin-top: 10px;
 }
 
 .plus-button {
@@ -175,11 +176,23 @@
 }
 
 .deployment-provider {
-  margin-bottom: -10px;
+  margin: -20px 0 -5px;
+  padding: 20px;
+  height: 72px;
+}
+
+mat-card > mat-card-content > div > div.deployment-provider > img {
+  margin-top: 0 !important;
 }
 
 div.deployment-provider > img.provider-image {
-  width: 100px !important;
+  width: auto;
+  margin: auto;
+  height: 100%;
+}
+
+.destroy-wheel {
+  max-height: 125px;
 }
 
 .disabled-controls {
@@ -191,38 +204,8 @@ div.deployment-provider > img.provider-image {
   opacity: .6;
 }
 
-@media (min-width: 992px) {
-  /*.phenomenal-image {*/
-  /*height: 60px;*/
-  /*width: 90px;*/
-  /*}*/
-  .deployment-controls {
-    margin-top: 0;
-    padding: 0;
-  }
-}
-
 .mat-progress-spinner {
   margin: 40px auto;
-}
-
-/* Modal window properties */
-.fade, .fade.in {
-  opacity: 1;
-}
-
-.modal.in .modal-dialog {
-  -webkit-transform: translate(0, 0);
-  -o-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-.modal-backdrop .fade .in {
-  opacity: 0.5 !important;
-}
-
-.modal-backdrop.fade {
-  opacity: 0.5 !important;
 }
 
 .progress-bar-modal .modal-dialog {
@@ -230,11 +213,36 @@ div.deployment-provider > img.provider-image {
   min-width: 320px;
 }
 
-.modal-footer {
+.error-section {
+  padding-top: 10px;
+  margin: 20px auto 10px;
+}
+
+.error-section img {
   text-align: center;
+  width: 80px;
 }
 
-.modal-footer > button {
-  width: 100px;
+.error-section .error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
+@media (max-width: 403px) {
+  .deployment-controls {
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 404px) {
+  .deployment-controls {
+    margin-top: 25px;
+  }
+}
+
+@media (min-width: 992px) {
+  .deployment-controls {
+    margin-top: 0;
+  }
+}

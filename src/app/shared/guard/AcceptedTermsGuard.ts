@@ -21,7 +21,7 @@ export class AcceptedTermsGuard implements CanActivate {
       return this.userService.findById(this.authService.credentialService.getUsername()).map(
         (userInfo) => {
           console.log("User info from backend service", userInfo);
-          if (userInfo && "Idmetadata" in userInfo) {
+          if (userInfo) {
             console.log("Fetched user info: ", userInfo);
             console.log("Route allowed");
             return true;

@@ -1,30 +1,35 @@
 <!--Card-->
 <div class="card card-cascade narrower app-card">
 
-  <!--Card image-->
-  <div class="view overlay hm-white-slight">
-    <img src="{{ application.logo_large }}" class="img-fluid m-x-auto d-block app-logo" alt="">
-    <a [routerLink]="['/app-library', application.id]">
-      <div class="mask"></div>
-    </a>
-  </div>
-  <!--/.Card image-->
+  <a [routerLink]="['/app-library', application.id]" class="app-link">
 
-  <!--Card content-->
-  <div class="card-block text-xs-center">
-    <!--Category & Title-->
-    <h5 class="card-title"><strong><a [routerLink]="['/app-library', application.id]">{{ application.name
-      }}</a></strong></h5>
+    <!--Card image-->
+    <div class="app-logo-container">
+      <img src="{{ application.logo_large }}" class="img-fluid m-x-auto d-block app-logo" alt="">
 
-    <!--Description-->
-    <p class="card-text">
-      <small>
-        <div class="overflow">{{ application.short_description }}</div>
-      </small>
-    </p>
+      <!--<div class="mask"></div>-->
 
-  </div>
-  <!--/.Card content-->
+    </div>
+    <!--/.Card image-->
+
+    <!--Card content-->
+    <div class="card-block text-xs-center">
+
+      <!--Category & Title-->
+      <h5 class="h5-responsive card-title">
+        <span class="font-weight-bold">{{ application.name }}</span>
+      </h5>
+
+      <!--Description-->
+      <div class="card-text card-text-overflow small">
+        {{ application.short_description }}
+      </div>
+
+    </div>
+    <!--/.Card content-->
+
+  </a>
+
 </div>
 <!--/.Card-->
 

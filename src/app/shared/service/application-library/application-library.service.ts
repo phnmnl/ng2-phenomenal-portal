@@ -83,7 +83,24 @@ export class ApplicationLibraryService {
       {id: '3', name: 'Post-processing', parent: '#', children: [], isCheck: false},
       {id: '4', name: 'Statistical Analysis', parent: '#', children: [], isCheck: false},
       {id: '5', name: 'Workflows', parent: '#', children: [], isCheck: false},
-      {id: '6', name: 'Other Tools', parent: '#', children: [], isCheck: false}
+      {
+        id: '7d', name: 'Data Management', parent: '#', children: [
+          {id: '71', name: 'study metadata creation from study design', parent: '7d', children: [], isCheck: false},
+          {id: '72', name: 'study metadata extraction from raw data', parent: '7d', children: [], isCheck: false},
+          {id: '73', name: 'study metadata querying', parent: '7d', children: [], isCheck: false},
+          {id: '74', name: 'study metadata visualization', parent: '7d', children: [], isCheck: false},
+          {id: '75', name: 'study metadata syntactic validation', parent: '7d', children: [], isCheck: false},
+          {id: '76', name: 'study metadata format conversion', parent: '7d', children: [], isCheck: false},
+          {id: '77', name: 'study dataset download', parent: '7d', children: [], isCheck: false},
+          {id: '78', name: 'study dataset deposition', parent: '7d', children: [], isCheck: false},
+          {id: '79', name: 'semantic validation', parent: '7d', children: [], isCheck: false},
+        ], isCheck: false
+      },
+      {
+        id: '8', name: 'Optimization', parent: '#', children: [
+          {id: '81', name: 'parameter selection optimization', parent: '8', children: [], isCheck: false},
+        ], isCheck: false
+      }
     ];
 
     let approaches = [
@@ -149,7 +166,11 @@ export class ApplicationLibraryService {
       },
       {
         id: 'b2', name: 'NMR', parent: '#', children: [
-          {id: 'b67', name: '1D NMR', parent: 'b2', children: [], isCheck: false},
+          {
+            id: 'b67', name: '1D NMR', parent: 'b2', children: [
+              {id: 'b69', name: '¹H NMR', parent: 'b67', children: [], isCheck: false},
+            ], isCheck: false
+          },
           {
             id: 'b68', name: '2D NMR', parent: 'b2', children: [
               {id: 'b75', name: '2D TOCSY', parent: 'b68', children: [], isCheck: false},
@@ -160,7 +181,6 @@ export class ApplicationLibraryService {
               }
             ], isCheck: false
           },
-          {id: 'b69', name: '¹H NMR', parent: 'b2', children: [], isCheck: false},
           {id: 'b66', name: 'Covariance NMR', parent: 'b2', children: [], isCheck: false}
         ], isCheck: false
       },

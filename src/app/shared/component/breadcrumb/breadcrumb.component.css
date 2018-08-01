@@ -24,3 +24,15 @@ a:focus, a:hover {
 .breadcrumb > li {
   display: inline;
 }
+
+
+@media (max-width: 767px) {
+  .breadcrumb-container {
+    margin-top: 50px!important;
+  }
+}
+
+@media (min-width: 768px) {
+  .breadcrumb-container {
+  }
+}

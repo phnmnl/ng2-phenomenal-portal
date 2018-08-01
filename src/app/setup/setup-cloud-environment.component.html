@@ -6,49 +6,98 @@
       <div class="loader">Loading...</div>
     </div>
 
-    <!-- provider selection -->
-    <div *ngIf="!isCloudProviderSelected()">
-      <p>In order to deploy your CRE you need a cloud provider.</p>
+    <mat-horizontal-stepper [linear]="true" #stepper style="overflow:visible;">
 
-      <h3 class="h3-responsive text-center cloud-setup-title">
-        Please select a cloud provider for setting up your Cloud Research Environment
-      </h3>
-      <br><br>
+      <!-- Step 1: Cloud Provider Selection -->
+      <mat-step [stepControl]="formOne">
+        <ng-template matStepLabel>Cloud Provider</ng-template>
+        <ph-provider-selector #stepOneComponent (cloudProvider)="selectCloudProvider($event)"></ph-provider-selector>
+      </mat-step>
 
-      <div *ngFor="let cloudProvider of cloudProviderCollection; let i = index" [attr.data-index]="i">
-
-        <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }">
-
-          <div
-            [ngClass]="{'col-lg-6': true, 'card-size': true}">
-            <mat-card (click)="selectCloudProvider(cloudProvider)">
-              <img mat-card-image src="{{cloudProvider.logo}}" class="card-image">
-              <mat-card-content>
-                <h5 class="card-title">
-                  <strong>{{cloudProvider.title}}</strong>
-                  <a href="{{cloudProvider.help}}" target="_blank"><i class="fa fa-question-circle-o"
-                                                                      aria-hidden="true"></i></a>
-                </h5>
-                <div *ngIf="cloudProvider.isSelected === 0">
-                  <p>{{cloudProvider.description}}</p>
-                  <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
-                  <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
-                </div>
-
-              </mat-card-content>
-            </mat-card>
+      <!-- Step 2: Setup Cloud Provider Credentials -->
+      <mat-step [stepControl]="formTwo">
+        <ng-template matStepLabel>Cloud Credentials</ng-template>
+        <div *ngIf="cloudProvider">
+          <div class="provider-logo-container">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
           </div>
-          <br class="hidden-lg-up"/>
+          <mat-card-content>
+            <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
+            <ph-provider-credentials #stepTwoComponent [cloudProvider]="cloudProvider"></ph-provider-credentials>
+          </mat-card-content>
         </div>
-      </div>
-    </div>
+        <div class="mat-card-control-buttons">
+          <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
+          <button mat-button type="submit" (click)="validateCredentials()"
+                  mat-raised-button [disabled]="!formTwo || !formTwo.valid" color="primary" autofocus>Next
+          </button>
+        </div>
+      </mat-step>
 
-    <!-- provider setup -->
-    <div *ngIf="isCloudProviderSelected()">
-      <ph-cloud-setup [cloudProvider]="selectedCloudProvider"></ph-cloud-setup>
-    </div>
 
-    <!-- main center content -->
+      <!-- Step 3: Cloud Provider Parameters -->
+      <mat-step [stepControl]="formThree">
+        <ng-template matStepLabel>Cloud Parameters</ng-template>
+        <div *ngIf="cloudProvider">
+          <div class="provider-logo-container">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
+          </div>
+          <mat-card-content>
+            <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
+            <ph-provider-parameters #stepThreeComponent [cloudProvider]="cloudProvider"></ph-provider-parameters>
+          </mat-card-content>
+        </div>
+        <div class="mat-card-control-buttons">
+          <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
+          <button mat-button matStepperNext type="button"
+                  mat-raised-button [disabled]="!formThree || !formThree.valid" color="primary" autofocus>Next
+          </button>
+        </div>
+      </mat-step>
+
+      <!-- Step 4: Setup Services Credentials -->
+      <mat-step [stepControl]="formFour">
+        <ng-template matStepLabel>Services Credentials</ng-template>
+        <div *ngIf="cloudProvider">
+          <div class="provider-logo-container">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
+          </div>
+          <mat-card-content>
+            <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
+            <ph-services-credentials #stepFourComponent [cloudProvider]="cloudProvider"></ph-services-credentials>
+          </mat-card-content>
+        </div>
+        <div class="mat-card-control-buttons">
+          <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
+          <button mat-button matStepperNext type="button"
+                  mat-raised-button [disabled]="!formFour || !formFour.valid" color="primary" autofocus>Next
+          </button>
+        </div>
+      </mat-step>
+
+      <!-- Step 5: Deploy CRE -->
+      <mat-step [stepControl]="formFive">
+        <ng-template matStepLabel>Deploy</ng-template>
+        <div *ngIf="cloudProvider">
+          <div class="provider-logo-container">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height}">
+          </div>
+          <mat-card-content>
+            <ph-provider-info [cloudProvider]="cloudProvider"></ph-provider-info>
+            <ph-deploy-confirm #stepFiveComponent [cloudProvider]="cloudProvider"></ph-deploy-confirm>
+          </mat-card-content>
+        </div>
+        <div class="mat-card-control-buttons">
+          <button mat-button matStepperPrevious mat-raised-button color="accent">Back</button>
+          <button mat-button type="button" class="btn btn-warning" color="warn" (click)="deploy()"
+                  mat-raised-button [disabled]="!formFive || !formFive.valid || disableDeployButton" autofocus>Deploy
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </div>
-
 </main>

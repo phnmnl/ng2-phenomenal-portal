@@ -1,0 +1,79 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="provider-selector-container">
+    <p>In order to deploy your CRE you need a cloud provider</p>
+
+    <h3 class="h3-responsive text-center cloud-setup-title">
+      Please select a cloud provider for setting up your Cloud Research Environment
+    </h3>
+    <br><br>
+
+    <input type="hidden" name="cloudProvider" formControlName="cloudProvider" [(ngModel)]="cloudProviderName"/>
+
+    <div *ngFor="let cloudProvider of cloudProviderCollection; let i = index" [attr.data-index]="i">
+
+      <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }"
+           style="cursor: pointer;">
+
+        <div [ngClass]="{'col-lg-6': true, 'card-size': true}">
+          <mat-card (click)="selectCloudProvider(cloudProvider)">
+            <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                 [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
+            <mat-card-content>
+              <h5 class="card-title">
+                <strong>{{cloudProvider.title}}</strong>
+                <a href="{{cloudProvider.help}}" target="_blank">
+                  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                </a>
+              </h5>
+              <p>{{cloudProvider.description}}</p>
+              <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
+              <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <br class="hidden-lg-up"/>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="preconfiguredCloudProviderCollection && preconfiguredCloudProviderCollection.length>0"
+       class="national-providers-container">
+    <h3 class="h3-responsive text-center cloud-setup-title">
+      Partners Providers
+    </h3>
+
+    <div class="national-providers-boxes-container">
+      <div *ngFor="let cloudProvider of preconfiguredCloudProviderCollection; let i = index" [attr.data-index]="i">
+
+        <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }"
+             style="cursor: pointer;">
+
+          <div [ngClass]="{'col-lg-6': true, 'card-size': true}">
+            <mat-card (click)="selectCloudProvider(cloudProvider)">
+              <div class="card-image-container">
+                <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
+                     [ngStyle]="{'width': 'auto', 'height': cloudProvider.logo.height, 'padding': '15px'}">
+              </div>
+              <mat-card-content>
+                <div style="float: right;">
+                  <a href="{{cloudProvider.help}}" target="_blank">
+                    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <h5 class="card-title">
+                  <strong>{{cloudProvider.title}}</strong>
+                </h5>
+                <p>{{cloudProvider.description}}</p>
+                <p><strong>{{cloudProvider.paymentDescription}}</strong></p>
+                <p>Cloud location: <strong>{{cloudProvider.locationDescription}}</strong></p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <br class="hidden-lg-up"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

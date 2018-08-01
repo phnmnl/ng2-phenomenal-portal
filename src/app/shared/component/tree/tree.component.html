@@ -3,9 +3,9 @@
     <i *ngIf="node.children.length > 0"
        [ngClass]="{'fa': true, 'fa-caret-right': !node.isRotate, 'fa-caret-down': node.isRotate, 'fa-fw':true}"
        (click)="rotate(node)"></i>
-    <i *ngIf="node.children.length == 0" class="fa fa-caret-right logo-transparent fa-fw"></i>
+    <i *ngIf="node.children.length == 0 && node.parent == '#'" class="fa fa-caret-right logo-transparent fa-fw"></i>
     <input (click)="check(node, !node.isCheck, parentNodes); " type="checkbox" class="filled-in" attr.id={{node.id}}
-           [checked]="node.isCheck" #input/>
+           [checked]="node.isCheck" #input title="{{node.name}}"/>
     <label class="labelsize" attr.for="{{node.id}}">
       {{node.name}}
     </label>

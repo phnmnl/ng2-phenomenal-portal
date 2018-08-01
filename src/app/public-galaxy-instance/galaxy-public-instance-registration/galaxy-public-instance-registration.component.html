@@ -1,0 +1,33 @@
+<div class="galaxy-instance-registration-form">
+  <h4 class="h4-responsive text-center">
+    Please choose a password for your <em>{{ currentUser.email }}</em> account
+    <br>in the Galaxy instance of the Public Cloud Research Environment.
+  </h4>
+  <br>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" (keypress)="onKeyPressed($event)">
+    <mat-input-container class="input-width">
+      <input matInput [(ngModel)]="password"
+             [type]="hidePassword ? 'password' : 'text'"
+             placeholder="Password" formControlName="password" required>
+      <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+        <i class="fa {{ hidePassword ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
+    </mat-input-container>
+    <mat-input-container class="input-width">
+      <input matInput [(ngModel)]="passwordConfirm" [type]="hidePasswordConfirm ? 'password' : 'text'"
+             placeholder="Confirm Password" formControlName="confirmPassword" required>
+      <mat-icon matSuffix (click)="hidePasswordConfirm = !hidePasswordConfirm">
+        <i class="fa {{ hidePasswordConfirm ?'fa-eye' : 'fa-eye-slash' }}" aria-hidden="true"></i>
+      </mat-icon>
+    </mat-input-container>
+
+    <ph-setup-error [errors]="errors"></ph-setup-error>
+
+    <div *ngIf="registering" class="text-center reg-spinner">
+      <mat-progress-spinner mode="indeterminate" color="red">
+        Please wait...
+      </mat-progress-spinner>
+    </div>
+  </form>
+
+</div>

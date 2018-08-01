@@ -1,8 +1,25 @@
 :host /deep/ .progress {
-  height:15px;
+  height: 15px;
 }
 
 .dark-modal .modal-content {
   background-color: black;
   color: white;
+}
+
+.step-description {
+  min-height: 35px;
+  max-height: 35px;
+}
+
+.last-log-line {
+  overflow: hidden;
+  margin: 0;
+  max-height: 50px;
+  min-height: 50px;
+}
+
+.installing > mat-progress-spinner {
+  padding: 0;
+  margin: 10px auto 10px;
 }

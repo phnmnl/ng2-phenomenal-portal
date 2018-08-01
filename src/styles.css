@@ -173,6 +173,47 @@ input:focus {
   padding: 20px 40px !important;
 }
 
+.installing .mat-progress-spinner > svg > circle {
+  stroke: #5cb85c !important;
+}
+
+/* Modal window properties: START */
+.fade, .fade.in {
+  opacity: 1;
+}
+
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.modal-backdrop .fade .in {
+  opacity: 0.5 !important;
+}
+
+.modal-backdrop.fade {
+  opacity: 0.5 !important;
+}
+
+.error-modal .modal-dialog {
+  margin-top: 30%  !important;
+  min-width: 320px;
+}
+
+.modal-footer {
+  text-align: center;
+}
+
+.modal-footer > button {
+  width: 100px;
+}
+/* Modal window properties: END */
+
+.btn-danger{
+  background-color: #BF3D27;
+}
+
 @-webkit-keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);
