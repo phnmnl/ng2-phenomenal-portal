@@ -199,13 +199,6 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.ngAfterViewChecked();
   }
 
-  onChangePhenoMeNalVersion(event) {
-    console.log("Event", event);
-    console.log("Changed version: ", this.cloudProvider.credential.phenomenal_version);
-    this.cloudProvider.credential.phenomenal_version = event.source.value;
-    console.log("PhenVer", this.cloudProvider.credential.phenomenal_version);
-  }
-
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
   }
