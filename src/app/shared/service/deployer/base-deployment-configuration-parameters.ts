@@ -64,7 +64,7 @@ export abstract class BaseDeploymentConfigurationParameters {
   public getApplication(): ApplicationDeployer {
     if (!this.application) {
       let app = <ApplicationDeployer> {
-        name: 'Phenomenal VRE',
+        name: 'Phenomenal VRE ' + this.phenomenal_version.id,
         accountUsername: this.username,
         repoUri: this.phenomenal_version.url,
         selectedCloudProvider: this.provider
