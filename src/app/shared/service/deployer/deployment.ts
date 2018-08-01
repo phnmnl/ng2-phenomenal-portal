@@ -268,6 +268,10 @@ export class Deployment implements BaseDeployment {
     return this.status === "DESTROYING_FAILED";
   }
 
+  public isDeletionAllowed(): boolean {
+    return this.isDestroyed() || (this.isDestroyingFailed() && this.deployedTime===null);
+  }
+
   get cloudProviderName() {
     return this.cloudProviderParametersCopy ?
       this.cloudProviderParametersCopy.cloudProvider :
