@@ -245,7 +245,7 @@ export class DeployementService implements OnInit, OnDestroy {
           console.log('[RepositoryComponent] Applications data is %O', applications);
           for (let i = 0; i < applications.length; i++) {
             console.log('name ' + applications[i]['name']);
-            if (applications[i]['name'] === deployment.configurationParameters.getApplication().name) {
+            if (applications[i]['repoUri'] === deployment.configurationParameters.getApplication().repoUri) {
               deployment.application = applications[i];
               console.log('exist');
               break;
@@ -270,7 +270,7 @@ export class DeployementService implements OnInit, OnDestroy {
         console.log('[Get All Deployments] getAll %O', deployments);
         let dep = null;
         for (let i = 0; i < deployments.length; i++) {
-          if (deployments[i]['applicationName'] === deployment.configurationParameters.getApplication().name) {
+          if (deployments[i]['repoUri'] === deployment.configurationParameters.getApplication().repoUri) {
             dep = deployments[i];
             console.log('deployment exist');
             break;
