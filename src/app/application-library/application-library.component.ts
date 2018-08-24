@@ -16,7 +16,6 @@ import { AppLibraryCategories } from "../shared/service/application-library/cate
 export class ApplicationLibraryComponent implements OnInit {
 
   apps;
-  appSize;
   content: string;
   isList = false;
   previousQuery: string;
@@ -59,7 +58,6 @@ export class ApplicationLibraryComponent implements OnInit {
       .subscribe(
         data => {
           this.apps = data;
-          this.appSize = data.length;
           this.setAppListFilter(false);
         }
       );
