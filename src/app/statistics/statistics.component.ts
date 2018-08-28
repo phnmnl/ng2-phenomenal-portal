@@ -24,7 +24,7 @@ export class StatisticsComponent implements OnInit {
     gapi.analytics.ready(function () {
 
       jQuery.ajax({
-        url: '/api/v2/metadata/getGoogleKey', success: function (result) {
+          url: '/api/v2/google-key', success: function (result) {
 
           /**
            * Authorize the user with an access token obtained server side.
