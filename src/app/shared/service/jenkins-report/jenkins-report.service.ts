@@ -16,7 +16,7 @@ export class JenkinsReportService {
    * @returns {Observable<string[]>}
    */
   loadStatus(): Observable<string[]> {
-    return this.http.get('/api/v2/metadata/getJenkinsReport')
+    return this.http.get('/api/v2/jenkins-report')
       .map(this.extractData);
   }
 

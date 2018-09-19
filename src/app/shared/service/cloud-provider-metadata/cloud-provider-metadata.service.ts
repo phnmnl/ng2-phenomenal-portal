@@ -35,6 +35,8 @@ export class CloudProviderMetadataService {
               private gcpMetadataService: GcpMetadataService
   ) {
     this.baseUrl = config.getConfig('tsi_portal_url');
+    // this.baseUrl = 'http://localhost:8080/';
+
     this.metadataUrl = 'cloudprovidermetadata';
     this.headUrl = this.baseUrl + this.metadataUrl;
   }
