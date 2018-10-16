@@ -61,6 +61,9 @@ export class PhenoMeNalPipeline extends Pipeline {
     pipeline.addStep(new PipelineStep("cdc",
       (deployment: PhnDeployment, callback) => deployer.registerConfiguration(deployment, callback),
       "Creating Deployment Configuration", 2));
+    pipeline.addStep(new PipelineStep("obs",
+      (deployment: PhnDeployment, callback) => deployer.verifyObsoleteApplications(deployment, callback, pipeline),
+      "Checking for obsolete PhenoMeNal application", 2));
     pipeline.addStep(new PipelineStep("cea",
       (deployment: PhnDeployment, callback) => deployer.checkExistingApplications(deployment, callback, pipeline),
       "Checking Existing Applications", 2));

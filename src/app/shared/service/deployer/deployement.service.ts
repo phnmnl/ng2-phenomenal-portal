@@ -237,6 +237,31 @@ export class DeployementService implements OnInit, OnDestroy {
     );
   }
 
+  verifyObsoleteApplications(deployment: Deployment, callback, pipeline: Pipeline) {
+    this._applicationService.getAll(this.credentialService.getUsername(), this._tokenService.getToken())
+      .subscribe(
+        applications => {
+          console.log('All the applications: %O', applications);
+          let obsoleteApps = applications.filter(app => app['name'] === 'Phenomenal VRE'); // this is the static ID we used to use
+          console.log('[Verify Obsolete Applications] Found %d obsolete applications by id.', obsoleteApps.length);
+
+          if (obsoleteApps.length == 0) {
+            callback();
+          }
+          else {
+            console.log('[Verify Obsolete Applications] Must stop deployment until the user removes obsolete applications');
+            let errorMsg =
+              'Your TSI portal account has obsolete Application Repositories called "Phenomenal VRE". ' +
+              'You need to delete these directly from the TSI portal.';
+            this.errorService.notifyError(409 /* HTTP409 Conflict */, errorMsg, null);
+            deployment.failDeploymentStart(errorMsg);
+          }
+        }, error => {
+          console.log('[Profile] error %O', error);
+          callback(<PipelineStepResult>{error: error});
+        }
+      );
+  }
 
   checkExistingApplications(deployment: Deployment, callback, pipeline: Pipeline) {
     this._applicationService.getAll(this.credentialService.getUsername(), this._tokenService.getToken())
@@ -304,7 +329,6 @@ export class DeployementService implements OnInit, OnDestroy {
         }
       );
   }
-
 
   deRegisterApplication(deployment: Deployment, callback) {
     this._applicationService.delete(this.credentialService.getUsername(),
@@ -385,16 +409,24 @@ export class DeployementService implements OnInit, OnDestroy {
   public deleteDeploymentConfiguration(deployment: Deployment) {
     if (!deployment) throw new Error("Undefined deployment");
     deployment.status = "DESTROYING";
-    this._deploymentService.delete(
-      this.credentialService.getUsername(), this._tokenService.getToken(), deployment)
-      .subscribe(
-        (result) => {
-          console.log("Deployment destroyed", result);
-          this.removeDeployment(deployment);
-        }, (error) => {
-          this.handleError(error);
-        }
-      );
+    if (deployment.startedTime == null) {
+      // deployment was never launched through the TSI portal.  Nothing
+      // to delete excepth the card
+      console.log("Removing card for deployment that was never started through TSI portal");
+      this.removeDeployment(deployment);
+    }
+    else {
+      this._deploymentService.delete(
+        this.credentialService.getUsername(), this._tokenService.getToken(), deployment)
+        .subscribe(
+          (result) => {
+            console.log("Deployment destroyed", result);
+            this.removeDeployment(deployment);
+          }, (error) => {
+            this.handleError(error);
+          }
+        );
+    }
   }
 
   private isPhenoMeNalConfigurationElement(name) {

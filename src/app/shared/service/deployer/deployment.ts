@@ -98,6 +98,14 @@ export class Deployment implements BaseDeployment {
     return this.statusDetailsSubject.asObservable();
   }
 
+  public failDeploymentStart(cause: string) {
+    this.statusDetails = {
+      status: 'STARTING_FAILED',
+      failedTime: Date.now(),
+      errorCause: cause
+    };
+  }
+
   get deploymentStatus(): DeploymentStatus {
     return <DeploymentStatus>{
       startedTime: this._startedTime,
@@ -269,7 +277,9 @@ export class Deployment implements BaseDeployment {
   }
 
   public isDeletionAllowed(): boolean {
-    return this.isDestroyed() || (this.isDestroyingFailed() && this.deployedTime===null);
+    return this.isDestroyed() ||
+           (this.isDestroyingFailed() && this.deployedTime===null) ||
+           (this.isStartedFailed() && this.startedTime == null);
   }
 
   get cloudProviderName() {
