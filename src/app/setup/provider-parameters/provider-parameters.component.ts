@@ -80,7 +80,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
       },
       {
         id: "3.0-Dalcotidine-20180801",
-        name: 'v18.01 Dalcotidine',
+        name: 'v18.08 Dalcotidine',
         url: "https://github.com/phnmnl/cloud-deploy-kubenow-dalcotidine.git"
       },
     ];
