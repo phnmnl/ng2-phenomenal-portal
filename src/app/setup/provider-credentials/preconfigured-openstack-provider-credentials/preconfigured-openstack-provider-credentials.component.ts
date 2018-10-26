@@ -78,10 +78,10 @@ export class PreconfiguredOpenstackProviderCredentialsComponent extends BaseProv
         'required': 'Password is required.'
       },
       'domainName': {
-        'required': 'The name of the project is required.'
+        'required': 'The Domain Name is required.'
       },
       'projectName': {
-        'required': 'The name of the project is required.'
+        'required': 'The Project Name is required.'
       }
     };
   }
