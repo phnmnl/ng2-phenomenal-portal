@@ -76,7 +76,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
      {
         id: "2.0-Cerebellin-20180523",
         name: 'v2018.02 Cerebellin',
-        url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin.git"
+        url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin-20180523"
       },
       {
         id: "3.0-Dalcotidine-20180801",
