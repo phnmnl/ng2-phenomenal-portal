@@ -73,12 +73,11 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
               private appConfig: AppConfig,
               private cloudProviderMetadataService: CloudProviderMetadataService) {
     this.phenVersions = [
-      /* Disable this version as it currently won't deploy due to a problem with cloud-deploy-kubenow
       {
          id: "2.0-Cerebellin-20180523",
          name: 'v2018.02 Cerebellin',
          url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin-20180523"
-      },*/
+      },
       {
         id: "3.0-Dalcotidine-20180801",
         name: 'v2018.08 Dalcotidine',
