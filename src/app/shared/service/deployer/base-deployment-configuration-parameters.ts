@@ -71,6 +71,13 @@ export abstract class BaseDeploymentConfigurationParameters {
       };
       app.attachedVolumes = {};
       app.assignedInputs = this.inputs;
+
+      // if master_as_edge is set then make sure edge_count is 0.  Some versions of kubenow
+      // interpret master_as_edge as adding one more edge service (on the master) in addition
+      // to the specified edge_count
+      if (app.assignedInputs.master_as_edge)
+        app.assignedInputs.edge_count = '0';
+
       app.assignedParameters = {};
       app.configurations = [];
       this.application = app;
