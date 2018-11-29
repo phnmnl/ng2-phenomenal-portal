@@ -28,11 +28,11 @@ export class AwsMetadataService implements ICloudProviderMetadataService {
 
 
   private static getCredentials(cloudProvider: CloudProvider) {
-    let credentials = cloudProvider.credential;
-    console.log("Credentials", credentials);
+    let parameters = cloudProvider.parameters;
+    console.log("parameters", parameters);
     return {
-      "AWS_ACCESS_KEY_ID": credentials.access_key_id,
-      "AWS_SECRET_ACCESS_KEY": credentials.secret_access_key
+      "AWS_ACCESS_KEY_ID": parameters.access_key_id,
+      "AWS_SECRET_ACCESS_KEY": parameters.secret_access_key
     }
   }
 
@@ -79,13 +79,13 @@ export class AwsMetadataService implements ICloudProviderMetadataService {
   }
 
   public authenticateX(cloudProvider: CloudProvider): Observable<object> {
-    let credentials = cloudProvider.credential;
-    console.log("Credentials", credentials);
-    if (credentials.default_region && credentials.access_key_id && credentials.secret_access_key) {
+    let parameters = cloudProvider.parameters;
+    console.log("parameters", parameters);
+    if (parameters.default_region && parameters.access_key_id && parameters.secret_access_key) {
       AWS.config.update({
-        region: credentials.default_region,
-        // accessKeyId: credentials.access_key_id,
-        // secretAccessKey: credentials.secret_access_key
+        region: parameters.default_region,
+        // accessKeyId: parameters.access_key_id,
+        // secretAccessKey: parameters.secret_access_key
       });
 
       // Validate AWS credentials trying to get the list of instances from the AWS EC2 service

@@ -108,7 +108,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.serviceSubscriptions.splice(0, this.serviceSubscriptions.length);
 
     // set the latest PhenoMeNal version as default
-    this.cloudProvider.credential.phenomenal_version = this.phenVersions[this.phenVersions.length - 1];
+    this.cloudProvider.parameters.phenomenal_version = this.phenVersions[this.phenVersions.length - 1];
 
     // update settings and subscriptions
 
@@ -118,7 +118,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
           console.log("Setting REGIONS");
           this.regions = this.formatRegions(data);
           if (this.regions.length > 0)
-            this.cloudProvider.credential.default_region = this.regions[0].value;
+            this.cloudProvider.parameters.default_region = this.regions[0].value;
         },
         (error) => {
           console.error(error);
@@ -131,16 +131,16 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
         (data) => {
           console.log("Setting FLAVOUR list and defaults");
           this.flavorTypes = this.formatFlavors(data);
-          this.shared_instance_type = this.cloudProvider.credential.master_instance_type;
+          this.shared_instance_type = this.cloudProvider.parameters.master_instance_type;
           // Preset the edge instance type so that validation passes, even when the user sets
           // "master as edge" and doesn't explicitly set a value for this field.
           // The field value is ignored by kubenow if master-as-edge is set
           if (this.flavorTypes.length > 0) {
-            this.cloudProvider.credential.edgenode_instance_type = this.flavorTypes[0].value;
+            this.cloudProvider.parameters.edgenode_instance_type = this.flavorTypes[0].value;
             // LP: I thought this link between form control and model was established by the definition
             // of the element field in the html, but it isn't.  Without the following line the form
             // remains invalid until the user unchecks "master as edge".
-            this.formAdvancedSettings.controls['edgenode_instance_type'].setValue(this.cloudProvider.credential.edgenode_instance_type);
+            this.formAdvancedSettings.controls['edgenode_instance_type'].setValue(this.cloudProvider.parameters.edgenode_instance_type);
           }
         },
         (error) => {
@@ -181,23 +181,23 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   onChangeSharedInstanceType() {
     console.log("Changed instance type", this.shared_instance_type);
     // propagate the change to the specific node types
-    this.cloudProvider.credential.master_instance_type = this.shared_instance_type;
-    this.cloudProvider.credential.edgenode_instance_type = this.shared_instance_type;
-    this.cloudProvider.credential.node_instance_type = this.shared_instance_type;
-    this.cloudProvider.credential.glusternode_instance_type = this.shared_instance_type;
+    this.cloudProvider.parameters.master_instance_type = this.shared_instance_type;
+    this.cloudProvider.parameters.edgenode_instance_type = this.shared_instance_type;
+    this.cloudProvider.parameters.node_instance_type = this.shared_instance_type;
+    this.cloudProvider.parameters.glusternode_instance_type = this.shared_instance_type;
     this.ngAfterViewChecked();
   }
 
   onChangeExternalNetwork() {
-    console.log("Changed external network", this.cloudProvider.credential.network);
+    console.log("Changed external network", this.cloudProvider.parameters.network);
     // set the external network name
     for (let n of this.externalNetworks) {
-      if (n.id === this.cloudProvider.credential.network) {
-        this.cloudProvider.credential.ip_pool = n.label;
+      if (n.id === this.cloudProvider.parameters.network) {
+        this.cloudProvider.parameters.ip_pool = n.label;
         break;
       }
     }
-    console.log("Update deployment parameters", this.cloudProvider.credential);
+    console.log("Update deployment parameters", this.cloudProvider.parameters);
     this.ngAfterViewChecked();
   }
 
@@ -209,16 +209,16 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     let configControls = {};
     for (let f of Object.keys(this.formFields)) {
       if (this.cloudProvider.name === 'ostack' && f === "region") continue;
-      configControls[f] = new FormControl(this.cloudProvider.credential[f], [Validators.required]);
+      configControls[f] = new FormControl(this.cloudProvider.parameters[f], [Validators.required]);
     }
     this.formControls = configControls;
     this.formAdvancedSettings = this._formBuilder.group(configControls);
     this.formAdvancedSettings.valueChanges.subscribe(data => this.onValueChanged(data));
 
-    if (this.cloudProvider.credential["master_instance_type"])
-      this.shared_instance_type = this.cloudProvider.credential["master_instance_type"];
+    if (this.cloudProvider.parameters["master_instance_type"])
+      this.shared_instance_type = this.cloudProvider.parameters["master_instance_type"];
     else
-      this.shared_instance_type = this.cloudProvider.credential["master_flavor"];
+      this.shared_instance_type = this.cloudProvider.parameters["master_flavor"];
     this.sharedInstanceFormControl = new FormControl(this.shared_instance_type, [Validators.required]);
 
     this.simplifiedForm = this._formBuilder.group({

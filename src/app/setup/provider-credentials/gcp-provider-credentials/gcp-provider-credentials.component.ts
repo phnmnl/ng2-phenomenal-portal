@@ -57,7 +57,7 @@ export class GcpProviderCredentialsComponent extends BaseProviderCredentialsComp
     if (fileInput.target.files && fileInput.target.files[0]) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.cloudProvider.credential.rc_file = e.target.result;
+        this.cloudProvider.parameters.rc_file = e.target.result;
       };
       reader.readAsText(fileInput.target.files[0]);
     }
@@ -83,9 +83,9 @@ export class GcpProviderCredentialsComponent extends BaseProviderCredentialsComp
       }
       // extract project ID
       try {
-        this.cloudProvider.credential.tenant_name = this.extractProjectName();
+        this.cloudProvider.parameters.tenant_name = this.extractProjectName();
       } catch (e) {
-        this.cloudProvider.credential.tenant_name = null;
+        this.cloudProvider.parameters.tenant_name = null;
         this.formErrors["credentials"] = "File not valid: " + e.message;
         form.controls['credentials'].setErrors({"invalid": true})
         this.addError("Invalid Credential File!");
@@ -94,7 +94,7 @@ export class GcpProviderCredentialsComponent extends BaseProviderCredentialsComp
   }
 
   onSubmit() {
-    this.cloudProvider.credential.access_key_id = this.form.value['credentials'];
+    this.cloudProvider.parameters.access_key_id = this.form.value['credentials'];
     this.cloudProviderChange.emit(this.cloudProvider);
   }
 

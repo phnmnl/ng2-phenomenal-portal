@@ -23,7 +23,7 @@
         <mat-select placeholder="Select an External Network"
                     style="display: inline-block; text-align: left;"
                     [formControl]="externalNetworkControl"
-                    required [(ngModel)]="cloudProvider.credential.network" (change)="onChangeExternalNetwork()">
+                    required [(ngModel)]="cloudProvider.parameters.network" (change)="onChangeExternalNetwork()">
           <mat-option *ngFor="let i of externalNetworks" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
@@ -41,7 +41,7 @@
         <mat-select placeholder="Select an Floating IP Pool"
                     style="display: inline-block; text-align: left;"
                     [formControl]="ipPoolControl"
-                    required [(ngModel)]="cloudProvider.credential.ip_pool">
+                    required [(ngModel)]="cloudProvider.parameters.ip_pool">
           <mat-option *ngFor="let i of floatingIpPools" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
@@ -99,7 +99,7 @@
             <mat-select placeholder="Select an instance type for your master node"
                         style="display: inline-block; text-align: left;"
                         [formControl]="formControls['master_instance_type']"
-                        required [(ngModel)]="cloudProvider.credential.master_instance_type">
+                        required [(ngModel)]="cloudProvider.parameters.master_instance_type">
               <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
                 {{i.displayValue}}
               </mat-option>
@@ -108,8 +108,8 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="1">
-          <mat-checkbox [(ngModel)]="cloudProvider.credential.master_as_edge"
-                        [checked]="cloudProvider.credential.master_as_edge"
+          <mat-checkbox [(ngModel)]="cloudProvider.parameters.master_as_edge"
+                        [checked]="cloudProvider.parameters.master_as_edge"
                         [formControl]="formControls['master_as_edge']">Master as Edge
           </mat-checkbox>
         </mat-grid-tile>
@@ -120,7 +120,7 @@
             <mat-select placeholder="Select an instance type for your worker nodes"
                         style="display: inline-block; text-align: left;"
                         [formControl]="formControls['node_instance_type']"
-                        required [(ngModel)]="cloudProvider.credential.node_instance_type">
+                        required [(ngModel)]="cloudProvider.parameters.node_instance_type">
               <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
                 {{i.displayValue}}
               </mat-option>
@@ -130,19 +130,19 @@
 
         <mat-grid-tile [colspan]="1">
           <mat-slider aria-label="Number of worker nodes" #slider3
-                      [(ngModel)]="cloudProvider.credential.node_count"
+                      [(ngModel)]="cloudProvider.parameters.node_count"
                       [formControl]="formControls['node_count']"
                       thumbLabel tickInterval="1" min="2" max="100"></mat-slider>
           {{ slider3.value }} workers
         </mat-grid-tile>
 
-        <div *ngIf="!cloudProvider.credential.master_as_edge">
+        <div *ngIf="!cloudProvider.parameters.master_as_edge">
           <mat-grid-tile [colspan]="3">
             <mat-form-field class="input-width">
               <mat-select placeholder="Select an instance type for your Edge nodes"
                           style="display: inline-block; text-align: left;"
                           [formControl]="formControls['edgenode_instance_type']"
-                          required [(ngModel)]="cloudProvider.credential.edgenode_instance_type">
+                          required [(ngModel)]="cloudProvider.parameters.edgenode_instance_type">
                 <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
                   {{i.displayValue}}
                 </mat-option>
@@ -153,7 +153,7 @@
 
           <mat-grid-tile [colspan]="1">
             <mat-slider aria-label="Number of Edge nodes" #slider8
-                        [(ngModel)]="cloudProvider.credential.edgenode_count"
+                        [(ngModel)]="cloudProvider.parameters.edgenode_count"
                         [formControl]="formControls['edgenode_count']"
                         thumbLabel tickInterval="1" min="1" max="10"></mat-slider>
             {{ slider8.value }} nodes
@@ -166,7 +166,7 @@
             <mat-select placeholder="Select an instance type for your GlusterFS nodes"
                         style="display: inline-block; text-align: left;"
                         [formControl]="formControls['glusternode_instance_type']"
-                        required [(ngModel)]="cloudProvider.credential.glusternode_instance_type">
+                        required [(ngModel)]="cloudProvider.parameters.glusternode_instance_type">
               <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
                 {{i.displayValue}}
               </mat-option>
@@ -177,7 +177,7 @@
 
         <mat-grid-tile [colspan]="1">
           <mat-slider aria-label="Number of GlusterFS nodes" #slider4
-                      [(ngModel)]="cloudProvider.credential.glusternode_count"
+                      [(ngModel)]="cloudProvider.parameters.glusternode_count"
                       [formControl]="formControls['glusternode_count']"
                       thumbLabel tickInterval="1" min="1" max="100"></mat-slider>
           {{ slider4.value }} nodes
@@ -188,7 +188,7 @@
           <span class="font-weight-bold" style="width: 200px;">GlusterFS Disk Size:</span>
           <mat-slider aria-label="GlusterFS Disk Size" #slider1
                       [formControl]="formControls['glusternode_extra_disk_size']"
-                      [(ngModel)]="cloudProvider.credential.glusternode_extra_disk_size"
+                      [(ngModel)]="cloudProvider.parameters.glusternode_extra_disk_size"
                       thumbLabel tickInterval="2" min="100" max="1000"></mat-slider>
           {{ slider1.value }} GB
         </mat-grid-tile>
@@ -196,7 +196,7 @@
         <mat-grid-tile [colspan]="2" class="input-width">
           <span class="font-weight-bold" style="width: 80px;">PVC Size:</span>
           <mat-slider aria-label="PVC Size" #slider2
-                      [(ngModel)]="cloudProvider.credential.phenomenal_pvc_size"
+                      [(ngModel)]="cloudProvider.parameters.phenomenal_pvc_size"
                       [formControl]="formControls['phenomenal_pvc_size']"
                       thumbLabel tickInterval="2" min="100" max="1000"></mat-slider>
           {{ slider2.value }} GB
@@ -206,7 +206,7 @@
           <mat-form-field class="input-width-x">
             <mat-select placeholder="Select Region" style="display: inline-block; text-align: left;"
                         [formControl]="formControls['region']"
-                        required [(ngModel)]="cloudProvider.credential.default_region">
+                        required [(ngModel)]="cloudProvider.parameters.default_region">
               <mat-option *ngFor="let region of regions" [value]="region.value">
                 {{region.displayValue}}
               </mat-option>
@@ -218,7 +218,7 @@
           <mat-form-field class="input-width-x">
             <mat-select placeholder="Select the PhenoMeNal version to install"
                         style="display: inline-block; text-align: left;"
-                        [(ngModel)]="cloudProvider.credential.phenomenal_version"
+                        [(ngModel)]="cloudProvider.parameters.phenomenal_version"
                         [formControl]="formControls['phenomenal_version']"
                         required>
               <mat-option *ngFor="let version of phenVersions"

@@ -74,6 +74,6 @@ export class CloudProviderMetadataService {
   public getFloatingIpPools(cloudProvider: CloudProvider): Observable<any[]> {
     if (cloudProvider.name !== "ostack")
       return Observable.empty();
-    return this.openStackMetadataService.getFloaingIpPools();
+    return this.openStackMetadataService.getFloatingIpPools();
   }
 }

@@ -71,8 +71,8 @@ export abstract class BaseProviderCredentialsComponent implements OnInit {
 
   onSubmit() {
     console.log("Submitting form");
-    let credentials = this.cloudProvider.credential;
-    if (credentials.default_region && credentials.access_key_id && credentials.secret_access_key) {
+    let parameters = this.cloudProvider.parameters;
+    if (parameters.default_region && parameters.access_key_id && parameters.secret_access_key) {
       this.validateCredentials();
     }
   }

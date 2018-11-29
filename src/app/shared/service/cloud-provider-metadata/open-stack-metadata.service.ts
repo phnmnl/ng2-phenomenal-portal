@@ -27,9 +27,12 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
 
   public authenticate(cloudProvider: CloudProvider): Observable<object> {
     let credentials: OpenStackCredentials =
-      OpenStackMetadataService.parseRcFile(cloudProvider.credential.rc_file, cloudProvider.credential.password);
+      OpenStackMetadataService.parseRcFile(cloudProvider.parameters.rc_file, cloudProvider.parameters.password);
     let jsonCredentials = credentials.toJSON();
-    console.log("Credentials object", credentials);
+
+    //console.log("[DEBUG] authentication OpenStackCredentials: %O", credentials);
+    //console.log("[DEBUG] authentication JSON credentials: %O", jsonCredentials);
+
     return this.http.post(this.URL + "/authenticate", jsonCredentials)
       .map((res) => {
         this.loadFlavors(jsonCredentials);
@@ -56,10 +59,9 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
     return this.externalNetworks.asObservable();
   }
 
-  getFloaingIpPools(): Observable<any[]> {
+  getFloatingIpPools(): Observable<any[]> {
     return this.floatingIpPools.asObservable();
   }
-
 
   private loadFlavors(credentials) {
     this.http.post(this.URL + "/flavors", credentials).subscribe(
@@ -100,118 +102,153 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
       });
   }
 
-  public getDomainName(cloudProvider: CloudProvider) {
-    let rcFile = cloudProvider.credential.rc_file;
-    return OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
-  }
-
-  public getTenantOrProjectName(cloudProvider: CloudProvider) {
-    let rcFile = cloudProvider.credential.rc_file;
-    let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
-    if (!tenantName || tenantName.length === 0)
-      return OpenStackMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
-  }
-
-  public getAuthorizationEndPoint(cloudProvider: CloudProvider) {
-    return OpenStackMetadataService.extractPropertyValue(cloudProvider.credential.rc_file, "OS_AUTH_URL");
-  }
-
-  public updateRcFile(cloudProvider: CloudProvider, config: object) {
+  public static updateRcFile(cloudProvider: CloudProvider, config: object) {
     if (!cloudProvider)
       throw new Error("Undefined Provider");
-    if (!cloudProvider.credential || !cloudProvider.credential.rc_file)
-      throw new Error("Unable to find credential file");
-    let rcFile = cloudProvider.credential.rc_file;
+    if (!config)
+      throw new Error("[updateRcFile] config not provided");
 
+    if (!cloudProvider.parameters || !cloudProvider.parameters.rc_file)
+      throw new Error("Unable to find parameters rc_file file");
 
-    if (config) {
-      for (let key of Object.keys(config)) {
-        // set the username
-        if (key === "username")
-          rcFile = rcFile.replace(/(\bexport OS_USERNAME=)(.*)/, "$1" + '"' + config['username'] + '"');
+    let cc: OpenStackCredentials = this.parseRcFile(cloudProvider.parameters.rc_file);
 
-        // set the password
-        if (key === "password")
-          rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/, "$1" + '"' + config['password'] + '"');
+    let configToOsVar = {
+      "authUrl": "OS_AUTH_URL",
+      "domainName": "OS_USER_DOMAIN_NAME",
+      "password": "OS_PASSWORD",
+      "projectDomainId": "OS_PROJECT_DOMAIN_ID",
+      "projectDomainName": "OS_PROJECT_DOMAIN_NAME",
+      //"rcVersion": "OS_IDENTITY_API_VERSION", not settable
+      "userDomainId": "OS_USER_DOMAIN_ID",
+      "username": "OS_USERNAME",
+      "volumeApiVersion": "OS_VOLUME_API_VERSION"
+    };
 
-        // set the password
-        if (key === "domainName")
-          rcFile = rcFile.replace(/(\bexport OS_USER_DOMAIN_NAME=)(.*)/, "$1" + '"' + config['domainName'] + '"');
-
-        // set the projectName
-        if (key === "projectName") {
-          rcFile = rcFile.replace(/(\bexport OS_TENANT_NAME=)(.*)/, "$1" + '"' + config['projectName'] + '"');
-          rcFile = rcFile.replace(/(\bexport OS_PROJECT_NAME=)(.*)/, "$1" + '"' + config['projectName'] + '"');
-        }
-      }
+    if (cc.rcVersion == "2") {
+      configToOsVar["projectId"] = "OS_TENANT_ID";
+      configToOsVar["projectName"] = "OS_TENANT_NAME";
     }
-    cloudProvider.credential.rc_file = rcFile;
+    else {
+      configToOsVar["projectId"] = "OS_PROJECT_ID";
+      configToOsVar["projectName"] = "OS_PROJECT_NAME";
+    }
+
+    for (let key of Object.keys(config)) {
+      OpenStackMetadataService.setVarInCredentials(cc, configToOsVar[key], config[key]);
+    }
+
+    cloudProvider.parameters.rc_file = cc.rcFile;
   }
 
-  public parseRcFile(rcFile: string, password: string, username?: string): OpenStackCredentials {
-    return OpenStackMetadataService.parseRcFile(rcFile, password, username);
+  private static setVarInCredentials(cred: OpenStackCredentials, varName: string, newValue: string): void {
+    if (!cred || !varName)
+      throw new Error("[ERROR]: setVarInCredentials got a bad parameter");
+
+    // update rc file
+    let re = new RegExp('(\\bexport\\s' + varName + '=).*');
+    let result = null;
+    if (cred.rcFile.search(re) >= 0)
+      result = cred.rcFile.replace(re, "$1" + '"' + newValue + '"');
+    else
+      result = cred.rcFile + `\nexport ${varName}="${newValue}"\n`;
+    cred.rcFile = result;
+
+    // update vars
+    cred.vars[varName] = newValue;
+
+    // and finally the credential's properties
+    if (varName == "OS_AUTH_URL")
+      cred.authUrl = newValue;
+    else if (varName == "OS_TENANT_ID" && cred.rcVersion == "2" || varName == "OS_PROJECT_ID" && cred.rcVersion == "3")
+      cred.projectId = newValue;
+    else if (varName == "OS_TENANT_NAME" && cred.rcVersion == "2" || varName == "OS_PROJECT_NAME" && cred.rcVersion == "3")
+      cred.projectName = newValue;
+    else if (varName == "OS_PASSWORD")
+      cred.password = newValue;
+    else if (varName == "OS_USERNAME")
+      cred.username = newValue;
   }
 
-  public static parseRcFile(rcFile: string, password: string, username?: string): OpenStackCredentials {
+  public static parseRcFile(rcFile: string, password?: string, username?: string): OpenStackCredentials {
     if (!rcFile)
       throw new Error("Undefined RC file");
 
-    // update RC file with the user password and set it as current RC file
-    // console.log("The current RC file...", rcFile);
-    rcFile = rcFile.replace(/#.*\n/g, '');          // remove all comments
-    rcFile = rcFile.replace(/\becho\b.+/g, '');     // remove all echo commands
-    rcFile = rcFile.replace(/\bread\b.+/g, '');     // remove the read command
-    rcFile = rcFile.replace(/(\bexport OS_PASSWORD=)(.*)/,      // set the password
-      "$1" + '"' + password + '"');
+    // remove all comments, echo and read commands
+    rcFile = rcFile.replace(/#.*\n|^\s*\becho\b.+|^\s*\bread\b.+/gm, '');
+
+    let rcVars = OpenStackMetadataService.extractVars(rcFile);
 
     // set the username if provided
     if (username) {
-      rcFile = rcFile.replace(/(\bexport OS_USERNAME=)(.*)/,     // set the username
-        "$1" + '"' + username + '"');
+      rcVars["OS_USERNAME"] = username;
     } else {
-      username = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USERNAME");
+      username = rcVars["OS_USERNAME"];
     }
 
-    // extract all the required RC file fields required to query the TSI portal
-    let rcVersion = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_IDENTITY_API_VERSION");
-    let authUrl = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_AUTH_URL");
-    let tenantName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_NAME");
-    let tenantId = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_TENANT_ID");
-    let projectName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_PROJECT_NAME");
-    let domainName = OpenStackMetadataService.extractPropertyValue(rcFile, "OS_USER_DOMAIN_NAME");
+    let authUrl     = rcVars["OS_AUTH_URL"] || "";
+    let projectId   = rcVars["OS_PROJECT_ID"] || "";
+    let projectName = rcVars["OS_PROJECT_NAME"] || "";
+    let rcVersion   = rcVars["OS_IDENTITY_API_VERSION"] || "";
+    let tenantId    = rcVars["OS_TENANT_ID"] || "";
+    let tenantName  = rcVars["OS_TENANT_NAME"] || "";
 
-    // detect version from existing properties
+    if (!authUrl)
+      throw Error("OS_AUTH_URL missing from RC file!");
+
+    // try to detect version from existing properties
     if (!rcVersion) {
-      rcVersion = projectName ? "3" : "2";
+      if (authUrl.search(/\bv3\b/) >= 0)
+        rcVersion = "3";
+      else if (authUrl.search(/\bv2\b/) >= 0)
+        rcVersion = "2";
+      else if (projectName)
+        rcVersion = "3";
+      else {
+        console.log("Unable to find API version number.  Defaulting to v2");
+        rcVersion = "2";
+      }
     }
 
-    return new OpenStackCredentials(
-      username, password,
-      authUrl,
-      tenantId, tenantName,
-      projectName, domainName,
-      rcFile,
-      rcVersion ? rcVersion : (projectName ? "3" : "2")
-    );
+    rcVars["OS_IDENTITY_API_VERSION"] = rcVersion;
 
+    if (rcVersion == "2") {
+      projectName = tenantName;
+      projectId = tenantId;
+    }
+
+    let cc = new OpenStackCredentials(
+      authUrl,
+      password,
+      projectId,
+      projectName,
+      rcFile,
+      rcVersion,
+      username,
+      rcVars);
+
+    if (password) {
+      // before returning the credentials, don't forget to set the password
+      // with the overriding value we received as a parameter
+      OpenStackMetadataService.setVarInCredentials(cc, "OS_PASSWORD", password);
+    }
+    return cc;
   }
 
-  private static extractPropertyValue(rcFile: string, propertyName: string): string {
-    let match;
-    let result: string = null;
-    let pattern = new RegExp(propertyName + "=(.+)", 'g');
+  /* returns a k-v map */
+  public static extractVars(rcFile: string): object {
+    let result = {};
+    let pattern = /^\s*\bexport\s+(\w+)=(.*)/;
+    let match = null;
 
-    // extract property
-    if (rcFile) {
-      // search for all matches and use only the last one
-      do {
-        match = pattern.exec(rcFile);
-        if (match) {
-          // remove single and double quotes
-          result = match[1].replace(/['"]/g, "");
-        }
-      } while (match);
+    let lines = rcFile.split('\n');
+    for (let i = 0; i < lines.length; ++i) {
+      match = pattern.exec(lines[i]);
+      if (match) {
+        result[match[1]] = match[2].replace(/['"]/g, "");
+      }
     }
+
     return result;
   }
 }

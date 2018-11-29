@@ -5,6 +5,7 @@ export abstract class BaseDeploymentConfigurationParameters {
   password: string;
   _clusterPrefix: string;
   tenant_name: string;
+  tenant_id: string;
   url: string;
   private _provider: string;
   galaxy_admin_username: string;

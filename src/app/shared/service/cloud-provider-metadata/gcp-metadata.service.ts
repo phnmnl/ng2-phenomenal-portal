@@ -29,9 +29,9 @@ export class GcpMetadataService implements ICloudProviderMetadataService {
 
 
   private static getCredentials(cloudProvider: CloudProvider) {
-    let credentials = cloudProvider.credential;
-    console.log("Credentials", credentials);
-    return JSON.parse(credentials.rc_file);
+    let parameters = cloudProvider.parameters;
+    console.log("parameters", parameters);
+    return JSON.parse(parameters.rc_file);
   }
 
   public authenticate(cloudProvider: CloudProvider): Observable<object> {
@@ -51,6 +51,10 @@ export class GcpMetadataService implements ICloudProviderMetadataService {
   getFlavors(): Observable<any[]> {
     return this.flavorsSubject.asObservable();
   }
+
+
+  /********** From here down this class looks like a copy&paste left-over ************/
+
 
   public loadRegions(credentials) {
     this.regionsSubject.next([
@@ -77,13 +81,13 @@ export class GcpMetadataService implements ICloudProviderMetadataService {
   }
 
   public authenticateX(cloudProvider: CloudProvider): Observable<object> {
-    let credentials = cloudProvider.credential;
-    console.log("Credentials", credentials);
-    if (credentials.default_region && credentials.access_key_id && credentials.secret_access_key) {
+    let parameters = cloudProvider.parameters;
+    console.log("parameters", parameters);
+    if (parameters.default_region && parameters.access_key_id && parameters.secret_access_key) {
       AWS.config.update({
-        region: credentials.default_region,
-        // accessKeyId: credentials.access_key_id,
-        // secretAccessKey: credentials.secret_access_key
+        region: parameters.default_region,
+        // accessKeyId: parameters.access_key_id,
+        // secretAccessKey: parameters.secret_access_key
       });
 
       // Validate AWS credentials trying to get the list of instances from the AWS EC2 service

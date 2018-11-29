@@ -70,7 +70,7 @@ export class ServicesCredentialsComponent implements OnInit {
         console.log("*** Has Galaxy account: " + this.currentUser.hasGalaxyAccount);
         console.log("Updated user @ CloudSetupEnvironment", user, this.currentUser);
         // set the email of the Galaxy user
-        this.cloudProvider.credential.galaxy_admin_email = this.userService.getCurrentUser().email;
+        this.cloudProvider.parameters.galaxy_admin_email = this.userService.getCurrentUser().email;
       }
     });
   }
@@ -121,7 +121,7 @@ export class ServicesCredentialsComponent implements OnInit {
       this.errors.push(messages['mismatchedPasswords'] + ' ');
     }
 
-    this.cloudProvider.credential.galaxy_admin_email = this.userService.getCurrentUser().email;
+    this.cloudProvider.parameters.galaxy_admin_email = this.userService.getCurrentUser().email;
   }
 
   onSubmit() {

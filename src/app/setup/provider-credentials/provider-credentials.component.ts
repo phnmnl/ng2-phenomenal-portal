@@ -105,6 +105,8 @@ export class ProviderCredentialsComponent implements OnInit, OnChanges, OnDestro
       }, (error) => {
         console.error(error);
         this.errors.push("AUTHENTICATION FAILURE: credentials not valid!");
+        if (error["error"] && error["error"]["message"])
+          this.errors.push(`Details:  ${error["error"]["message"]} (code: ${error['error']['code']})`);
         if (onError) onError(error);
       });
   }

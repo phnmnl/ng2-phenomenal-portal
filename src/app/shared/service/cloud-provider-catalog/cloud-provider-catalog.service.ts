@@ -29,11 +29,35 @@ export class CloudProviderCatalogService {
       .map((res) => {
         let providers = [];
         let data = res.json()['data'];
-        for (let p of data) {
-          p["preset"] = p["id"];
-          p["name"] = "ostack";
-          p["preconfigured"] = true;
-          providers.push(new CloudProvider(p));
+        for (let providerConfig of data) {
+          //console.log("[DEBUG] === Metadata server returned this: %O", providerConfig);
+          /*
+           * The preconfigured provider configuration comes directly from the metadata server.
+           * We expect the following structure:
+           *  {
+           *    "name": "...",
+           *    "title": "...",
+           *    "description": "",
+           *    "providerDescription": "...",
+           *    "locationDescription": "...",
+           *    "paymentDescription": "...",
+           *    "logo": {
+           *      "path": "some_file.png",
+           *      "width": "1234px",
+           *      "height": "1234px"
+           *    },
+           *    "credential": {
+           *       "rc_file": "RC file data"
+           *    }
+           * }
+           */
+          // recycle the same structure, with the addition of some attributes
+          providerConfig["preset"] = providerConfig["id"];
+          providerConfig["name"] = "ostack";
+          providerConfig["preconfigured"] = true;
+          providerConfig['rc_file'] = providerConfig['credential']['rc_file'];
+
+          providers.push(new CloudProvider(providerConfig));
         }
         return providers;
       }).catch(res => Observable.throw(res.json()));

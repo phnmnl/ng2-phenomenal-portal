@@ -1,33 +1,53 @@
 export class OpenStackCredentials {
 
-  public username: string;
-  public password: string;
   public authUrl: string;
-  public tenantId: string;
-  public tenantName: string;
+  public password: string;
+  public projectId: string;
   public projectName: string;
-  public userDomainName: string;
   public rcFile: string;
   public rcVersion: string;
+  public username: string;
+  public vars: object;
 
 
-  constructor(username: string, password: string, authUrl: string,
-              tenantId: string, tenantName: string,
-              projectName: string, userDomainName: string,
-              rcFile: string, rcVersion: string) {
-    this.username = username;
-    this.password = password;
+  constructor(authUrl: string,
+              password: string,
+              projectId: string,
+              projectName: string,
+              rcFile: string,
+              rcVersion: string,
+              username: string,
+              vars: object) {
+    if (rcVersion != "2" && rcVersion != "3")
+      throw new Error("Incompatible rcVersion ${rcVersion}");
+
     this.authUrl = authUrl;
-    this.tenantId = tenantId;
-    this.tenantName = tenantName;
+    this.password = password;
+    this.projectId = projectId;
     this.projectName = projectName;
-    this.userDomainName = userDomainName;
     this.rcFile = rcFile;
     this.rcVersion = rcVersion;
+    this.username = username;
+    this.vars = vars;
   }
 
   get projectOrTenantName(): string {
-    return this.projectName ? this.projectName : this.tenantName;
+    return this.projectName;
+  }
+  get domainName(): string {
+    return this.vars["OS_USER_DOMAIN_NAME"] || "";
+  }
+
+  get tenantOrProjectName(): string{
+    return this.projectName;
+  }
+
+  get tenantOrProjectId(): string {
+    return this.projectId;
+  }
+
+  get authorizationEndPoint(): string {
+    return this.authUrl;
   }
 
   public isV2(): boolean {
@@ -38,23 +58,28 @@ export class OpenStackCredentials {
     return !this.isV2();
   }
 
-  public toJSON() {
-    if (this.isV2()) {
-      return {
-        "OS_AUTH_URL": this.authUrl,
-        "OS_USERNAME": this.username,
-        "OS_PASSWORD": this.password,
-        "OS_TENANT_ID": this.tenantId
-      }
-    } else if (this.isV3()) {
-      return {
-        "OS_AUTH_URL": this.authUrl,
-        "OS_USERNAME": this.username,
-        "OS_PASSWORD": this.password,
-        "OS_PROJECT_NAME": this.projectName,
-        "OS_USER_DOMAIN_NAME": this.userDomainName
-      }
+  public toJSON(): object {
+    let result = {};
+    for (let k of Object.keys(this.vars)) {
+      if (this.vars[k]) // only set variables with a value
+        result[k] = this.vars[k];
     }
-    throw new Error("Unsupported RC File version");
+
+    result["OS_AUTH_URL"] = this.authUrl;
+    result["OS_IDENTITY_API_VERSION"] = this.rcVersion;
+    result["OS_PASSWORD"] = this.password;
+    result["OS_USERNAME"] = this.username;
+
+    if (this.isV2()) {
+      result["OS_TENANT_ID"] = this.projectId;
+      result["OS_TENANT_NAME"] = this.projectName;
+    } else if (this.isV3()) {
+      result["OS_PROJECT_ID"] = this.projectId;
+      result["OS_PROJECT_NAME"] = this.projectName;
+    } else {
+      throw new Error("Unsupported RC File version");
+    }
+
+    return result;
   }
 }

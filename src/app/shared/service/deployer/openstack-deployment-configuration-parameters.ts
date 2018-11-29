@@ -50,26 +50,42 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     return inputs;
   }
 
-  public get parameters() {
+  public get parameters(): object {
     let cc: OpenStackCredentials = OpenStackMetadataService.parseRcFile(this.rc_file, this.password);
-    return {
+
+    /*** Remember :-)
+     * If the user sets OS_PROJECT_NAME and not OS_PROJECT_ID (this can happen
+     * with partner providers) the deployment will fail unless the RC file
+     * specifies OS_PROJECT_DOMAIN_NAME.
+     */
+    if (!cc.vars["OS_PROJECT_ID"] && cc.vars["OS_PROJECT_NAME"] && !cc.vars["OS_PROJECT_DOMAIN_NAME"])
+      console.warn("Deployment specifies OS_PROJECT_NAME (%s) without OS_PROJECT_ID nor OS_PROJECT_DOMAIN_NAME", cc.vars["OS_PROJECT_NAME"]);
+
+    //console.log("[DEBUG]: ===== Deployment credentials object: %O", cc);
+
+    let fields = [];
+    for (let k of Object.keys(cc.vars)) {
+      if (cc.vars[k] != null)
+        fields.push( {'key': k, 'value': cc.vars[k]} );
+    }
+    fields.push({'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)});
+    fields.push({'key': 'TF_VAR_galaxy_admin_email', 'value': this.galaxy_admin_email});
+    fields.push({'key': 'TF_VAR_galaxy_admin_password', 'value': this.galaxy_admin_password});
+    fields.push({'key': 'TF_VAR_jupyter_password', 'value': this.galaxy_admin_password});
+    fields.push({'key': 'TF_VAR_dashboard_username', 'value': this.galaxy_admin_email});
+    fields.push({'key': 'TF_VAR_dashboard_password', 'value': this.galaxy_admin_password});
+    fields.push({'key': 'TF_VAR_floating_ip_pool', 'value': this.ip_pool});
+    fields.push({'key': 'TF_VAR_external_network_uuid', 'value': this.network});
+
+    let result = {
       'name': this.deploymentName,
       'cloudProvider': this.provider,
-      'fields': [
-        {'key': 'OS_USERNAME', 'value': cc.username},
-        {'key': 'OS_TENANT_NAME', 'value': cc.projectOrTenantName},
-        {'key': 'OS_AUTH_URL', 'value': cc.authUrl},
-        {'key': 'OS_PASSWORD', 'value': cc.password},
-        {'key': 'OS_PROJECT_NAME', 'value': cc.projectOrTenantName},
-        {'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)},
-        {'key': 'TF_VAR_galaxy_admin_email', 'value': this.galaxy_admin_email},
-        {'key': 'TF_VAR_galaxy_admin_password', 'value': this.galaxy_admin_password},
-        {'key': 'TF_VAR_jupyter_password', 'value': this.galaxy_admin_password},
-        {'key': 'TF_VAR_dashboard_username', 'value': this.galaxy_admin_email},
-        {'key': 'TF_VAR_dashboard_password', 'value': this.galaxy_admin_password},
-        {'key': 'TF_VAR_floating_ip_pool', 'value': this.ip_pool},
-        {'key': 'TF_VAR_external_network_uuid', 'value': this.network}
-      ]
-    }
+      'fields': fields
+    };
+
+    //console.log("[DEBUG]: ===== Deployment rcFile ====\n%O", cc.rcFile);
+    //console.log("[DEBUG]: ===== Deployment parameters ====\n%O", result);
+
+    return result;
   }
 }

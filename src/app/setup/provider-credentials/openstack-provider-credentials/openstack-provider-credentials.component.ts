@@ -47,7 +47,7 @@ export class OpenstackProviderCredentialsComponent extends BaseProviderCredentia
 
   buildForm(): FormGroup {
     let form = this.fb.group({
-      'rcFile': [this.cloudProvider.credential.rc_file, [Validators.required]],
+      'rcFile': [this.cloudProvider.parameters.rc_file, [Validators.required]],
       'password': ['', [Validators.required]]
     });
     form.valueChanges.subscribe(data => this.onValueChanged(data));
@@ -62,9 +62,12 @@ export class OpenstackProviderCredentialsComponent extends BaseProviderCredentia
       let reader = new FileReader();
 
       reader.onload = (e: any) => {
-        this.cloudProvider.credential.rc_file = e.target.result;
-        this.cloudProvider.credential.tenant_name = this.cpm.getTenantOrProjectName(this.cloudProvider);
-        this.cloudProvider.credential.url = this.cpm.getAuthorizationEndPoint(this.cloudProvider);
+        this.cloudProvider.parameters.rc_file = e.target.result;
+        let cc: OpenStackCredentials = OpenStackMetadataService.parseRcFile(this.cloudProvider.parameters.rc_file)
+
+        this.cloudProvider.parameters.tenant_name = cc.tenantOrProjectName;
+        this.cloudProvider.parameters.tenant_id = cc.tenantOrProjectId;
+        this.cloudProvider.parameters.url = cc.authorizationEndPoint;
       };
 
       reader.readAsText(fileInput.target.files[0]);

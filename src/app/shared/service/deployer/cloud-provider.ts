@@ -29,18 +29,16 @@ export class CloudProvider {
   providerDescription: string;
   locationDescription: string;
   logo: string;
-  credential: BaseDeploymentConfigurationParameters;
+  //credential: BaseDeploymentConfigurationParameters;
+  parameters: BaseDeploymentConfigurationParameters;
   preconfigured: boolean = false;
   preset: string = null;
 
 
   constructor(config?: {}) {
     if (config) {
-      let credentialsConfig;
       for (let p of Object.keys(config)) {
-        if (p === "credential")
-          credentialsConfig = config[p];
-        else {
+        if (p != "rc_file") {
           this[p] = config[p];
           console.log("Setting ", p, this[p], config[p]);
         }
@@ -49,10 +47,14 @@ export class CloudProvider {
         if (Object.keys(CloudProvider.PROVIDER_TYPE).indexOf(this.name) < 0) {
           console.error("Not valid provider", this.name);
         } else {
-          credentialsConfig = credentialsConfig || {};
-          credentialsConfig['preconfigured'] = this.preconfigured;
-          credentialsConfig['preset'] = this.preset;
-          this.credential = new CloudProvider.PROVIDER_TYPE[this.name].configClass(credentialsConfig);
+          let cloudConfig = {};
+          if (config['rc_file']) {
+            cloudConfig['rc_file'] = config['rc_file'];
+            cloudConfig['preconfigured'] = this.preconfigured;
+            cloudConfig['preset'] = this.preset;
+          }
+          this.parameters = new CloudProvider.PROVIDER_TYPE[this.name].configClass(cloudConfig);
+          console.log("[DEBUG] CloudProvider set parameters to %O", this.parameters);
         }
       }
     }
@@ -72,7 +74,13 @@ export class CloudProvider {
 
   public static clone(origin: CloudProvider): CloudProvider {
     console.log("Instance type: ", origin);
-    return new CloudProvider(origin);
+    let result = new CloudProvider();
+    for (let p of Object.keys(origin)) {
+        result[p] = origin[p];
+    }
+    result.parameters = new CloudProvider.PROVIDER_TYPE[origin.name].configClass(origin.parameters);
+
+    return result;
   }
 }
 

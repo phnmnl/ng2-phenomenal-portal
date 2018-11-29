@@ -17,13 +17,13 @@
       <tr>
         <th scope="row">Username</th>
         <td>
-          {{cloudProvider.credential.galaxy_admin_email}}
+          {{cloudProvider.parameters.galaxy_admin_email}}
         </td>
       </tr>
       <tr>
         <th scope="row">PhenoMeNal Version</th>
         <td>
-          {{cloudProvider.credential.phenomenal_version.name}}
+          {{cloudProvider.parameters.phenomenal_version.name}}
         </td>
       </tr>
       </tbody>
@@ -43,35 +43,35 @@
       <tr>
         <th scope="row">Master Node</th>
         <td>
-          {{cloudProvider.credential.master_instance_type}}
+          {{cloudProvider.parameters.master_instance_type}}
         </td>
         <td>1</td>
       </tr>
       <tr>
         <th scope="row">Worker Nodes</th>
         <td>
-          {{cloudProvider.credential.node_instance_type}}
+          {{cloudProvider.parameters.node_instance_type}}
         </td>
         <td>
-          {{cloudProvider.credential.node_count}}
+          {{cloudProvider.parameters.node_count}}
         </td>
       </tr>
-      <tr *ngIf="!cloudProvider.credential.master_as_edge">
+      <tr *ngIf="!cloudProvider.parameters.master_as_edge">
         <th scope="row">Edge Nodes</th>
         <td>
-          {{cloudProvider.credential.edgenode_instance_type}}
+          {{cloudProvider.parameters.edgenode_instance_type}}
         </td>
         <td>
-          {{cloudProvider.credential.edgenode_count}}
+          {{cloudProvider.parameters.edgenode_count}}
         </td>
       </tr>
       <tr>
         <th scope="row">GlusterFS Nodes</th>
         <td>
-          {{cloudProvider.credential.glusternode_instance_type}}
+          {{cloudProvider.parameters.glusternode_instance_type}}
         </td>
         <td>
-          {{cloudProvider.credential.glusternode_count}}
+          {{cloudProvider.parameters.glusternode_count}}
         </td>
       </tr>
       </tbody>
@@ -84,39 +84,45 @@
       <tr *ngIf="cloudProvider.isOstack()">
         <th scope="row">OAuth Endpoint</th>
         <td>
-          {{cloudProvider.credential.url}}
+          {{cloudProvider.parameters.url}}
         </td>
       </tr>
       <tr *ngIf="cloudProvider.isOstack()">
-        <th scope="row">Tenant/Project Name</th>
+        <th scope="row">Project/Tenant Name</th>
         <td>
-          {{cloudProvider.credential.tenant_name}}
+          {{cloudProvider.parameters.tenant_name}}
+        </td>
+      </tr>
+      <tr *ngIf="cloudProvider.isOstack()">
+        <th scope="row">Project/Tenant ID</th>
+        <td>
+          {{cloudProvider.parameters.tenant_id}}
         </td>
       </tr>
       <!-- AWS -->
       <tr *ngIf="cloudProvider.isGpc()">
         <th scope="row">Project ID</th>
         <td>
-          {{cloudProvider.credential.tenant_name}}
+          {{cloudProvider.parameters.tenant_name}}
+        </td>
+      </tr>
+      <tr *ngIf="!cloudProvider.isOstack()">
+        <th scope="row">Region</th>
+        <td>
+          {{cloudProvider.parameters.default_region}}
         </td>
       </tr>
       <!-- COMMON -->
       <tr>
-        <th scope="row">Region</th>
-        <td>
-          {{cloudProvider.credential.default_region}}
-        </td>
-      </tr>
-      <tr>
         <th scope="row">GlusterFS Disk Size</th>
         <td>
-          {{cloudProvider.credential.glusternode_extra_disk_size}} GB
+          {{cloudProvider.parameters.glusternode_extra_disk_size}} GB
         </td>
       </tr>
       <tr>
         <th scope="row">PVC Disk Size</th>
         <td>
-          {{cloudProvider.credential.phenomenal_pvc_size}} GB
+          {{cloudProvider.parameters.phenomenal_pvc_size}} GB
         </td>
       </tr>
       </tbody>

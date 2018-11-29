@@ -198,8 +198,8 @@ export class SetupCloudEnvironmentComponent implements OnInit, OnDestroy {
     this.disableDeployButton = true;
     // start to deploy a CRE
     console.log("Starting new deployment using the cloud provider", this.cloudProvider);
-    this.cloudProvider.credential.username = this.credentialsService.getUsername();
-    let deployment = Deployment.buildFromConfigurationParameters(this.appConfig, this.cloudProvider.credential);
+    this.cloudProvider.parameters.username = this.credentialsService.getUsername();
+    let deployment = Deployment.buildFromConfigurationParameters(this.appConfig, this.cloudProvider.parameters);
     this.deploymentService.deploy(deployment);
     // enable deploy button
     this.disableDeployButton = false;
