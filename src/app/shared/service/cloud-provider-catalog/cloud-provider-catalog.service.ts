@@ -48,6 +48,11 @@ export class CloudProviderCatalogService {
            *    },
            *    "credential": {
            *       "rc_file": "RC file data"
+           *    },
+           *    "presetParameters" : {
+           *      "useFloatingIPs": "true", <- default is true
+           *      "privateNetworkName": "automatic" <- By default created automatically, but you can
+           *                                           specify a network to be re-used here.
            *    }
            * }
            */

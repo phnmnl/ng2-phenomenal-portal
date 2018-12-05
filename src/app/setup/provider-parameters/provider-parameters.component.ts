@@ -74,14 +74,14 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
               private cloudProviderMetadataService: CloudProviderMetadataService) {
     this.phenVersions = [
       {
-         id: "2.0-Cerebellin-20180523",
+         id: "2.0-Cerebellin-20181203",
          name: 'v2018.02 Cerebellin',
-         url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin-20180523"
+         url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin-20181203"
       },
       {
-        id: "3.0-Dalcotidine-20180801",
+        id: "3.0-Dalcotidine-20181203",
         name: 'v2018.08 Dalcotidine',
-        url: "https://github.com/phnmnl/cloud-deploy-kubenow-dalcotidine.git"
+        url: "https://github.com/phnmnl/cloud-deploy-kubenow-dalcotidine-20181203"
       },
     ];
   }
@@ -208,7 +208,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   buildForm(): void {
     let configControls = {};
     for (let f of Object.keys(this.formFields)) {
-      if (this.cloudProvider.name === 'ostack' && f === "region") continue;
+      if (this.cloudProvider.name === 'ostack' && (f === "ipPoolControl" || f === "region")) continue;
       configControls[f] = new FormControl(this.cloudProvider.parameters[f], [Validators.required]);
     }
     this.formControls = configControls;

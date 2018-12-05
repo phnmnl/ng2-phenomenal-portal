@@ -41,7 +41,7 @@
         <mat-select placeholder="Select an Floating IP Pool"
                     style="display: inline-block; text-align: left;"
                     [formControl]="ipPoolControl"
-                    required [(ngModel)]="cloudProvider.parameters.ip_pool">
+                    [(ngModel)]="cloudProvider.parameters.ip_pool">
           <mat-option *ngFor="let i of floatingIpPools" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
