@@ -12,7 +12,6 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     edgenode_count: '2',
     glusternode_extra_disk_size: '100',
     phenomenal_pvc_size: '90',
-    use_floating_IPs: true,
     private_network_name: ''
   };
 
@@ -22,10 +21,12 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     // DEFAULT_INPUTS["use_floating_IPs"] is boolean).
     // TypeScript seems to let you happily assign a string if it comes from an untyped attribed,
     // which causes problems for us later.
+    /*
     if ("use_floating_IPs" in config && config["use_floating_IPs"] !== undefined)
       this.use_floating_IPs = BaseDeploymentConfigurationParameters.toBoolean(config["use_floating_IPs"]);
     else
       this.use_floating_IPs = OpenstackDeploymentConfigurationParameters.DEFAULT_INPUTS["use_floating_IPs"];
+    */
     // The same should be done for the other boolean members of this class, but we're afraid to touch them :-)
   }
 
@@ -86,10 +87,11 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     fields.push({'key': 'TF_VAR_jupyter_password', 'value': this.sanitize(this.galaxy_admin_password)});
     fields.push({'key': 'TF_VAR_dashboard_username', 'value': this.sanitize(this.galaxy_admin_email)});
     fields.push({'key': 'TF_VAR_dashboard_password', 'value': this.sanitize(this.galaxy_admin_password)});
+    // we tell kubenow to use floating IPs if the ip_pool parameter is set
+    fields.push({'key': 'TF_VAR_use_floating_IPs', 'value': this.sanitize(String(Boolean(this.ip_pool)))});
     fields.push({'key': 'TF_VAR_floating_ip_pool', 'value': this.sanitize(this.ip_pool)});
     fields.push({'key': 'TF_VAR_external_network_uuid', 'value': this.sanitize(this.network)});
-    fields.push({'key': 'TF_VAR_use_external_net', 'value': this.sanitize(String(!this.use_floating_IPs))});
-    fields.push({'key': 'TF_VAR_network_name', 'value': this.sanitize(this.private_network_name)});
+    fields.push({'key': 'TF_VAR_private_network_name', 'value': this.sanitize(this.private_network_name)});
 
     let result = {
       'name': this.deploymentName,
@@ -97,8 +99,8 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
       'fields': fields
     };
 
-    //console.log("[DEBUG]: ===== Deployment rcFile ====\n%O", cc.rcFile);
-    //console.log("[DEBUG]: ===== Deployment parameters ====\n%O", result);
+    console.log("[DEBUG]: ===== Deployment rcFile ====\n%O", cc.rcFile);
+    console.log("[DEBUG]: ===== Deployment parameters ====\n%O", result);
 
     return result;
   }

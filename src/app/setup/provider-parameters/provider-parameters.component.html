@@ -23,7 +23,8 @@
         <mat-select placeholder="Select an External Network"
                     style="display: inline-block; text-align: left;"
                     [formControl]="externalNetworkControl"
-                    required [(ngModel)]="cloudProvider.parameters.network" (change)="onChangeExternalNetwork()">
+                    required [(ngModel)]="cloudProvider.parameters.network">
+          <!-- (change)="onChangeExternalNetwork()" -->
           <mat-option *ngFor="let i of externalNetworks" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
@@ -52,6 +53,23 @@
           <!--</mat-error>-->
         </mat-select>
       </mat-form-field>
+      <mat-form-field class="input-width-x">
+        <mat-select placeholder="Select a Private Network"
+                    style="display: inline-block; text-align: left;"
+                    [formControl]="privateNetworkControl"
+                    [(ngModel)]="cloudProvider.parameters.private_network_name">
+          <!-- (change)="onChangePrivateNetwork()" -->
+          <mat-option *ngFor="let i of privateNetworks" [value]="i.value">
+            {{i.displayValue}}
+          </mat-option>
+          <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+          <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
+          <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
+          <!--Your selection is invalid-->
+          <!--</mat-error>-->
+        </mat-select>
+      </mat-form-field>
+
       <!--</mat-grid-tile>-->
       <!--</mat-grid-list>-->
     </div>
