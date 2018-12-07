@@ -556,7 +556,8 @@ export class DeployementService implements OnInit, OnDestroy {
       error => {
         statusFeedSubscription.unsubscribe();
         this.processError(deploymentInstance, error);
-        callback(error);
+        if (callback)
+          callback(error);
       }
     );
   }
