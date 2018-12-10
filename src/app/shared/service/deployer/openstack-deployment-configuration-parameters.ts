@@ -12,7 +12,8 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     edgenode_count: '2',
     glusternode_extra_disk_size: '100',
     phenomenal_pvc_size: '90',
-    private_network_name: ''
+    private_network_name: '',
+    ip_pool: ''
   };
 
   constructor(config?: object) {

@@ -30,8 +30,8 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   privateNetworkControl: FormControl;
   showNetworkSettings: boolean = false;
 
-  /* const */ noFloatingIpSetting = { displayValue: "Don't use floating IPs", value: ""};
-  /* const */ newPrivateNetSetting = { displayValue: "Create ad hoc network", value: ""};
+  /* const */ noFloatingIpSetting = { id: "", displayValue: "Don't use floating IPs", value: ""};
+  /* const */ newPrivateNetSetting = { id: "", displayValue: "Create ad hoc network", value: ""};
 
   // Base Form Settings
   simplifiedForm: FormGroup;
@@ -119,7 +119,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
         (data) => {
           console.debug("Setting REGIONS");
           this.regions = this.formatRegions(data);
-          if (this.regions.length > 0)
+          if (this.regions.length > 0) {
             this.cloudProvider.parameters.default_region = this.regions[0].value;
             console.debug("Setting default region to %O", this.cloudProvider.parameters.default_region);
           }
@@ -158,11 +158,11 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
         this.cloudProviderMetadataService.getNetworks(this.cloudProvider).subscribe(
           (data) => {
             console.debug("Setting networks");
-            console.debug("provider returned these networks: %O", data);
+            //console.debug("provider returned these networks: %O", data);
             this.externalNetworks = this.formatExternalNetworks(data);
             this.privateNetworks = this.formatPrivateNetworks(data);
-            console.debug("formatted externalNetworks: %O", this.externalNetworks);
-            console.debug("formatted privateNetworks: %O", this.privateNetworks);
+            //console.debug("formatted externalNetworks: %O", this.externalNetworks);
+            //console.debug("formatted privateNetworks: %O", this.privateNetworks);
           },
           (error) => {
             console.error(error);
@@ -173,11 +173,9 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
         this.cloudProviderMetadataService.getFloatingIpPools(this.cloudProvider).subscribe(
           (data) => {
             console.debug("Setting FloatingIpPools");
-            console.debug("provider returned these floating IP pools: %O", data);
+            //console.debug("provider returned these floating IP pools: %O", data);
             this.floatingIpPools = this.formatFloatingIpPools(data);
-            console.debug("formatted ip pool list: %O", this.floatingIpPools);
-            //if (this.floatingIpPools.length > 0)
-            //  this.cloudProvider.parameters.ip_pool = this.floatingIpPools[0];
+            //console.debug("formatted ip pool list: %O", this.floatingIpPools);
           },
           (error) => {
             console.error(error);
@@ -198,44 +196,6 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.cloudProvider.parameters.glusternode_instance_type = this.shared_instance_type;
     this.ngAfterViewChecked();
   }
-/*
-  onChangeExternalNetwork() {
-    console.log("Changed external network");
-    // set the external network name
-    console.log("cloudProvider network: %O", this.cloudProvider.parameters.network);
-    console.log("cloudProvider ip pool: %O", this.cloudProvider.parameters.ip_pool);
-    console.log("cloudProvider private network name: %O", this.cloudProvider.parameters.private_network_name);
-    console.log("Current externalNetworks: %O", this.externalNetworks);
-    for (let n of this.externalNetworks) {
-      if (n.id === this.cloudProvider.parameters.network) {
-        console.log("Found external network %O with id %O.  Setting ip_pool to this label: %O",
-          this.cloudProvider.parameters.network, n.id, n.label); 
-        this.cloudProvider.parameters.ip_pool = n.label;
-        break;
-      }
-    }
-    console.log("Update deployment parameters", this.cloudProvider.parameters);
-    this.ngAfterViewChecked();
-  }
-*/
-  /*
-  onChangePrivateNetwork() {
-    console.log("Changed private network");
-    // set the network name
-    console.log("cloudProvider network: %O", this.cloudProvider.parameters.network);
-    console.log("cloudProvider ip pool: %O", this.cloudProvider.parameters.ip_pool);
-    console.log("cloudProvider private network name: %O", this.cloudProvider.parameters.private_network_name);
-    console.log("Current privateNetworks: %O", this.privateNetworks);
-    for (let n of this.privateNetworks) {
-      if (n.id === this.cloudProvider.parameters.private_network_name) {
-        this.cloudProvider.parameters.private_network_name = n.label;
-        break;
-      }
-    }
-    console.log("Update deployment parameters", this.cloudProvider.parameters);
-    this.ngAfterViewChecked();
-  }
-  */
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -244,7 +204,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   buildForm(): void {
     let configControls = {};
     for (let f of Object.keys(this.formFields)) {
-      if (this.cloudProvider.name === 'ostack' && (f === "ipPoolControl" || f === "region")) continue;
+      if (this.cloudProvider.name === 'ostack' && f === "region") continue;
       configControls[f] = new FormControl(this.cloudProvider.parameters[f], [Validators.required]);
     }
     this.formControls = configControls;
@@ -263,11 +223,11 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
 
     // select defaults
     this.externalNetworkControl = new FormControl(
-      this.externalNetworks.length > 0 ? this.externalNetworks[0].id : "", [Validators.required]);
+      this.externalNetworks.length > 0 ? this.externalNetworks[0].value : "", [Validators.required]);
     this.ipPoolControl = new FormControl(
-      this.floatingIpPools.length > 0 ? this.floatingIpPools[0].id : "", [Validators.required]);
+      this.floatingIpPools.length > 0 ? this.floatingIpPools[0].value : "", [Validators.required]);
     this.privateNetworkControl = new FormControl(
-      this.privateNetworks.length > 0 ? this.privateNetworks[0].id : "", [Validators.required]);
+      this.privateNetworks.length > 0 ? this.privateNetworks[0].value : "", [Validators.required]);
 
     this.networkForm = this._formBuilder.group({
       'external_network': this.externalNetworkControl,
@@ -276,8 +236,19 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     });
 
     this.externalNetworkControl.setValue(this.cloudProvider.parameters.network);
-    this.privateNetworkControl.setValue(this.cloudProvider.parameters.private_network_name);
     this.ipPoolControl.setValue(this.cloudProvider.parameters.ip_pool);
+    // Map the private network id to its name for our cloud parameters.
+    this.privateNetworkControl.valueChanges.subscribe(
+      (value) => {
+        for (let net of this.privateNetworks) {
+          if (net.value === value) {
+            this.cloudProvider.parameters.private_network_name = net.name;
+            console.debug("Mapped private network %O to %O", value, net.name);
+            break;
+          }
+        }
+      });
+
     this.onValueChanged();
   }
 
@@ -336,28 +307,9 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   }
 
   private formatRegions(regions) {
-    let result = [];
-    for (let i of regions) {
-      if (this.cloudProvider.name === "aws") {
-        result.push({
-          displayValue: i.displayValue,
-          value: i.value
-        });
-      } else if (this.cloudProvider.name === "ostack") {
-        result.push({
-          displayValue: i.displayValue,
-          value: i.value
-        });
-      } else if (this.cloudProvider.name === "gcp") {
-        result.push({
-          displayValue: i.displayValue,
-          value: i.value
-        });
-      }
-    }
+    let result = regions.map( (r) => { return { displayValue: r.displayValue, value: r.value }; } );
     return result;
   }
-
 
   private formatFlavors(flavors) {
     let result = [];
@@ -399,7 +351,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     return ProviderParametersComponent.cmpNetworks(true, n1, n2);
   }
 
-  private static  cmpNetworksExternalLast(n1, n2) {
+  private static cmpNetworksExternalLast(n1, n2) {
     return ProviderParametersComponent.cmpNetworks(false, n1, n2);
   }
 
@@ -409,7 +361,8 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
       label += " (external)";
     return {
       displayValue: label,
-      value: obj.name
+      value: obj.id,
+      name: obj.name
     };
   }
 
