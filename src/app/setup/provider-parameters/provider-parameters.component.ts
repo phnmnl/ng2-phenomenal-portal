@@ -96,7 +96,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log("Updated provider", this.previousCloudProvider, this.cloudProvider);
+    console.debug("Updated provider", this.previousCloudProvider, this.cloudProvider);
     if (this.previousCloudProvider != this.cloudProvider) {
       this.previousCloudProvider = this.cloudProvider;
       this.updateSubscriptions();
@@ -104,7 +104,6 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   }
 
   private updateSubscriptions() {
-
     // clean old subscriptions
     for (let s of this.serviceSubscriptions)
       s.unsubscribe();
@@ -118,10 +117,12 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.serviceSubscriptions.push(
       this.cloudProviderMetadataService.getRegions(this.cloudProvider).subscribe(
         (data) => {
-          console.log("Setting REGIONS");
+          console.debug("Setting REGIONS");
           this.regions = this.formatRegions(data);
           if (this.regions.length > 0)
             this.cloudProvider.parameters.default_region = this.regions[0].value;
+            console.debug("Setting default region to %O", this.cloudProvider.parameters.default_region);
+          }
         },
         (error) => {
           console.error(error);
@@ -132,7 +133,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
     this.serviceSubscriptions.push(
       this.cloudProviderMetadataService.getFlavors(this.cloudProvider).subscribe(
         (data) => {
-          console.log("Setting FLAVOUR list and defaults");
+          console.debug("Setting FLAVOUR list and defaults");
           this.flavorTypes = this.formatFlavors(data);
           this.shared_instance_type = this.cloudProvider.parameters.master_instance_type;
           // Preset the edge instance type so that validation passes, even when the user sets
@@ -285,10 +286,10 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   }
 
   onValueChanged(data?: any) {
-    console.log("[DEBUG] onValueChanged.  Here are the current network parameters");
-    console.log("cloudProvider network: %O", this.cloudProvider.parameters.network);
-    console.log("cloudProvider ip pool: %O", this.cloudProvider.parameters.ip_pool);
-    console.log("cloudProvider private network name: %O", this.cloudProvider.parameters.private_network_name);
+    //console.log("[DEBUG] onValueChanged.  Here are the current network parameters");
+    //console.log("cloudProvider network: %O", this.cloudProvider.parameters.network);
+    //console.log("cloudProvider ip pool: %O", this.cloudProvider.parameters.ip_pool);
+    //console.log("cloudProvider private network name: %O", this.cloudProvider.parameters.private_network_name);
 
     if (!this.form) {
       return;
@@ -318,7 +319,7 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   }
 
   public updateAdvancedSettingsSelection(change: MatButtonToggleChange) {
-    console.log("change", change, this.showAdvancedSettings);
+    console.debug("change", change, this.showAdvancedSettings);
     this.showAdvancedSettings = change.source.checked;
   }
 
