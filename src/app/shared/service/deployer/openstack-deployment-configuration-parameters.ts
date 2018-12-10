@@ -18,17 +18,6 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
 
   constructor(config?: object) {
     super(Object.assign(OpenstackDeploymentConfigurationParameters.defaults, config ? config : {}));
-    // Convert the value of use_floating_IPs to boolean assigned through `config` (we know
-    // DEFAULT_INPUTS["use_floating_IPs"] is boolean).
-    // TypeScript seems to let you happily assign a string if it comes from an untyped attribed,
-    // which causes problems for us later.
-    /*
-    if ("use_floating_IPs" in config && config["use_floating_IPs"] !== undefined)
-      this.use_floating_IPs = BaseDeploymentConfigurationParameters.toBoolean(config["use_floating_IPs"]);
-    else
-      this.use_floating_IPs = OpenstackDeploymentConfigurationParameters.DEFAULT_INPUTS["use_floating_IPs"];
-    */
-    // The same should be done for the other boolean members of this class, but we're afraid to touch them :-)
   }
 
   public get provider(): string {
@@ -88,7 +77,7 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     fields.push({'key': 'TF_VAR_jupyter_password', 'value': this.sanitize(this.galaxy_admin_password)});
     fields.push({'key': 'TF_VAR_dashboard_username', 'value': this.sanitize(this.galaxy_admin_email)});
     fields.push({'key': 'TF_VAR_dashboard_password', 'value': this.sanitize(this.galaxy_admin_password)});
-    // we tell kubenow to use floating IPs if the ip_pool parameter is set
+    // We tell kubenow to use floating IPs if the ip_pool parameter is set
     fields.push({'key': 'TF_VAR_use_floating_IPs', 'value': this.sanitize(String(Boolean(this.ip_pool)))});
     fields.push({'key': 'TF_VAR_floating_ip_pool', 'value': this.sanitize(this.ip_pool)});
     fields.push({'key': 'TF_VAR_external_network_uuid', 'value': this.sanitize(this.network)});
@@ -100,8 +89,8 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
       'fields': fields
     };
 
-    console.log("[DEBUG]: ===== Deployment rcFile ====\n%O", cc.rcFile);
-    console.log("[DEBUG]: ===== Deployment parameters ====\n%O", result);
+    //console.log("[DEBUG]: ===== Deployment rcFile ====\n%O", cc.rcFile);
+    //console.log("[DEBUG]: ===== Deployment parameters ====\n%O", result);
 
     return result;
   }
