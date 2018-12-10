@@ -23,6 +23,12 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
   @Input() cloudProvider: CloudProvider;
   @Output() cloudProviderChange: EventEmitter<CloudProvider> = new EventEmitter<CloudProvider>();
 
+  // tooltip configuration
+  toolTipShowDelay = 800;
+  toolTipHideDelay = 1000;
+  toolTipPosition = "left";
+
+
   // Network Form Settings
   networkForm: FormGroup;
   externalNetworkControl: FormControl;

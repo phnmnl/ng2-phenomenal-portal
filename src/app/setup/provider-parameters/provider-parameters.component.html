@@ -1,7 +1,5 @@
 <h2 class="h3-responsive cloud-setup-title">Setup your Cloud instances</h2>
 
-<!--<h5 *ngIf="showAdvancedSettings"> &#45;&#45; Advanced Settings &#45;&#45; </h5>-->
-
 <br>
 
 <div class="pull-xs-right adv-settings-btn">
@@ -16,62 +14,48 @@
   <div *ngIf="showNetworkSettings">
     <div class="cloud-settings-container">
 
-      <!--<mat-grid-list cols="3" rowHeight="3:1">-->
-
-      <!--<mat-grid-tile [colspan]="3">-->
-      <mat-form-field class="input-width-x">
-        <mat-select placeholder="Select an External Network"
+        <mat-form-field class="input-width-x">
+          <mat-select placeholder="Select an External Network."
                     style="display: inline-block; text-align: left;"
                     [formControl]="externalNetworkControl"
-                    required [(ngModel)]="cloudProvider.parameters.network">
-          <!-- (change)="onChangeExternalNetwork()" -->
+                    required [(ngModel)]="cloudProvider.parameters.network"
+                    matTooltip="If you don't know what to use, contact your cloud provider."
+                    [matTooltipShowDelay]="toolTipShowDelay"
+                    [matTooltipHideDelay]="toolTipHideDelay"
+                    [matTooltipPosition]="toolTipPosition">
           <mat-option *ngFor="let i of externalNetworks" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
-          <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-          <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
-          <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
-          <!--Your selection is invalid-->
-          <!--</mat-error>-->
         </mat-select>
       </mat-form-field>
-      <!--</mat-grid-tile>-->
 
-      <!--<mat-grid-tile [colspan]="3">-->
       <mat-form-field class="input-width-x">
-        <mat-select placeholder="Select an Floating IP Pool"
+        <mat-select placeholder="Select an Floating IP Pool. If you don't know what to use, contact your cloud provider."
                     style="display: inline-block; text-align: left;"
                     [formControl]="ipPoolControl"
-                    [(ngModel)]="cloudProvider.parameters.ip_pool">
+                    [(ngModel)]="cloudProvider.parameters.ip_pool"
+                    matTooltip="Normally you should select a Floating IP pool compatible with your external network. If no pools are available leave the default option (Don't use floating IPs)."
+                    [matTooltipShowDelay]="toolTipShowDelay"
+                    [matTooltipHideDelay]="toolTipHideDelay"
+                    [matTooltipPosition]="toolTipPosition" >
           <mat-option *ngFor="let i of floatingIpPools" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
-          <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-          <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
-          <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
-          <!--Your selection is invalid-->
-          <!--</mat-error>-->
         </mat-select>
       </mat-form-field>
       <mat-form-field class="input-width-x">
-        <mat-select placeholder="Select a Private Network"
+        <mat-select placeholder="Select a Private Network. Normally to be left at the default value."
                     style="display: inline-block; text-align: left;"
                     [formControl]="privateNetworkControl"
-                    [(ngModel)]="cloudProvider.parameters.private_network_name">
-          <!-- (change)="onChangePrivateNetwork()" -->
+                    matTooltip="Leave the default (Create ad hoc...) unless your cloud provider doesn't support creating new networks."
+                    [matTooltipShowDelay]="toolTipShowDelay"
+                    [matTooltipHideDelay]="toolTipHideDelay"
+                    [matTooltipPosition]="toolTipPosition">
           <mat-option *ngFor="let i of privateNetworks" [value]="i.value">
             {{i.displayValue}}
           </mat-option>
-          <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-          <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
-          <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
-          <!--Your selection is invalid-->
-          <!--</mat-error>-->
         </mat-select>
       </mat-form-field>
-
-      <!--</mat-grid-tile>-->
-      <!--</mat-grid-list>-->
     </div>
   </div>
 </form>
@@ -92,11 +76,6 @@
               <mat-option *ngFor="let i of flavorTypes" [value]="i.value">
                 {{i.displayValue}}
               </mat-option>
-              <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-              <!--<mat-error *ngIf="example.hasError('required')">You must make a selection</mat-error>-->
-              <!--<mat-error *ngIf="example.hasError('pattern') && !example.hasError('required')">-->
-              <!--Your selection is invalid-->
-              <!--</mat-error>-->
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
