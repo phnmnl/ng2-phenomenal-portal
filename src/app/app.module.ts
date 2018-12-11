@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppComponent } from './app.component';
 import { BreadcrumbComponent } from './shared/component/breadcrumb/breadcrumb.component';
 import { CloudResearchEnvironmentComponent } from './static-page/cloud-research-environment/cloud-research-environment.component';
@@ -170,6 +171,7 @@ export function initConfig(config: AppConfig) {
     MatGridListModule,
     MatSliderModule,
     MatSlideToggleModule,
+    MatTooltipModule,
     MatProgressSpinnerModule,
     BsDropdownModule.forRoot()
   ],

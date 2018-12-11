@@ -17,6 +17,9 @@ export abstract class BaseDeploymentConfigurationParameters {
   default_region?: string;
   network?: string;
   ip_pool?: string;
+  use_floating_IPs: boolean = true;
+  private_network_name? : string;
+
   rc_file?: string;
   preconfigured?: boolean = false;
   preset?: string = null;
@@ -101,4 +104,24 @@ export abstract class BaseDeploymentConfigurationParameters {
   public abstract get inputs();
 
   public abstract get parameters();
+
+  protected static toBoolean(value: string): boolean {
+    if (value === null || value === undefined)
+      throw new Error("TypeError:  value is not defined -> " + value);
+
+    if (typeof(value) == 'boolean') {
+      return value;
+    }
+    else if (typeof(value) == 'string') {
+      let s = value.toLowerCase().trim();
+      if (s == "true" || s == "t" || s == "y" || s == "yes")
+        return true;
+      else if (s == "false" || s == "f" || s == "n" || s == "no")
+        return false;
+      else
+        throw new Error("Invalid boolean string " + value);
+    }
+    else
+      throw new Error("Don't know how to convert value " + value + " of type " + typeof(value));
+  }
 }

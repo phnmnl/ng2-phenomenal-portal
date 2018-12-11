@@ -11,7 +11,9 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     glusternode_count: '1',
     edgenode_count: '2',
     glusternode_extra_disk_size: '100',
-    phenomenal_pvc_size: '90'
+    phenomenal_pvc_size: '90',
+    private_network_name: '',
+    ip_pool: ''
   };
 
   constructor(config?: object) {
@@ -28,22 +30,22 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
 
   public get inputs() {
     let inputs = {
-      cluster_prefix: this.clusterPrefix,
-      floating_ip_pool: this.ip_pool,
-      external_network_uuid: this.network,
-      master_as_edge: this.master_as_edge,
-      master_flavor: this.master_instance_type,
-      node_flavor: this.node_instance_type,
-      node_count: this.node_count,
-      edge_count: this.edgenode_count,
-      edge_flavor: this.edgenode_instance_type,
-      glusternode_flavor: this.glusternode_instance_type,
-      glusternode_count: this.glusternode_count,
-      glusternode_extra_disk_size: this.glusternode_extra_disk_size,
-      phenomenal_pvc_size: this.phenomenal_pvc_size + "Gi",
-      galaxy_admin_email: this.galaxy_admin_email,
-      galaxy_admin_password: this.galaxy_admin_password,
-      preconfigured: this.preconfigured
+      cluster_prefix: this.sanitize(this.clusterPrefix),
+      floating_ip_pool: this.sanitize(this.ip_pool),
+      external_network_uuid: this.sanitize(this.network),
+      master_as_edge: this.sanitize(this.master_as_edge),
+      master_flavor: this.sanitize(this.master_instance_type),
+      node_flavor: this.sanitize(this.node_instance_type),
+      node_count: this.sanitize(this.node_count),
+      edge_count: this.sanitize(this.edgenode_count),
+      edge_flavor: this.sanitize(this.edgenode_instance_type),
+      glusternode_flavor: this.sanitize(this.glusternode_instance_type),
+      glusternode_count: this.sanitize(this.glusternode_count),
+      glusternode_extra_disk_size: this.sanitize(this.glusternode_extra_disk_size),
+      phenomenal_pvc_size: this.sanitize(this.phenomenal_pvc_size + "Gi"),
+      galaxy_admin_email: this.sanitize(this.galaxy_admin_email),
+      galaxy_admin_password: this.sanitize(this.galaxy_admin_password),
+      preconfigured: this.sanitize(this.preconfigured)
     };
     if (this.preconfigured)
       inputs["preset"] = this.preset;
@@ -52,6 +54,7 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
 
   public get parameters(): object {
     let cc: OpenStackCredentials = OpenStackMetadataService.parseRcFile(this.rc_file, this.password);
+
 
     /*** Remember :-)
      * If the user sets OS_PROJECT_NAME and not OS_PROJECT_ID (this can happen
@@ -66,16 +69,19 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     let fields = [];
     for (let k of Object.keys(cc.vars)) {
       if (cc.vars[k] != null)
-        fields.push( {'key': k, 'value': cc.vars[k]} );
+        fields.push( {'key': k, 'value': this.sanitize(cc.vars[k])} );
     }
     fields.push({'key': 'OS_RC_FILE', 'value': btoa(cc.rcFile)});
-    fields.push({'key': 'TF_VAR_galaxy_admin_email', 'value': this.galaxy_admin_email});
-    fields.push({'key': 'TF_VAR_galaxy_admin_password', 'value': this.galaxy_admin_password});
-    fields.push({'key': 'TF_VAR_jupyter_password', 'value': this.galaxy_admin_password});
-    fields.push({'key': 'TF_VAR_dashboard_username', 'value': this.galaxy_admin_email});
-    fields.push({'key': 'TF_VAR_dashboard_password', 'value': this.galaxy_admin_password});
-    fields.push({'key': 'TF_VAR_floating_ip_pool', 'value': this.ip_pool});
-    fields.push({'key': 'TF_VAR_external_network_uuid', 'value': this.network});
+    fields.push({'key': 'TF_VAR_galaxy_admin_email', 'value': this.sanitize(this.galaxy_admin_email)});
+    fields.push({'key': 'TF_VAR_galaxy_admin_password', 'value': this.sanitize(this.galaxy_admin_password)});
+    fields.push({'key': 'TF_VAR_jupyter_password', 'value': this.sanitize(this.galaxy_admin_password)});
+    fields.push({'key': 'TF_VAR_dashboard_username', 'value': this.sanitize(this.galaxy_admin_email)});
+    fields.push({'key': 'TF_VAR_dashboard_password', 'value': this.sanitize(this.galaxy_admin_password)});
+    // We tell kubenow to use floating IPs if the ip_pool parameter is set
+    fields.push({'key': 'TF_VAR_use_floating_IPs', 'value': this.sanitize(String(Boolean(this.ip_pool)))});
+    fields.push({'key': 'TF_VAR_floating_ip_pool', 'value': this.sanitize(this.ip_pool)});
+    fields.push({'key': 'TF_VAR_external_network_uuid', 'value': this.sanitize(this.network)});
+    fields.push({'key': 'TF_VAR_private_network_name', 'value': this.sanitize(this.private_network_name)});
 
     let result = {
       'name': this.deploymentName,
@@ -87,5 +93,12 @@ export class OpenstackDeploymentConfigurationParameters extends BaseDeploymentCo
     //console.log("[DEBUG]: ===== Deployment parameters ====\n%O", result);
 
     return result;
+  }
+
+  private sanitize(value): string {
+    if (value === undefined || value === null)
+      return '';
+    else
+      return String(value);
   }
 }

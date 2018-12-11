@@ -60,15 +60,14 @@ export class CloudProviderMetadataService {
     return this.getConcreteMetadataService(cloudProvider).getRegions();
   }
 
-
   public getFlavors(cloudProvider: CloudProvider): Observable<any[]> {
     return this.getConcreteMetadataService(cloudProvider).getFlavors();
   }
 
-  public getExternalNetworks(cloudProvider: CloudProvider): Observable<any[]> {
+  public getNetworks(cloudProvider: CloudProvider): Observable<any[]> {
     if (cloudProvider.name !== "ostack")
       return Observable.empty();
-    return this.openStackMetadataService.getExternalNeworks();
+    return this.openStackMetadataService.getNetworks();
   }
 
   public getFloatingIpPools(cloudProvider: CloudProvider): Observable<any[]> {

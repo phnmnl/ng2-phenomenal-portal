@@ -18,7 +18,7 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
   private URL: string = "/api/v2/providers/openstack";
   private regionsSubject = new Subject<any>();
   private flavorsSubject = new Subject<any>();
-  private externalNetworks = new Subject<any>();
+  private networks       = new Subject<any>();
   private floatingIpPools = new Subject<any>();
 
   constructor(private http: Http,
@@ -36,7 +36,7 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
     return this.http.post(this.URL + "/authenticate", jsonCredentials)
       .map((res) => {
         this.loadFlavors(jsonCredentials);
-        this.loadExternalNetworks(jsonCredentials);
+        this.loadNetworks(jsonCredentials);
         this.loadFloatingIpPools(jsonCredentials);
         return res.json();
       }).catch(res => Observable.throw(res.json()));
@@ -55,8 +55,8 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
     return this.flavorsSubject.asObservable();
   }
 
-  getExternalNeworks(): Observable<any[]> {
-    return this.externalNetworks.asObservable();
+  getNetworks(): Observable<any[]> {
+    return this.networks.asObservable();
   }
 
   getFloatingIpPools(): Observable<any[]> {
@@ -66,9 +66,9 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
   private loadFlavors(credentials) {
     this.http.post(this.URL + "/flavors", credentials).subscribe(
       (data) => {
-        console.log(data);
+        console.log("Got flavours from provider");
         let flavors = data.json()["data"];
-        console.log("Flavors", flavors);
+        console.log("Flavors: %O", flavors);
         this.flavorsSubject.next(flavors['flavors']);
       },
       (error) => {
@@ -76,13 +76,13 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
       });
   }
 
-  private loadExternalNetworks(credentials) {
-    this.http.post(this.URL + "/external-networks", credentials).subscribe(
+  private loadNetworks(credentials) {
+    this.http.post(this.URL + "/networks", credentials).subscribe(
       (data) => {
-        console.log(data);
+        console.debug("Got networks from provider");
         let networks = data.json()["data"];
-        console.log("Networks", networks);
-        this.externalNetworks.next(networks['networks']);
+        console.log("Networks %O", networks);
+        this.networks.next(networks['networks']);
       },
       (error) => {
         console.error(error);
@@ -92,9 +92,9 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
   private loadFloatingIpPools(credentials) {
     this.http.post(this.URL + "/ip-pools", credentials).subscribe(
       (data) => {
-        console.log(data);
+        console.log("Got ip pools from provider");
         let ipPools = data.json()["data"];
-        console.log("floating_ip_pools", ipPools);
+        console.log("floating_ip_pools %O", ipPools);
         this.floatingIpPools.next(ipPools['floating_ip_pools']);
       },
       (error) => {
@@ -205,7 +205,7 @@ export class OpenStackMetadataService implements ICloudProviderMetadataService {
       else if (projectName)
         rcVersion = "3";
       else {
-        console.log("Unable to find API version number.  Defaulting to v2");
+        console.warn("Unable to find API version number.  Defaulting to v2");
         rcVersion = "2";
       }
     }

@@ -29,16 +29,17 @@ export class CloudProvider {
   providerDescription: string;
   locationDescription: string;
   logo: string;
-  //credential: BaseDeploymentConfigurationParameters;
   parameters: BaseDeploymentConfigurationParameters;
   preconfigured: boolean = false;
   preset: string = null;
 
-
   constructor(config?: {}) {
     if (config) {
       for (let p of Object.keys(config)) {
-        if (p != "rc_file") {
+        if (p == "rc_file") {
+          continue;
+        }
+        else {
           this[p] = config[p];
           console.log("Setting ", p, this[p], config[p]);
         }
@@ -53,6 +54,16 @@ export class CloudProvider {
             cloudConfig['preconfigured'] = this.preconfigured;
             cloudConfig['preset'] = this.preset;
           }
+          if ("presetParameters" in config) {
+            let presets = config["presetParameters"];
+            if ("useFloatingIPs" in presets) {
+              cloudConfig["use_floating_IPs"] = presets["useFloatingIPs"];
+            }
+            if ("privateNetworkName" in presets) {
+              cloudConfig["private_network_name"] = presets["privateNetworkName"];
+            }
+          }
+
           this.parameters = new CloudProvider.PROVIDER_TYPE[this.name].configClass(cloudConfig);
           console.log("[DEBUG] CloudProvider set parameters to %O", this.parameters);
         }
