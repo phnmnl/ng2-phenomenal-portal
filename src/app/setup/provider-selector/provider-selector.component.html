@@ -14,7 +14,7 @@
       <div [ngClass]="{'row': (i+1)%2 == 0 && !smallScreen, 'card-row': (i+1)%2 == 0 && !smallScreen }"
            style="cursor: pointer;">
 
-        <div [ngClass]="{'col-lg-6': true, 'card-size': true}">
+        <div [ngClass]="{'col-lg-4': true, 'card-size': true}">
           <mat-card (click)="selectCloudProvider(cloudProvider)">
             <img mat-card-image src="{{cloudProvider.logo.path}}" class="card-image"
                  [ngStyle]="{'width': cloudProvider.logo.width, 'height': cloudProvider.logo.height}">
