@@ -53,12 +53,12 @@
             </a>
           </li>
 
-          <li *ngIf="currentUser && isCollapsed" class="nav-item">
-            <a class="nav-link" (click)="closeMenu()"
-               [routerLink]="['/cloud-research-environment-test']">
-              <i class="fa fa-cloud nav-menu-item-icon" aria-hidden="true"></i> Public CRE
-            </a>
-          </li>
+<!--          <li *ngIf="currentUser && isCollapsed" class="nav-item">-->
+<!--            <a class="nav-link" (click)="closeMenu()"-->
+<!--               [routerLink]="['/cloud-research-environment-test']">-->
+<!--              <i class="fa fa-cloud nav-menu-item-icon" aria-hidden="true"></i> Public CRE-->
+<!--            </a>-->
+<!--          </li>-->
 
           <li *ngIf="currentUser && isCollapsed" class="nav-item">
             <a (click)="closeMenu()" class="nav-link"
@@ -84,14 +84,18 @@
                   </a>
                 </li>
 
+                <!-- workaround to force component reset from a control outside the tree which it belongs to -->
+
                 <li role="menuitem">
-                  <!-- workaround to force component reset from a control outside the tree which it belongs to -->
-                  <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
-                     [routerLink]="['/cloud-research-environment-test']">
-                    <i class="fa fa-cloud nav-menu-item-icon" aria-hidden="true"></i> Public CRE
-                  </a>
+                  <!--
+                    <a (click)="closeMenu()" class="nav-link dropdown-item cre-menu-item"
+                       [routerLink]="['/cloud-research-environment-test']">
+                      <i class="fa fa-cloud nav-menu-item-icon" aria-hidden="true"></i> Public CRE
+                    </a>
+                    -->
                   <hr>
                 </li>
+
 
                 <li role="menuitem">
                   <a (click)="closeMenu(); createNewCre()" class="nav-link dropdown-item cre-menu-item">

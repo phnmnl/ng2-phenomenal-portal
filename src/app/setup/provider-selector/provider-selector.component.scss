@@ -13,6 +13,14 @@
   margin-bottom: 30px;
 }
 
+.provider-help {
+  float: right;
+}
+
+.provider-description {
+  margin-top: 40px;
+}
+
 .phenomenal-card-property {
   height: 450px;
   margin-bottom: 30px;
@@ -51,21 +59,21 @@
 }
 
 
-.national-providers-container{
+.national-providers-container {
   margin-top: 80px;
 }
 
-.national-providers-boxes-container{
+.national-providers-boxes-container {
   margin-top: 50px;
 }
 
-.mat-horizontal-stepper-content{
+.mat-horizontal-stepper-content {
   overflow: visible;
 }
 
 @media (min-width: 992px) {
   .mat-card {
-    height: 400px;
+    height: 440px;
   }
 }
 
