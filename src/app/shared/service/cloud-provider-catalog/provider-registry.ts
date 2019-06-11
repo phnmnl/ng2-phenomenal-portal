@@ -82,7 +82,7 @@ export class ProviderRegistry {
 
   public static getProviders() {
     return [
-      this.getPhenomenalProvider(),
+      //this.getPhenomenalProvider(),
       this.getAwsProvider(),
       this.getGcpProvider(),
       this.getOpenStackProvider()
