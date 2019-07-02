@@ -84,14 +84,14 @@ export class ProviderParametersComponent implements OnInit, OnChanges {
               private cloudProviderMetadataService: CloudProviderMetadataService) {
     this.phenVersions = [
       {
-         id: "2.0-Cerebellin-20181206",
+         id: "2.0-Cerebellin-20190625",
          name: 'v2018.02 Cerebellin',
-         url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin-20181206"
+         url: "https://github.com/phnmnl/cloud-deploy-kubenow-cerebellin-20190625"
       },
       {
-        id: "3.0-Dalcotidine-20181206",
+        id: "3.0-Dalcotidine-20190625",
         name: 'v2018.08 Dalcotidine',
-        url: "https://github.com/phnmnl/cloud-deploy-kubenow-dalcotidine-20181206"
+        url: "https://github.com/phnmnl/cloud-deploy-kubenow-dalcotidine-20190625"
       },
     ];
   }
